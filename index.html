@@ -10,22 +10,25 @@
 
 <!-- ================= HEADER ================= -->
 <header class="site-header" id="siteHeader">
-    <div class="header-container">
+   <div class="header-container">
 
-        <div class="logo">
-            <h1>Jitra2Stay</h1>
-            <span>Homestay Selesa di Jitra</span>
-        </div>
-
-        <nav class="main-nav">
-            <a href="#home">Home</a>
-            <a href="#kemudahan">Kemudahan</a>
-            <a href="#kadar">Kadar</a>
-            <a href="#lokasi">Lokasi</a>
-            <a href="#hubungi">Hubungi</a>
-        </nav>
-
+    <div class="logo">
+      <h1>Jitra2Stay</h1>
+      <span>Homestay Selesa di Jitra</span>
     </div>
+
+    <!-- Hamburger button (mobile) -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="#">Home</a>
+      <a href="#kemudahan">Kemudahan</a>
+      <a href="#kadar">Kadar</a>
+      <a href="#lokasi">Lokasi</a>
+      <a href="#hubungi">Hubungi</a>
+    </nav>
+
+  </div>
 </header>
 
 <!-- ================= HERO ================= -->
@@ -435,6 +438,13 @@ window.addEventListener("scroll", () => {
         header.classList.remove("shrink");
     }
 });
+
+  const toggle = document.getElementById("menuToggle");
+  const nav = document.getElementById("mainNav");
+
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("show");
+  });
 
 </script>
 
