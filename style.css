@@ -901,3 +901,164 @@ footer {
     margin-top: 40px;
     display: inline-block;
 }
+
+/* ===== TRUST BOOSTER ===== */
+.trust {
+    padding: 90px 20px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.trust h3 {
+    font-size: 32px;
+    color: #1f4f46;
+    margin-bottom: 10px;
+}
+
+.trust-grid {
+    max-width: 1000px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.trust-card {
+    background: #f5fdf9;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    font-size: 15px;
+}
+
+.trust-card span {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #2f6f62;
+}
+
+.trust-icons {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.trust-icons div {
+    background: #f0fdf4;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* ================= FINAL CTA ================= */
+.final-cta {
+    background: linear-gradient(135deg, #1f4f46, #2f6f62);
+    color: white;
+    padding: 90px 20px;
+    text-align: center;
+}
+
+.final-cta-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.final-cta h2 {
+    font-size: 34px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.final-cta p {
+    font-size: 16px;
+    opacity: 0.95;
+    margin-bottom: 30px;
+    line-height: 1.7;
+}
+
+/* CTA Button */
+.btn-cta {
+    display: inline-block;
+    background: #3fa37b;
+    color: white;
+    padding: 16px 38px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.btn-cta:hover {
+    background: #4fd1a1;
+    transform: translateY(-3px);
+}
+
+/* Trust text bawah button */
+.cta-trust {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .final-cta h2 {
+        font-size: 26px;
+    }
+
+    .btn-cta {
+        padding: 14px 30px;
+        font-size: 15px;
+    }
+}
+
+.final-cta {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+}
+
+.final-cta.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================= MOBILE STICKY WHATSAPP ================= */
+.mobile-whatsapp {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-whatsapp {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 55px;
+        background: #25d366;
+        color: white;
+        font-weight: 700;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font-size: 16px;
+        z-index: 9999;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.25);
+    }
+
+    body {
+        padding-bottom: 65px; /* elak content kena tindih */
+    }
+}
