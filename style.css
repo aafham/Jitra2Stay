@@ -1062,3 +1062,9 @@ footer {
         padding-bottom: 65px; /* elak content kena tindih */
     }
 }
+
+@media (max-width: 768px) {
+  .floating-whatsapp {
+    display: none;
+  }
+}
