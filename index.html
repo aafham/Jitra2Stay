@@ -66,6 +66,8 @@
           <a href="#kadar" data-bm="Kadar" data-en="Rates">Kadar</a>
           <a href="#lokasi" data-bm="Lokasi" data-en="Location">Lokasi</a>
           <a href="#hubungi" data-bm="Hubungi" data-en="Contact">Hubungi</a>
+          <button class="mobile-nav-lang lang-btn" type="button" data-lang="ms" aria-pressed="false">BM</button>
+          <button class="mobile-nav-lang lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
         </nav>
 
         <div class="header-tools">
@@ -291,11 +293,11 @@
 
       <div
         class="deposit-box"
-        data-bm="&#128272; <strong>Security Deposit:</strong> RM100 <span>(Dipulangkan selepas check-out jika tiada kerosakan)</span>"
-        data-en="&#128272; <strong>Security Deposit:</strong> RM100 <span>(Refunded after check-out if no damage)</span>"
+        data-bm="&#128272; <strong>Security Deposit:</strong> RM100 <span>(Dipulangkan selepas check-out jika tiada kerosakan). Jika owner minta deposit booking, jumlah dan kaedah bayaran akan disahkan melalui WhatsApp.</span>"
+        data-en="&#128272; <strong>Security Deposit:</strong> RM100 <span>(Refunded after check-out if no damage). If the owner requests a booking deposit, the amount and payment method will be confirmed via WhatsApp.</span>"
       >
         &#128272; <strong>Security Deposit:</strong> RM100
-        <span>(Dipulangkan selepas check-out jika tiada kerosakan)</span>
+        <span>(Dipulangkan selepas check-out jika tiada kerosakan). Jika owner minta deposit booking, jumlah dan kaedah bayaran akan disahkan melalui WhatsApp.</span>
       </div>
     </section>
 
@@ -328,10 +330,18 @@
         <div class="book-step">
           <span class="step-num">3</span>
           <h4 data-bm="Sahkan Tempahan" data-en="Confirm Booking">Sahkan Tempahan</h4>
-          <p data-bm="Bayar deposit & dapatkan pengesahan." data-en="Pay the deposit & receive confirmation.">
-            Bayar deposit & dapatkan pengesahan.
+          <p data-bm="Owner confirm slot, kemudian beri arahan bayaran melalui WhatsApp." data-en="The owner confirms the slot, then shares payment instructions via WhatsApp.">
+            Owner confirm slot, kemudian beri arahan bayaran melalui WhatsApp.
           </p>
         </div>
+      </div>
+
+      <div
+        class="deposit-box"
+        data-bm="&#128179; <strong>Bayaran manual:</strong> Selepas slot disahkan, owner akan beri detail bank/DuitNow melalui WhatsApp. Hantar bukti bayaran di WhatsApp untuk sahkan booking."
+        data-en="&#128179; <strong>Manual payment:</strong> After the slot is confirmed, the owner will share bank/DuitNow details via WhatsApp. Send proof of payment on WhatsApp to confirm the booking."
+      >
+        &#128179; <strong>Bayaran manual:</strong> Selepas slot disahkan, owner akan beri detail bank/DuitNow melalui WhatsApp. Hantar bukti bayaran di WhatsApp untuk sahkan booking.
       </div>
     </section>
 
@@ -690,6 +700,47 @@
       </div>
     </section>
 
+    <!-- ================= APA PERLU BAWA ================= -->
+    <section class="bring-list reveal">
+      <h3 data-bm="Apa Perlu Bawa" data-en="What to Bring">Apa Perlu Bawa</h3>
+      <p
+        class="section-desc"
+        data-bm="Senarai ringkas untuk bantu tetamu bersedia sebelum check-in."
+        data-en="A quick checklist to help guests prepare before check-in."
+      >
+        Senarai ringkas untuk bantu tetamu bersedia sebelum check-in.
+      </p>
+
+      <div class="bring-grid">
+        <div class="bring-card">
+          <h4 data-bm="&#128196; Dokumen &amp; Booking" data-en="&#128196; Documents &amp; Booking">&#128196; Dokumen &amp; Booking</h4>
+          <ul>
+            <li data-bm="IC / dokumen pengenalan jika diminta semasa check-in" data-en="IC / identification document if requested during check-in">IC / dokumen pengenalan jika diminta semasa check-in</li>
+            <li data-bm="Screenshot bukti bayaran atau confirmation WhatsApp" data-en="Payment proof screenshot or WhatsApp confirmation">Screenshot bukti bayaran atau confirmation WhatsApp</li>
+            <li data-bm="Nombor telefon contact person untuk urusan check-in" data-en="Contact person's phone number for check-in coordination">Nombor telefon contact person untuk urusan check-in</li>
+          </ul>
+        </div>
+
+        <div class="bring-card">
+          <h4 data-bm="&#127857; Makanan &amp; Keperluan Dapur" data-en="&#127857; Food &amp; Kitchen Needs">&#127857; Makanan &amp; Keperluan Dapur</h4>
+          <ul>
+            <li data-bm="Bahan mentah atau makanan sendiri jika mahu masak" data-en="Groceries or your own food if you plan to cook">Bahan mentah atau makanan sendiri jika mahu masak</li>
+            <li data-bm="Minuman, makanan ringan dan barang bayi jika perlu" data-en="Drinks, snacks and baby items if needed">Minuman, makanan ringan dan barang bayi jika perlu</li>
+            <li data-bm="Sila WhatsApp untuk confirm kelengkapan dapur terkini" data-en="Please WhatsApp to confirm the latest kitchen equipment">Sila WhatsApp untuk confirm kelengkapan dapur terkini</li>
+          </ul>
+        </div>
+
+        <div class="bring-card">
+          <h4 data-bm="&#129532; Barang Peribadi" data-en="&#129532; Personal Items">&#129532; Barang Peribadi</h4>
+          <ul>
+            <li data-bm="Pakaian, ubat-ubatan dan barang mandi peribadi" data-en="Clothes, medicine and personal toiletries">Pakaian, ubat-ubatan dan barang mandi peribadi</li>
+            <li data-bm="Towel/toiletries tambahan jika mahu lebih selesa" data-en="Extra towels/toiletries if you prefer more comfort">Towel/toiletries tambahan jika mahu lebih selesa</li>
+            <li data-bm="Charger telefon dan barang penting keluarga" data-en="Phone chargers and important family essentials">Charger telefon dan barang penting keluarga</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= LOKASI ================= -->
     <section id="lokasi" class="location-section reveal">
       <div class="location-container">
@@ -883,12 +934,42 @@
 
         <div class="faq-item">
           <h4 data-bm="&#128176; Polisi pembatalan &amp; refund?" data-en="&#128176; Cancellation &amp; refund policy?">&#128176; Polisi pembatalan &amp; refund?</h4>
-          <p data-bm="Deposit tempahan tidak dipulangkan jika batal saat akhir (kurang 7 hari)." data-en="Booking deposit is non-refundable for last-minute cancellations (less than 7 days).">Deposit tempahan tidak dipulangkan jika batal saat akhir (kurang 7 hari).</p>
+          <p data-bm="Pembatalan kurang 7 hari sebelum check-in: deposit booking tidak dipulangkan. Pembatalan lebih awal: pertukaran tarikh tertakluk kepada ketersediaan." data-en="Cancellation less than 7 days before check-in: booking deposit is non-refundable. Earlier cancellation: date change is subject to availability.">Pembatalan kurang 7 hari sebelum check-in: deposit booking tidak dipulangkan. Pembatalan lebih awal: pertukaran tarikh tertakluk kepada ketersediaan.</p>
         </div>
 
         <div class="faq-item">
           <h4 data-bm="&#128663; Berapa banyak parking tersedia?" data-en="&#128663; How many parking spaces are available?">&#128663; Berapa banyak parking tersedia?</h4>
           <p data-bm="Biasanya muat 3 hingga 4 kereta di kawasan rumah." data-en="Usually fits 3 to 4 cars within the house compound.">Biasanya muat 3 hingga 4 kereta di kawasan rumah.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#128179; Macam mana cara bayaran?" data-en="&#128179; How does payment work?">&#128179; Macam mana cara bayaran?</h4>
+          <p data-bm="Bayaran dibuat secara manual selepas owner confirm slot. Detail bank/DuitNow akan diberi melalui WhatsApp, dan bukti bayaran perlu dihantar semula di WhatsApp." data-en="Payment is handled manually after the owner confirms the slot. Bank/DuitNow details will be shared via WhatsApp, and proof of payment should be sent back on WhatsApp.">Bayaran dibuat secara manual selepas owner confirm slot. Detail bank/DuitNow akan diberi melalui WhatsApp, dan bukti bayaran perlu dihantar semula di WhatsApp.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#128716; Ada towel/toiletries?" data-en="&#128716; Are towels/toiletries provided?">&#128716; Ada towel/toiletries?</h4>
+          <p data-bm="Sila WhatsApp untuk pengesahan item semasa sebelum check-in, kerana kelengkapan boleh berubah mengikut persediaan semasa." data-en="Please WhatsApp to confirm current items before check-in, as supplies may vary by current preparation.">Sila WhatsApp untuk pengesahan item semasa sebelum check-in, kerana kelengkapan boleh berubah mengikut persediaan semasa.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#128705; Ada water heater?" data-en="&#128705; Is there a water heater?">&#128705; Ada water heater?</h4>
+          <p data-bm="Sila WhatsApp untuk pengesahan kemudahan terkini sebelum booking." data-en="Please WhatsApp to confirm the latest facility details before booking.">Sila WhatsApp untuk pengesahan kemudahan terkini sebelum booking.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#127881; Boleh buat majlis kecil?" data-en="&#127881; Can we host a small gathering?">&#127881; Boleh buat majlis kecil?</h4>
+          <p data-bm="Majlis kecil perlu dimaklumkan awal melalui WhatsApp. Sila nyatakan jumlah tetamu, tujuan penginapan dan anggaran masa." data-en="Small gatherings must be discussed in advance via WhatsApp. Please share the guest count, stay purpose and estimated timing.">Majlis kecil perlu dimaklumkan awal melalui WhatsApp. Sila nyatakan jumlah tetamu, tujuan penginapan dan anggaran masa.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#128054; Boleh bawa haiwan peliharaan?" data-en="&#128054; Are pets allowed?">&#128054; Boleh bawa haiwan peliharaan?</h4>
+          <p data-bm="Sila WhatsApp dahulu untuk pengesahan. Kelulusan bergantung kepada jenis haiwan, jumlah, dan keadaan booking semasa." data-en="Please WhatsApp first for confirmation. Approval depends on pet type, number, and current booking conditions.">Sila WhatsApp dahulu untuk pengesahan. Kelulusan bergantung kepada jenis haiwan, jumlah, dan keadaan booking semasa.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#128652; Boleh parking van atau bas?" data-en="&#128652; Can vans or buses park nearby?">&#128652; Boleh parking van atau bas?</h4>
+          <p data-bm="Untuk van/bas, sila WhatsApp awal supaya owner boleh nasihatkan pilihan parking yang sesuai." data-en="For vans/buses, please WhatsApp early so the owner can advise suitable parking options.">Untuk van/bas, sila WhatsApp awal supaya owner boleh nasihatkan pilihan parking yang sesuai.</p>
         </div>
 
       </div>

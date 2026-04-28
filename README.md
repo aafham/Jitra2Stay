@@ -14,6 +14,7 @@ Yang sudah ada:
 - [x] Homepage lengkap dengan hero, harga, cara tempah, form semak tarikh, galeri, lokasi, FAQ, dan CTA WhatsApp.
 - [x] BM/EN toggle.
 - [x] Dark/light mode.
+- [x] Dark/light mode contrast dikemaskan supaya tulisan dan card boleh dibaca.
 - [x] Availability board sebagai rujukan tarikh tidak tersedia.
 - [x] Calendar preview 2 bulan.
 - [x] Halaman polisi.
@@ -119,14 +120,14 @@ Fail lain yang perlu selari dengan domain:
 - [x] Nyatakan harga 4 bilik: RM280/malam.
 - [x] Nyatakan harga 5 bilik: RM330/malam.
 - [x] Nyatakan deposit keselamatan RM100.
-- [ ] Bezakan deposit keselamatan dan deposit booking jika kedua-duanya berbeza.
+- [x] Bezakan deposit keselamatan dan deposit booking jika kedua-duanya berbeza.
 - [ ] Nyatakan sama ada harga berubah pada cuti sekolah, cuti umum, konvokesyen, atau peak season.
 - [ ] Nyatakan caj extra guest jika ada.
 - [ ] Nyatakan caj lewat checkout jika ada.
-- [ ] Nyatakan refund policy dengan lebih lengkap jika mahu lebih tegas.
-- [ ] Nyatakan polisi tukar tarikh.
-- [ ] Nyatakan kaedah bayaran: bank transfer, DuitNow QR, cash, atau lain-lain.
-- [ ] Nyatakan bila tempahan dianggap sah.
+- [x] Nyatakan refund policy dengan lebih lengkap jika mahu lebih tegas.
+- [x] Nyatakan polisi tukar tarikh.
+- [x] Nyatakan kaedah bayaran: bank transfer, DuitNow QR, cash, atau lain-lain.
+- [x] Nyatakan bila tempahan dianggap sah.
 - [x] Nyatakan check-in 3:00 PM dan check-out 12:00 PM.
 
 ### 3. Booking / WhatsApp Flow
@@ -201,13 +202,13 @@ Fail lain yang perlu selari dengan domain:
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
 - [ ] Tambah copy untuk pelanggan kenduri, konvo, hospital, cuti sekolah, dan rombongan sukan.
-- [ ] Tambah "Apa perlu bawa": IC, deposit, barang peribadi, makanan sendiri jika masak.
-- [ ] Tambah FAQ: boleh bawa haiwan peliharaan atau tidak.
-- [ ] Tambah FAQ: ada water heater atau tidak.
-- [ ] Tambah FAQ: boleh buat majlis kecil atau tidak.
-- [ ] Tambah FAQ: ada towel/toiletries atau tidak.
-- [ ] Tambah FAQ: boleh parking van/bas atau tidak.
-- [ ] Tambah section ringkas arahan payment manual selepas owner confirm.
+- [x] Tambah "Apa perlu bawa": IC, deposit, barang peribadi, makanan sendiri jika masak.
+- [x] Tambah FAQ: boleh bawa haiwan peliharaan atau tidak.
+- [x] Tambah FAQ: ada water heater atau tidak.
+- [x] Tambah FAQ: boleh buat majlis kecil atau tidak.
+- [x] Tambah FAQ: ada towel/toiletries atau tidak.
+- [x] Tambah FAQ: boleh parking van/bas atau tidak.
+- [x] Tambah section ringkas arahan payment manual selepas owner confirm.
 
 ## Checklist P2 - Upgrade Besar Jika Perlu Kemudian
 
@@ -222,6 +223,143 @@ Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 - [ ] Tambah halaman SEO: Homestay untuk Konvokesyen UUM.
 - [ ] Tambah halaman SEO: Homestay untuk keluarga besar di Jitra.
 - [ ] Tambah halaman SEO: Tempat menarik sekitar Jitra.
+
+## Checklist Data Yang Owner Perlu Bagi Untuk Final Update
+
+Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh tulis "belum confirm".
+
+### A. Maklumat Asas Rumah
+
+- [ ] Nama rasmi homestay yang final.
+- [ ] Alamat penuh final.
+- [ ] Google Maps link/pin yang final.
+- [ ] Nombor WhatsApp final.
+- [ ] Nombor call final jika berbeza.
+- [ ] Email final.
+- [ ] Jenis rumah final: Semi-D / teres / banglo / lain-lain.
+- [ ] Jumlah tingkat.
+- [ ] Jumlah bilik tidur.
+- [ ] Jumlah bilik air.
+- [ ] Kapasiti selesa.
+- [ ] Kapasiti maksimum.
+- [ ] Caj extra guest jika lebih had.
+- [ ] Parking muat berapa kereta.
+- [ ] Boleh parking van atau tidak.
+- [ ] Boleh parking bas atau tidak.
+
+### B. Harga & Bayaran
+
+- [ ] Harga 2 bilik.
+- [ ] Harga 3 bilik.
+- [ ] Harga 4 bilik.
+- [ ] Harga 5 bilik.
+- [ ] Harga weekday/weekend jika berbeza.
+- [ ] Harga cuti sekolah.
+- [ ] Harga cuti umum.
+- [ ] Harga peak season / konvokesyen jika ada.
+- [ ] Minimum stay jika ada.
+- [ ] Security deposit amount.
+- [ ] Booking deposit amount.
+- [ ] Deposit dipulangkan bila.
+- [ ] Kaedah bayaran: bank transfer / DuitNow QR / cash / lain-lain.
+- [ ] Nama bank atau cara owner mahu beritahu payment detail.
+- [ ] Perlu hantar proof payment melalui WhatsApp atau tidak.
+- [ ] Bila booking dianggap confirmed.
+
+### C. Polisi
+
+- [ ] Check-in time final.
+- [ ] Check-out time final.
+- [ ] Early check-in boleh atau tidak.
+- [ ] Late checkout boleh atau tidak.
+- [ ] Caj late checkout jika ada.
+- [ ] Refund policy final.
+- [ ] Polisi tukar tarikh.
+- [ ] Polisi kerosakan/barang hilang.
+- [ ] Quiet hours.
+- [ ] Boleh merokok di luar rumah atau tidak.
+- [ ] Boleh buat majlis kecil atau tidak.
+- [ ] Had tetamu untuk majlis kecil.
+- [ ] Boleh bawa haiwan peliharaan atau tidak.
+- [ ] Syarat tambahan untuk van/bas/rombongan besar.
+
+### D. Kemudahan Rumah
+
+- [ ] WiFi ada atau tidak.
+- [ ] WiFi speed jika tahu.
+- [ ] Aircond di bilik mana.
+- [ ] Aircond di ruang tamu ada atau tidak.
+- [ ] Kipas di bilik/ruang mana.
+- [ ] TV ada atau tidak.
+- [ ] Peti ais ada atau tidak.
+- [ ] Dapur masak ada atau tidak.
+- [ ] Gas dapur disediakan atau tidak.
+- [ ] Rice cooker ada atau tidak.
+- [ ] Microwave ada atau tidak.
+- [ ] Cerek elektrik ada atau tidak.
+- [ ] Penapis air/Coway ada atau tidak.
+- [ ] Mesin basuh ada atau tidak.
+- [ ] Iron/iron board ada atau tidak.
+- [ ] Water heater ada atau tidak.
+- [ ] Towel disediakan atau tidak.
+- [ ] Toiletries disediakan atau tidak.
+- [ ] Tilam tambahan ada atau tidak.
+- [ ] Katil setiap bilik: queen/single/double/decker.
+- [ ] Keperluan bayi jika ada.
+
+### E. Gambar Yang Perlu Diberi Nanti
+
+- [ ] Gambar exterior depan rumah siang.
+- [ ] Gambar exterior depan rumah malam jika ada.
+- [ ] Gambar parking.
+- [ ] Gambar ruang tamu wide angle.
+- [ ] Gambar ruang makan jika ada.
+- [ ] Gambar dapur.
+- [ ] Gambar bilik tidur 1.
+- [ ] Gambar bilik tidur 2.
+- [ ] Gambar bilik tidur 3.
+- [ ] Gambar bilik tidur 4.
+- [ ] Gambar bilik tidur 5.
+- [ ] Gambar bilik air 1.
+- [ ] Gambar bilik air 2.
+- [ ] Gambar bilik air 3.
+- [ ] Gambar kemudahan penting: TV, dapur, peti ais, mesin basuh, iron, water heater jika ada.
+- [ ] Gambar landmark sekitar jika sesuai.
+- [ ] Gambar yang owner mahu jadikan hero utama.
+- [ ] Gambar untuk share preview/thumbnail.
+
+### F. Lokasi & Nearby Places
+
+- [ ] Jarak/minit ke Hospital Jitra.
+- [ ] Jarak/minit ke bandar Jitra.
+- [ ] Jarak/minit ke UUM jika target konvokesyen.
+- [ ] Jarak/minit ke IPDA jika relevan.
+- [ ] Jarak/minit ke POLIMAS jika relevan.
+- [ ] Jarak/minit ke Kolej Matrikulasi jika relevan.
+- [ ] Pasaraya terdekat.
+- [ ] Kedai makan popular terdekat.
+- [ ] Klinik/farmasi terdekat.
+- [ ] Masjid/surau terdekat jika mahu letak.
+
+### G. Trust / Marketing
+
+- [ ] Testimoni sebenar pelanggan jika ada.
+- [ ] Nama/label testimoni yang boleh dipaparkan.
+- [ ] Screenshot review dengan izin jika ada.
+- [ ] Google/Facebook rating jika ada.
+- [ ] Link Facebook/TikTok/Instagram jika mahu.
+- [ ] Google Business Profile link jika ada.
+- [ ] Ayat promosi yang owner suka.
+- [ ] Ayat/claim yang tidak mahu digunakan.
+
+### H. Tarikh & Operasi
+
+- [ ] Senarai tarikh unavailable terkini.
+- [ ] Cara owner rekod booking sekarang: WhatsApp / Google Calendar / notebook / Google Sheet.
+- [ ] Nak sync Google Calendar/ICS ke website atau tidak.
+- [ ] Nak paparkan "tarikh tidak tersedia" atau hanya minta WhatsApp sahaja.
+- [ ] Template mesej WhatsApp yang owner mahu.
+- [ ] Arahan check-in yang boleh dipaparkan public atau hanya selepas bayaran.
 
 ## Manual Test Sebelum Live
 
@@ -241,7 +379,7 @@ Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 - [ ] Submit form dengan checkout sebelum check-in.
 - [ ] Submit form dengan unavailable date.
 - [ ] Tukar BM ke EN.
-- [ ] Tukar dark/light mode.
+- [x] Tukar dark/light mode.
 - [ ] Buka gallery lightbox.
 - [ ] Klik Google Maps.
 - [ ] Buka policies page.
@@ -300,7 +438,7 @@ Hari 5:
 
 Hari 6:
 - [ ] Tambah gambar semua bilik/ruang.
-- [ ] Tambah FAQ payment/manual booking.
+- [x] Tambah FAQ payment/manual booking.
 
 Hari 7:
 - [ ] Final QA di phone sebenar.

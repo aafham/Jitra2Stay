@@ -1070,7 +1070,13 @@
   applyCanonical();
   renderSchema();
   setupWalkthroughVideo();
-  setTheme(getPreferredTheme(), false);
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlTheme = urlParams.get("theme");
+  if (urlTheme === "light" || urlTheme === "dark") {
+    setTheme(urlTheme);
+  } else {
+    setTheme(getPreferredTheme(), false);
+  }
 
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
@@ -1081,7 +1087,7 @@
   }
 
   let initialLang = root.dataset.lang || "ms";
-  const urlLang = new URLSearchParams(window.location.search).get("lang");
+  const urlLang = urlParams.get("lang");
   if (urlLang === "ms" || urlLang === "en") {
     initialLang = urlLang;
     writeStorage("preferredLang", urlLang);

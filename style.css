@@ -182,6 +182,10 @@ textarea:focus-visible {
   text-decoration: underline;
 }
 
+.mobile-nav-lang {
+  display: none;
+}
+
 .header-tools {
   display: flex;
   align-items: center;
@@ -640,6 +644,47 @@ textarea:focus-visible {
   padding: 15px;
   border-radius: 10px;
   font-weight: 600;
+}
+
+/* ================= WHAT TO BRING ================= */
+.bring-list {
+  padding: 70px 20px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.bring-list h3 {
+  font-size: 30px;
+  color: var(--primary);
+}
+
+.bring-grid {
+  max-width: 1050px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.bring-card {
+  background: var(--surface-soft);
+  border: 1px solid rgba(31, 79, 70, 0.08);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: left;
+}
+
+.bring-card h4 {
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.bring-card ul {
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 /* ================= PRICING ================= */
@@ -2025,6 +2070,23 @@ textarea:focus-visible {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  .mobile-nav-lang {
+    display: block;
+    width: calc(100% - 28px);
+    margin: 4px auto 0;
+    padding: 11px 13px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-weight: 800;
+  }
+
+  .mobile-nav-lang.active {
+    background: #d9fff0;
+    color: #0b332b;
+  }
+
   .main-nav.show {
     max-height: 320px;
     opacity: 1;
@@ -2896,9 +2958,12 @@ textarea:focus-visible {
   }
 
   .header-container {
+    width: 100%;
+    max-width: 100%;
     flex-wrap: nowrap;
     padding-left: 14px;
     padding-right: 14px;
+    justify-content: flex-start;
   }
 
   .logo {
@@ -2910,8 +2975,14 @@ textarea:focus-visible {
   }
 
   .header-tools {
+    position: fixed;
+    top: 12px;
+    left: min(calc(100vw - 86px), 284px);
+    right: auto;
+    transform: none;
     gap: 6px;
     min-width: 0;
+    flex-shrink: 0;
   }
 
   .theme-label {
@@ -2924,17 +2995,10 @@ textarea:focus-visible {
     height: 40px;
     justify-content: center;
     padding: 0;
-    display: none;
   }
 
   .lang-toggle {
-    min-width: 78px;
-  }
-
-  .lang-btn {
-    min-width: 34px;
-    padding-left: 8px;
-    padding-right: 8px;
+    display: none;
   }
 
   .hero {
@@ -3004,29 +3068,241 @@ textarea:focus-visible {
 
 @media (max-width: 420px) {
   .logo h1 {
-    font-size: 23px;
+    font-size: 22px;
   }
 
   .menu-toggle,
   .theme-toggle {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
-
-  .theme-toggle {
-    display: none;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
   }
 
   .lang-toggle {
-    min-width: 72px;
-    gap: 3px;
+    display: none;
   }
+}
 
-  .lang-btn {
-    min-width: 31px;
-    font-size: 11px;
-  }
+/* ================= DARK MODE CONTRAST FIX ================= */
+:root[data-theme="dark"] {
+  --bg: #0b1110;
+  --surface: #121c1a;
+  --surface-soft: #182421;
+  --text: #f2f7f5;
+  --muted: #c2cfcb;
+  --primary: #9fe6cd;
+  --accent: #5fd1a4;
+  --card-soft: #162420;
+  --accent-soft: #173027;
+  --accent-soft-2: #13231f;
+  --footer-bg: #08100e;
+  --nav-bg: #0a1512;
+  --note: #aab8b4;
+  --input-border: #3b514b;
+  --video-bg: #07110f;
+}
+
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 0% -10%, rgba(95, 209, 164, 0.13), transparent 34%),
+    radial-gradient(circle at 100% 10%, rgba(159, 230, 205, 0.08), transparent 32%),
+    var(--bg) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .video-tour,
+:root[data-theme="dark"] .highlights,
+:root[data-theme="dark"] .pricing,
+:root[data-theme="dark"] .how-to-book,
+:root[data-theme="dark"] .date-check,
+:root[data-theme="dark"] .house-rules,
+:root[data-theme="dark"] .gallery,
+:root[data-theme="dark"] .about-split,
+:root[data-theme="dark"] .who-for,
+:root[data-theme="dark"] .why-us,
+:root[data-theme="dark"] .facilities,
+:root[data-theme="dark"] .bring-list,
+:root[data-theme="dark"] .location-section,
+:root[data-theme="dark"] .nearby,
+:root[data-theme="dark"] .trust,
+:root[data-theme="dark"] .faq {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .hero,
+:root[data-theme="dark"] .final-cta {
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .hero-content,
+:root[data-theme="dark"] .hero-badge,
+:root[data-theme="dark"] .hero-rate,
+:root[data-theme="dark"] .hero-chips span {
+  background: rgba(4, 13, 11, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .highlight-item,
+:root[data-theme="dark"] .price-card,
+:root[data-theme="dark"] .book-step,
+:root[data-theme="dark"] .date-form,
+:root[data-theme="dark"] .availability-board,
+:root[data-theme="dark"] .availability-month,
+:root[data-theme="dark"] .booking-summary,
+:root[data-theme="dark"] .house-rule-item,
+:root[data-theme="dark"] .gallery-item,
+:root[data-theme="dark"] .about-left,
+:root[data-theme="dark"] .about-right,
+:root[data-theme="dark"] .who-card,
+:root[data-theme="dark"] .why-item,
+:root[data-theme="dark"] .facility-item,
+:root[data-theme="dark"] .bring-card,
+:root[data-theme="dark"] .location-container,
+:root[data-theme="dark"] .nearby-item,
+:root[data-theme="dark"] .trust-card,
+:root[data-theme="dark"] .trust-icons div,
+:root[data-theme="dark"] .faq-item,
+:root[data-theme="dark"] .deposit-box,
+:root[data-theme="dark"] .video-card {
+  background: var(--surface) !important;
+  border-color: rgba(159, 230, 205, 0.18) !important;
+  color: var(--text) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36) !important;
+}
+
+:root[data-theme="dark"] .about-highlights div,
+:root[data-theme="dark"] .policy-list > div,
+:root[data-theme="dark"] .contact-chip,
+:root[data-theme="dark"] .cta-trust span {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #f3fffb !important;
+}
+
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] .section-desc,
+:root[data-theme="dark"] .pricing-desc,
+:root[data-theme="dark"] .who-desc,
+:root[data-theme="dark"] .nearby-desc,
+:root[data-theme="dark"] .booking-summary-list li,
+:root[data-theme="dark"] .about-list li,
+:root[data-theme="dark"] .facility-item p,
+:root[data-theme="dark"] .bring-card li,
+:root[data-theme="dark"] .faq-item p,
+:root[data-theme="dark"] .trust-card p,
+:root[data-theme="dark"] .house-rule-item p,
+:root[data-theme="dark"] .availability-board p,
+:root[data-theme="dark"] .booking-summary p {
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .price-card h4,
+:root[data-theme="dark"] .price-card span,
+:root[data-theme="dark"] .book-step h4,
+:root[data-theme="dark"] .availability-board h4,
+:root[data-theme="dark"] .availability-calendar-wrap h5,
+:root[data-theme="dark"] .availability-month-title,
+:root[data-theme="dark"] .booking-summary h4,
+:root[data-theme="dark"] .gallery h3,
+:root[data-theme="dark"] .location-info h3,
+:root[data-theme="dark"] .bring-list h3,
+:root[data-theme="dark"] .bring-card h4,
+:root[data-theme="dark"] .nearby h3,
+:root[data-theme="dark"] .trust h3,
+:root[data-theme="dark"] .faq h3,
+:root[data-theme="dark"] .faq-item h4,
+:root[data-theme="dark"] .form-field {
+  color: var(--primary) !important;
+}
+
+:root[data-theme="dark"] .muted,
+:root[data-theme="dark"] .note,
+:root[data-theme="dark"] .price-estimate,
+:root[data-theme="dark"] .review-date,
+:root[data-theme="dark"] .availability-updated,
+:root[data-theme="dark"] .legend-item,
+:root[data-theme="dark"] .nearby-item small,
+:root[data-theme="dark"] .nearby-item em,
+:root[data-theme="dark"] .video-note,
+:root[data-theme="dark"] .video-fallback {
+  color: var(--muted) !important;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: #0c1513 !important;
+  color: var(--text) !important;
+  border-color: var(--input-border) !important;
+}
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+  color: #91a29d !important;
+}
+
+:root[data-theme="dark"] .form-availability-status,
+:root[data-theme="dark"] .availability-list li,
+:root[data-theme="dark"] .location-map {
+  background: var(--surface-soft) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .form-availability-status.is-open,
+:root[data-theme="dark"] .availability-day.is-open,
+:root[data-theme="dark"] .legend-open::before {
+  background: #103f32 !important;
+  color: #d7ffef !important;
+  border-color: #46c995 !important;
+}
+
+:root[data-theme="dark"] .form-availability-status.is-blocked,
+:root[data-theme="dark"] .availability-day.is-blocked,
+:root[data-theme="dark"] .legend-blocked::before {
+  background: #4a1717 !important;
+  color: #ffd7d7 !important;
+  border-color: #ef7777 !important;
+}
+
+:root[data-theme="dark"] .form-availability-status.is-warn {
+  background: #4b3511 !important;
+  color: #ffe8ad !important;
+}
+
+:root[data-theme="dark"] .availability-weekdays span,
+:root[data-theme="dark"] .availability-day.is-past {
+  color: #8fa29d !important;
+}
+
+:root[data-theme="dark"] .btn-primary,
+:root[data-theme="dark"] .btn-cta,
+:root[data-theme="dark"] .header-cta,
+:root[data-theme="dark"] .map-load-btn,
+:root[data-theme="dark"] .location-info .map-btn,
+:root[data-theme="dark"] .gallery-btn {
+  background: linear-gradient(135deg, #5fd1a4, #38a97f) !important;
+  color: #06110e !important;
+  border-color: transparent !important;
+}
+
+:root[data-theme="dark"] .badge {
+  background: #5fd1a4 !important;
+  color: #06110e !important;
+}
+
+:root[data-theme="dark"] .lang-btn.active {
+  background: #d9fff0 !important;
+  color: #0b332b !important;
+}
+
+:root[data-theme="dark"] .footer-links a,
+:root[data-theme="dark"] .hero-rate a {
+  color: #d9fff0 !important;
 }
 
 /* ================= FINAL CTA FOOTER BOLD MODERN V2 ================= */
