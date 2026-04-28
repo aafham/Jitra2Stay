@@ -51,7 +51,6 @@
   const lightboxNext = document.getElementById("lightboxNext");
   const galleryOpenImages = Array.from(document.querySelectorAll(".gallery-open"));
   const faqItems = Array.from(document.querySelectorAll(".faq-item"));
-  const trustCards = Array.from(document.querySelectorAll(".trust-card"));
   const waLinks = Array.from(document.querySelectorAll('a[href*="wa.me/"]'));
   const schemaNode = document.getElementById("lodgingSchema");
   const canonicalLink = document.querySelector('link[rel="canonical"]');
@@ -85,14 +84,6 @@
       localStorage.setItem(key, value);
     } catch (error) {
       // Ignore storage errors (private mode, blocked storage, etc.)
-    }
-  };
-
-  const deleteStorage = (key) => {
-    try {
-      localStorage.removeItem(key);
-    } catch (error) {
-      // Ignore storage errors.
     }
   };
 
@@ -788,7 +779,6 @@
 
     renderAvailability(lang);
     updateLiveAvailabilityStatus();
-    applyOwnerTestimonials(lang);
     applyAbCta();
     updateThemeToggleUI();
   };
@@ -922,68 +912,6 @@
       } else if (event.key === "ArrowLeft" && !lightbox.hidden) {
         showPrevGallery();
       }
-    });
-  }
-
-  const isOwnerPasswordConfigured = ownerPassword.length >= 8 && ownerPassword !== "1234" && !!ownerApiEndpoint;
-  if (!isOwnerPasswordConfigured && ownerEditBtn) {
-    ownerEditBtn.hidden = true;
-  }
-
-  if (isOwnerPasswordConfigured && ownerEditBtn && ownerEditor && ownerRangesInput) {
-    ownerEditBtn.addEventListener("click", () => {
-      const input = window.prompt("Owner password:");
-      if (input !== ownerPassword) {
-        window.alert("Password salah.");
-        return;
-      }
-
-      ownerEditor.hidden = false;
-      ownerRangesInput.value = rangesToEditorText(unavailableRanges);
-      ownerRangesInput.focus();
-      trackEvent("owner_editor_open");
-    });
-  }
-
-  if (ownerCancelBtn && ownerEditor) {
-    ownerCancelBtn.addEventListener("click", () => {
-      ownerEditor.hidden = true;
-    });
-  }
-
-  if (ownerSaveBtn && ownerEditor && ownerRangesInput) {
-    ownerSaveBtn.addEventListener("click", async () => {
-      const parsed = parseEditorRanges(ownerRangesInput.value);
-      if (!parsed.ok) {
-        window.alert(parsed.error || "Data tidak sah.");
-        return;
-      }
-
-      const apiSaved = await saveOwnerRangesToApi(parsed.ranges || [], ownerPassword);
-      if (!apiSaved) {
-        window.alert("Simpan ke server gagal. Semak ownerApiEndpoint.");
-        return;
-      }
-
-      unavailableRanges = parsed.ranges || [];
-      saveOwnerRanges(unavailableRanges);
-      markRangesUpdatedAt();
-      renderAvailability(root.dataset.lang || "ms");
-      ownerEditor.hidden = true;
-      window.alert("Tarikh berjaya disimpan.");
-      trackEvent("owner_editor_save", { count: unavailableRanges.length });
-    });
-  }
-
-  if (ownerResetBtn && ownerRangesInput) {
-    ownerResetBtn.addEventListener("click", () => {
-      unavailableRanges = defaultUnavailableRanges.slice();
-      deleteStorage(ownerRangesStorageKey);
-      deleteStorage(ownerRangesUpdatedAtKey);
-      ownerRangesInput.value = rangesToEditorText(unavailableRanges);
-      renderAvailability(root.dataset.lang || "ms");
-      window.alert("Tarikh reset ke data asal.");
-      trackEvent("owner_editor_reset");
     });
   }
 
@@ -1164,16 +1092,6 @@
   }
   applyLanguage(initialLang);
   trackEvent("page_view", { page: window.location.pathname, lang: initialLang });
-
-  fetchOwnerRangesFromApi().then((ranges) => {
-    if (!ranges) {
-      return;
-    }
-    unavailableRanges = ranges;
-    saveOwnerRanges(unavailableRanges);
-    markRangesUpdatedAt();
-    renderAvailability(root.dataset.lang || "ms");
-  });
 
   fetchIcsRanges().then((calendarRanges) => {
     if (!calendarRanges || calendarRanges.length === 0) {
