@@ -4,15 +4,10 @@
   const business = config.business || {};
   const analyticsConfig = config.analytics || {};
   const defaultUnavailableRanges = Array.isArray(config.unavailableRanges) ? config.unavailableRanges : [];
-  const ownerPassword = `${config.ownerPassword || ""}`.trim();
-  const ownerApiEndpoint = `${config.ownerApiEndpoint || ""}`.trim();
   const bookingCalendarIcsUrl = `${config.bookingCalendarIcsUrl || ""}`.trim();
   const walkthroughVideoUrl = `${config.walkthroughVideoUrl || ""}`.trim();
-  const ownerRangesStorageKey = "ownerUnavailableRanges";
-  const ownerRangesUpdatedAtKey = "ownerUnavailableRangesUpdatedAt";
   const abVariantStorageKey = "abCtaVariant";
   const analyticsEventsStorageKey = "analyticsEvents";
-  const funnelMetricsStorageKey = "funnelMetrics";
   let unavailableRanges = defaultUnavailableRanges.slice();
   let abVariantTracked = false;
   let hasTrackedFormStart = false;
@@ -31,12 +26,6 @@
   const availabilityList = document.getElementById("availabilityList");
   const availabilityCalendar = document.getElementById("availabilityCalendar");
   const availabilityUpdated = document.getElementById("availabilityUpdated");
-  const ownerEditBtn = document.getElementById("ownerEditBtn");
-  const ownerEditor = document.getElementById("ownerEditor");
-  const ownerRangesInput = document.getElementById("ownerRangesInput");
-  const ownerSaveBtn = document.getElementById("ownerSaveBtn");
-  const ownerCancelBtn = document.getElementById("ownerCancelBtn");
-  const ownerResetBtn = document.getElementById("ownerResetBtn");
   const themeToggle = document.getElementById("themeToggle");
   const themeLabel = themeToggle ? themeToggle.querySelector(".theme-label") : null;
   const themeIcon = themeToggle ? themeToggle.querySelector(".theme-icon") : null;
@@ -107,23 +96,6 @@
     }
   };
 
-  const loadOwnerRanges = () => {
-    const raw = readStorage(ownerRangesStorageKey);
-    if (!raw) {
-      return null;
-    }
-    try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : null;
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const saveOwnerRanges = (ranges) => {
-    writeStorage(ownerRangesStorageKey, JSON.stringify(ranges));
-  };
-
   const loadAnalyticsEvents = () => {
     const raw = readStorage(analyticsEventsStorageKey);
     if (!raw) {
@@ -152,63 +124,12 @@
     saveAnalyticsEvents(events);
   };
 
-  const loadOwnerTestimonials = () => {
-    const raw = readStorage("ownerTestimonials");
-    if (!raw) {
-      return [];
-    }
-    try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-      return [];
-    }
-  };
-
-  const markRangesUpdatedAt = () => {
-    writeStorage(ownerRangesUpdatedAtKey, new Date().toISOString());
-  };
-
-  const getRangesUpdatedAt = () => readStorage(ownerRangesUpdatedAtKey) || "";
-
   const getSiteUrl = () => {
     const fromConfig = `${business.siteUrl || ""}`.trim().replace(/\/+$/, "");
     if (fromConfig) {
       return fromConfig;
     }
     return window.location.origin.replace(/\/+$/, "");
-  };
-
-  const fetchOwnerRangesFromApi = async () => {
-    if (!ownerApiEndpoint) {
-      return null;
-    }
-    try {
-      const response = await fetch(ownerApiEndpoint, { method: "GET" });
-      if (!response.ok) {
-        return null;
-      }
-      const payload = await response.json();
-      return Array.isArray(payload?.ranges) ? payload.ranges : null;
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const saveOwnerRangesToApi = async (ranges, password) => {
-    if (!ownerApiEndpoint) {
-      return true;
-    }
-    try {
-      const response = await fetch(ownerApiEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, ranges })
-      });
-      return response.ok;
-    } catch (error) {
-      return false;
-    }
   };
 
   const parseIcsDateToIso = (rawDate) => {
@@ -401,11 +322,6 @@
     });
   };
 
-  const savedOwnerRanges = loadOwnerRanges();
-  if (savedOwnerRanges && savedOwnerRanges.length >= 0) {
-    unavailableRanges = savedOwnerRanges;
-  }
-
   const overlapsWithUnavailable = (startDateText, endDateText) => {
     const startDate = getDateValue(startDateText);
     const endDate = getDateValue(endDateText);
@@ -555,17 +471,9 @@
       return;
     }
     if (availabilityUpdated) {
-      const updatedAt = getRangesUpdatedAt();
-      if (updatedAt) {
-        const formatted = new Date(updatedAt).toLocaleString(lang === "en" ? "en-MY" : "ms-MY");
-        availabilityUpdated.textContent = lang === "en"
-          ? `Last updated: ${formatted}`
-          : `Dikemas kini: ${formatted}`;
-      } else {
-        availabilityUpdated.textContent = lang === "en"
-          ? "Last updated: default schedule"
-          : "Dikemas kini: jadual asal";
-      }
+      availabilityUpdated.textContent = lang === "en"
+        ? "Displayed dates are for reference. Please WhatsApp for final confirmation."
+        : "Tarikh dipaparkan sebagai rujukan. Sila WhatsApp untuk pengesahan akhir.";
     }
     availabilityList.innerHTML = "";
     if (unavailableRanges.length === 0) {
@@ -586,72 +494,6 @@
     });
 
     renderAvailabilityCalendar(lang);
-  };
-
-  const rangesToEditorText = (ranges) => ranges
-    .map((range) => `${range.start}|${range.end}|${range.labelBm || ""}|${range.labelEn || ""}`)
-    .join("\n");
-
-  const parseEditorRanges = (text) => {
-    const lines = text
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
-
-    const parsed = [];
-    for (const line of lines) {
-      const parts = line.split("|").map((item) => item.trim());
-      if (parts.length < 2) {
-        return { ok: false, error: `Format tidak sah: ${line}` };
-      }
-
-      const [start, end, labelBm = "", labelEn = ""] = parts;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(start) || !/^\d{4}-\d{2}-\d{2}$/.test(end)) {
-        return { ok: false, error: `Tarikh mesti format YYYY-MM-DD: ${line}` };
-      }
-      if (end < start) {
-        return { ok: false, error: `Tarikh akhir mesti selepas tarikh mula: ${line}` };
-      }
-
-      parsed.push({
-        start,
-        end,
-        labelBm,
-        labelEn
-      });
-    }
-
-    return { ok: true, ranges: parsed };
-  };
-
-  const applyOwnerTestimonials = (lang) => {
-    if (trustCards.length === 0) {
-      return;
-    }
-    const ownerTestimonials = loadOwnerTestimonials();
-    if (ownerTestimonials.length === 0) {
-      return;
-    }
-
-    trustCards.forEach((card, index) => {
-      const item = ownerTestimonials[index];
-      if (!item) {
-        return;
-      }
-      const quoteEl = card.querySelector("p");
-      const authorEl = card.querySelector("span");
-      if (quoteEl) {
-        quoteEl.textContent = lang === "en"
-          ? (item.quoteEn || item.quoteBm || "")
-          : (item.quoteBm || item.quoteEn || "");
-      }
-      if (authorEl) {
-        const name = lang === "en"
-          ? (item.authorEn || item.authorBm || "")
-          : (item.authorBm || item.authorEn || "");
-        authorEl.textContent = name ? `- ${name}` : authorEl.textContent;
-      }
-    });
   };
 
   const getIntentText = (intentValue, lang) => {
@@ -1272,8 +1114,8 @@
       const message = encodeURIComponent(lines.join("\n"));
       if (formFeedback) {
         formFeedback.textContent = lang === "en"
-          ? "Opening WhatsApp with your details..."
-          : "Membuka WhatsApp dengan maklumat anda...";
+          ? "Opening WhatsApp with your details. The owner will check the slot and reply as soon as possible."
+          : "Membuka WhatsApp dengan maklumat anda. Owner akan semak slot dan reply secepat mungkin.";
       }
       openWhatsApp(`https://wa.me/${phone}?text=${message}`, "date_form_submit");
     });

@@ -10,24 +10,10 @@ window.APP_CONFIG = {
     gaMeasurementId: "",
     plausibleDomain: ""
   },
-  ownerPassword: "",
-  ownerApiEndpoint: "",
   bookingCalendarIcsUrl: "",
   walkthroughVideoUrl: "",
   enableThankYouRedirect: true,
   unavailableRanges: [
-    {
-      start: "2026-03-20",
-      end: "2026-03-22",
-      labelBm: "Tempahan Konvokesyen",
-      labelEn: "Convocation Booking"
-    },
-    {
-      start: "2026-04-04",
-      end: "2026-04-05",
-      labelBm: "Tempahan Keluarga",
-      labelEn: "Family Booking"
-    },
     {
       start: "2026-05-01",
       end: "2026-05-03",

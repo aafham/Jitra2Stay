@@ -118,7 +118,8 @@
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         const cfg = window.APP_CONFIG || {};
-        const ownerPassword = String(cfg.ownerPassword || "1234");
+        const ownerPassword = String(cfg.ownerPassword || "").trim();
+        const isOwnerPasswordReady = ownerPassword.length >= 8 && ownerPassword !== "1234";
         const defaultRanges = Array.isArray(cfg.unavailableRanges) ? cfg.unavailableRanges : [];
 
         const keys = {
@@ -226,6 +227,11 @@
         };
 
         $("loginBtn").addEventListener("click", () => {
+          if (!isOwnerPasswordReady) {
+            alert("Admin belum dikonfigurasi. Set ownerPassword sekurang-kurangnya 8 aksara dalam app.config.js.");
+            return;
+          }
+
           if (passwordInput.value !== ownerPassword) {
             alert("Password salah.");
             return;

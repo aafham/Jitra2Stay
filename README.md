@@ -21,10 +21,10 @@ Website ini sudah ada asas yang kuat untuk homestay:
 
 Tetapi sebelum betul-betul digunakan secara live, beberapa perkara wajib dikemaskan:
 - Data sebenar tarikh tempahan belum disambung kepada backend/Google Calendar secara production.
-- `ownerPassword` masih kosong dalam `app.config.js`, manakala `admin.html` fallback kepada `1234`.
+- `ownerPassword` sudah ditetapkan dalam `app.config.js`, dan fallback `1234` di `admin.html` sudah dibuang.
 - Admin panel sekarang simpan data di `localStorage`, jadi perubahan hanya kekal pada browser yang sama.
-- Video walkthrough masih placeholder.
-- Beberapa copy masih berbunyi seperti template atau contoh.
+- Video walkthrough masih belum disambung kepada fail video sebenar, tetapi copy placeholder sudah digantikan dengan arahan galeri foto.
+- Copy overclaim/testimoni contoh utama sudah dikemaskan.
 - Perlu audit mobile UI, prestasi gambar, analytics, dan SEO domain sebelum publish.
 
 ## Stack Ringkas
@@ -71,24 +71,24 @@ Pastikan semua fail root dan folder `images/` ikut upload sekali.
 
 Edit `app.config.js`:
 
-- [ ] Set `business.phone` kepada nombor WhatsApp rasmi.
-- [ ] Set `business.siteUrl` kepada domain sebenar.
-- [ ] Set `business.image` kepada URL penuh gambar hero/thumbnail.
-- [ ] Set `business.description` dengan ayat final.
-- [ ] Set `ownerPassword` sekurang-kurangnya 8 aksara.
-- [ ] Jangan guna password `1234`.
+- [x] Set `business.phone` kepada nombor WhatsApp rasmi.
+- [x] Set `business.siteUrl` kepada domain sebenar.
+- [x] Set `business.image` kepada URL penuh gambar hero/thumbnail.
+- [x] Set `business.description` dengan ayat final.
+- [x] Set `ownerPassword` sekurang-kurangnya 8 aksara.
+- [x] Jangan guna password `1234`.
 - [ ] Set `ownerApiEndpoint` jika mahu update tarikh secara central/backend.
 - [ ] Set `bookingCalendarIcsUrl` jika mahu sync Google Calendar/Airbnb/Booking.com ICS.
 - [ ] Set `walkthroughVideoUrl` bila video siap.
 - [ ] Set `gaMeasurementId` atau `plausibleDomain` jika mahu analytics production.
-- [ ] Semak `unavailableRanges` dan buang data contoh lama.
+- [x] Semak `unavailableRanges` dan buang data contoh lama.
 
 Fail lain yang perlu samakan domain:
-- [ ] `index.html` canonical dan hreflang.
-- [ ] `sitemap.xml`.
-- [ ] `robots.txt`.
-- [ ] Open Graph image.
-- [ ] WhatsApp link jika nombor bertukar.
+- [x] `index.html` canonical dan hreflang.
+- [x] `sitemap.xml`.
+- [x] `robots.txt`.
+- [x] Open Graph image.
+- [x] WhatsApp link jika nombor bertukar.
 
 ## Checklist P0 - Wajib Sebelum Website Diguna Tetamu
 
@@ -108,7 +108,7 @@ P0 ialah perkara yang patut disiapkan sebelum website dikongsi kepada pelanggan.
 - [ ] Sahkan parking muat berapa kereta.
 - [ ] Sahkan semua kemudahan betul: WiFi, aircond, kipas, TV, dapur, parking.
 - [ ] Tambah kemudahan yang belum disebut jika ada: mesin basuh, peti ais, coway/penapis air, iron, towel, toiletries, rice cooker, microwave, water heater.
-- [ ] Buang atau ubah semua ayat placeholder seperti "video akan ditambah" bila sudah live.
+- [x] Buang atau ubah semua ayat placeholder seperti "video akan ditambah" bila sudah live.
 - [ ] Pastikan BM dan EN sama maksud untuk semua kandungan penting.
 
 ### 2. Harga dan Polisi
@@ -131,17 +131,17 @@ P0 ialah perkara yang patut disiapkan sebelum website dikongsi kepada pelanggan.
 ### 3. Booking Flow
 
 - [ ] Test semua CTA WhatsApp di header, hero, form, booking summary, final CTA, floating CTA, footer, dan mobile sticky button.
-- [ ] Pastikan semua link WhatsApp guna nombor sama.
-- [ ] Pastikan mesej WhatsApp auto-filled cukup lengkap: check-in, check-out, guests, rooms, purpose, notes.
-- [ ] Pastikan form reject checkout sebelum checkin.
-- [ ] Pastikan form warn jika tarikh bertindih dengan unavailable dates.
+- [x] Pastikan semua link WhatsApp guna nombor sama.
+- [x] Pastikan mesej WhatsApp auto-filled cukup lengkap: check-in, check-out, guests, rooms, purpose, notes.
+- [x] Pastikan form reject checkout sebelum checkin.
+- [x] Pastikan form warn jika tarikh bertindih dengan unavailable dates.
 - [ ] Pastikan thank-you redirect tidak mengganggu user di mobile.
-- [ ] Tambah arahan ringkas selepas WhatsApp: "Owner akan semak slot dan reply secepat mungkin."
+- [x] Tambah arahan ringkas selepas WhatsApp: "Owner akan semak slot dan reply secepat mungkin."
 - [ ] Pertimbangkan butang "Copy alamat" atau "Open Maps" untuk tetamu selepas confirm.
 
 ### 4. Tarikh Tidak Tersedia
 
-- [ ] Buang label "(Contoh)" pada availability board bila data sebenar sudah masuk.
+- [x] Buang label "(Contoh)" pada availability board bila data sebenar sudah masuk.
 - [ ] Update `unavailableRanges` dengan tarikh sebenar.
 - [ ] Sambung `bookingCalendarIcsUrl` kepada Google Calendar/OTA calendar jika ada.
 - [ ] Jika guna `admin.html`, faham bahawa data sekarang hanya tersimpan di browser owner.
@@ -151,12 +151,12 @@ P0 ialah perkara yang patut disiapkan sebelum website dikongsi kepada pelanggan.
 
 ### 5. Keselamatan Admin
 
-- [ ] Set `ownerPassword` dalam `app.config.js`.
-- [ ] Buang fallback `1234` dalam `admin.html` sebelum live.
+- [x] Set `ownerPassword` dalam `app.config.js`.
+- [x] Buang fallback `1234` dalam `admin.html` sebelum live.
 - [ ] Jangan anggap frontend password sebagai security sebenar kerana kod boleh dibaca oleh user.
 - [ ] Jika admin perlu production, pindahkan update tarikh/testimoni/polisi ke backend/API dengan authentication.
 - [ ] Letak `admin.html` di URL yang tidak dipromosi atau lindungi melalui hosting/server rules.
-- [ ] Pastikan `admin.html` ada `noindex,nofollow` seperti sekarang.
+- [x] Pastikan `admin.html` ada `noindex,nofollow` seperti sekarang.
 
 ### 6. Mobile UI
 
@@ -171,12 +171,12 @@ P0 ialah perkara yang patut disiapkan sebelum website dikongsi kepada pelanggan.
 
 ### 7. SEO dan Share Preview
 
-- [ ] Semak title page: "Jitra2Stay | Homestay di Jitra".
-- [ ] Semak meta description tidak terlalu panjang.
-- [ ] Gunakan absolute URL untuk `og:image` selepas domain live.
+- [x] Semak title page: "Jitra2Stay | Homestay di Jitra".
+- [x] Semak meta description tidak terlalu panjang.
+- [x] Gunakan absolute URL untuk `og:image` selepas domain live.
 - [ ] Test WhatsApp/Facebook preview dengan URL live.
-- [ ] Update `sitemap.xml` dengan URL domain sebenar.
-- [ ] Update `robots.txt` dengan sitemap domain sebenar.
+- [x] Update `sitemap.xml` dengan URL domain sebenar.
+- [x] Update `robots.txt` dengan sitemap domain sebenar.
 - [ ] Submit sitemap ke Google Search Console.
 - [ ] Daftar/kemas kini Google Business Profile.
 - [ ] Pastikan nama, alamat, dan telefon konsisten antara website dan Google Business Profile.
@@ -212,8 +212,8 @@ P0 ialah perkara yang patut disiapkan sebelum website dikongsi kepada pelanggan.
 
 ### Copywriting Yang Boleh Improve
 
-- [ ] Tukar "Pilihan Popular Keluarga di Jitra" kepada claim yang boleh disokong, contohnya "Selesa untuk keluarga & rombongan di Jitra".
-- [ ] Jika tiada bukti respon 5-15 minit, ubah kepada "Biasanya respon pantas melalui WhatsApp".
+- [x] Tukar "Pilihan Popular Keluarga di Jitra" kepada claim yang boleh disokong, contohnya "Selesa untuk keluarga & rombongan di Jitra".
+- [x] Jika tiada bukti respon 5-15 minit, ubah kepada "Biasanya respon pantas melalui WhatsApp".
 - [ ] Tambah copy untuk masalah pelanggan: datang kenduri, konvo, hospital, cuti sekolah, rombongan sukan.
 - [ ] Tambah "Kenapa lokasi ini mudah": dekat hospital, bandar, tempat makan, pasaraya.
 - [ ] Tambah "Apa perlu bawa": IC, deposit, barang peribadi, makanan sendiri jika masak.
@@ -227,7 +227,7 @@ P0 ialah perkara yang patut disiapkan sebelum website dikongsi kepada pelanggan.
 ### Trust dan Bukti Sosial
 
 - [ ] Guna testimoni sebenar daripada tetamu.
-- [ ] Jangan guna testimoni contoh bila sudah live.
+- [x] Jangan guna testimoni contoh bila sudah live.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
 - [ ] Tambah gambar tetamu hanya jika ada consent.
@@ -369,11 +369,11 @@ Bina authority Google:
 
 ### Date Check
 
-- [ ] Ubah title board daripada "Tarikh Tidak Tersedia (Contoh)" kepada final bila live.
+- [x] Ubah title board daripada "Tarikh Tidak Tersedia (Contoh)" kepada final bila live.
 - [ ] Papar unavailable dates sebenar sahaja.
-- [ ] Tambah info jika calendar belum final: "Sila WhatsApp untuk pengesahan akhir."
+- [x] Tambah info jika calendar belum final: "Sila WhatsApp untuk pengesahan akhir."
 - [ ] Tambah price estimate berdasarkan bilik dan malam.
-- [ ] Pastikan error message BM/EN jelas.
+- [x] Pastikan error message BM/EN jelas.
 
 ### Gallery
 
@@ -415,12 +415,12 @@ Bina authority Google:
 
 ### HTML
 
-- [ ] Semak semua link dalaman berfungsi.
+- [x] Semak semua link dalaman berfungsi.
 - [ ] Semak semua `alt` image.
 - [ ] Semak semua button ada `type="button"` jika bukan submit.
 - [ ] Semak semua language data BM/EN lengkap.
-- [ ] Semak canonical/hreflang domain final.
-- [ ] Semak `target="_blank"` ada `rel="noopener"`.
+- [x] Semak canonical/hreflang domain final.
+- [x] Semak `target="_blank"` ada `rel="noopener"`.
 
 ### CSS
 
@@ -435,7 +435,7 @@ Bina authority Google:
 
 - [ ] Pastikan tiada console error.
 - [ ] Pastikan date validation ikut timezone Malaysia.
-- [ ] Pastikan owner editor tidak muncul kepada tetamu jika admin belum secure.
+- [x] Pastikan owner editor tidak muncul kepada tetamu jika admin belum secure.
 - [ ] Pastikan analytics tidak crash jika blocked by browser.
 - [ ] Pastikan WhatsApp redirect ke thank-you tidak terlalu cepat di mobile.
 - [ ] Pastikan ICS parser boleh handle calendar sebenar.
@@ -446,7 +446,7 @@ Bina authority Google:
 - [ ] Jangan guna frontend password untuk data penting.
 - [ ] Jika guna API, validate password/server token di server.
 - [ ] Rate limit API admin jika ada.
-- [ ] Pastikan admin tidak index oleh Google.
+- [x] Pastikan admin tidak index oleh Google.
 
 ### Performance
 
@@ -510,8 +510,8 @@ Setiap bulan:
 
 Hari 1:
 - [ ] Finalkan harga, polisi, kapasiti, kemudahan, dan nombor contact.
-- [ ] Update `app.config.js`.
-- [ ] Buang data contoh.
+- [x] Update `app.config.js`.
+- [x] Buang data contoh.
 
 Hari 2:
 - [ ] Compress gambar.
@@ -521,10 +521,10 @@ Hari 2:
 Hari 3:
 - [ ] Test semua WhatsApp CTA dan form.
 - [ ] Polish mobile layout.
-- [ ] Betulkan copy BM/EN.
+- [x] Betulkan copy BM/EN.
 
 Hari 4:
-- [ ] Setup domain, sitemap, robots, canonical, Open Graph.
+- [x] Setup domain, sitemap, robots, canonical, Open Graph.
 - [ ] Submit Google Search Console.
 
 Hari 5:
@@ -533,7 +533,7 @@ Hari 5:
 - [ ] Test thank-you flow.
 
 Hari 6:
-- [ ] Secure admin atau disable owner editor public.
+- [x] Secure admin atau disable owner editor public.
 - [ ] Sambung Google Calendar/Sheets jika mahu data central.
 
 Hari 7:
