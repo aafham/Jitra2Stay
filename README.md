@@ -101,7 +101,7 @@ Fail lain yang perlu selari dengan domain:
 ### 1. Kandungan Homestay
 
 - [x] Sahkan nama rasmi dalam website: `Jitra2Stay`.
-- [ ] Sahkan alamat penuh dan pin Google Maps tepat.
+- [x] Sahkan alamat penuh dan pin Google Maps tepat.
 - [x] Sahkan nombor WhatsApp/Call dalam website: `+60 19-441 0666`.
 - [x] Sahkan email dalam website: `jitra2stay@gmail.com`.
 - [x] Nyatakan jenis rumah: Semi-D 2 tingkat.
@@ -141,6 +141,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Form warn jika tarikh bertindih dengan unavailable dates.
 - [x] Tambah arahan selepas WhatsApp: owner akan semak slot dan reply secepat mungkin.
 - [x] Thank-you page beri arahan sambung WhatsApp.
+- [x] Audit automatik local untuk CTA WhatsApp, form validation, lightbox, map, BM/EN, dan dark/light.
 - [ ] Test semua CTA WhatsApp di phone sebenar.
 - [ ] Test submit form dari phone sebenar.
 - [ ] Tambah butang "Open Maps" atau "Copy alamat" selepas alamat final disahkan.
@@ -244,7 +245,8 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 - [ ] Polisi final: deposit booking, deposit keselamatan, refund, tukar tarikh, late checkout, extra guest.
 - [ ] Kemudahan final: WiFi, aircond, kipas, TV, dapur, peti ais, mesin basuh, water heater, towel/toiletries, iron, tilam tambahan.
 - [ ] Kapasiti final: kapasiti selesa, kapasiti maksimum, had majlis kecil, parking kereta/van/bas.
-- [ ] Lokasi final: Google Maps pin, alamat penuh, jarak ke tempat penting.
+- [x] Lokasi final: Google Maps pin dan alamat penuh.
+- [ ] Jarak/minit ke tempat penting sekitar Jitra.
 - [ ] Trust sebenar: testimoni/review/rating yang boleh dipaparkan dengan izin.
 - [ ] Tarikh unavailable terkini atau link Google Calendar/ICS jika mahu sync.
 
@@ -252,9 +254,9 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 
 - [ ] Nama rasmi homestay yang final.
 - [ ] Alamat penuh final.
-- [ ] Google Maps link/pin yang final.
-- [ ] Nombor WhatsApp final.
-- [ ] Nombor call final jika berbeza.
+- [x] Google Maps link/pin yang final.
+- [x] Nombor WhatsApp final.
+- [x] Nombor call final jika berbeza.
 - [ ] Email final.
 - [ ] Jenis rumah final: Semi-D / teres / banglo / lain-lain.
 - [ ] Jumlah tingkat.
@@ -391,6 +393,7 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 - [x] Semua WhatsApp link semakan asas guna nombor sama.
 - [x] Semua `target="_blank"` semakan asas ada `rel="noopener"`.
 - [x] Screenshot mobile headless semakan asas dibuat.
+- [x] Audit automatik local: CTA WhatsApp, form valid, form invalid, unavailable date, BM/EN, dark/light, gallery lightbox, Google Maps, dan page load.
 - [ ] Buka homepage desktop Chrome secara manual.
 - [ ] Buka homepage mobile Chrome/Safari secara manual.
 - [ ] Klik semua nav anchor secara manual.
