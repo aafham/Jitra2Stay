@@ -64,8 +64,9 @@ body {
   scroll-padding-top: var(--header-offset);
 }
 
-section[id] {
-  scroll-margin-top: var(--header-offset);
+section[id],
+main > section {
+  scroll-margin-top: calc(var(--header-offset) + 16px);
 }
 
 main > section {
@@ -2947,6 +2948,93 @@ textarea:focus-visible {
     right: 18px;
     bottom: 22px;
   }
+}
+
+/* ================= FINAL DARK CONTRAST PATCH ================= */
+:root[data-theme="dark"] .highlights {
+  background:
+    radial-gradient(circle at 50% -20%, rgba(95, 209, 164, 0.12), rgba(95, 209, 164, 0) 56%),
+    var(--bg) !important;
+}
+
+:root[data-theme="dark"] .highlight-item {
+  background: linear-gradient(165deg, #111d1a, #0d1815) !important;
+  border-color: rgba(159, 230, 205, 0.24) !important;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.42) !important;
+}
+
+:root[data-theme="dark"] .highlight-item span {
+  color: #e4fff4 !important;
+}
+
+:root[data-theme="dark"] .highlight-item::before {
+  background: linear-gradient(145deg, #d8fff0, #b9f4dc) !important;
+  border-color: rgba(159, 230, 205, 0.42) !important;
+  color: #0b332b !important;
+}
+
+:root[data-theme="dark"] .price-card:not(.best),
+:root[data-theme="dark"] .book-step,
+:root[data-theme="dark"] .who-card,
+:root[data-theme="dark"] .facility-item,
+:root[data-theme="dark"] .bring-card,
+:root[data-theme="dark"] .nearby-item,
+:root[data-theme="dark"] .trust-card,
+:root[data-theme="dark"] .faq-item,
+:root[data-theme="dark"] .availability-board,
+:root[data-theme="dark"] .location-container,
+:root[data-theme="dark"] .video-card,
+:root[data-theme="dark"] .house-rule-item,
+:root[data-theme="dark"] .booking-summary,
+:root[data-theme="dark"] .date-form,
+:root[data-theme="dark"] .deposit-box {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: rgba(159, 230, 205, 0.18) !important;
+}
+
+:root[data-theme="dark"] .price-card:not(.best) *,
+:root[data-theme="dark"] .book-step *,
+:root[data-theme="dark"] .who-card *,
+:root[data-theme="dark"] .facility-item *,
+:root[data-theme="dark"] .bring-card *,
+:root[data-theme="dark"] .nearby-item *,
+:root[data-theme="dark"] .trust-card *,
+:root[data-theme="dark"] .faq-item *,
+:root[data-theme="dark"] .availability-board *,
+:root[data-theme="dark"] .location-container *,
+:root[data-theme="dark"] .house-rule-item *,
+:root[data-theme="dark"] .booking-summary *,
+:root[data-theme="dark"] .date-form *,
+:root[data-theme="dark"] .deposit-box * {
+  color: inherit;
+}
+
+:root[data-theme="dark"] .price-card:not(.best) h4,
+:root[data-theme="dark"] .price-card:not(.best) > span:not(.badge),
+:root[data-theme="dark"] .book-step h4,
+:root[data-theme="dark"] .who-card h4,
+:root[data-theme="dark"] .bring-card h4,
+:root[data-theme="dark"] .nearby-item,
+:root[data-theme="dark"] .faq-item h4,
+:root[data-theme="dark"] .availability-board h4,
+:root[data-theme="dark"] .booking-summary h4,
+:root[data-theme="dark"] .location-info h3,
+:root[data-theme="dark"] .house-rule-item h4 {
+  color: var(--primary) !important;
+}
+
+:root[data-theme="dark"] .price-card.best {
+  background:
+    radial-gradient(circle at 88% 14%, rgba(129, 255, 201, 0.22), transparent 42%),
+    linear-gradient(148deg, #0f4c40, #0d372f) !important;
+}
+
+:root[data-theme="dark"] .price-card.best h4,
+:root[data-theme="dark"] .price-card.best p,
+:root[data-theme="dark"] .price-card.best > span:not(.badge),
+:root[data-theme="dark"] .price-card.best .price-estimate {
+  color: #f3fffb !important;
 }
 
 /* ================= MOBILE OVERFLOW FIX ================= */

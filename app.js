@@ -407,41 +407,94 @@
     if (!schemaNode || !siteUrl) {
       return;
     }
+    const faqEntities = Array.from(document.querySelectorAll(".faq-item"))
+      .map((item) => {
+        const question = item.querySelector("h4")?.textContent?.replace(/\s+/g, " ").trim();
+        const answer = item.querySelector("p")?.textContent?.replace(/\s+/g, " ").trim();
+        if (!question || !answer) {
+          return null;
+        }
+        return {
+          "@type": "Question",
+          "name": question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": answer
+          }
+        };
+      })
+      .filter(Boolean);
+    const lodgingId = `${siteUrl}/#lodging`;
+    const websiteId = `${siteUrl}/#website`;
     const schema = {
       "@context": "https://schema.org",
-      "@type": "LodgingBusiness",
-      "name": business.name || "Jitra2Stay",
-      "url": siteUrl,
-      "telephone": business.phone || "",
-      "description": business.description || "Homestay Semi-D 2 tingkat di Jitra.",
-      "image": business.image || `${siteUrl}/images/halaman.jpg`,
-      "checkinTime": "15:00",
-      "checkoutTime": "12:00",
-      "hasMap": "https://goo.gl/maps/pjnMbwm5Pk2QqPeP8",
-      "petsAllowed": false,
-      "smokingAllowed": false,
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "49, Taman Jitra Indah, Jalan Hospital Daerah",
-        "addressLocality": "Jitra",
-        "postalCode": "06000",
-        "addressRegion": "Kedah",
-        "addressCountry": "MY"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 6.2805462,
-        "longitude": 100.4151952
-      },
-      "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Air Conditioning", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Parking", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Kitchen", "value": true }
-      ],
-      "priceRange": "RM170-RM330 per night",
-      "sameAs": [
-        "https://www.facebook.com/media/set/?set=a.2393864657563587&type=3"
+      "@graph": [
+        {
+          "@type": "LodgingBusiness",
+          "@id": lodgingId,
+          "name": business.name || "Jitra2Stay",
+          "url": siteUrl,
+          "telephone": business.phone || "",
+          "description": business.description || "Homestay Semi-D 2 tingkat di Jitra.",
+          "image": business.image || `${siteUrl}/images/halaman.jpg`,
+          "checkinTime": "15:00",
+          "checkoutTime": "12:00",
+          "hasMap": "https://goo.gl/maps/pjnMbwm5Pk2QqPeP8",
+          "petsAllowed": false,
+          "smokingAllowed": false,
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "49, Taman Jitra Indah, Jalan Hospital Daerah",
+            "addressLocality": "Jitra",
+            "postalCode": "06000",
+            "addressRegion": "Kedah",
+            "addressCountry": "MY"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 6.2805462,
+            "longitude": 100.4151952
+          },
+          "amenityFeature": [
+            { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Air Conditioning", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Parking", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Kitchen", "value": true }
+          ],
+          "priceRange": "RM170-RM330 per night",
+          "sameAs": [
+            "https://www.facebook.com/media/set/?set=a.2393864657563587&type=3"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": websiteId,
+          "name": business.name || "Jitra2Stay",
+          "url": siteUrl,
+          "inLanguage": ["ms-MY", "en-MY"],
+          "publisher": {
+            "@id": lodgingId
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": `${siteUrl}/#webpage`,
+          "url": siteUrl,
+          "name": document.title || "Jitra2Stay | Homestay di Jitra",
+          "description": document.querySelector('meta[name="description"]')?.content || business.description || "",
+          "inLanguage": root.dataset.lang === "en" ? "en-MY" : "ms-MY",
+          "isPartOf": {
+            "@id": websiteId
+          },
+          "about": {
+            "@id": lodgingId
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": `${siteUrl}/#faq`,
+          "mainEntity": faqEntities
+        }
       ]
     };
     schemaNode.textContent = JSON.stringify(schema);
@@ -781,6 +834,7 @@
     updateLiveAvailabilityStatus();
     applyAbCta();
     updateThemeToggleUI();
+    renderSchema();
   };
 
   if (menuToggle && nav) {

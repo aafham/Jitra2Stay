@@ -19,7 +19,9 @@ Yang sudah ada:
 - [x] Calendar preview 2 bulan.
 - [x] Halaman polisi.
 - [x] Halaman thank-you selepas klik WhatsApp.
-- [x] SEO asas: canonical, sitemap, robots, meta description, Open Graph, Twitter image, dan JSON-LD LodgingBusiness.
+- [x] SEO asas: canonical, sitemap, robots, meta description, Open Graph, Twitter image, dan JSON-LD LodgingBusiness/WebSite/WebPage/FAQPage.
+- [x] Copy utama dipolish untuk flow view-only + direct WhatsApp.
+- [x] Semakan mobile headless dibuat untuk hero, highlight, harga, lokasi, FAQ, dan sticky WhatsApp.
 - [x] Tiada admin/login/user account dalam flow website.
 - [x] Fail `admin.html` dibuang.
 - [x] Owner editor, password, dan admin update logic dibuang daripada public website.
@@ -28,7 +30,7 @@ Yang masih perlu dibuat sebelum live:
 - [ ] Sahkan semua data rumah, harga, polisi, dan lokasi dengan owner.
 - [ ] Masukkan gambar sebenar yang cukup untuk semua bilik, bilik air, dapur, ruang tamu, parking, dan exterior.
 - [ ] Compress gambar untuk prestasi mobile.
-- [ ] Test di phone sebenar dan mobile data.
+- [ ] Test akhir di phone sebenar dan mobile data.
 - [ ] Test WhatsApp link dari phone sebenar.
 - [ ] Submit sitemap ke Google Search Console selepas domain live.
 
@@ -85,7 +87,7 @@ Edit `app.config.js`:
 - [ ] Set `bookingCalendarIcsUrl` jika mahu paparan tarikh rujukan sync daripada Google Calendar/OTA.
 - [ ] Set `walkthroughVideoUrl` bila video siap.
 - [ ] Set `gaMeasurementId` atau `plausibleDomain` jika mahu analytics production.
-- [x] Semak `unavailableRanges` dan buang data contoh lama.
+- [ ] Update `unavailableRanges` dengan tarikh sebenar bila owner beri senarai booking terkini.
 
 Fail lain yang perlu selari dengan domain:
 - [x] `index.html` canonical dan hreflang.
@@ -110,7 +112,7 @@ Fail lain yang perlu selari dengan domain:
 - [ ] Sahkan parking muat berapa kereta.
 - [ ] Sahkan semua kemudahan betul: WiFi, aircond, kipas, TV, dapur, parking.
 - [ ] Tambah kemudahan yang belum disebut jika ada: mesin basuh, peti ais, penapis air, iron, towel, toiletries, rice cooker, microwave, water heater.
-- [x] Buang ayat placeholder seperti "video akan ditambah".
+- [x] Tulis nota video dengan jelas: video sedang dikemas kini, galeri foto jadi rujukan sementara.
 - [x] Pastikan BM dan EN utama sama maksud.
 
 ### 2. Harga dan Polisi
@@ -166,18 +168,23 @@ Fail lain yang perlu selari dengan domain:
 - [x] Betulkan overflow hero/header mobile.
 - [x] Pastikan mobile sticky WhatsApp muncul.
 - [x] Pastikan floating WhatsApp/back-to-top tidak bertindih di mobile.
-- [ ] Test di iPhone/Android viewport kecil.
+- [x] Semak viewport mobile kecil secara headless.
+- [x] Pastikan pricing cards mudah dibaca tanpa horizontal scroll dalam semakan headless.
+- [x] Pastikan highlight, harga, lokasi dan FAQ readable dalam dark mode.
+- [ ] Test di iPhone/Android sebenar.
 - [ ] Pastikan date form input selesa di phone sebenar.
-- [ ] Pastikan pricing cards mudah dibaca tanpa horizontal scroll.
-- [ ] Pastikan gallery image tidak terlalu tinggi atau crop pelik.
+- [ ] Pastikan gallery image nampak baik dengan gambar latest sebenar.
 
 ### 7. SEO dan Share Preview
 
-- [x] Semak title page: `Jitra2Stay | Homestay di Jitra`.
+- [x] Semak title page: `Jitra2Stay | Homestay Semi-D 2 Tingkat di Jitra`.
 - [x] Semak meta description tidak terlalu panjang.
 - [x] Gunakan absolute URL untuk `og:image`.
+- [x] Tambah `og:url`, `og:site_name`, `og:image:alt`, `twitter:image:alt`.
+- [x] Tambah JSON-LD `WebSite`, `WebPage`, dan `FAQPage`.
 - [x] Update `sitemap.xml` dengan URL domain sebenar.
 - [x] Update `robots.txt` dengan sitemap domain sebenar.
+- [x] Update `lastmod` sitemap kepada `2026-04-29`.
 - [ ] Test WhatsApp/Facebook preview dengan URL live.
 - [ ] Submit sitemap ke Google Search Console.
 - [ ] Daftar/kemas kini Google Business Profile.
@@ -198,6 +205,8 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tukar claim "Pilihan Popular Keluarga di Jitra" kepada claim yang lebih selamat.
 - [x] Tukar respon "5-15 minit" kepada "biasanya respon pantas".
 - [x] Jangan guna testimoni contoh sebagai review sebenar.
+- [x] Tukar bahagian trust kepada selling points selamat sementara tunggu testimoni sebenar.
+- [x] Polish ayat harga, deposit, booking manual, video note, dan trust section.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
@@ -227,6 +236,17 @@ Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 ## Checklist Data Yang Owner Perlu Bagi Untuk Final Update
 
 Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh tulis "belum confirm".
+
+### Ringkasan Paling Penting Untuk Saya Update Nanti
+
+- [ ] Gambar latest: exterior, parking, ruang tamu, dapur, setiap bilik, setiap bilik air, kemudahan penting.
+- [ ] Harga final: 2/3/4/5 bilik, weekend, cuti sekolah, cuti umum, konvokesyen, peak season.
+- [ ] Polisi final: deposit booking, deposit keselamatan, refund, tukar tarikh, late checkout, extra guest.
+- [ ] Kemudahan final: WiFi, aircond, kipas, TV, dapur, peti ais, mesin basuh, water heater, towel/toiletries, iron, tilam tambahan.
+- [ ] Kapasiti final: kapasiti selesa, kapasiti maksimum, had majlis kecil, parking kereta/van/bas.
+- [ ] Lokasi final: Google Maps pin, alamat penuh, jarak ke tempat penting.
+- [ ] Trust sebenar: testimoni/review/rating yang boleh dipaparkan dengan izin.
+- [ ] Tarikh unavailable terkini atau link Google Calendar/ICS jika mahu sync.
 
 ### A. Maklumat Asas Rumah
 
