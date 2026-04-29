@@ -29,7 +29,7 @@ Yang sudah ada:
 Yang masih perlu dibuat sebelum live:
 - [ ] Sahkan semua data rumah, harga, polisi, dan lokasi dengan owner.
 - [ ] Masukkan gambar sebenar yang cukup untuk semua bilik, bilik air, dapur, ruang tamu, parking, dan exterior.
-- [ ] Compress gambar untuk prestasi mobile.
+- [x] Compress gambar sedia ada untuk prestasi mobile.
 - [ ] Test akhir di phone sebenar dan mobile data.
 - [ ] Test WhatsApp link dari phone sebenar.
 - [ ] Submit sitemap ke Google Search Console selepas domain live.
@@ -192,10 +192,10 @@ Fail lain yang perlu selari dengan domain:
 
 ### 8. Prestasi Gambar
 
-- [ ] Compress semua gambar dalam `images/`.
-- [ ] Sediakan versi WebP untuk gambar besar.
-- [ ] Pastikan hero image tidak terlalu berat.
-- [ ] Pastikan width/height gambar sepadan dengan saiz sebenar.
+- [x] Compress semua gambar sedia ada dalam `images/`.
+- [ ] Sediakan versi WebP untuk gambar besar bila tool/build pipeline sesuai tersedia.
+- [x] Pastikan hero image tidak terlalu berat untuk versi gambar semasa.
+- [x] Pastikan width/height gambar sedia ada sepadan dengan saiz sebenar.
 - [ ] Tambah gambar setiap bilik tidur, bilik air, dapur, ruang tamu, parking, exterior, dan kawasan sekitar.
 - [ ] Elakkan gambar gelap atau blur.
 - [ ] Pastikan gambar menunjukkan keadaan sebenar rumah.
