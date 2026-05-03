@@ -3433,6 +3433,7 @@ textarea:focus-visible {
   color: #d9fff0 !important;
 }
 
+
 /* ================= FINAL CTA FOOTER BOLD MODERN V2 ================= */
 @media (min-width: 769px) {
   .final-cta {
@@ -4376,4 +4377,240 @@ textarea:focus-visible {
     right: 18px;
     bottom: 22px;
   }
+}
+/* ================= DARK MODE LAST WORD =================
+   This block intentionally stays at the real end of the file. */
+:root[data-theme="dark"] .video-tour,
+:root[data-theme="dark"] .how-to-book,
+:root[data-theme="dark"] .gallery,
+:root[data-theme="dark"] .who-for,
+:root[data-theme="dark"] .facilities,
+:root[data-theme="dark"] .nearby,
+:root[data-theme="dark"] .faq,
+:root[data-theme="dark"] .trust,
+:root[data-theme="dark"] .highlights,
+:root[data-theme="dark"] .pricing,
+:root[data-theme="dark"] .date-check,
+:root[data-theme="dark"] .about-split,
+:root[data-theme="dark"] .location-section,
+:root[data-theme="dark"] .house-rules {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .highlight-item,
+:root[data-theme="dark"] .price-card:not(.best),
+:root[data-theme="dark"] .book-step,
+:root[data-theme="dark"] .who-card,
+:root[data-theme="dark"] .facility-item,
+:root[data-theme="dark"] .nearby-item,
+:root[data-theme="dark"] .trust-card,
+:root[data-theme="dark"] .faq-item,
+:root[data-theme="dark"] .availability-board,
+:root[data-theme="dark"] .location-container,
+:root[data-theme="dark"] .video-card,
+:root[data-theme="dark"] .house-rule-item,
+:root[data-theme="dark"] .booking-summary,
+:root[data-theme="dark"] .date-form,
+:root[data-theme="dark"] .deposit-box,
+:root[data-theme="dark"] .about-left,
+:root[data-theme="dark"] .about-right,
+:root[data-theme="dark"] .bring-card,
+:root[data-theme="dark"] .gallery-item {
+  background: linear-gradient(165deg, #121d1a, #0e1816) !important;
+  border-color: rgba(159, 230, 205, 0.2) !important;
+  color: var(--text) !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38) !important;
+}
+
+:root[data-theme="dark"] .highlight-item span,
+:root[data-theme="dark"] .price-card:not(.best) h4,
+:root[data-theme="dark"] .price-card:not(.best) > span:not(.badge),
+:root[data-theme="dark"] .book-step h4,
+:root[data-theme="dark"] .who-card h4,
+:root[data-theme="dark"] .facility-item,
+:root[data-theme="dark"] .nearby-item,
+:root[data-theme="dark"] .trust-card span,
+:root[data-theme="dark"] .faq-item h4,
+:root[data-theme="dark"] .availability-board h4,
+:root[data-theme="dark"] .location-info h3,
+:root[data-theme="dark"] .house-rule-item h4,
+:root[data-theme="dark"] .booking-summary h4,
+:root[data-theme="dark"] .about-left h3,
+:root[data-theme="dark"] .about-right h4,
+:root[data-theme="dark"] .bring-card h4,
+:root[data-theme="dark"] .gallery h3 {
+  color: var(--primary) !important;
+}
+
+:root[data-theme="dark"] .price-card:not(.best) p,
+:root[data-theme="dark"] .price-card:not(.best) .price-estimate,
+:root[data-theme="dark"] .section-desc,
+:root[data-theme="dark"] .pricing-desc,
+:root[data-theme="dark"] .who-desc,
+:root[data-theme="dark"] .nearby-desc,
+:root[data-theme="dark"] .faq-item p,
+:root[data-theme="dark"] .trust-card p,
+:root[data-theme="dark"] .house-rule-item p,
+:root[data-theme="dark"] .booking-summary p,
+:root[data-theme="dark"] .booking-summary-list li,
+:root[data-theme="dark"] .about-left p,
+:root[data-theme="dark"] .about-list li,
+:root[data-theme="dark"] .bring-card li,
+:root[data-theme="dark"] .location-info .address,
+:root[data-theme="dark"] .location-info .note,
+:root[data-theme="dark"] .review-date,
+:root[data-theme="dark"] .availability-updated,
+:root[data-theme="dark"] .nearby-item small,
+:root[data-theme="dark"] .nearby-item em {
+  color: var(--muted) !important;
+}
+
+:root[data-theme="dark"] .price-card.best {
+  background:
+    radial-gradient(circle at 88% 14%, rgba(129, 255, 201, 0.2), transparent 42%),
+    linear-gradient(148deg, #0f4c40, #0d372f) !important;
+  border-color: rgba(159, 230, 205, 0.34) !important;
+}
+
+:root[data-theme="dark"] .price-card.best h4,
+:root[data-theme="dark"] .price-card.best p,
+:root[data-theme="dark"] .price-card.best > span:not(.badge),
+:root[data-theme="dark"] .price-card.best .price-estimate {
+  color: #f3fffb !important;
+}
+
+:root[data-theme="dark"] .highlight-item::before,
+:root[data-theme="dark"] .faq-item h4::after {
+  background: #d9fff0 !important;
+  border-color: rgba(159, 230, 205, 0.42) !important;
+  color: #0b332b !important;
+}
+
+:root[data-theme="dark"] .gallery-label {
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 0% -10%, rgba(95, 209, 164, 0.13), transparent 34%),
+    radial-gradient(circle at 100% 10%, rgba(159, 230, 205, 0.08), transparent 32%),
+    var(--bg) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .site-header,
+:root[data-theme="dark"] .site-header.scrolled,
+:root[data-theme="dark"] .main-nav {
+  background: var(--header-bg-solid) !important;
+  border-color: var(--header-border) !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .main-nav a,
+:root[data-theme="dark"] .logo h1,
+:root[data-theme="dark"] .logo span,
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .menu-toggle,
+:root[data-theme="dark"] .lang-btn {
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: #0c1513 !important;
+  color: var(--text) !important;
+  border-color: var(--input-border) !important;
+}
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+  color: #91a29d !important;
+}
+
+:root[data-theme="dark"] .form-availability-status,
+:root[data-theme="dark"] .form-price-estimate,
+:root[data-theme="dark"] .availability-list li,
+:root[data-theme="dark"] .location-map {
+  background: var(--surface-soft) !important;
+  color: var(--text) !important;
+  border-color: rgba(159, 230, 205, 0.18) !important;
+}
+
+:root[data-theme="dark"] .form-availability-status.is-open,
+:root[data-theme="dark"] .availability-day.is-open,
+:root[data-theme="dark"] .legend-open::before {
+  background: #103f32 !important;
+  color: #d7ffef !important;
+  border-color: #46c995 !important;
+}
+
+:root[data-theme="dark"] .form-availability-status.is-blocked,
+:root[data-theme="dark"] .availability-day.is-blocked,
+:root[data-theme="dark"] .legend-blocked::before {
+  background: #4a1717 !important;
+  color: #ffd7d7 !important;
+  border-color: #ef7777 !important;
+}
+
+:root[data-theme="dark"] .form-availability-status.is-warn {
+  background: #4b3511 !important;
+  color: #ffe8ad !important;
+}
+
+:root[data-theme="dark"] .availability-weekdays span,
+:root[data-theme="dark"] .availability-day.is-past,
+:root[data-theme="dark"] .legend-item {
+  color: #8fa29d !important;
+}
+
+:root[data-theme="dark"] .btn-primary,
+:root[data-theme="dark"] .btn-cta,
+:root[data-theme="dark"] .header-cta,
+:root[data-theme="dark"] .map-load-btn,
+:root[data-theme="dark"] .location-info .map-btn,
+:root[data-theme="dark"] .gallery-btn,
+:root[data-theme="dark"] .booking-summary-btn {
+  background: linear-gradient(135deg, #5fd1a4, #38a97f) !important;
+  color: #06110e !important;
+  border-color: transparent !important;
+}
+
+:root[data-theme="dark"] .btn-secondary {
+  background: rgba(7, 22, 20, 0.38) !important;
+  border-color: rgba(255, 255, 255, 0.52) !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .badge,
+:root[data-theme="dark"] .lang-btn.active {
+  background: #d9fff0 !important;
+  color: #0b332b !important;
+}
+
+:root[data-theme="dark"] .final-cta,
+:root[data-theme="dark"] .site-footer {
+  background: linear-gradient(135deg, #0b302a, #12483e) !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .footer-card,
+:root[data-theme="dark"] .contact-chip,
+:root[data-theme="dark"] .policy-list > div,
+:root[data-theme="dark"] .cta-trust span,
+:root[data-theme="dark"] .cta-side,
+:root[data-theme="dark"] .cta-main {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #f3fffb !important;
+}
+
+:root[data-theme="dark"] .footer-links a,
+:root[data-theme="dark"] .hero-rate a,
+:root[data-theme="dark"] .contact-chip,
+:root[data-theme="dark"] .final-cta p,
+:root[data-theme="dark"] .footer-grid p,
+:root[data-theme="dark"] .footer-copy {
+  color: #d9fff0 !important;
 }

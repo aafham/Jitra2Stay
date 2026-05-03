@@ -174,6 +174,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Pastikan pricing cards mudah dibaca tanpa horizontal scroll dalam semakan headless.
 - [x] Ringkaskan teks pricing cards supaya layout desktop/dark mode nampak kemas.
 - [x] Pastikan highlight, harga, lokasi dan FAQ readable dalam dark mode.
+- [x] Tambah final dark-mode override di hujung CSS supaya desktop styling tidak override warna dark mode.
 - [ ] Test di iPhone/Android sebenar.
 - [ ] Pastikan date form input selesa di phone sebenar.
 - [ ] Pastikan gallery image nampak baik dengan gambar latest sebenar.
