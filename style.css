@@ -476,48 +476,144 @@ textarea:focus-visible {
 }
 
 .about-split-container {
-  max-width: 1100px;
+  max-width: 1160px;
   margin: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  gap: 42px;
   align-items: center;
 }
 
-.about-left h3 {
-  font-size: 32px;
+.about-left {
+  background: var(--surface);
+  border: 1px solid rgba(31, 79, 70, 0.1);
+  border-radius: 18px;
+  padding: clamp(24px, 3vw, 34px);
+  box-shadow: 0 16px 34px rgba(17, 51, 43, 0.08);
+}
+
+.about-eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: var(--accent-soft);
   color: var(--primary);
-  margin-bottom: 16px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.about-left h3 {
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  margin-bottom: 14px;
 }
 
 .about-left p {
-  margin-bottom: 14px;
+  margin-bottom: 20px;
   color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 .about-highlights {
-  margin: 16px 0 10px;
+  margin: 18px 0 20px;
   display: grid;
-  gap: 8px;
-  color: var(--muted);
-  font-weight: 600;
+  gap: 10px;
 }
 
-.about-list {
+.about-highlights div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: var(--accent-soft-2);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.about-highlights span {
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.about-stats {
   margin-top: 18px;
   list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.about-list li {
-  margin-bottom: 8px;
-  font-weight: 600;
+.about-stats li {
+  min-height: 78px;
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(31, 79, 70, 0.12);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+
+.about-stats strong,
+.about-stats small {
+  display: block;
+}
+
+.about-stats strong {
+  color: var(--primary);
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.about-stats small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.about-right {
+  position: relative;
 }
 
 .about-right img {
   width: 100%;
+  aspect-ratio: 4 / 5;
   border-radius: 22px;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
   object-fit: cover;
+  display: block;
+}
+
+.about-photo-badge {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(8, 33, 29, 0.78);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  backdrop-filter: blur(10px);
 }
 
 /* ================= WHO IS THIS FOR ================= */
@@ -2047,12 +2143,26 @@ textarea:focus-visible {
 
   .about-split-container {
     grid-template-columns: 1fr;
-    text-align: center;
+    text-align: left;
+    gap: 22px;
   }
 
-  .about-list {
-    display: inline-block;
-    text-align: left;
+  .about-left {
+    padding: 22px;
+  }
+
+  .about-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-right img {
+    aspect-ratio: 16 / 11;
+  }
+
+  .about-photo-badge {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
   }
 
   .location-container {
@@ -4437,7 +4547,9 @@ textarea:focus-visible {
 :root[data-theme="dark"] .house-rule-item h4,
 :root[data-theme="dark"] .booking-summary h4,
 :root[data-theme="dark"] .about-left h3,
+:root[data-theme="dark"] .about-eyebrow,
 :root[data-theme="dark"] .about-right h4,
+:root[data-theme="dark"] .about-stats strong,
 :root[data-theme="dark"] .bring-card h4,
 :root[data-theme="dark"] .gallery h3 {
   color: var(--primary) !important;
@@ -4456,6 +4568,7 @@ textarea:focus-visible {
 :root[data-theme="dark"] .booking-summary-list li,
 :root[data-theme="dark"] .about-left p,
 :root[data-theme="dark"] .about-list li,
+:root[data-theme="dark"] .about-stats small,
 :root[data-theme="dark"] .bring-card li,
 :root[data-theme="dark"] .location-info .address,
 :root[data-theme="dark"] .location-info .note,
@@ -4489,6 +4602,22 @@ textarea:focus-visible {
 
 :root[data-theme="dark"] .gallery-label {
   color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .about-eyebrow,
+:root[data-theme="dark"] .about-highlights div,
+:root[data-theme="dark"] .about-stats li {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(159, 230, 205, 0.18) !important;
+}
+
+:root[data-theme="dark"] .about-highlights div {
+  color: var(--text) !important;
+}
+
+:root[data-theme="dark"] .about-highlights span {
+  background: #5fd1a4 !important;
+  color: #06110e !important;
 }
 
 :root[data-theme="dark"] body {
