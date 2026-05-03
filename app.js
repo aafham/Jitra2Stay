@@ -12,6 +12,12 @@
   let abVariantTracked = false;
   let hasTrackedFormStart = false;
   let lastAvailabilityState = "";
+  const roomRates = {
+    "2": 170,
+    "3": 220,
+    "4": 280,
+    "5": 330
+  };
 
   const header = document.getElementById("siteHeader");
   const nav = document.getElementById("mainNav");
@@ -23,6 +29,7 @@
   const dateForm = document.getElementById("dateForm");
   const formFeedback = document.getElementById("formFeedback");
   const formAvailabilityStatus = document.getElementById("formAvailabilityStatus");
+  const formPriceEstimate = document.getElementById("formPriceEstimate");
   const availabilityList = document.getElementById("availabilityList");
   const availabilityCalendar = document.getElementById("availabilityCalendar");
   const availabilityUpdated = document.getElementById("availabilityUpdated");
@@ -333,6 +340,55 @@
         isDateWithinRange(endValue, blockedStart, blockedEnd) ||
         isDateWithinRange(blockedStart, startValue, endValue);
     }) || null;
+  };
+
+  const getStayNights = (checkin, checkout) => {
+    const checkinDate = getDateValue(checkin);
+    const checkoutDate = getDateValue(checkout);
+    if (!checkinDate || !checkoutDate || checkoutDate <= checkinDate) {
+      return 0;
+    }
+    const msPerNight = 24 * 60 * 60 * 1000;
+    return Math.round((checkoutDate - checkinDate) / msPerNight);
+  };
+
+  const getPriceEstimate = (checkin, checkout, rooms) => {
+    const nights = getStayNights(checkin, checkout);
+    const rate = roomRates[`${rooms || ""}`] || 0;
+    if (!nights || !rate) {
+      return null;
+    }
+    return {
+      nights,
+      rate,
+      total: nights * rate
+    };
+  };
+
+  const formatRm = (amount) => `RM${Number(amount || 0).toLocaleString("en-MY")}`;
+
+  const renderPriceEstimate = () => {
+    if (!dateForm || !formPriceEstimate) {
+      return null;
+    }
+    const data = new FormData(dateForm);
+    const checkin = `${data.get("checkin") || ""}`.trim();
+    const checkout = `${data.get("checkout") || ""}`.trim();
+    const rooms = `${data.get("rooms") || ""}`.trim();
+    const lang = root.dataset.lang || "ms";
+    const estimate = getPriceEstimate(checkin, checkout, rooms);
+
+    if (!estimate) {
+      formPriceEstimate.textContent = lang === "en"
+        ? "Choose valid dates and rooms to see the estimated rate."
+        : "Pilih tarikh dan bilik yang sah untuk lihat anggaran harga.";
+      return null;
+    }
+
+    formPriceEstimate.textContent = lang === "en"
+      ? `Estimated rate: ${estimate.nights} night${estimate.nights > 1 ? "s" : ""} x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}. Final price will be confirmed via WhatsApp.`
+      : `Anggaran harga: ${estimate.nights} malam x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}. Harga akhir akan disahkan melalui WhatsApp.`;
+    return estimate;
   };
 
   const setupAnalytics = () => {
@@ -832,6 +888,7 @@
 
     renderAvailability(lang);
     updateLiveAvailabilityStatus();
+    renderPriceEstimate();
     applyAbCta();
     updateThemeToggleUI();
     renderSchema();
@@ -984,6 +1041,7 @@
     const checkinInput = dateForm.querySelector('input[name="checkin"]');
     const checkoutInput = dateForm.querySelector('input[name="checkout"]');
     const guestsInput = dateForm.querySelector('input[name="guests"]');
+    const roomsSelect = dateForm.querySelector('select[name="rooms"]');
     const intentSelect = dateForm.querySelector('select[name="intent"]');
 
     if (checkinInput && checkoutInput) {
@@ -1002,9 +1060,13 @@
           }
         }
         updateLiveAvailabilityStatus();
+        renderPriceEstimate();
       });
 
-      checkoutInput.addEventListener("change", updateLiveAvailabilityStatus);
+      checkoutInput.addEventListener("change", () => {
+        updateLiveAvailabilityStatus();
+        renderPriceEstimate();
+      });
     }
 
     dateForm.addEventListener("input", () => {
@@ -1012,6 +1074,7 @@
         formFeedback.textContent = "";
       }
       updateLiveAvailabilityStatus();
+      renderPriceEstimate();
       if (!hasTrackedFormStart) {
         hasTrackedFormStart = true;
         trackEvent("date_form_start");
@@ -1028,6 +1091,7 @@
       const intent = `${data.get("intent") || "family"}`.trim();
       const notes = `${data.get("notes") || ""}`.trim();
       const lang = root.dataset.lang || "ms";
+      const estimate = getPriceEstimate(checkin, checkout, rooms);
 
       if (checkin && checkout && checkout <= checkin) {
         if (formFeedback) {
@@ -1068,6 +1132,9 @@
         lines.push(`Check-out: ${checkout}`);
         lines.push(`Guests: ${guests}`);
         lines.push(`Rooms: ${rooms}`);
+        if (estimate) {
+          lines.push(`Estimated rate: ${estimate.nights} night${estimate.nights > 1 ? "s" : ""} x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}`);
+        }
         lines.push(`Purpose: ${getIntentText(intent, lang)}`);
         if (notes) {
           lines.push(`Notes: ${notes}`);
@@ -1078,6 +1145,9 @@
         lines.push(`Check-out: ${checkout}`);
         lines.push(`Tetamu: ${guests}`);
         lines.push(`Bilik: ${rooms}`);
+        if (estimate) {
+          lines.push(`Anggaran harga: ${estimate.nights} malam x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}`);
+        }
         lines.push(`Tujuan: ${getIntentText(intent, lang)}`);
         if (notes) {
           lines.push(`Nota: ${notes}`);
@@ -1111,6 +1181,13 @@
       });
     }
 
+    if (roomsSelect) {
+      roomsSelect.addEventListener("change", () => {
+        renderPriceEstimate();
+        trackEvent("room_package_change", { rooms: roomsSelect.value || "" });
+      });
+    }
+
     if (intentSelect) {
       intentSelect.addEventListener("change", () => {
         trackEvent("booking_intent_change", { intent: intentSelect.value || "family" });
@@ -1118,6 +1195,7 @@
     }
 
     updateLiveAvailabilityStatus();
+    renderPriceEstimate();
   }
 
   setupAnalytics();

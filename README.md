@@ -25,6 +25,7 @@ Yang sudah ada:
 - [x] Tiada admin/login/user account dalam flow website.
 - [x] Fail `admin.html` dibuang.
 - [x] Owner editor, password, dan admin update logic dibuang daripada public website.
+- [x] Anggaran harga automatik dalam form ikut bilangan malam dan pakej bilik.
 
 Yang masih perlu dibuat sebelum live:
 - [ ] Sahkan semua data rumah, harga, polisi, dan lokasi dengan owner.
@@ -185,7 +186,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tambah JSON-LD `WebSite`, `WebPage`, dan `FAQPage`.
 - [x] Update `sitemap.xml` dengan URL domain sebenar.
 - [x] Update `robots.txt` dengan sitemap domain sebenar.
-- [x] Update `lastmod` sitemap kepada `2026-04-29`.
+- [x] Update `lastmod` sitemap kepada `2026-05-04`.
 - [ ] Test WhatsApp/Facebook preview dengan URL live.
 - [ ] Submit sitemap ke Google Search Console.
 - [ ] Daftar/kemas kini Google Business Profile.
@@ -225,7 +226,7 @@ Fail lain yang perlu selari dengan domain:
 Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 
 - [ ] Sambung Google Calendar/ICS untuk tarikh rujukan.
-- [ ] Tambah auto price estimate ikut bilik dan malam.
+- [x] Tambah auto price estimate ikut bilik dan malam.
 - [ ] Tambah minimum stay rule jika ada.
 - [ ] Tambah peak season surcharge jika ada.
 - [ ] Tambah DuitNow QR sebagai info selepas owner confirm, jika mahu.
@@ -387,13 +388,19 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 
 - [x] Homepage boleh load melalui local server.
 - [x] Thank-you page boleh load melalui local server.
+- [x] Policies page boleh load melalui local server.
+- [x] Sitemap boleh load melalui local server.
 - [x] `app.js` lulus syntax check.
 - [x] `app.config.js` lulus syntax check.
 - [x] Internal anchor link semakan asas lulus.
 - [x] Semua WhatsApp link semakan asas guna nombor sama.
 - [x] Semua `target="_blank"` semakan asas ada `rel="noopener"`.
+- [x] Semua gambar yang dirujuk dalam homepage wujud dalam folder `images/`.
+- [x] Semakan kod confirm `admin.html`, owner password, dan owner editor tiada dalam public flow.
+- [x] Semakan kod confirm anggaran harga form wujud dalam HTML dan JS.
 - [x] Screenshot mobile headless semakan asas dibuat.
 - [x] Audit automatik local: CTA WhatsApp, form valid, form invalid, unavailable date, BM/EN, dark/light, gallery lightbox, Google Maps, dan page load.
+- [ ] Playwright browser smoke test terbaru belum lulus di environment ini kerana runner npx gagal resolve module `@playwright/test`; perlu ulang selepas dependency test dipasang dengan betul.
 - [ ] Buka homepage desktop Chrome secara manual.
 - [ ] Buka homepage mobile Chrome/Safari secara manual.
 - [ ] Klik semua nav anchor secara manual.
@@ -441,7 +448,7 @@ Hari 1:
 - [x] Update `app.config.js`.
 
 Hari 2:
-- [ ] Compress gambar.
+- [x] Compress gambar.
 - [ ] Tambah gambar yang belum cukup.
 - [ ] Pilih hero image terbaik.
 
@@ -449,6 +456,7 @@ Hari 3:
 - [ ] Test semua WhatsApp CTA dan form.
 - [x] Polish mobile hero/header overflow.
 - [x] Betulkan copy BM/EN utama.
+- [x] Tambah anggaran harga automatik dalam form.
 
 Hari 4:
 - [x] Setup domain, sitemap, robots, canonical, Open Graph.
