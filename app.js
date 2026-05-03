@@ -13,8 +13,8 @@
   let hasTrackedFormStart = false;
   let lastAvailabilityState = "";
   const roomRates = {
-    "2": 170,
-    "3": 220,
+    "2": 180,
+    "3": 230,
     "4": 280,
     "5": 330
   };
@@ -515,9 +515,11 @@
             { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Air Conditioning", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Parking", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Kitchen", "value": true }
+            { "@type": "LocationFeatureSpecification", "name": "Pantry", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Water Heater", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Extra Mattresses, Pillows and Comforters", "value": true }
           ],
-          "priceRange": "RM170-RM330 per night",
+          "priceRange": "RM180-RM330 per night",
           "sameAs": [
             "https://www.facebook.com/media/set/?set=a.2393864657563587&type=3"
           ]

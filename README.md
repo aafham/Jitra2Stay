@@ -108,25 +108,25 @@ Fail lain yang perlu selari dengan domain:
 - [x] Nyatakan jenis rumah: Semi-D 2 tingkat.
 - [x] Nyatakan jumlah bilik tidur: 5.
 - [x] Nyatakan jumlah bilik air: 3.
-- [ ] Sahkan kapasiti sebenar: 6-10 atau 6-12 tetamu.
-- [ ] Nyatakan caj jika lebih had tetamu.
+- [x] Sahkan kapasiti maksimum: 20 tetamu termasuk kanak-kanak.
+- [x] Nyatakan caj lebih tetamu: RM10 seorang.
 - [ ] Sahkan parking muat berapa kereta.
-- [ ] Sahkan semua kemudahan betul: WiFi, aircond, kipas, TV, dapur, parking.
-- [ ] Tambah kemudahan yang belum disebut jika ada: mesin basuh, peti ais, penapis air, iron, towel, toiletries, rice cooker, microwave, water heater.
+- [x] Sahkan kemudahan daripada PDF: fully aircond, WiFi, pantry/basic facilities, water heater, extra tilam, bantal, comforter.
+- [ ] Sahkan kemudahan tambahan jika ada: TV, parking, mesin basuh, peti ais, penapis air, iron, toiletries, rice cooker, microwave.
 - [x] Tulis nota video dengan jelas: video sedang dikemas kini, galeri foto jadi rujukan sementara.
 - [x] Pastikan BM dan EN utama sama maksud.
 
 ### 2. Harga dan Polisi
 
-- [x] Nyatakan harga 2 bilik: RM170/malam.
-- [x] Nyatakan harga 3 bilik: RM220/malam.
+- [x] Nyatakan harga 2 bilik: RM180/malam.
+- [x] Nyatakan harga 3 bilik: RM230/malam.
 - [x] Nyatakan harga 4 bilik: RM280/malam.
 - [x] Nyatakan harga 5 bilik: RM330/malam.
 - [x] Nyatakan deposit keselamatan RM100.
 - [x] Bezakan deposit keselamatan dan deposit booking jika kedua-duanya berbeza.
 - [ ] Nyatakan sama ada harga berubah pada cuti sekolah, cuti umum, konvokesyen, atau peak season.
-- [ ] Nyatakan caj extra guest jika ada.
-- [ ] Nyatakan caj lewat checkout jika ada.
+- [x] Nyatakan caj extra guest: RM10 seorang.
+- [x] Nyatakan caj check-in awal/check-out lewat: RM20/jam jika diluluskan.
 - [x] Nyatakan refund policy dengan lebih lengkap jika mahu lebih tegas.
 - [x] Nyatakan polisi tukar tarikh.
 - [x] Nyatakan kaedah bayaran: bank transfer, DuitNow QR, cash, atau lain-lain.
@@ -239,13 +239,19 @@ Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 
 Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh tulis "belum confirm".
 
+Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dalam website public. Beri password kepada tetamu selepas booking/check-in sahaja.
+
 ### Ringkasan Paling Penting Untuk Saya Update Nanti
 
 - [ ] Gambar latest: exterior, parking, ruang tamu, dapur, setiap bilik, setiap bilik air, kemudahan penting.
-- [ ] Harga final: 2/3/4/5 bilik, weekend, cuti sekolah, cuti umum, konvokesyen, peak season.
-- [ ] Polisi final: deposit booking, deposit keselamatan, refund, tukar tarikh, late checkout, extra guest.
-- [ ] Kemudahan final: WiFi, aircond, kipas, TV, dapur, peti ais, mesin basuh, water heater, towel/toiletries, iron, tilam tambahan.
-- [ ] Kapasiti final: kapasiti selesa, kapasiti maksimum, had majlis kecil, parking kereta/van/bas.
+- [x] Harga final asas: 2 bilik RM180, 3 bilik RM230, 4 bilik RM280, 5 bilik RM330.
+- [ ] Harga tambahan: weekend, cuti sekolah, cuti umum, konvokesyen, peak season, dan diskaun 2 malam ke atas.
+- [x] Polisi final asas daripada PDF: deposit keselamatan, late checkout/early check-in RM20/jam, extra guest RM10/seorang, pets tidak dibenarkan, merokok luar sahaja.
+- [ ] Polisi tambahan: deposit booking, refund, tukar tarikh, dan caj majlis/event.
+- [x] Kemudahan final asas daripada PDF: WiFi, fully aircond, pantry/basic facilities, water heater, extra tilam, bantal, comforter.
+- [ ] Kemudahan tambahan: TV, parking, peti ais, mesin basuh, iron, toiletries, rice cooker, microwave.
+- [x] Kapasiti maksimum final: 20 tetamu termasuk kanak-kanak.
+- [ ] Kapasiti selesa, had majlis kecil, parking kereta/van/bas.
 - [x] Lokasi final: Google Maps pin dan alamat penuh.
 - [ ] Jarak/minit ke tempat penting sekitar Jitra.
 - [ ] Trust sebenar: testimoni/review/rating yang boleh dipaparkan dengan izin.
@@ -264,26 +270,26 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 - [ ] Jumlah bilik tidur.
 - [ ] Jumlah bilik air.
 - [ ] Kapasiti selesa.
-- [ ] Kapasiti maksimum.
-- [ ] Caj extra guest jika lebih had.
+- [x] Kapasiti maksimum: 20 orang termasuk kanak-kanak.
+- [x] Caj extra guest jika lebih had: RM10 seorang.
 - [ ] Parking muat berapa kereta.
 - [ ] Boleh parking van atau tidak.
 - [ ] Boleh parking bas atau tidak.
 
 ### B. Harga & Bayaran
 
-- [ ] Harga 2 bilik.
-- [ ] Harga 3 bilik.
-- [ ] Harga 4 bilik.
-- [ ] Harga 5 bilik.
+- [x] Harga 2 bilik: RM180/malam.
+- [x] Harga 3 bilik: RM230/malam.
+- [x] Harga 4 bilik: RM280/malam.
+- [x] Harga 5 bilik: RM330/malam.
 - [ ] Harga weekday/weekend jika berbeza.
 - [ ] Harga cuti sekolah.
 - [ ] Harga cuti umum.
 - [ ] Harga peak season / konvokesyen jika ada.
-- [ ] Minimum stay jika ada.
-- [ ] Security deposit amount.
+- [ ] Detail diskaun/minimum stay 2 malam ke atas.
+- [x] Security deposit amount: RM100.
 - [ ] Booking deposit amount.
-- [ ] Deposit dipulangkan bila.
+- [x] Deposit dipulangkan selepas check-out jika tiada kerosakan/ketidakpatuhan rules.
 - [ ] Kaedah bayaran: bank transfer / DuitNow QR / cash / lain-lain.
 - [ ] Nama bank atau cara owner mahu beritahu payment detail.
 - [ ] Perlu hantar proof payment melalui WhatsApp atau tidak.
@@ -291,31 +297,31 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 
 ### C. Polisi
 
-- [ ] Check-in time final.
-- [ ] Check-out time final.
-- [ ] Early check-in boleh atau tidak.
-- [ ] Late checkout boleh atau tidak.
-- [ ] Caj late checkout jika ada.
+- [x] Check-in time final: 3:00 PM.
+- [x] Check-out time final: 12:00 PM.
+- [x] Early check-in boleh jika diluluskan.
+- [x] Late checkout boleh jika diluluskan.
+- [x] Caj early/late time: RM20/jam.
 - [ ] Refund policy final.
 - [ ] Polisi tukar tarikh.
-- [ ] Polisi kerosakan/barang hilang.
-- [ ] Quiet hours.
-- [ ] Boleh merokok di luar rumah atau tidak.
-- [ ] Boleh buat majlis kecil atau tidak.
-- [ ] Had tetamu untuk majlis kecil.
-- [ ] Boleh bawa haiwan peliharaan atau tidak.
+- [x] Polisi kerosakan/ketidakpatuhan rules: deposit security boleh ditolak.
+- [x] Quiet/neighbour rule: elakkan bising dan hormati privacy kejiranan.
+- [x] Boleh merokok di luar rumah sahaja.
+- [x] Majlis/event boleh dipertimbang dengan izin semasa booking dan caj berbeza.
+- [x] Had maksimum kemasukan tetamu: 20 orang termasuk kanak-kanak.
+- [x] Binatang peliharaan tidak dibenarkan.
 - [ ] Syarat tambahan untuk van/bas/rombongan besar.
 
 ### D. Kemudahan Rumah
 
-- [ ] WiFi ada atau tidak.
+- [x] WiFi ada.
 - [ ] WiFi speed jika tahu.
-- [ ] Aircond di bilik mana.
+- [x] Fully aircond untuk bilik yang digunakan mengikut pakej.
 - [ ] Aircond di ruang tamu ada atau tidak.
 - [ ] Kipas di bilik/ruang mana.
 - [ ] TV ada atau tidak.
 - [ ] Peti ais ada atau tidak.
-- [ ] Dapur masak ada atau tidak.
+- [x] Pantry/basic facilities ada.
 - [ ] Gas dapur disediakan atau tidak.
 - [ ] Rice cooker ada atau tidak.
 - [ ] Microwave ada atau tidak.
@@ -323,10 +329,10 @@ Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh
 - [ ] Penapis air/Coway ada atau tidak.
 - [ ] Mesin basuh ada atau tidak.
 - [ ] Iron/iron board ada atau tidak.
-- [ ] Water heater ada atau tidak.
-- [ ] Towel disediakan atau tidak.
+- [x] Water heater ada: 2 bilik air untuk pakej 2 bilik, 3 bilik air untuk pakej 3-5 bilik.
+- [x] Tuala digunakan perlu dimasukkan ke bakul semasa check-out.
 - [ ] Toiletries disediakan atau tidak.
-- [ ] Tilam tambahan ada atau tidak.
+- [x] Extra tilam, bantal dan comforter ada.
 - [ ] Katil setiap bilik: queen/single/double/decker.
 - [ ] Keperluan bayi jika ada.
 
