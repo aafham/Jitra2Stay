@@ -195,45 +195,6 @@
       </div>
     </section>
 
-    <!-- ================= VIDEO TOUR ================= -->
-    <section class="video-tour reveal">
-      <h3 data-bm="Video Walkthrough" data-en="Walkthrough Video">Video Walkthrough</h3>
-      <p
-        class="video-desc"
-        data-bm="Video penuh sedang dikemas kini. Buat masa ini, lihat gambaran ruang tamu, bilik dan dapur melalui galeri foto."
-        data-en="The full video is being updated. For now, preview the living room, bedrooms and kitchen through the photo gallery."
-      >
-        Video penuh sedang dikemas kini. Buat masa ini, lihat gambaran ruang tamu, bilik dan dapur melalui galeri foto.
-      </p>
-
-      <div class="video-card">
-        <video
-          id="walkthroughVideo"
-          hidden
-          controls
-          playsinline
-          preload="metadata"
-          poster="images/ruang-tamu.jpg"
-          aria-label="Video walkthrough Jitra2Stay"
-        >
-          <source id="walkthroughSource" src="" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <p
-          class="video-fallback"
-          id="videoFallback"
-          data-bm="Video walkthrough sedang dikemas kini. Sementara itu, lihat galeri foto di bawah."
-          data-en="The walkthrough video is being updated. Meanwhile, view the photo gallery below."
-          hidden
-        >
-          Video walkthrough sedang dikemas kini. Sementara itu, lihat galeri foto di bawah.
-        </p>
-        <p class="video-note" data-bm="Galeri foto di bawah menunjukkan ruang utama rumah buat masa ini." data-en="The photo gallery below shows the main spaces for now.">
-          Galeri foto di bawah menunjukkan ruang utama rumah buat masa ini.
-        </p>
-      </div>
-    </section>
-
     <!-- ================= QUICK HIGHLIGHTS ================= -->
     <section class="highlights reveal">
       <div class="highlight-container">
@@ -638,6 +599,42 @@
       >
         Lihat Semua Gambar
       </a>
+    </section>
+
+    <!-- ================= VIDEO TOUR ================= -->
+    <section class="video-tour reveal" hidden>
+      <h3 data-bm="Video Walkthrough" data-en="Walkthrough Video">Video Walkthrough</h3>
+      <p
+        class="video-desc"
+        data-bm="Lihat susunan ruang rumah melalui video pendek apabila video sebenar sudah tersedia."
+        data-en="View the home layout through a short video once the real video is ready."
+      >
+        Lihat susunan ruang rumah melalui video pendek apabila video sebenar sudah tersedia.
+      </p>
+
+      <div class="video-card">
+        <video
+          id="walkthroughVideo"
+          hidden
+          controls
+          playsinline
+          preload="metadata"
+          poster="images/ruang-tamu.jpg"
+          aria-label="Video walkthrough Jitra2Stay"
+        >
+          <source id="walkthroughSource" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <p
+          class="video-fallback"
+          id="videoFallback"
+          data-bm="Video tidak dapat dimuat. Sila rujuk galeri foto atau WhatsApp untuk maklumat lanjut."
+          data-en="The video could not be loaded. Please refer to the photo gallery or WhatsApp for more details."
+          hidden
+        >
+          Video tidak dapat dimuat. Sila rujuk galeri foto atau WhatsApp untuk maklumat lanjut.
+        </p>
+      </div>
     </section>
 
     <!-- ================= TENTANG ================= -->

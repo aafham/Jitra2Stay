@@ -210,6 +210,8 @@ Fail lain yang perlu selari dengan domain:
 - [x] Jangan guna testimoni contoh sebagai review sebenar.
 - [x] Tukar bahagian trust kepada selling points selamat sementara tunggu testimoni sebenar.
 - [x] Polish ayat harga, deposit, booking manual, video note, dan trust section.
+- [x] Sembunyikan section video daripada homepage sehingga video sebenar tersedia.
+- [x] Tukar FAQ kepada accordion compact satu lajur supaya page lebih minimal dan mudah scan.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.

@@ -39,6 +39,7 @@
   const loadMapBtn = document.getElementById("loadMapBtn");
   const locationMap = document.getElementById("locationMap");
   const locationMapFrame = document.getElementById("locationMapFrame");
+  const videoTour = document.querySelector(".video-tour");
   const walkthroughVideo = document.getElementById("walkthroughVideo");
   const walkthroughSource = document.getElementById("walkthroughSource");
   const videoFallback = document.getElementById("videoFallback");
@@ -301,13 +302,19 @@
       return;
     }
     if (!walkthroughVideoUrl) {
+      if (videoTour) {
+        videoTour.hidden = true;
+      }
       walkthroughVideo.hidden = true;
       if (videoFallback) {
-        videoFallback.hidden = false;
+        videoFallback.hidden = true;
       }
       return;
     }
 
+    if (videoTour) {
+      videoTour.hidden = false;
+    }
     walkthroughSource.src = walkthroughVideoUrl;
     walkthroughVideo.hidden = false;
     walkthroughVideo.load();

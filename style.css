@@ -1488,7 +1488,7 @@ textarea:focus-visible {
 
 /* ================= FAQ ================= */
 .faq {
-  padding: 70px 20px 40px;
+  padding: 70px 20px 46px;
   background: var(--surface-soft);
   text-align: center;
 }
@@ -1496,43 +1496,69 @@ textarea:focus-visible {
 .faq h3 {
   font-size: 30px;
   color: var(--primary);
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
 .faq-list {
-  max-width: 900px;
+  max-width: 820px;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
+  gap: 10px;
 }
 
 .faq-item {
   background: var(--surface);
-  padding: 25px;
-  border-radius: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
   text-align: left;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
 }
 
 .faq-item h4 {
+  position: relative;
   color: var(--primary);
   margin-bottom: 0;
   font-size: 16px;
+  line-height: 1.35;
   cursor: pointer;
+  padding: 18px 52px 18px 20px;
+}
+
+.faq-item h4::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--primary);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.faq-item.open h4::after {
+  content: "-";
 }
 
 .faq-item h4:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 6px;
+  outline-offset: -4px;
+  border-radius: 10px;
 }
 
 .faq-item p {
-  margin-top: 10px;
+  margin: 0;
+  padding: 0 20px 18px;
   font-size: 14px;
   color: var(--muted);
   display: none;
+  line-height: 1.6;
 }
 
 .faq-item.open p {
@@ -2914,9 +2940,9 @@ textarea:focus-visible {
   }
 
   .faq-list {
-    max-width: 1120px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    max-width: 820px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .trust-card {
@@ -4208,7 +4234,8 @@ textarea:focus-visible {
   }
 
   .faq-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 820px;
+    grid-template-columns: 1fr;
   }
 
   .final-cta {
