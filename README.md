@@ -172,6 +172,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Pastikan floating WhatsApp/back-to-top tidak bertindih di mobile.
 - [x] Semak viewport mobile kecil secara headless.
 - [x] Pastikan pricing cards mudah dibaca tanpa horizontal scroll dalam semakan headless.
+- [x] Ringkaskan teks pricing cards supaya layout desktop/dark mode nampak kemas.
 - [x] Pastikan highlight, harga, lokasi dan FAQ readable dalam dark mode.
 - [ ] Test di iPhone/Android sebenar.
 - [ ] Pastikan date form input selesa di phone sebenar.

@@ -4080,9 +4080,10 @@ textarea:focus-visible {
     font-size: 14px;
     font-weight: 700;
     color: #56726b;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
+    text-transform: none;
+    letter-spacing: 0.01em;
+    line-height: 1.45;
+    margin-bottom: 18px;
   }
 
   .price-card > span:not(.badge) {
