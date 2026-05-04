@@ -219,6 +219,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Kemas kini UI Lokasi dengan alamat card, CTA Maps/WhatsApp, dan point lokasi ringkas.
 - [x] Kemas kini UI Kemudahan kepada kategori mudah scan.
 - [x] Betulkan layout Kemudahan supaya icon, tajuk dan teks tidak bertindih di desktop/dark mode.
+- [x] Betulkan contrast badge/chip dark mode, termasuk badge "Paling Popular".
 - [x] Kemas kini UI final CTA dan footer supaya lebih ringkas, fokus, dan tidak terlalu berat.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.

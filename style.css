@@ -5239,3 +5239,30 @@ textarea:focus-visible {
     min-height: auto;
   }
 }
+
+/* ================= DARK MODE CHIP CONTRAST FIX ================= */
+:root[data-theme="dark"] .price-card.best .badge,
+:root[data-theme="dark"] .badge,
+:root[data-theme="dark"] .lang-btn.active,
+:root[data-theme="dark"] .highlight-item::before,
+:root[data-theme="dark"] .faq-item h4::after {
+  background: #d9fff0 !important;
+  color: #06372d !important;
+  border-color: rgba(217, 255, 240, 0.75) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme="dark"] .price-card.best .badge {
+  opacity: 1 !important;
+  font-weight: 900 !important;
+}
+
+:root[data-theme="dark"] .availability-badge,
+:root[data-theme="dark"] .contact-chip,
+:root[data-theme="dark"] .cta-trust span,
+:root[data-theme="dark"] .policy-list > div,
+:root[data-theme="dark"] .footer-link-label {
+  color: #f3fffb !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  text-shadow: none !important;
+}
