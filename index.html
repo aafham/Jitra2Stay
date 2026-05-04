@@ -326,6 +326,14 @@
       <div class="date-check-layout">
         <div class="date-check-main">
           <form class="date-form" id="dateForm">
+            <div class="date-form-head form-full">
+              <span class="date-form-kicker" data-bm="Langkah 1" data-en="Step 1">Langkah 1</span>
+              <h4 data-bm="Isi detail penginapan" data-en="Enter stay details">Isi detail penginapan</h4>
+              <p data-bm="Anggaran harga akan keluar automatik sebelum mesej dihantar ke WhatsApp." data-en="Estimated pricing appears automatically before the message is sent to WhatsApp.">
+                Anggaran harga akan keluar automatik sebelum mesej dihantar ke WhatsApp.
+              </p>
+            </div>
+
             <label class="form-field">
               <span data-bm="Tarikh Check-in" data-en="Check-in Date">Tarikh Check-in</span>
               <input type="date" name="checkin" required>
@@ -383,14 +391,19 @@
           </form>
 
           <div class="availability-board" id="availabilityBoard">
-            <h4 data-bm="Tarikh Tidak Tersedia" data-en="Unavailable Dates">Tarikh Tidak Tersedia</h4>
+            <div class="availability-head">
+              <div>
+                <span class="date-form-kicker" data-bm="Rujukan Slot" data-en="Slot Reference">Rujukan Slot</span>
+                <h4 data-bm="Tarikh Tidak Tersedia" data-en="Unavailable Dates">Tarikh Tidak Tersedia</h4>
+              </div>
+              <p class="availability-updated" id="availabilityUpdated"></p>
+            </div>
             <p
-              data-bm="Tarikh di bawah dikemas kini berdasarkan rekod semasa. Sila WhatsApp untuk pengesahan akhir sebelum bayaran."
-              data-en="Dates below are updated from current records. Please WhatsApp us for final confirmation before payment."
+              data-bm="Rujukan awal sahaja. Owner akan sahkan slot akhir melalui WhatsApp sebelum bayaran."
+              data-en="For initial reference only. The owner will confirm the final slot via WhatsApp before payment."
             >
-              Tarikh di bawah dikemas kini berdasarkan rekod semasa. Sila WhatsApp untuk pengesahan akhir sebelum bayaran.
+              Rujukan awal sahaja. Owner akan sahkan slot akhir melalui WhatsApp sebelum bayaran.
             </p>
-            <p class="availability-updated" id="availabilityUpdated"></p>
             <ul class="availability-list" id="availabilityList"></ul>
 
             <div class="availability-calendar-wrap">
@@ -728,17 +741,41 @@
     <!-- ================= KEMUDAHAN ================= -->
     <section id="kemudahan" class="facilities reveal">
       <h3 data-bm="Kemudahan Disediakan" data-en="Facilities Provided">Kemudahan Disediakan</h3>
+      <p class="section-desc" data-bm="Kemudahan utama disusun mengikut kategori supaya mudah semak sebelum booking." data-en="Key facilities are grouped by category so they are easy to review before booking.">
+        Kemudahan utama disusun mengikut kategori supaya mudah semak sebelum booking.
+      </p>
 
       <div class="facility-list">
-        <div class="facility-item" data-bm="&#10052; Fully Air-Conditioned" data-en="&#10052; Fully Air-Conditioned">&#10052; Fully Air-Conditioned</div>
-        <div class="facility-item" data-bm="&#127744; Kipas di Setiap Bilik" data-en="&#127744; Fans in Every Room">&#127744; Kipas di Setiap Bilik</div>
-        <div class="facility-item" data-bm="&#128246; WiFi Percuma" data-en="&#128246; Free WiFi">&#128246; WiFi Percuma</div>
-        <div class="facility-item" data-bm="&#128250; TV" data-en="&#128250; TV">&#128250; TV</div>
-        <div class="facility-item" data-bm="&#128705; 3 Bilik Air Water Heater" data-en="&#128705; 3 Water-Heater Bathrooms">&#128705; 3 Bilik Air Water Heater</div>
-        <div class="facility-item" data-bm="&#127859; Pantry &amp; Basic Facilities" data-en="&#127859; Pantry &amp; Basic Facilities">&#127859; Pantry &amp; Basic Facilities</div>
-        <div class="facility-item" data-bm="&#128716; Extra Tilam, Bantal &amp; Comforter" data-en="&#128716; Extra Mattresses, Pillows &amp; Comforters">&#128716; Extra Tilam, Bantal &amp; Comforter</div>
-        <div class="facility-item" data-bm="&#128663; Parking Luas" data-en="&#128663; Spacious Parking">&#128663; Parking Luas</div>
-        <div class="facility-item" data-bm="&#129532; Rumah Bersih &amp; Kemas" data-en="&#129532; Clean &amp; Tidy Home">&#129532; Rumah Bersih &amp; Kemas</div>
+        <div class="facility-item">
+          <span class="facility-icon">&#10052;</span>
+          <h4 data-bm="Keselesaan" data-en="Comfort">Keselesaan</h4>
+          <p data-bm="Fully aircond, kipas setiap bilik, rumah bersih dan kemas." data-en="Fully air-conditioned, fans in every room, clean and tidy home.">Fully aircond, kipas setiap bilik, rumah bersih dan kemas.</p>
+        </div>
+        <div class="facility-item">
+          <span class="facility-icon">&#128705;</span>
+          <h4 data-bm="Bilik Air" data-en="Bathrooms">Bilik Air</h4>
+          <p data-bm="3 bilik air dengan water heater untuk pakej 3 hingga 5 bilik." data-en="3 bathrooms with water heaters for 3 to 5-room packages.">3 bilik air dengan water heater untuk pakej 3 hingga 5 bilik.</p>
+        </div>
+        <div class="facility-item">
+          <span class="facility-icon">&#127859;</span>
+          <h4 data-bm="Pantry" data-en="Pantry">Pantry</h4>
+          <p data-bm="Pantry dan basic facilities untuk kegunaan ringkas tetamu." data-en="Pantry and basic facilities for simple guest use.">Pantry dan basic facilities untuk kegunaan ringkas tetamu.</p>
+        </div>
+        <div class="facility-item">
+          <span class="facility-icon">&#128246;</span>
+          <h4 data-bm="Internet &amp; Hiburan" data-en="Internet &amp; Entertainment">Internet &amp; Hiburan</h4>
+          <p data-bm="WiFi percuma dan TV disediakan untuk penginapan lebih selesa." data-en="Free WiFi and TV are provided for a more comfortable stay.">WiFi percuma dan TV disediakan untuk penginapan lebih selesa.</p>
+        </div>
+        <div class="facility-item">
+          <span class="facility-icon">&#128716;</span>
+          <h4 data-bm="Tidur Tambahan" data-en="Extra Bedding">Tidur Tambahan</h4>
+          <p data-bm="Extra tilam, bantal dan comforter tersedia untuk keluarga atau rombongan." data-en="Extra mattresses, pillows and comforters are available for families or groups.">Extra tilam, bantal dan comforter tersedia untuk keluarga atau rombongan.</p>
+        </div>
+        <div class="facility-item">
+          <span class="facility-icon">&#128663;</span>
+          <h4 data-bm="Parking" data-en="Parking">Parking</h4>
+          <p data-bm="Parking luas di kawasan rumah. Untuk van/bas, WhatsApp awal untuk nasihat parking." data-en="Spacious parking within the house compound. For vans/buses, WhatsApp early for parking advice.">Parking luas di kawasan rumah. Untuk van/bas, WhatsApp awal untuk nasihat parking.</p>
+        </div>
       </div>
     </section>
 
@@ -787,6 +824,7 @@
     <section id="lokasi" class="location-section reveal">
       <div class="location-container">
         <div class="location-info">
+          <span class="location-eyebrow" data-bm="Lokasi Strategik" data-en="Strategic Location">Lokasi Strategik</span>
           <h3 data-bm="Lokasi Homestay" data-en="Homestay Location">Lokasi Homestay</h3>
 
           <p
@@ -801,16 +839,34 @@
 
           <p class="note" data-bm="(Sebelah pagar sisi Hospital Jitra)" data-en="(Next to Jitra Hospital side gate)">(Sebelah pagar sisi Hospital Jitra)</p>
 
-          <a
-            href="https://goo.gl/maps/pjnMbwm5Pk2QqPeP8"
-            target="_blank"
-            rel="noopener"
-            class="map-btn"
-            data-bm="&#128205; Buka di Google Maps"
-            data-en="&#128205; Open in Google Maps"
-          >
-            &#128205; Buka di Google Maps
-          </a>
+          <div class="location-actions">
+            <a
+              href="https://goo.gl/maps/pjnMbwm5Pk2QqPeP8"
+              target="_blank"
+              rel="noopener"
+              class="map-btn"
+              data-bm="&#128205; Buka Google Maps"
+              data-en="&#128205; Open Google Maps"
+            >
+              &#128205; Buka Google Maps
+            </a>
+            <a
+              href="https://wa.me/60194410666?text=Hai%20Jitra2Stay,%20saya%20nak%20confirm%20lokasi%20homestay."
+              target="_blank"
+              rel="noopener"
+              class="location-whatsapp"
+              data-bm="Tanya lokasi"
+              data-en="Ask location"
+            >
+              Tanya lokasi
+            </a>
+          </div>
+
+          <div class="location-points">
+            <span data-bm="Sebelah Hospital Jitra" data-en="Next to Jitra Hospital">Sebelah Hospital Jitra</span>
+            <span data-bm="Akses mudah dari jalan utama" data-en="Easy access from main road">Akses mudah dari jalan utama</span>
+            <span data-bm="Alamat penuh dipaparkan" data-en="Full address shown">Alamat penuh dipaparkan</span>
+          </div>
         </div>
 
         <div class="location-map" id="locationMap">
@@ -1161,8 +1217,6 @@
             <a href="#home" data-bm="Laman Utama" data-en="Home">Laman Utama</a>
             <a href="#kadar" data-bm="Kadar" data-en="Rates">Kadar</a>
             <a href="#semak-tarikh" data-bm="Semak Tarikh" data-en="Check Dates">Semak Tarikh</a>
-            <a href="ms.html">BM URL</a>
-            <a href="en.html">EN URL</a>
             <a href="policies.html" data-bm="Polisi" data-en="Policies">Polisi</a>
           </div>
         </div>

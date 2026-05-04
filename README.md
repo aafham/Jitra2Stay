@@ -215,6 +215,10 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tukar FAQ kepada accordion compact satu lajur supaya page lebih minimal dan mudah scan.
 - [x] Kemas kini FAQ kepada layout desktop 2 kolum, item terbuka full-width, dan CTA WhatsApp ringkas.
 - [x] Kemas kini UI section Tentang Homestay dengan overview card, highlight pills, stats ringkas, dan photo badge.
+- [x] Kemas kini UI Semak Tarikh dengan booking panel, summary sticky, dan availability board lebih kemas.
+- [x] Kemas kini UI Lokasi dengan alamat card, CTA Maps/WhatsApp, dan point lokasi ringkas.
+- [x] Kemas kini UI Kemudahan kepada kategori mudah scan.
+- [x] Kemas kini UI final CTA dan footer supaya lebih ringkas, fokus, dan tidak terlalu berat.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
