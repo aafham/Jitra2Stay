@@ -213,6 +213,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Polish ayat harga, deposit, booking manual, video note, dan trust section.
 - [x] Sembunyikan section video daripada homepage sehingga video sebenar tersedia.
 - [x] Tukar FAQ kepada accordion compact satu lajur supaya page lebih minimal dan mudah scan.
+- [x] Kemas kini FAQ kepada layout desktop 2 kolum, item terbuka full-width, dan CTA WhatsApp ringkas.
 - [x] Kemas kini UI section Tentang Homestay dengan overview card, highlight pills, stats ringkas, dan photo badge.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
