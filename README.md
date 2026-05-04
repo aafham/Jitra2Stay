@@ -218,6 +218,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Kemas kini UI Semak Tarikh dengan booking panel, summary sticky, dan availability board lebih kemas.
 - [x] Kemas kini UI Lokasi dengan alamat card, CTA Maps/WhatsApp, dan point lokasi ringkas.
 - [x] Kemas kini UI Kemudahan kepada kategori mudah scan.
+- [x] Betulkan layout Kemudahan supaya icon, tajuk dan teks tidak bertindih di desktop/dark mode.
 - [x] Kemas kini UI final CTA dan footer supaya lebih ringkas, fokus, dan tidak terlalu berat.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.

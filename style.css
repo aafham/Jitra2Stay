@@ -5191,3 +5191,51 @@ textarea:focus-visible {
     width: 100%;
   }
 }
+
+/* ================= FACILITIES OVERLAP FIX ================= */
+.facility-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.facility-item {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 22px;
+}
+
+.facility-icon {
+  margin-bottom: 14px;
+  flex: 0 0 auto;
+}
+
+.facility-item h4 {
+  width: 100%;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.facility-item p {
+  width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1050px) {
+  .facility-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .facility-list {
+    grid-template-columns: 1fr;
+  }
+
+  .facility-item {
+    min-height: auto;
+  }
+}
