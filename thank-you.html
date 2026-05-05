@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terima Kasih | Jitra2Stay</title>
     <meta name="robots" content="noindex,follow">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#1f4f46" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b1110" media="(prefers-color-scheme: dark)">
     <style>
       :root {
         --bg: #f7f4ef;
         --surface: #ffffff;
+        --surface-soft: #f6fbf8;
         --text: #1f2937;
         --muted: #6b7280;
         --primary: #1f4f46;
         --accent: #3fa37b;
+        --border: rgba(31, 79, 70, 0.12);
       }
       * { box-sizing: border-box; }
       body {
@@ -21,19 +26,54 @@
         display: grid;
         place-items: center;
         font-family: "Segoe UI", Tahoma, sans-serif;
-        background: radial-gradient(circle at top, #e7f8f1 0, var(--bg) 55%);
+        background:
+          radial-gradient(circle at top, rgba(63, 163, 123, 0.24) 0, transparent 34rem),
+          var(--bg);
         color: var(--text);
         padding: 20px;
       }
       .card {
-        width: min(640px, 100%);
+        width: min(760px, 100%);
         background: var(--surface);
-        border-radius: 20px;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
-        padding: 30px;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: 0 22px 54px rgba(17, 51, 43, 0.14);
+        padding: clamp(24px, 5vw, 42px);
       }
-      h1 { margin: 0 0 8px; color: var(--primary); }
-      p { color: var(--muted); line-height: 1.6; }
+      .status {
+        display: inline-flex;
+        margin-bottom: 14px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--surface-soft);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 10px;
+        color: var(--primary);
+        font-size: clamp(32px, 7vw, 54px);
+        line-height: 1.05;
+      }
+      p { color: var(--muted); line-height: 1.65; margin: 0 0 10px; }
+      .next {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .next span {
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface-soft);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+      }
       .actions {
         margin-top: 22px;
         display: flex;
@@ -45,20 +85,52 @@
         border-radius: 999px;
         padding: 11px 18px;
         font-weight: 700;
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
-      .btn-primary { background: var(--accent); color: #fff; }
-      .btn-secondary { background: #e5e7eb; color: #111827; }
+      .btn-primary { background: var(--accent); color: #06231d; }
+      .btn-secondary {
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        color: var(--primary);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1110;
+          --surface: #111a18;
+          --surface-soft: #14201d;
+          --text: #e6eceb;
+          --muted: #b8c5c2;
+          --primary: #9fe6cd;
+          --accent: #6ee7b7;
+          --border: rgba(159, 230, 205, 0.18);
+        }
+        .card { box-shadow: 0 22px 54px rgba(0, 0, 0, 0.34); }
+      }
+      @media (max-width: 640px) {
+        body { padding: 12px; }
+        .next { grid-template-columns: 1fr; }
+        .actions .btn { width: 100%; }
+      }
     </style>
   </head>
   <body>
     <main class="card">
-      <h1>Terima kasih / Thank you</h1>
+      <span class="status">WhatsApp Booking</span>
+      <h1>Terima kasih</h1>
       <p>
-        WhatsApp sepatutnya telah dibuka dalam tab baharu. Owner akan semak slot dan reply secepat mungkin. Jika belum terbuka, tekan butang di bawah untuk sambung tempahan.
+        WhatsApp sepatutnya telah dibuka dalam tab baharu. Owner akan semak slot, pakej bilik dan jumlah bayaran sebelum tempahan disahkan.
       </p>
       <p>
-        WhatsApp should have opened in a new tab. The owner will check the slot and reply as soon as possible. If not, use the button below to continue your booking.
+        Jika WhatsApp belum terbuka, tekan butang di bawah untuk sambung tempahan.
       </p>
+      <div class="next">
+        <span>1. Owner semak tarikh</span>
+        <span>2. Detail bayaran diberi</span>
+        <span>3. Booking confirm selepas bukti bayaran</span>
+      </div>
       <div class="actions">
         <a class="btn btn-primary" href="https://wa.me/60194410666?text=Hai%20Jitra2Stay,%20saya%20nak%20buat%20tempahan." target="_blank" rel="noopener">
           Buka WhatsApp

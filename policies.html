@@ -12,106 +12,218 @@
     <meta property="og:description" content="Polisi tempahan, pembatalan, bayaran manual, house rules, dan privasi ringkas untuk Jitra2Stay.">
     <meta property="og:url" content="https://jitra2stay.com/policies.html">
     <meta property="og:image" content="https://jitra2stay.com/images/halaman.jpg">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#1f4f46" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b1110" media="(prefers-color-scheme: dark)">
     <style>
       :root {
-        --bg: #f6f8f7;
+        --bg: #f7f4ef;
         --surface: #ffffff;
+        --surface-soft: #f6fbf8;
         --text: #1f2937;
         --muted: #4b5563;
         --primary: #1f4f46;
         --accent: #3fa37b;
+        --border: rgba(31, 79, 70, 0.12);
       }
       * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
         font-family: "Segoe UI", Tahoma, sans-serif;
-        background: var(--bg);
+        background:
+          radial-gradient(circle at top left, rgba(63, 163, 123, 0.18), transparent 34rem),
+          var(--bg);
         color: var(--text);
         line-height: 1.65;
       }
       .wrap {
-        max-width: 900px;
+        max-width: 1060px;
         margin: 0 auto;
-        padding: 28px 18px 56px;
+        padding: 28px 18px 64px;
       }
       .head {
-        background: linear-gradient(135deg, #1f4f46, #2f6f62);
+        background: linear-gradient(135deg, #1f4f46, #2f6f62 70%, #3fa37b);
         color: white;
-        border-radius: 18px;
-        padding: 22px;
+        border-radius: 22px;
+        padding: clamp(24px, 4vw, 42px);
+        box-shadow: 0 20px 50px rgba(31, 79, 70, 0.18);
+      }
+      .eyebrow {
+        display: inline-flex;
+        margin-bottom: 12px;
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        color: #d9fff0;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
       h1, h2 { margin: 0 0 10px; }
+      h1 {
+        font-size: clamp(32px, 6vw, 56px);
+        line-height: 1.05;
+      }
+      .head p {
+        max-width: 720px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 17px;
+      }
+      .policy-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
       section {
-        margin-top: 18px;
         background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 12px 28px rgba(17, 51, 43, 0.08);
+      }
+      section:first-child {
+        grid-column: 1 / -1;
+      }
+      h2 {
+        color: var(--primary);
+        font-size: 21px;
+        line-height: 1.25;
+      }
+      p { margin: 0; }
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .summary span {
+        padding: 12px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 14px;
-        padding: 16px 18px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+        background: rgba(255, 255, 255, 0.12);
+        color: #f3fffb;
+        font-size: 13px;
+        font-weight: 700;
       }
       ul { margin: 10px 0 0 18px; }
       .muted { color: var(--muted); }
-      .back {
-        display: inline-block;
-        margin-top: 18px;
-        padding: 10px 14px;
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 11px 16px;
         border-radius: 999px;
-        background: var(--accent);
-        color: #fff;
         text-decoration: none;
         font-weight: 700;
+      }
+      .btn-primary { background: var(--accent); color: #06231d; }
+      .btn-secondary {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--primary);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1110;
+          --surface: #111a18;
+          --surface-soft: #14201d;
+          --text: #e6eceb;
+          --muted: #b8c5c2;
+          --primary: #9fe6cd;
+          --accent: #6ee7b7;
+          --border: rgba(159, 230, 205, 0.18);
+        }
+        body {
+          background:
+            radial-gradient(circle at top left, rgba(95, 209, 164, 0.18), transparent 30rem),
+            var(--bg);
+        }
+        section { box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }
+        .btn-primary { color: #06231d; }
+        .btn-secondary { background: #14201d; }
+      }
+      @media (max-width: 760px) {
+        .policy-grid,
+        .summary {
+          grid-template-columns: 1fr;
+        }
+        .wrap { padding: 16px 12px 42px; }
+        section { padding: 17px; }
+        .actions .btn { width: 100%; }
       }
     </style>
   </head>
   <body>
     <main class="wrap">
       <header class="head">
+        <span class="eyebrow">Jitra2Stay Policies</span>
         <h1>Polisi Jitra2Stay</h1>
-        <p>Booking Policy, House Rules, and Privacy Notice</p>
+        <p>Polisi tempahan, house rules, bayaran manual, dan privasi ringkas untuk tetamu sebelum membuat booking melalui WhatsApp.</p>
+        <div class="summary">
+          <span>Check-in 3:00 PM</span>
+          <span>Check-out 12:00 PM</span>
+          <span>Security deposit RM100</span>
+        </div>
       </header>
 
-      <section>
-        <h2>1) Polisi Tempahan & Pembatalan</h2>
-        <p id="bookingPolicy" class="muted">
-          Tempahan hanya dianggap sah selepas slot disahkan oleh owner dan bayaran deposit/booking diterima. Kadar flexy bermula RM180 hingga RM330 semalam mengikut bilangan bilik yang diperlukan. Diskaun untuk 2 malam ke atas boleh disemak melalui WhatsApp. Harga, ketersediaan, dan caj majlis perlu disahkan melalui WhatsApp sebelum bayaran dibuat.
-        </p>
-      </section>
+      <div class="policy-grid">
+        <section>
+          <h2>1) Polisi Tempahan & Pembatalan</h2>
+          <p id="bookingPolicy" class="muted">
+            Tempahan hanya dianggap sah selepas slot disahkan oleh owner dan bayaran deposit/booking diterima. Kadar flexy bermula RM180 hingga RM330 semalam mengikut bilangan bilik yang diperlukan. Diskaun untuk 2 malam ke atas boleh disemak melalui WhatsApp. Harga, ketersediaan, dan caj majlis perlu disahkan melalui WhatsApp sebelum bayaran dibuat.
+          </p>
+        </section>
 
-      <section>
-        <h2>2) House Rules</h2>
-        <p id="houseRulesPolicy" class="muted">
-          Check-in 3:00 PM, check-out 12:00 PM. Check-in awal atau check-out lewat dicaj RM20/jam jika diluluskan. Had maksimum kemasukan tetamu ialah 20 orang termasuk kanak-kanak. Lebihan tetamu dicaj RM10 seorang. Elakkan membuat bising dan hormati privasi kejiranan. Makan dan minum di ruang makan sahaja, bukan di bilik tidur. Binatang peliharaan tidak dibenarkan masuk ke dalam homestay. Merokok hanya di luar homestay.
-        </p>
-      </section>
+        <section>
+          <h2>2) House Rules</h2>
+          <p id="houseRulesPolicy" class="muted">
+            Check-in 3:00 PM, check-out 12:00 PM. Check-in awal atau check-out lewat dicaj RM20/jam jika diluluskan. Had maksimum kemasukan tetamu ialah 20 orang termasuk kanak-kanak. Lebihan tetamu dicaj RM10 seorang. Elakkan membuat bising dan hormati privasi kejiranan. Makan dan minum di ruang makan sahaja, bukan di bilik tidur. Binatang peliharaan tidak dibenarkan masuk ke dalam homestay. Merokok hanya di luar homestay.
+          </p>
+        </section>
 
-      <section>
-        <h2>3) Majlis & Check-out</h2>
-        <p class="muted">
-          Majlis seperti reunion, hari jadi, aqiqah, pertunangan, akad nikah, perkahwinan, atau event lain mesti mendapat izin pengurusan semasa booking kerana caj yang dikenakan adalah berbeza. Semasa check-out, tetapkan semula kedudukan katil, perabot dan peralatan seperti semasa check-in, tutup semua punca elektrik kecuali modem WiFi, buang sampah ke tong hijau, letak tuala digunakan dalam bakul, dan masukkan kunci ke security box dengan nombor diputar ke 0000.
-        </p>
-      </section>
+        <section>
+          <h2>3) Majlis & Check-out</h2>
+          <p class="muted">
+            Majlis seperti reunion, hari jadi, aqiqah, pertunangan, akad nikah, perkahwinan, atau event lain mesti mendapat izin pengurusan semasa booking kerana caj yang dikenakan adalah berbeza. Semasa check-out, tetapkan semula kedudukan katil, perabot dan peralatan seperti semasa check-in, tutup semua punca elektrik kecuali modem WiFi, buang sampah ke tong hijau, letak tuala digunakan dalam bakul, dan masukkan kunci ke security box dengan nombor diputar ke 0000.
+          </p>
+        </section>
 
-      <section>
-        <h2>4) Bayaran Manual & Security Deposit</h2>
-        <p class="muted">
-          Bayaran dibuat secara manual selepas owner mengesahkan slot. Detail bank/DuitNow akan diberi melalui WhatsApp. Tetamu perlu menghantar bukti bayaran melalui WhatsApp untuk pengesahan booking. Security deposit RM100 boleh ditolak jika berlaku kerosakan atau ketidakpatuhan mana-mana house rules. Website ini tidak memproses bayaran dan tidak menyimpan maklumat kad atau akaun bank pelanggan.
-        </p>
-      </section>
+        <section>
+          <h2>4) Bayaran Manual & Security Deposit</h2>
+          <p class="muted">
+            Bayaran dibuat secara manual selepas owner mengesahkan slot. Detail bank/DuitNow akan diberi melalui WhatsApp. Tetamu perlu menghantar bukti bayaran melalui WhatsApp untuk pengesahan booking. Security deposit RM100 boleh ditolak jika berlaku kerosakan atau ketidakpatuhan mana-mana house rules. Website ini tidak memproses bayaran dan tidak menyimpan maklumat kad atau akaun bank pelanggan.
+          </p>
+        </section>
 
-      <section>
-        <h2>5) Polisi Privasi Ringkas</h2>
-        <p class="muted" id="privacyPolicy">
-          Data yang dihantar melalui WhatsApp/form hanya digunakan untuk urusan tempahan dan komunikasi berkaitan penginapan.
-          Kami tidak menjual data pelanggan kepada pihak ketiga.
-        </p>
-      </section>
+        <section>
+          <h2>5) Polisi Privasi Ringkas</h2>
+          <p class="muted" id="privacyPolicy">
+            Data yang dihantar melalui WhatsApp/form hanya digunakan untuk urusan tempahan dan komunikasi berkaitan penginapan. Kami tidak menjual data pelanggan kepada pihak ketiga.
+          </p>
+        </section>
 
-      <section>
-        <h2>6) Contact</h2>
-        <p>WhatsApp: +60 19-441 0666</p>
-        <p>Email: jitra2stay@gmail.com</p>
-      </section>
+        <section>
+          <h2>6) Contact</h2>
+          <p class="muted">WhatsApp: +60 19-441 0666</p>
+          <p class="muted">Email: jitra2stay@gmail.com</p>
+        </section>
+      </div>
 
-      <a class="back" href="index.html">Kembali ke Laman Utama</a>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://wa.me/60194410666?text=Hai%20Jitra2Stay,%20saya%20nak%20tanya%20tentang%20polisi%20homestay." target="_blank" rel="noopener">Tanya Polisi di WhatsApp</a>
+        <a class="btn btn-secondary" href="index.html">Kembali ke Laman Utama</a>
+      </div>
     </main>
   </body>
 </html>

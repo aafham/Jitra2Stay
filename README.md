@@ -20,6 +20,7 @@ Yang sudah ada:
 - [x] Halaman polisi.
 - [x] Halaman thank-you selepas klik WhatsApp.
 - [x] SEO asas: canonical, sitemap, robots, meta description, Open Graph, Twitter image, dan JSON-LD LodgingBusiness/WebSite/WebPage/FAQPage.
+- [x] SEO teknikal diperkemas dengan color-scheme, theme-color dark/light, dan structured data pakej harga.
 - [x] Copy utama dipolish untuk flow view-only + direct WhatsApp.
 - [x] Semakan mobile headless dibuat untuk hero, highlight, harga, lokasi, FAQ, dan sticky WhatsApp.
 - [x] Tiada admin/login/user account dalam flow website.
@@ -45,6 +46,9 @@ Yang masih perlu dibuat sebelum live:
 - `thank-you.html` - halaman selepas klik/submit WhatsApp.
 - `ms.html` / `en.html` - redirect/landing bahasa.
 - `robots.txt` / `sitemap.xml` - SEO crawler.
+- `OWNER-DATA-CHECKLIST.md` - checklist data sebenar yang owner perlu beri untuk final update.
+- `PRE-LIVE-QA.md` - checklist ringkas sebelum upload/deploy live.
+- `CHANGELOG.md` - ringkasan perubahan penting yang sudah dibuat.
 - `images/` - gambar homestay.
 
 ## Jalankan Secara Local
@@ -139,6 +143,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Semua link WhatsApp guna nombor sama.
 - [x] Form WhatsApp auto-filled dengan check-in, check-out, guests, rooms, purpose, notes.
 - [x] Form reject checkout sebelum check-in.
+- [x] Form date lebih kemas: check-out minimum automatik sehari selepas check-in.
 - [x] Form warn jika tarikh bertindih dengan unavailable dates.
 - [x] Tambah arahan selepas WhatsApp: owner akan semak slot dan reply secepat mungkin.
 - [x] Thank-you page beri arahan sambung WhatsApp.
@@ -186,6 +191,8 @@ Fail lain yang perlu selari dengan domain:
 - [x] Gunakan absolute URL untuk `og:image`.
 - [x] Tambah `og:url`, `og:site_name`, `og:image:alt`, `twitter:image:alt`.
 - [x] Tambah JSON-LD `WebSite`, `WebPage`, dan `FAQPage`.
+- [x] Tambah JSON-LD offer catalog untuk pakej 2, 3, 4, dan 5 bilik.
+- [x] Tambah meta `color-scheme`, theme color dark/light, dan format detection untuk UI browser yang lebih konsisten.
 - [x] Update `sitemap.xml` dengan URL domain sebenar.
 - [x] Update `robots.txt` dengan sitemap domain sebenar.
 - [x] Update `lastmod` sitemap kepada `2026-05-04`.
@@ -221,6 +228,20 @@ Fail lain yang perlu selari dengan domain:
 - [x] Betulkan layout Kemudahan supaya icon, tajuk dan teks tidak bertindih di desktop/dark mode.
 - [x] Betulkan contrast badge/chip dark mode, termasuk badge "Paling Popular".
 - [x] Kemas kini UI final CTA dan footer supaya lebih ringkas, fokus, dan tidak terlalu berat.
+- [x] Buat QA statik light/dark/mobile, tambah mobile polish akhir, dan selaraskan semua WhatsApp CTA dengan mesej default.
+- [x] Tambah ringkasan "Selepas WhatsApp" supaya flow semak slot, bayaran, dan confirmation lebih jelas.
+- [x] Kemas kini aksesibiliti asas: nav label, skip target focus, FAQ aria-controls/hidden state, dan form described-by.
+- [x] Cleanup CSS token `--border` supaya card/FAQ konsisten untuk light dan dark mode.
+- [x] Betulkan SEO heading structure: hero menjadi `h1` utama dan logo bukan heading utama.
+- [x] Polish micro-copy untuk harga, cara tempah, form tarikh, dan nota tambahan supaya lebih jelas untuk tetamu.
+- [x] Tambah polish spacing mobile akhir untuk section, form, card grid, dan hero.
+- [x] Polish UI `policies.html` supaya selari dengan homepage dan ada CTA WhatsApp.
+- [x] Polish UI `thank-you.html` supaya flow selepas WhatsApp lebih jelas.
+- [x] Tambah `OWNER-DATA-CHECKLIST.md`.
+- [x] Tambah `PRE-LIVE-QA.md`.
+- [x] Tambah local SEO intent section untuk Hospital Jitra, keluarga besar, kenduri dan konvokesyen.
+- [x] Tambah FAQ search-intent: Hospital Jitra, konvokesyen, sewa ikut bilik, dan last-minute booking.
+- [x] Tambah `CHANGELOG.md`.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
@@ -256,8 +277,10 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 ### Ringkasan Paling Penting Untuk Saya Update Nanti
 
 - [ ] Gambar latest: exterior, parking, ruang tamu, dapur, setiap bilik, setiap bilik air, kemudahan penting.
+- [ ] Pilih gambar hero utama final dan gambar share preview final.
 - [x] Harga final asas: 2 bilik RM180, 3 bilik RM230, 4 bilik RM280, 5 bilik RM330.
 - [ ] Harga tambahan: weekend, cuti sekolah, cuti umum, konvokesyen, peak season, dan diskaun 2 malam ke atas.
+- [ ] Sahkan ayat promosi final yang owner mahu guna untuk homepage.
 - [x] Polisi final asas daripada PDF: deposit keselamatan, late checkout/early check-in RM20/jam, extra guest RM10/seorang, pets tidak dibenarkan, merokok luar sahaja.
 - [ ] Polisi tambahan: deposit booking, refund, tukar tarikh, dan caj majlis/event.
 - [x] Kemudahan final asas daripada PDF: WiFi, fully aircond, pantry/basic facilities, water heater, extra tilam, bantal, comforter.
@@ -402,11 +425,22 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [ ] Template mesej WhatsApp yang owner mahu.
 - [ ] Arahan check-in yang boleh dipaparkan public atau hanya selepas bayaran.
 
+### I. Final Content Approval
+
+- [ ] Owner semak homepage dari atas sampai bawah.
+- [ ] Owner sahkan semua ayat BM.
+- [ ] Owner sahkan semua ayat EN jika mahu guna bahasa Inggeris.
+- [ ] Owner sahkan tiada info sensitif dipaparkan public.
+- [ ] Owner sahkan flow website kekal view-only dan direct WhatsApp.
+- [ ] Owner pilih sama ada mahu paparkan review/testimoni sebenar.
+- [ ] Owner pilih sama ada mahu tambah halaman SEO tambahan kemudian.
+
 ## Manual Test Sebelum Live
 
 - [x] Homepage boleh load melalui local server.
 - [x] Thank-you page boleh load melalui local server.
 - [x] Policies page boleh load melalui local server.
+- [x] Policies page UI dipolish dan masih static.
 - [x] Sitemap boleh load melalui local server.
 - [x] `app.js` lulus syntax check.
 - [x] `app.config.js` lulus syntax check.
@@ -416,6 +450,7 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [x] Semua gambar yang dirujuk dalam homepage wujud dalam folder `images/`.
 - [x] Semakan kod confirm `admin.html`, owner password, dan owner editor tiada dalam public flow.
 - [x] Semakan kod confirm anggaran harga form wujud dalam HTML dan JS.
+- [x] Semakan kod confirm homepage ada satu `h1` utama pada hero.
 - [x] Screenshot mobile headless semakan asas dibuat.
 - [x] Audit automatik local: CTA WhatsApp, form valid, form invalid, unavailable date, BM/EN, dark/light, gallery lightbox, Google Maps, dan page load.
 - [ ] Playwright browser smoke test terbaru belum lulus di environment ini kerana runner npx gagal resolve module `@playwright/test`; perlu ulang selepas dependency test dipasang dengan betul.
@@ -432,6 +467,8 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [ ] Klik Google Maps.
 - [ ] Buka policies page.
 - [ ] Buka thank-you page.
+- [ ] Guna `OWNER-DATA-CHECKLIST.md` untuk collect data final owner.
+- [ ] Guna `PRE-LIVE-QA.md` untuk semakan ringkas sebelum live.
 - [ ] Test dari phone sebenar menggunakan mobile data.
 
 ## Operasi Manual Owner

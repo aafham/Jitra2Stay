@@ -215,6 +215,15 @@
     return `${year}-${month}-${day}`;
   };
 
+  const addDaysIso = (isoDate, days) => {
+    const date = getDateValue(isoDate);
+    if (!date) {
+      return "";
+    }
+    date.setDate(date.getDate() + days);
+    return dateToIso(date);
+  };
+
   const isBlockedDay = (isoDate) => unavailableRanges.some((range) => {
     if (!range.start || !range.end) {
       return false;
@@ -489,6 +498,18 @@
       .filter(Boolean);
     const lodgingId = `${siteUrl}/#lodging`;
     const websiteId = `${siteUrl}/#website`;
+    const roomOffers = Object.entries(roomRates).map(([rooms, rate]) => ({
+      "@type": "Offer",
+      "name": `${rooms} Bilik / ${rooms} Room Package`,
+      "price": rate,
+      "priceCurrency": "MYR",
+      "availability": "https://schema.org/InStock",
+      "url": `${siteUrl}/#kadar`,
+      "itemOffered": {
+        "@type": "Accommodation",
+        "name": `${rooms} Bilik Jitra2Stay`
+      }
+    }));
     const schema = {
       "@context": "https://schema.org",
       "@graph": [
@@ -498,11 +519,14 @@
           "name": business.name || "Jitra2Stay",
           "url": siteUrl,
           "telephone": business.phone || "",
+          "email": business.email || "",
           "description": business.description || "Homestay Semi-D 2 tingkat di Jitra.",
           "image": business.image || `${siteUrl}/images/halaman.jpg`,
           "checkinTime": "15:00",
           "checkoutTime": "12:00",
           "hasMap": "https://goo.gl/maps/pjnMbwm5Pk2QqPeP8",
+          "paymentAccepted": "Bank transfer, DuitNow QR, Cash",
+          "currenciesAccepted": "MYR",
           "petsAllowed": false,
           "smokingAllowed": false,
           "address": {
@@ -526,6 +550,11 @@
             { "@type": "LocationFeatureSpecification", "name": "Water Heater", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Extra Mattresses, Pillows and Comforters", "value": true }
           ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Pakej bilik Jitra2Stay",
+            "itemListElement": roomOffers
+          },
           "priceRange": "RM180-RM330 per night",
           "sameAs": [
             "https://www.facebook.com/media/set/?set=a.2393864657563587&type=3"
@@ -940,8 +969,14 @@
   if (faqItems.length > 0) {
     faqItems.forEach((item, index) => {
       const heading = item.querySelector("h4");
+      const answer = item.querySelector("p");
       if (!heading) {
         return;
+      }
+      if (answer) {
+        answer.id = answer.id || `faq-answer-${index + 1}`;
+        answer.hidden = index !== 0;
+        heading.setAttribute("aria-controls", answer.id);
       }
       heading.setAttribute("role", "button");
       heading.setAttribute("tabindex", "0");
@@ -953,13 +988,20 @@
         faqItems.forEach((other) => {
           other.classList.remove("open");
           const h = other.querySelector("h4");
+          const p = other.querySelector("p");
           if (h) {
             h.setAttribute("aria-expanded", "false");
+          }
+          if (p) {
+            p.hidden = true;
           }
         });
         if (willOpen) {
           item.classList.add("open");
           heading.setAttribute("aria-expanded", "true");
+          if (answer) {
+            answer.hidden = false;
+          }
         }
       };
 
@@ -1054,19 +1096,21 @@
     const intentSelect = dateForm.querySelector('select[name="intent"]');
 
     if (checkinInput && checkoutInput) {
-      const today = new Date().toISOString().split("T")[0];
+      const today = dateToIso(new Date());
       checkinInput.setAttribute("min", today);
-      checkoutInput.setAttribute("min", today);
+      checkoutInput.setAttribute("min", addDaysIso(today, 1));
 
       checkinInput.addEventListener("change", () => {
         if (formFeedback) {
           formFeedback.textContent = "";
         }
         if (checkinInput.value) {
-          checkoutInput.setAttribute("min", checkinInput.value);
+          checkoutInput.setAttribute("min", addDaysIso(checkinInput.value, 1) || today);
           if (checkoutInput.value && checkoutInput.value <= checkinInput.value) {
             checkoutInput.value = "";
           }
+        } else {
+          checkoutInput.setAttribute("min", addDaysIso(today, 1));
         }
         updateLiveAvailabilityStatus();
         renderPriceEstimate();

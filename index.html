@@ -27,7 +27,10 @@
       name="twitter:description"
       content="Lihat harga, kemudahan dan lokasi Jitra2Stay. Terus WhatsApp untuk semak tarikh dan tempahan."
     >
-    <meta name="theme-color" content="#1f4f46">
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#1f4f46" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b1110" media="(prefers-color-scheme: dark)">
     <meta name="twitter:image" content="https://jitra2stay.com/images/halaman.jpg">
     <meta name="twitter:image:alt" content="Ruang utama Jitra2Stay Homestay di Jitra">
     <meta name="robots" content="index,follow">
@@ -61,11 +64,11 @@
     <header class="site-header" id="siteHeader">
       <div class="header-container">
         <div class="logo">
-          <h1>Jitra2Stay</h1>
+          <div class="logo-title">Jitra2Stay</div>
           <span data-bm="Homestay Selesa di Jitra" data-en="Comfortable Homestay in Jitra">Homestay Selesa di Jitra</span>
         </div>
 
-        <nav class="main-nav" id="mainNav">
+        <nav class="main-nav" id="mainNav" aria-label="Navigasi utama" data-bm-aria-label="Navigasi utama" data-en-aria-label="Main navigation">
           <a href="#home" data-bm="Laman Utama" data-en="Home">Laman Utama</a>
           <a href="#tentang" data-bm="Tentang" data-en="About">Tentang</a>
           <a href="#kemudahan" data-bm="Kemudahan" data-en="Facilities">Kemudahan</a>
@@ -111,7 +114,13 @@
             Tempah Sekarang
           </a>
 
-          <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            type="button"
+            aria-pressed="false"
+            aria-label="Tukar ke mod gelap"
+          >
             <span class="theme-icon" data-light="&#9790;" data-dark="&#9728;">&#9790;</span>
             <span
               class="theme-label"
@@ -124,7 +133,7 @@
             </span>
           </button>
 
-          <div class="lang-toggle" role="group" aria-label="Language toggle">
+          <div class="lang-toggle" role="group" aria-label="Pilihan bahasa" data-bm-aria-label="Pilihan bahasa" data-en-aria-label="Language toggle">
             <button class="lang-btn active" type="button" data-lang="ms" aria-pressed="true">BM</button>
             <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
           </div>
@@ -132,7 +141,7 @@
       </div>
     </header>
 
-    <main id="mainContent">
+    <main id="mainContent" tabindex="-1">
     <!-- ================= HERO ================= -->
     <section id="home" class="hero" aria-labelledby="heroTitle">
       <div class="hero-content">
@@ -144,9 +153,9 @@
           &#11088; Selesa untuk keluarga di Jitra
         </span>
 
-        <h2 id="heroTitle" data-bm="Homestay Semi-D<br>2 Tingkat di Jitra" data-en="2-Storey Semi-D<br>Homestay in Jitra">
+        <h1 id="heroTitle" data-bm="Homestay Semi-D<br>2 Tingkat di Jitra" data-en="2-Storey Semi-D<br>Homestay in Jitra">
           Homestay Semi-D<br>2 Tingkat di Jitra
-        </h2>
+        </h1>
         <p class="hero-trust" data-bm="Sesuai untuk keluarga &amp; rombongan kecil." data-en="Suitable for families &amp; small groups.">
           Sesuai untuk keluarga &amp; rombongan kecil.
         </p>
@@ -223,8 +232,8 @@
     <!-- ================= KADAR ================= -->
     <section id="kadar" class="pricing reveal">
       <h3 data-bm="Kadar Sewaan" data-en="Rates">Kadar Sewaan</h3>
-      <p class="pricing-desc" data-bm="Pilih pakej ikut bilik yang diperlukan dan jumlah tetamu. Diskaun untuk 2 malam ke atas boleh disemak melalui WhatsApp." data-en="Choose a package based on required rooms and guest count. Discounts for 2 nights and above can be checked via WhatsApp.">
-        Pilih pakej ikut bilik yang diperlukan dan jumlah tetamu. Diskaun untuk 2 malam ke atas boleh disemak melalui WhatsApp.
+        <p class="pricing-desc" data-bm="Pilih pakej ikut bilik dan jumlah tetamu. Untuk 2 malam ke atas, WhatsApp owner untuk semak kadar terbaik." data-en="Choose a package based on rooms and guest count. For 2 nights or more, WhatsApp the owner to check the best rate.">
+        Pilih pakej ikut bilik dan jumlah tetamu. Untuk 2 malam ke atas, WhatsApp owner untuk semak kadar terbaik.
       </p>
 
       <div class="pricing-grid">
@@ -273,25 +282,25 @@
       <h3 data-bm="Cara Tempah (1-2-3)" data-en="How to Book (1-2-3)">Cara Tempah (1-2-3)</h3>
       <p
         class="section-desc"
-        data-bm="Tiga langkah ringkas untuk tempahan pantas."
-        data-en="Three simple steps for a quick booking."
+        data-bm="Flow tempahan ringkas: semak tarikh, pilih pakej, kemudian confirm melalui WhatsApp."
+        data-en="Simple booking flow: check dates, choose a package, then confirm via WhatsApp."
       >
-        Tiga langkah ringkas untuk tempahan pantas.
+        Flow tempahan ringkas: semak tarikh, pilih pakej, kemudian confirm melalui WhatsApp.
       </p>
 
       <div class="book-steps">
         <div class="book-step">
           <span class="step-num">1</span>
           <h4 data-bm="Semak Tarikh" data-en="Check Dates">Semak Tarikh</h4>
-          <p data-bm="Maklumkan tarikh & bilangan tetamu." data-en="Share your dates & number of guests.">
-            Maklumkan tarikh & bilangan tetamu.
+          <p data-bm="Isi tarikh, jumlah tetamu dan tujuan penginapan." data-en="Enter your dates, guest count and stay purpose.">
+            Isi tarikh, jumlah tetamu dan tujuan penginapan.
           </p>
         </div>
         <div class="book-step">
           <span class="step-num">2</span>
           <h4 data-bm="Pilih Pakej" data-en="Pick a Package">Pilih Pakej</h4>
-          <p data-bm="Pilih bilangan bilik ikut bajet." data-en="Choose the number of rooms to match your budget.">
-            Pilih bilangan bilik ikut bajet.
+          <p data-bm="Pilih pakej 2 hingga 5 bilik ikut keperluan." data-en="Choose a 2 to 5-room package based on your needs.">
+            Pilih pakej 2 hingga 5 bilik ikut keperluan.
           </p>
         </div>
         <div class="book-step">
@@ -310,6 +319,15 @@
       >
         &#128179; <strong>Bayaran manual:</strong> Selepas slot disahkan, owner akan beri detail bank/DuitNow melalui WhatsApp. Hantar bukti bayaran di WhatsApp untuk pengesahan booking.
       </div>
+
+      <div class="after-whatsapp">
+        <span data-bm="Selepas WhatsApp" data-en="After WhatsApp">Selepas WhatsApp</span>
+        <ul>
+          <li data-bm="Owner semak slot dan pakej bilik." data-en="The owner checks the slot and room package.">Owner semak slot dan pakej bilik.</li>
+          <li data-bm="Detail bayaran diberi jika tarikh tersedia." data-en="Payment details are shared if the dates are available.">Detail bayaran diberi jika tarikh tersedia.</li>
+          <li data-bm="Tempahan confirm selepas bukti bayaran diterima." data-en="Booking is confirmed after payment proof is received.">Tempahan confirm selepas bukti bayaran diterima.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- ================= SEMAK TARIKH ================= -->
@@ -317,20 +335,20 @@
       <h3 data-bm="Semak Tarikh & Tempah Cepat" data-en="Check Dates & Book Faster">Semak Tarikh & Tempah Cepat</h3>
       <p
         class="section-desc"
-        data-bm="Isi borang 1 minit, terus hantar ke WhatsApp untuk pengesahan slot dan harga."
-        data-en="Fill in a 1-minute form and send it to WhatsApp for slot and rate confirmation."
+        data-bm="Isi borang ringkas, lihat anggaran harga, kemudian hantar terus ke WhatsApp."
+        data-en="Fill in the quick form, view the estimated rate, then send it straight to WhatsApp."
       >
-        Isi borang 1 minit, terus hantar ke WhatsApp untuk pengesahan slot dan harga.
+        Isi borang ringkas, lihat anggaran harga, kemudian hantar terus ke WhatsApp.
       </p>
 
       <div class="date-check-layout">
         <div class="date-check-main">
-          <form class="date-form" id="dateForm">
+          <form class="date-form" id="dateForm" aria-describedby="formAvailabilityStatus formPriceEstimate">
             <div class="date-form-head form-full">
               <span class="date-form-kicker" data-bm="Langkah 1" data-en="Step 1">Langkah 1</span>
               <h4 data-bm="Isi detail penginapan" data-en="Enter stay details">Isi detail penginapan</h4>
-              <p data-bm="Anggaran harga akan keluar automatik sebelum mesej dihantar ke WhatsApp." data-en="Estimated pricing appears automatically before the message is sent to WhatsApp.">
-                Anggaran harga akan keluar automatik sebelum mesej dihantar ke WhatsApp.
+              <p data-bm="Anggaran harga keluar automatik. Slot dan harga akhir tetap disahkan oleh owner melalui WhatsApp." data-en="The estimated rate appears automatically. The owner will still confirm the final slot and rate via WhatsApp.">
+                Anggaran harga keluar automatik. Slot dan harga akhir tetap disahkan oleh owner melalui WhatsApp.
               </p>
             </div>
 
@@ -370,11 +388,23 @@
             </label>
 
             <label class="form-field form-full">
-              <span data-bm="Nota (optional)" data-en="Notes (optional)">Nota (optional)</span>
-              <textarea name="notes" rows="3" placeholder="Contoh: datang konvokesyen..."></textarea>
+              <span data-bm="Nota Tambahan (optional)" data-en="Additional Notes (optional)">Nota Tambahan (optional)</span>
+              <textarea
+                name="notes"
+                rows="3"
+                placeholder="Contoh: datang konvokesyen..."
+                data-bm-placeholder="Contoh: datang konvokesyen..."
+                data-en-placeholder="Example: coming for convocation..."
+              ></textarea>
             </label>
 
-            <button type="submit" class="btn-primary" data-bm="Hantar ke WhatsApp" data-en="Send to WhatsApp">
+            <button
+              type="submit"
+              class="btn-primary"
+              data-bm="Hantar ke WhatsApp"
+              data-en="Send to WhatsApp"
+              aria-describedby="formPriceEstimate"
+            >
               Hantar ke WhatsApp
             </button>
             <p class="form-feedback" id="formFeedback" aria-live="polite"></p>
@@ -950,6 +980,51 @@
       </div>
     </section>
 
+    <!-- ================= LOCAL SEO INTENT ================= -->
+    <section class="local-intent reveal" aria-labelledby="localIntentTitle">
+      <span class="local-intent-kicker" data-bm="Carian Popular" data-en="Popular Searches">Carian Popular</span>
+      <h3
+        id="localIntentTitle"
+        data-bm="Homestay di Jitra Untuk Keluarga, Hospital, Kenduri &amp; Konvokesyen"
+        data-en="Homestay in Jitra for Families, Hospital Visits, Events &amp; Convocations"
+      >
+        Homestay di Jitra Untuk Keluarga, Hospital, Kenduri &amp; Konvokesyen
+      </h3>
+      <p
+        class="section-desc"
+        data-bm="Jitra2Stay sesuai untuk tetamu yang mencari rumah penginapan luas, mudah akses dan direct WhatsApp untuk semak tarikh."
+        data-en="Jitra2Stay suits guests looking for a spacious stay with easy access and direct WhatsApp date enquiries."
+      >
+        Jitra2Stay sesuai untuk tetamu yang mencari rumah penginapan luas, mudah akses dan direct WhatsApp untuk semak tarikh.
+      </p>
+
+      <div class="local-intent-grid">
+        <article class="local-intent-card">
+          <span>&#127973;</span>
+          <h4 data-bm="Homestay Dekat Hospital Jitra" data-en="Homestay Near Jitra Hospital">Homestay Dekat Hospital Jitra</h4>
+          <p data-bm="Lokasi berhampiran Hospital Jitra, sesuai untuk keluarga yang perlu urusan hospital atau melawat ahli keluarga." data-en="Located near Jitra Hospital, suitable for families handling hospital visits or appointments.">Lokasi berhampiran Hospital Jitra, sesuai untuk keluarga yang perlu urusan hospital atau melawat ahli keluarga.</p>
+        </article>
+
+        <article class="local-intent-card">
+          <span>&#128106;</span>
+          <h4 data-bm="Homestay Keluarga Besar" data-en="Large Family Homestay">Homestay Keluarga Besar</h4>
+          <p data-bm="Pakej 2 hingga 5 bilik, kapasiti maksimum 20 tetamu termasuk kanak-kanak dan sesuai untuk rombongan keluarga." data-en="2 to 5-room packages, maximum 20 guests including children, and suitable for family groups.">Pakej 2 hingga 5 bilik, kapasiti maksimum 20 tetamu termasuk kanak-kanak dan sesuai untuk rombongan keluarga.</p>
+        </article>
+
+        <article class="local-intent-card">
+          <span>&#127881;</span>
+          <h4 data-bm="Kenduri &amp; Majlis Keluarga" data-en="Events &amp; Family Gatherings">Kenduri &amp; Majlis Keluarga</h4>
+          <p data-bm="Sesuai untuk tetamu kenduri, reunion, hari jadi atau majlis kecil dengan izin owner semasa booking." data-en="Suitable for event guests, reunions, birthdays or small gatherings with owner approval during booking.">Sesuai untuk tetamu kenduri, reunion, hari jadi atau majlis kecil dengan izin owner semasa booking.</p>
+        </article>
+
+        <article class="local-intent-card">
+          <span>&#127891;</span>
+          <h4 data-bm="Konvokesyen &amp; Urusan Institusi" data-en="Convocation &amp; Institution Trips">Konvokesyen &amp; Urusan Institusi</h4>
+          <p data-bm="Pilihan praktikal untuk keluarga yang datang ke Jitra, POLIMAS, MRSM Kubang Pasu atau kawasan sekitar." data-en="A practical option for families visiting Jitra, POLIMAS, MRSM Kubang Pasu or nearby areas.">Pilihan praktikal untuk keluarga yang datang ke Jitra, POLIMAS, MRSM Kubang Pasu atau kawasan sekitar.</p>
+        </article>
+      </div>
+    </section>
+
     <section class="trust reveal">
       <h3 data-bm="Kenapa Pilih Jitra2Stay?" data-en="Why Choose Jitra2Stay?">Kenapa Pilih Jitra2Stay?</h3>
       <p class="section-desc" data-bm="Fokus utama kami ialah rumah yang selesa, lokasi mudah dan urusan tempahan yang jelas." data-en="Our focus is a comfortable home, convenient location and a clear booking process.">
@@ -1077,6 +1152,26 @@
         <div class="faq-item">
           <h4 data-bm="&#128652; Boleh parking van atau bas?" data-en="&#128652; Can vans or buses park nearby?">&#128652; Boleh parking van atau bas?</h4>
           <p data-bm="Untuk van/bas, sila WhatsApp awal supaya owner boleh nasihatkan pilihan parking yang sesuai." data-en="For vans/buses, please WhatsApp early so the owner can advise suitable parking options.">Untuk van/bas, sila WhatsApp awal supaya owner boleh nasihatkan pilihan parking yang sesuai.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#127973; Homestay ini dekat dengan Hospital Jitra?" data-en="&#127973; Is this homestay near Jitra Hospital?">&#127973; Homestay ini dekat dengan Hospital Jitra?</h4>
+          <p data-bm="Ya, Jitra2Stay terletak berhampiran Hospital Jitra dan alamat penuh dipaparkan di bahagian Lokasi. Sila buka Google Maps untuk semak laluan terkini." data-en="Yes, Jitra2Stay is near Jitra Hospital and the full address is shown in the Location section. Please open Google Maps to check the latest route.">Ya, Jitra2Stay terletak berhampiran Hospital Jitra dan alamat penuh dipaparkan di bahagian Lokasi. Sila buka Google Maps untuk semak laluan terkini.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#127891; Sesuai untuk keluarga datang konvokesyen?" data-en="&#127891; Suitable for families attending convocation?">&#127891; Sesuai untuk keluarga datang konvokesyen?</h4>
+          <p data-bm="Ya, sesuai untuk keluarga atau rombongan kecil yang datang untuk konvokesyen atau urusan institusi sekitar Jitra. WhatsApp awal untuk semak tarikh kerana slot musim konvokesyen biasanya cepat penuh." data-en="Yes, it suits families or small groups visiting for convocation or institution-related trips around Jitra. WhatsApp early to check dates as convocation season slots can fill quickly.">Ya, sesuai untuk keluarga atau rombongan kecil yang datang untuk konvokesyen atau urusan institusi sekitar Jitra. WhatsApp awal untuk semak tarikh kerana slot musim konvokesyen biasanya cepat penuh.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#128719; Boleh sewa ikut bilangan bilik?" data-en="&#128719; Can we book based on number of rooms?">&#128719; Boleh sewa ikut bilangan bilik?</h4>
+          <p data-bm="Ya, kadar flexy tersedia untuk 2, 3, 4 atau 5 bilik. Pilih pakej ikut jumlah tetamu dan bajet, kemudian owner akan sahkan harga akhir melalui WhatsApp." data-en="Yes, flexible rates are available for 2, 3, 4 or 5 rooms. Choose a package based on guest count and budget, then the owner will confirm the final rate via WhatsApp.">Ya, kadar flexy tersedia untuk 2, 3, 4 atau 5 bilik. Pilih pakej ikut jumlah tetamu dan bajet, kemudian owner akan sahkan harga akhir melalui WhatsApp.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4 data-bm="&#9889; Boleh booking last minute?" data-en="&#9889; Can we book last minute?">&#9889; Boleh booking last minute?</h4>
+          <p data-bm="Boleh cuba WhatsApp untuk semak slot terdekat. Jika tarikh masih tersedia, owner akan beri detail bayaran dan arahan seterusnya." data-en="You can WhatsApp to check the nearest available slot. If the dates are still available, the owner will share payment details and next steps.">Boleh cuba WhatsApp untuk semak slot terdekat. Jika tarikh masih tersedia, owner akan beri detail bayaran dan arahan seterusnya.</p>
         </div>
 
         <div class="faq-item">
@@ -1225,7 +1320,7 @@
           <div class="footer-links">
             <a href="tel:+60194410666"><span class="footer-link-label">Call</span> +60 19-441 0666</a>
             <a href="mailto:jitra2stay@gmail.com"><span class="footer-link-label">Email</span> jitra2stay@gmail.com</a>
-            <a href="https://wa.me/60194410666" target="_blank" rel="noopener"><span class="footer-link-label">Chat</span> WhatsApp</a>
+            <a href="https://wa.me/60194410666?text=Hai%20Jitra2Stay,%20saya%20nak%20tanya%20tentang%20homestay." target="_blank" rel="noopener"><span class="footer-link-label">Chat</span> WhatsApp</a>
           </div>
         </div>
       </div>
@@ -1244,7 +1339,7 @@
 
     <!-- ================= FLOATING WHATSAPP ================= -->
     <a
-      href="https://wa.me/60194410666"
+      href="https://wa.me/60194410666?text=Hai%20Jitra2Stay,%20saya%20nak%20tanya%20tentang%20homestay."
       class="floating-whatsapp"
       aria-label="WhatsApp"
       target="_blank"
