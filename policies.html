@@ -15,6 +15,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#1f4f46" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0b1110" media="(prefers-color-scheme: dark)">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <style>
       :root {
         --bg: #f7f4ef;
@@ -161,6 +162,46 @@
         .wrap { padding: 16px 12px 42px; }
         section { padding: 17px; }
         .actions .btn { width: 100%; }
+      }
+      @media print {
+        :root {
+          --bg: #ffffff;
+          --surface: #ffffff;
+          --text: #111827;
+          --muted: #374151;
+          --primary: #111827;
+          --border: #d1d5db;
+        }
+        body {
+          background: #ffffff;
+          color: #111827;
+        }
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+        .head,
+        section {
+          box-shadow: none;
+          border: 1px solid #d1d5db;
+          break-inside: avoid;
+        }
+        .head {
+          color: #111827;
+          background: #ffffff;
+        }
+        .head p,
+        .eyebrow,
+        .summary span {
+          color: #111827;
+        }
+        .summary span {
+          background: #ffffff;
+          border-color: #d1d5db;
+        }
+        .actions {
+          display: none;
+        }
       }
     </style>
   </head>

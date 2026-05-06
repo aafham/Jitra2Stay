@@ -44,11 +44,16 @@ Yang masih perlu dibuat sebelum live:
 - `app.config.js` - konfigurasi business, analytics, ICS calendar optional, video URL optional, dan tarikh tidak tersedia.
 - `policies.html` - polisi tempahan, house rules, dan privasi ringkas.
 - `thank-you.html` - halaman selepas klik/submit WhatsApp.
+- `404.html` - fallback page jika URL salah atau page tidak dijumpai.
 - `ms.html` / `en.html` - redirect/landing bahasa.
 - `robots.txt` / `sitemap.xml` - SEO crawler.
 - `OWNER-DATA-CHECKLIST.md` - checklist data sebenar yang owner perlu beri untuk final update.
 - `PRE-LIVE-QA.md` - checklist ringkas sebelum upload/deploy live.
 - `CHANGELOG.md` - ringkasan perubahan penting yang sudah dibuat.
+- `DEPLOYMENT.md` - guide deploy static website.
+- `SEO-SUBMISSION.md` - guide submit sitemap dan semak SEO selepas domain live.
+- `IMAGE-AUDIT.md` - audit saiz gambar semasa dan checklist gambar latest.
+- `tools/qa-check.js` - QA automatik untuk link, image, sitemap, metadata, dan page load.
 - `images/` - gambar homestay.
 
 ## Jalankan Secara Local
@@ -66,6 +71,12 @@ Lepas itu buka:
 
 ```text
 http://localhost:5500
+```
+
+QA automatik:
+
+```powershell
+node tools/qa-check.js
 ```
 
 ## Deploy
@@ -242,6 +253,15 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tambah local SEO intent section untuk Hospital Jitra, keluarga besar, kenduri dan konvokesyen.
 - [x] Tambah FAQ search-intent: Hospital Jitra, konvokesyen, sewa ikut bilik, dan last-minute booking.
 - [x] Tambah `CHANGELOG.md`.
+- [x] Tambah `tools/qa-check.js` untuk QA teknikal automatik.
+- [x] Tambah `DEPLOYMENT.md`.
+- [x] Tambah `SEO-SUBMISSION.md`.
+- [x] Tambah `IMAGE-AUDIT.md`.
+- [x] Tambah no-JS fallback dengan CTA WhatsApp.
+- [x] Tambah `404.html`.
+- [x] Tambah print-friendly style untuk `policies.html`.
+- [x] Tambah referrer policy meta untuk page utama, polisi, thank-you dan 404.
+- [x] Update `tools/qa-check.js` untuk check no-JS, 404, referrer policy dan print style.
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
@@ -441,6 +461,7 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [x] Thank-you page boleh load melalui local server.
 - [x] Policies page boleh load melalui local server.
 - [x] Policies page UI dipolish dan masih static.
+- [x] 404 page boleh load melalui local server.
 - [x] Sitemap boleh load melalui local server.
 - [x] `app.js` lulus syntax check.
 - [x] `app.config.js` lulus syntax check.
@@ -451,6 +472,9 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [x] Semakan kod confirm `admin.html`, owner password, dan owner editor tiada dalam public flow.
 - [x] Semakan kod confirm anggaran harga form wujud dalam HTML dan JS.
 - [x] Semakan kod confirm homepage ada satu `h1` utama pada hero.
+- [x] QA automatik boleh dijalankan dengan `node tools/qa-check.js`.
+- [x] QA automatik cover no-JS fallback, 404 page, referrer policy dan print style polisi.
+- [x] Audit saiz gambar semasa dibuat dalam `IMAGE-AUDIT.md`.
 - [x] Screenshot mobile headless semakan asas dibuat.
 - [x] Audit automatik local: CTA WhatsApp, form valid, form invalid, unavailable date, BM/EN, dark/light, gallery lightbox, Google Maps, dan page load.
 - [ ] Playwright browser smoke test terbaru belum lulus di environment ini kerana runner npx gagal resolve module `@playwright/test`; perlu ulang selepas dependency test dipasang dengan betul.

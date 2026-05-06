@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Tidak Dijumpai | Jitra2Stay</title>
+    <meta name="robots" content="noindex,follow">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#1f4f46" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b1110" media="(prefers-color-scheme: dark)">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <style>
+      :root {
+        --bg: #f7f4ef;
+        --surface: #ffffff;
+        --surface-soft: #f6fbf8;
+        --text: #1f2937;
+        --muted: #5b6764;
+        --primary: #1f4f46;
+        --accent: #6ee7b7;
+        --border: rgba(31, 79, 70, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(63, 163, 123, 0.22), transparent 34rem),
+          var(--bg);
+        color: var(--text);
+      }
+      main {
+        width: min(760px, 100%);
+        padding: clamp(26px, 6vw, 48px);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        background: var(--surface);
+        box-shadow: 0 22px 54px rgba(17, 51, 43, 0.14);
+      }
+      .code {
+        display: inline-flex;
+        margin-bottom: 14px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--surface-soft);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+      }
+      h1 {
+        margin: 0 0 10px;
+        color: var(--primary);
+        font-size: clamp(34px, 8vw, 64px);
+        line-height: 1.04;
+      }
+      p {
+        max-width: 58ch;
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.7;
+      }
+      .actions {
+        margin-top: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      a {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 800;
+      }
+      .primary {
+        background: var(--accent);
+        color: #06231d;
+      }
+      .secondary {
+        border: 1px solid var(--border);
+        background: var(--surface-soft);
+        color: var(--primary);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1110;
+          --surface: #111a18;
+          --surface-soft: #14201d;
+          --text: #e6eceb;
+          --muted: #b8c5c2;
+          --primary: #9fe6cd;
+          --accent: #6ee7b7;
+          --border: rgba(159, 230, 205, 0.18);
+        }
+        main { box-shadow: 0 22px 54px rgba(0, 0, 0, 0.34); }
+      }
+      @media (max-width: 560px) {
+        .actions a { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="code">404</span>
+      <h1>Page tidak dijumpai</h1>
+      <p>
+        Link ini mungkin sudah berubah atau tersalah taip. Anda boleh kembali ke homepage Jitra2Stay atau terus WhatsApp untuk tanya tarikh, harga dan ketersediaan bilik.
+      </p>
+      <div class="actions">
+        <a class="primary" href="index.html">Kembali ke Homepage</a>
+        <a class="secondary" href="https://wa.me/60194410666?text=Hai%20Jitra2Stay,%20saya%20nak%20tanya%20tentang%20homestay." target="_blank" rel="noopener">WhatsApp Jitra2Stay</a>
+      </div>
+    </main>
+  </body>
+</html>
