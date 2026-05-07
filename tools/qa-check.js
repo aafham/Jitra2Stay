@@ -5,6 +5,7 @@ const path = require("path");
 const rootDir = path.resolve(__dirname, "..");
 const siteOrigin = "https://jitra2stay.com";
 const htmlPages = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html"];
+const publicFiles = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html", "app.js", "app.config.js", "sitemap.xml", "robots.txt"];
 const staticPaths = [
   "/",
   "/policies.html",
@@ -16,6 +17,10 @@ const staticPaths = [
   "/robots.txt",
   "/OWNER-DATA-CHECKLIST.md",
   "/PRE-LIVE-QA.md",
+  "/CONTENT-REVIEW.md",
+  "/MAINTENANCE.md",
+  "/QA-REPORT.md",
+  "/HANDOVER.md",
   "/CHANGELOG.md"
 ];
 
@@ -43,10 +48,61 @@ const checkFilesExist = () => {
     "robots.txt",
     "OWNER-DATA-CHECKLIST.md",
     "PRE-LIVE-QA.md",
+    "CONTENT-REVIEW.md",
+    "MAINTENANCE.md",
+    "QA-REPORT.md",
+    "HANDOVER.md",
     "CHANGELOG.md"
   ].forEach((file) => {
     exists(file) ? pass(`required file exists: ${file}`) : fail(`required file exists: ${file}`);
   });
+};
+
+const checkSensitiveInfo = () => {
+  const patterns = [
+    { name: "WiFi password", pattern: /(wifi|wi-fi)[\s\S]{0,40}(password|pass|kata laluan)/i },
+    { name: "bank account number", pattern: /(account\s*number|no\.?\s*akaun|nombor\s*akaun|account\s*no)/i },
+    { name: "owner password config", pattern: /ownerPassword\s*[:=]/i },
+    { name: "admin page reference", pattern: /admin\.html/i },
+    { name: "login form", pattern: /<form[\s\S]{0,400}(login|password)/i },
+    { name: "possible Malaysian IC number", pattern: /\b\d{6}-\d{2}-\d{4}\b/ }
+  ];
+
+  const findings = [];
+  publicFiles.forEach((file) => {
+    const content = read(file);
+    patterns.forEach(({ name, pattern }) => {
+      if (pattern.test(content)) {
+        findings.push(`${file}: ${name}`);
+      }
+    });
+  });
+
+  findings.length === 0
+    ? pass("public files do not expose sensitive info")
+    : fail("public files do not expose sensitive info", findings.join("; "));
+};
+
+const countAttr = (html, attr) => (html.match(new RegExp(`\\s${attr}=`, "g")) || []).length;
+
+const checkTranslationPairs = () => {
+  const html = read("index.html");
+  const pairs = [
+    ["data-bm", "data-en"],
+    ["data-bm-alt", "data-en-alt"],
+    ["data-bm-href", "data-en-href"],
+    ["data-bm-placeholder", "data-en-placeholder"],
+    ["data-bm-title", "data-en-title"],
+    ["data-bm-aria-label", "data-en-aria-label"]
+  ];
+
+  const mismatches = pairs
+    .map(([bm, en]) => ({ bm, en, bmCount: countAttr(html, bm), enCount: countAttr(html, en) }))
+    .filter((item) => item.bmCount !== item.enCount);
+
+  mismatches.length === 0
+    ? pass("BM/EN translation attributes are paired")
+    : fail("BM/EN translation attributes are paired", mismatches.map((item) => `${item.bm}/${item.en}: ${item.bmCount}/${item.enCount}`).join("; "));
 };
 
 const checkHomepage = () => {
@@ -219,6 +275,8 @@ const checkPageLoads = async () => {
 const main = async () => {
   checkFilesExist();
   checkHomepage();
+  checkSensitiveInfo();
+  checkTranslationPairs();
   checkAnchorsAndImages();
   checkLinks();
   checkSeoFiles();

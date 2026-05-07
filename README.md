@@ -10,6 +10,10 @@ Tujuan website ini sangat direct:
 
 ## Status Semasa
 
+Current build status: **ready for owner data, phone test, and deploy**.
+
+QA automatik terakhir: `node tools/qa-check.js` pass **55 checks** pada 2026-05-08.
+
 Yang sudah ada:
 - [x] Homepage lengkap dengan hero, harga, cara tempah, form semak tarikh, galeri, lokasi, FAQ, dan CTA WhatsApp.
 - [x] BM/EN toggle.
@@ -48,8 +52,12 @@ Yang masih perlu dibuat sebelum live:
 - `ms.html` / `en.html` - redirect/landing bahasa.
 - `robots.txt` / `sitemap.xml` - SEO crawler.
 - `OWNER-DATA-CHECKLIST.md` - checklist data sebenar yang owner perlu beri untuk final update.
+- `CONTENT-REVIEW.md` - checklist approval ayat public oleh owner.
 - `PRE-LIVE-QA.md` - checklist ringkas sebelum upload/deploy live.
 - `CHANGELOG.md` - ringkasan perubahan penting yang sudah dibuat.
+- `MAINTENANCE.md` - guide update harga, gambar, polisi, tarikh dan SEO selepas live.
+- `QA-REPORT.md` - laporan QA automatik terakhir dan baki manual test.
+- `HANDOVER.md` - ringkasan handover untuk owner/developer lain.
 - `DEPLOYMENT.md` - guide deploy static website.
 - `SEO-SUBMISSION.md` - guide submit sitemap dan semak SEO selepas domain live.
 - `IMAGE-AUDIT.md` - audit saiz gambar semasa dan checklist gambar latest.
@@ -257,6 +265,13 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tambah `DEPLOYMENT.md`.
 - [x] Tambah `SEO-SUBMISSION.md`.
 - [x] Tambah `IMAGE-AUDIT.md`.
+- [x] Tambah `CONTENT-REVIEW.md`.
+- [x] Tambah `MAINTENANCE.md`.
+- [x] Tambah `QA-REPORT.md`.
+- [x] Tambah `HANDOVER.md`.
+- [x] Tambah current build status dalam README.
+- [x] Tambah QA sensitive-info untuk public files.
+- [x] Tambah QA consistency pasangan BM/EN attributes.
 - [x] Tambah no-JS fallback dengan CTA WhatsApp.
 - [x] Tambah `404.html`.
 - [x] Tambah print-friendly style untuk `policies.html`.
@@ -474,6 +489,7 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [x] Semakan kod confirm homepage ada satu `h1` utama pada hero.
 - [x] QA automatik boleh dijalankan dengan `node tools/qa-check.js`.
 - [x] QA automatik cover no-JS fallback, 404 page, referrer policy dan print style polisi.
+- [x] QA automatik cover sensitive-info dan BM/EN translation attributes.
 - [x] Audit saiz gambar semasa dibuat dalam `IMAGE-AUDIT.md`.
 - [x] Screenshot mobile headless semakan asas dibuat.
 - [x] Audit automatik local: CTA WhatsApp, form valid, form invalid, unavailable date, BM/EN, dark/light, gallery lightbox, Google Maps, dan page load.
