@@ -14,7 +14,8 @@ Pastikan checklist ini selesai:
 
 - [ ] `OWNER-DATA-CHECKLIST.md` sudah disemak untuk data final.
 - [ ] `PRE-LIVE-QA.md` sudah dibuat untuk phone test.
-- [ ] Gambar final sudah masuk folder `images/`.
+- [x] Gambar pilihan website sudah masuk folder `images/`.
+- [ ] Gambar bilik air/video kecil ditambah kemudian jika mahu.
 - [ ] Nombor WhatsApp betul.
 - [ ] Domain dalam `app.config.js`, `index.html`, `sitemap.xml`, dan `robots.txt` betul.
 - [ ] Tiada password WiFi atau info sensitif dalam website public.
@@ -68,6 +69,8 @@ Upload semua fail ini ke `public_html`:
 - folder `images/`
 
 Fail dokumentasi seperti `README.md`, `CHANGELOG.md`, `OWNER-DATA-CHECKLIST.md`, dan `PRE-LIVE-QA.md` tidak wajib upload.
+
+Jangan upload folder `source-images/latest-raw/` untuk shared hosting/cPanel kerana folder itu hanya simpan raw gambar dan video besar.
 
 ## Deploy Ke GitHub Pages
 

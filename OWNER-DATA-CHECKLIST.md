@@ -4,23 +4,24 @@ Checklist ini untuk kumpul data sebenar sebelum update final website.
 
 ## Gambar
 
-- [ ] Hero utama website.
-- [ ] Share preview / thumbnail.
-- [ ] Exterior depan rumah siang.
+- [x] Hero utama website.
+- [x] Share preview / thumbnail.
+- [x] Exterior depan rumah siang.
 - [ ] Exterior depan rumah malam jika ada.
-- [ ] Parking.
-- [ ] Ruang tamu wide angle.
-- [ ] Ruang makan.
-- [ ] Dapur / pantry.
-- [ ] Bilik tidur 1.
-- [ ] Bilik tidur 2.
-- [ ] Bilik tidur 3.
+- [x] Parking.
+- [x] Ruang tamu wide angle.
+- [x] Ruang makan.
+- [x] Dapur / pantry.
+- [x] Bilik tidur 1.
+- [x] Bilik tidur 2.
+- [x] Bilik tidur 3.
 - [ ] Bilik tidur 4.
 - [ ] Bilik tidur 5.
 - [ ] Bilik air 1.
 - [ ] Bilik air 2.
 - [ ] Bilik air 3.
 - [ ] Kemudahan penting seperti TV, peti ais, mesin basuh, iron, water heater.
+- [ ] Video walkthrough kecil untuk website.
 
 ## Harga
 

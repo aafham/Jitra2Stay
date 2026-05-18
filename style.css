@@ -310,7 +310,7 @@ textarea:focus-visible {
 /* ================= HERO ================= */
 .hero {
   background: linear-gradient(var(--hero-overlay), var(--hero-overlay)),
-    url("images/ruang-tamu.jpg");
+    url("images/halaman.jpg");
   background-size: cover;
   background-position: center;
   padding: 120px 20px;
@@ -3121,7 +3121,7 @@ textarea:focus-visible {
     padding: 138px 24px 118px;
     background:
       linear-gradient(108deg, rgba(16, 54, 47, 0.7), rgba(18, 60, 52, 0.56)),
-      url("images/ruang-tamu.jpg");
+      url("images/halaman.jpg");
     background-size: cover;
     background-position: center 42%;
   }
@@ -3278,7 +3278,7 @@ textarea:focus-visible {
     padding: 154px 24px 128px;
     background:
       linear-gradient(115deg, rgba(15, 45, 40, 0.72), rgba(15, 45, 40, 0.48)),
-      url("images/ruang-tamu.jpg");
+      url("images/halaman.jpg");
     background-size: cover;
     background-position: center 44%;
   }
@@ -4349,7 +4349,7 @@ textarea:focus-visible {
     padding: 146px 24px 116px;
     background:
       linear-gradient(112deg, rgba(10, 35, 30, 0.72), rgba(10, 35, 30, 0.4)),
-      url("images/ruang-tamu.jpg");
+      url("images/halaman.jpg");
     background-size: cover;
     background-position: center 42%;
   }

@@ -1,6 +1,6 @@
 # Jitra2Stay QA Report
 
-Tarikh QA: 2026-05-08
+Tarikh QA: 2026-05-18
 
 ## Status Ringkas
 
@@ -38,21 +38,26 @@ All 55 QA checks passed.
 - [x] Referrer policy ada pada page utama.
 - [x] 404 page ada recovery actions.
 - [x] Policies page ada print styles.
-- [x] Semua gambar semasa bawah 350 KB.
+- [x] Semua gambar website dalam `images/` bawah 350 KB.
 - [x] Local static server load required paths.
 
-## Saiz Gambar Semasa
+## Saiz Gambar Website Semasa
 
 | Gambar | Saiz |
 | --- | ---: |
-| `halaman.jpg` | 179 KB |
-| `parking.jpg` | 76 KB |
-| `luar-rumah.jpg` | 76 KB |
-| `dapur.jpg` | 71 KB |
-| `bilik-tidur.jpg` | 62 KB |
-| `ruang-tamu.jpg` | 55 KB |
+| `halaman.jpg` | 328 KB |
+| `parking.jpg` | 316 KB |
+| `luar-rumah.jpg` | 318 KB |
+| `dapur.jpg` | 243 KB |
+| `bilik-tidur.jpg` | 249 KB |
+| `ruang-tamu.jpg` | 255 KB |
+| `ruang-makan.jpg` | 204 KB |
+| `bilik-keluarga.jpg` | 252 KB |
+| `bilik-besar.jpg` | 267 KB |
+| `tangga-ruang-makan.jpg` | 215 KB |
+| `porch-parking.jpg` | 243 KB |
 
-Semua gambar semasa masih ringan untuk static website.
+Raw files asal disimpan di `source-images/latest-raw/` dan tidak digunakan sebagai public website assets.
 
 ## Masih Perlu Test Manual
 
@@ -66,7 +71,9 @@ Semua gambar semasa masih ringan untuk static website.
 
 ## Masih Perlu Data Owner
 
-- [ ] Gambar latest semua ruang/bilik/bilik air/parking/exterior.
+- [ ] Gambar semua 3 bilik air.
+- [ ] Gambar semua 5 bilik tidur berlabel jika mahu pecahkan satu per satu.
+- [ ] Video walkthrough kecil jika mahu aktifkan section video.
 - [ ] Harga peak season, cuti sekolah, cuti umum, konvokesyen.
 - [ ] Parking sebenar muat berapa kereta/van/bas.
 - [ ] Polisi refund dan tukar tarikh final.

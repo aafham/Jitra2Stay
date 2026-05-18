@@ -34,7 +34,8 @@ Yang sudah ada:
 
 Yang masih perlu dibuat sebelum live:
 - [ ] Sahkan semua data rumah, harga, polisi, dan lokasi dengan owner.
-- [ ] Masukkan gambar sebenar yang cukup untuk semua bilik, bilik air, dapur, ruang tamu, parking, dan exterior.
+- [x] Masukkan gambar latest pilihan untuk hero, gallery, ruang tamu, ruang makan, pantry, bilik, parking, dan exterior.
+- [ ] Tambah gambar semua bilik air dan label semua 5 bilik satu per satu bila owner beri gambar final.
 - [x] Compress gambar sedia ada untuk prestasi mobile.
 - [ ] Test akhir di phone sebenar dan mobile data.
 - [ ] Test WhatsApp link dari phone sebenar.
@@ -62,7 +63,8 @@ Yang masih perlu dibuat sebelum live:
 - `SEO-SUBMISSION.md` - guide submit sitemap dan semak SEO selepas domain live.
 - `IMAGE-AUDIT.md` - audit saiz gambar semasa dan checklist gambar latest.
 - `tools/qa-check.js` - QA automatik untuk link, image, sitemap, metadata, dan page load.
-- `images/` - gambar homestay.
+- `images/` - gambar homestay yang sudah dioptimize untuk website.
+- `source-images/latest-raw/` - raw gambar/video asal untuk simpanan, jangan upload sebagai public website.
 
 ## Jalankan Secara Local
 
@@ -201,7 +203,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tambah final dark-mode override di hujung CSS supaya desktop styling tidak override warna dark mode.
 - [ ] Test di iPhone/Android sebenar.
 - [ ] Pastikan date form input selesa di phone sebenar.
-- [ ] Pastikan gallery image nampak baik dengan gambar latest sebenar.
+- [x] Pastikan gallery image nampak baik dengan gambar latest sebenar.
 
 ### 7. SEO dan Share Preview
 
@@ -226,9 +228,10 @@ Fail lain yang perlu selari dengan domain:
 - [ ] Sediakan versi WebP untuk gambar besar bila tool/build pipeline sesuai tersedia.
 - [x] Pastikan hero image tidak terlalu berat untuk versi gambar semasa.
 - [x] Pastikan width/height gambar sedia ada sepadan dengan saiz sebenar.
-- [ ] Tambah gambar setiap bilik tidur, bilik air, dapur, ruang tamu, parking, exterior, dan kawasan sekitar.
-- [ ] Elakkan gambar gelap atau blur.
-- [ ] Pastikan gambar menunjukkan keadaan sebenar rumah.
+- [x] Tambah gambar latest untuk hero, ruang tamu, ruang makan, pantry, bilik tidur, parking, exterior, dan kawasan luar.
+- [x] Elakkan gambar gelap atau blur untuk gambar yang dipilih masuk website.
+- [x] Pastikan gambar menunjukkan keadaan sebenar rumah.
+- [ ] Tambah gambar semua 3 bilik air dan semua 5 bilik dengan label final.
 
 ## Checklist P1 - Improve Conversion Lepas P0
 
@@ -311,8 +314,9 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 
 ### Ringkasan Paling Penting Untuk Saya Update Nanti
 
-- [ ] Gambar latest: exterior, parking, ruang tamu, dapur, setiap bilik, setiap bilik air, kemudahan penting.
-- [ ] Pilih gambar hero utama final dan gambar share preview final.
+- [x] Gambar latest pilihan: exterior, parking, ruang tamu, ruang makan, pantry/dapur, beberapa bilik, dan kawasan luar.
+- [x] Pilih gambar hero utama final sementara dan gambar share preview final sementara.
+- [ ] Tambah gambar setiap bilik air, semua 5 bilik berlabel, dan kemudahan penting secara dekat.
 - [x] Harga final asas: 2 bilik RM180, 3 bilik RM230, 4 bilik RM280, 5 bilik RM330.
 - [ ] Harga tambahan: weekend, cuti sekolah, cuti umum, konvokesyen, peak season, dan diskaun 2 malam ke atas.
 - [ ] Sahkan ayat promosi final yang owner mahu guna untuk homepage.
@@ -408,15 +412,15 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 
 ### E. Gambar Yang Perlu Diberi Nanti
 
-- [ ] Gambar exterior depan rumah siang.
+- [x] Gambar exterior depan rumah siang.
 - [ ] Gambar exterior depan rumah malam jika ada.
-- [ ] Gambar parking.
-- [ ] Gambar ruang tamu wide angle.
-- [ ] Gambar ruang makan jika ada.
-- [ ] Gambar dapur.
-- [ ] Gambar bilik tidur 1.
-- [ ] Gambar bilik tidur 2.
-- [ ] Gambar bilik tidur 3.
+- [x] Gambar parking.
+- [x] Gambar ruang tamu wide angle.
+- [x] Gambar ruang makan jika ada.
+- [x] Gambar dapur.
+- [x] Gambar bilik tidur 1.
+- [x] Gambar bilik tidur 2.
+- [x] Gambar bilik tidur 3.
 - [ ] Gambar bilik tidur 4.
 - [ ] Gambar bilik tidur 5.
 - [ ] Gambar bilik air 1.
@@ -424,8 +428,8 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [ ] Gambar bilik air 3.
 - [ ] Gambar kemudahan penting: TV, dapur, peti ais, mesin basuh, iron, water heater jika ada.
 - [ ] Gambar landmark sekitar jika sesuai.
-- [ ] Gambar yang owner mahu jadikan hero utama.
-- [ ] Gambar untuk share preview/thumbnail.
+- [x] Gambar yang owner mahu jadikan hero utama sementara.
+- [x] Gambar untuk share preview/thumbnail sementara.
 
 ### F. Lokasi & Nearby Places
 
@@ -544,8 +548,8 @@ Hari 1:
 
 Hari 2:
 - [x] Compress gambar.
-- [ ] Tambah gambar yang belum cukup.
-- [ ] Pilih hero image terbaik.
+- [x] Tambah gambar latest pilihan untuk website semasa.
+- [x] Pilih hero image terbaik sementara.
 
 Hari 3:
 - [ ] Test semua WhatsApp CTA dan form.
@@ -563,7 +567,8 @@ Hari 5:
 - [ ] Test thank-you flow dari phone sebenar.
 
 Hari 6:
-- [ ] Tambah gambar semua bilik/ruang.
+- [x] Tambah gambar utama untuk hero, ruang tamu, ruang makan, pantry, bilik, parking, exterior dan porch.
+- [ ] Tambah gambar semua bilik air dan label semua 5 bilik jika mahu lebih lengkap.
 - [x] Tambah FAQ payment/manual booking.
 
 Hari 7:

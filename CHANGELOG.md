@@ -2,6 +2,17 @@
 
 Ringkasan perubahan penting website Jitra2Stay.
 
+## 2026-05-18
+
+- Review gambar latest dalam folder `images/`.
+- Optimize dan rename gambar pilihan untuk website: hero, ruang tamu, ruang makan, pantry, bilik, parking, exterior dan porch.
+- Update gallery homepage daripada 4 gambar kepada 8 gambar latest.
+- Tukar hero background kepada gambar exterior rumah sebenar.
+- Pindahkan raw `IMG_*.JPG` dan `.MOV` besar ke `source-images/latest-raw/` supaya folder public `images/` kekal ringan.
+- Video walkthrough diskip dahulu sehingga owner beri versi kecil.
+- Update `README.md`, `OWNER-DATA-CHECKLIST.md`, `IMAGE-AUDIT.md`, dan `QA-REPORT.md`.
+- Run QA automatik dan semua 55 checks lulus.
+
 ## 2026-05-05
 
 - Buang scope admin/login/user account supaya website kekal view-only dan direct WhatsApp.
@@ -21,7 +32,8 @@ Ringkasan perubahan penting website Jitra2Stay.
 
 ## Belum Final
 
-- Gambar latest semua bilik/ruang masih perlu diberi owner.
+- Gambar bilik air dan label semua 5 bilik masih perlu diberi owner jika mahu lengkap satu per satu.
+- Video walkthrough kecil masih perlu diberi owner jika mahu aktifkan section video.
 - Harga peak season, cuti sekolah, cuti umum dan konvokesyen masih perlu disahkan owner.
 - Parking sebenar untuk kereta/van/bas masih perlu disahkan owner.
 - Test WhatsApp dan QA akhir perlu dibuat dari phone sebenar sebelum live.
