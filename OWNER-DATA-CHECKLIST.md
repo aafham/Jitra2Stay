@@ -13,8 +13,11 @@ Checklist ini untuk semak apa yang sudah siap, apa yang masih perlu owner beri, 
 - [x] Polisi asas daripada PDF sudah masuk website.
 - [x] Dark mode dan light mode sudah dipolish.
 - [x] Gallery sudah guna gambar latest pilihan.
+- [x] Versi WebP gambar semasa sudah disediakan dengan JPG fallback.
 - [x] Section tempat berdekatan sudah dikemas ikut masa perjalanan.
+- [x] Halaman SEO tambahan untuk Hospital Jitra, konvokesyen UUM, keluarga besar dan tempat sekitar Jitra sudah ditambah.
 - [x] Copywriting promosi siap pakai sudah ditambah dalam `README.md`.
+- [x] Template WhatsApp draft sudah ditambah dalam `WHATSAPP-TEMPLATES.md`.
 - [x] QA automatik terakhir lulus 55 checks.
 
 ### Data Asas
@@ -179,13 +182,13 @@ Checklist ini untuk semak apa yang sudah siap, apa yang masih perlu owner beri, 
 
 ## Optional Kemudian
 
-- [ ] Tambah halaman SEO: Homestay dekat Hospital Jitra.
-- [ ] Tambah halaman SEO: Homestay untuk Konvokesyen UUM.
-- [ ] Tambah halaman SEO: Homestay untuk keluarga besar di Jitra.
-- [ ] Tambah halaman SEO: Tempat menarik sekitar Jitra.
+- [x] Tambah halaman SEO: Homestay dekat Hospital Jitra.
+- [x] Tambah halaman SEO: Homestay untuk Konvokesyen UUM.
+- [x] Tambah halaman SEO: Homestay untuk keluarga besar di Jitra.
+- [x] Tambah halaman SEO: Tempat menarik sekitar Jitra.
 - [ ] Tambah Google Analytics/Plausible jika mahu track visitor.
 - [ ] Tambah DuitNow QR sebagai info selepas owner confirm, jika mahu.
-- [ ] Tambah WebP image version jika mahu optimize lagi.
+- [x] Tambah WebP image version untuk gambar semasa.
 
 ## Nota Penting
 

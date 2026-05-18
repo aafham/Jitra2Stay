@@ -16,6 +16,7 @@ QA automatik terakhir: `node tools/qa-check.js` pass **55 checks** pada 2026-05-
 
 Yang sudah ada:
 - [x] Homepage lengkap dengan hero, harga, cara tempah, form semak tarikh, galeri, lokasi, FAQ, dan CTA WhatsApp.
+- [x] Halaman SEO tambahan untuk Hospital Jitra, konvokesyen UUM, keluarga besar dan tempat sekitar Jitra.
 - [x] BM/EN toggle.
 - [x] Dark/light mode.
 - [x] Dark/light mode contrast dikemaskan supaya tulisan dan card boleh dibaca.
@@ -37,6 +38,7 @@ Yang masih perlu dibuat sebelum live:
 - [x] Masukkan gambar latest pilihan untuk hero, gallery, ruang tamu, ruang makan, pantry, bilik, parking, dan exterior.
 - [ ] Tambah gambar semua bilik air dan label semua 5 bilik satu per satu bila owner beri gambar final.
 - [x] Compress gambar sedia ada untuk prestasi mobile.
+- [x] Sediakan versi WebP untuk gambar semasa dan fallback JPG.
 - [ ] Test akhir di phone sebenar dan mobile data.
 - [ ] Test WhatsApp link dari phone sebenar.
 - [ ] Submit sitemap ke Google Search Console selepas domain live.
@@ -216,7 +218,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tambah meta `color-scheme`, theme color dark/light, dan format detection untuk UI browser yang lebih konsisten.
 - [x] Update `sitemap.xml` dengan URL domain sebenar.
 - [x] Update `robots.txt` dengan sitemap domain sebenar.
-- [x] Update `lastmod` sitemap kepada `2026-05-04`.
+- [x] Update `lastmod` sitemap kepada `2026-05-18`.
 - [ ] Test WhatsApp/Facebook preview dengan URL live.
 - [ ] Submit sitemap ke Google Search Console.
 - [ ] Daftar/kemas kini Google Business Profile.
@@ -225,7 +227,7 @@ Fail lain yang perlu selari dengan domain:
 ### 8. Prestasi Gambar
 
 - [x] Compress semua gambar sedia ada dalam `images/`.
-- [ ] Sediakan versi WebP untuk gambar besar bila tool/build pipeline sesuai tersedia.
+- [x] Sediakan versi WebP untuk gambar semasa dan kekalkan JPG sebagai fallback.
 - [x] Pastikan hero image tidak terlalu berat untuk versi gambar semasa.
 - [x] Pastikan width/height gambar sedia ada sepadan dengan saiz sebenar.
 - [x] Tambah gambar latest untuk hero, ruang tamu, ruang makan, pantry, bilik tidur, parking, exterior, dan kawasan luar.
@@ -291,6 +293,11 @@ Fail lain yang perlu selari dengan domain:
 - [x] Tambah FAQ: ada towel/toiletries atau tidak.
 - [x] Tambah FAQ: boleh parking van/bas atau tidak.
 - [x] Tambah section ringkas arahan payment manual selepas owner confirm.
+- [x] Tambah penjelasan cara semak tarikh: pilih tarikh, lihat anggaran, WhatsApp owner, confirm dan bayar.
+- [x] Tambah halaman SEO tambahan dan link dari homepage.
+- [x] Tambah `WHATSAPP-TEMPLATES.md`.
+- [x] Kemas `PRE-LIVE-QA.md` untuk phone/live test yang lebih jelas.
+- [x] Kemas `MAINTENANCE.md` dengan cara update gambar WebP, calendar/ICS dan template WhatsApp.
 
 ## Checklist P2 - Upgrade Besar Jika Perlu Kemudian
 
@@ -301,10 +308,10 @@ Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 - [ ] Tambah minimum stay rule jika ada.
 - [ ] Tambah peak season surcharge jika ada.
 - [ ] Tambah DuitNow QR sebagai info selepas owner confirm, jika mahu.
-- [ ] Tambah halaman SEO: Homestay dekat Hospital Jitra.
-- [ ] Tambah halaman SEO: Homestay untuk Konvokesyen UUM.
-- [ ] Tambah halaman SEO: Homestay untuk keluarga besar di Jitra.
-- [ ] Tambah halaman SEO: Tempat menarik sekitar Jitra.
+- [x] Tambah halaman SEO: Homestay dekat Hospital Jitra.
+- [x] Tambah halaman SEO: Homestay untuk Konvokesyen UUM.
+- [x] Tambah halaman SEO: Homestay untuk keluarga besar di Jitra.
+- [x] Tambah halaman SEO: Tempat menarik sekitar Jitra.
 
 ## Checklist Data Owner Ringkas
 
@@ -319,8 +326,11 @@ Checklist detail yang paling kemas sekarang ada dalam `OWNER-DATA-CHECKLIST.md`.
 - [x] Kemudahan asas: WiFi, fully aircond, kipas, pantry/basic facilities, water heater, extra tilam, bantal dan comforter.
 - [x] Kapasiti maksimum 20 tetamu termasuk kanak-kanak.
 - [x] Gambar latest pilihan untuk hero, ruang tamu, ruang makan, pantry/dapur, bilik, parking, exterior dan porch.
+- [x] WebP version untuk gambar semasa.
 - [x] Lokasi dan tempat berdekatan ikut kategori masa perjalanan.
+- [x] Halaman SEO tambahan untuk carian local.
 - [x] Copywriting promosi untuk FB/WhatsApp/listing.
+- [x] Template WhatsApp draft untuk operasi owner.
 - [x] Website kekal view-only dan direct WhatsApp.
 
 ### Masih Perlu Owner Confirm / Beri Nanti
@@ -434,6 +444,7 @@ Hari 5:
 
 Hari 6:
 - [x] Tambah gambar utama untuk hero, ruang tamu, ruang makan, pantry, bilik, parking, exterior dan porch.
+- [x] Tambah versi WebP untuk gambar semasa.
 - [ ] Tambah gambar semua bilik air dan label semua 5 bilik jika mahu lebih lengkap.
 - [x] Tambah FAQ payment/manual booking.
 

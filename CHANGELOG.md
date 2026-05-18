@@ -17,6 +17,11 @@ Ringkasan perubahan penting website Jitra2Stay.
 - Tambah copywriting promosi siap pakai untuk Facebook, WhatsApp dan listing website.
 - Audit semula checklist dalam `README.md` dan tick item yang memang sudah settle dalam website.
 - Ringkaskan checklist data owner dalam `README.md` supaya selari dengan `OWNER-DATA-CHECKLIST.md`.
+- Tambah 4 halaman SEO: Hospital Jitra, konvokesyen UUM, keluarga besar dan tempat sekitar Jitra.
+- Generate versi WebP untuk gambar semasa dan update homepage dengan JPG fallback.
+- Tambah flow "cara semak tarikh" supaya tetamu faham tarikh website ialah rujukan awal.
+- Tambah `WHATSAPP-TEMPLATES.md` untuk operasi owner.
+- Kemas `PRE-LIVE-QA.md` dan `MAINTENANCE.md`.
 
 ## 2026-05-05
 

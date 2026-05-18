@@ -43,7 +43,7 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
       rel="stylesheet"
     >
-    <link rel="preload" as="image" href="images/halaman.jpg">
+    <link rel="preload" as="image" href="images/halaman.webp" type="image/webp">
     <link rel="canonical" href="https://jitra2stay.com/">
     <link rel="alternate" hreflang="ms" href="https://jitra2stay.com/ms.html">
     <link rel="alternate" hreflang="en" href="https://jitra2stay.com/en.html">
@@ -343,11 +343,34 @@
       <h3 data-bm="Semak Tarikh & Tempah Cepat" data-en="Check Dates & Book Faster">Semak Tarikh & Tempah Cepat</h3>
       <p
         class="section-desc"
-        data-bm="Isi borang ringkas, lihat anggaran harga, kemudian hantar terus ke WhatsApp."
-        data-en="Fill in the quick form, view the estimated rate, then send it straight to WhatsApp."
+        data-bm="Isi borang ringkas, lihat anggaran harga, kemudian hantar terus ke WhatsApp. Tarikh di website ialah rujukan awal sahaja."
+        data-en="Fill in the quick form, view the estimated rate, then send it straight to WhatsApp. Dates on the website are for early reference only."
       >
-        Isi borang ringkas, lihat anggaran harga, kemudian hantar terus ke WhatsApp.
+        Isi borang ringkas, lihat anggaran harga, kemudian hantar terus ke WhatsApp. Tarikh di website ialah rujukan awal sahaja.
       </p>
+
+      <div class="date-flow" aria-label="Cara semak tarikh" data-bm-aria-label="Cara semak tarikh" data-en-aria-label="How date checking works">
+        <div>
+          <span>01</span>
+          <strong data-bm="Pilih tarikh" data-en="Choose dates">Pilih tarikh</strong>
+          <p data-bm="Masukkan check-in, check-out, tetamu dan pakej bilik." data-en="Enter check-in, check-out, guests and room package.">Masukkan check-in, check-out, tetamu dan pakej bilik.</p>
+        </div>
+        <div>
+          <span>02</span>
+          <strong data-bm="Lihat anggaran" data-en="View estimate">Lihat anggaran</strong>
+          <p data-bm="Website kira anggaran harga berdasarkan pakej dan malam." data-en="The website estimates the rate based on package and nights.">Website kira anggaran harga berdasarkan pakej dan malam.</p>
+        </div>
+        <div>
+          <span>03</span>
+          <strong data-bm="WhatsApp owner" data-en="WhatsApp owner">WhatsApp owner</strong>
+          <p data-bm="Mesej auto-filled dihantar untuk semakan slot sebenar." data-en="An auto-filled message is sent for actual slot checking.">Mesej auto-filled dihantar untuk semakan slot sebenar.</p>
+        </div>
+        <div>
+          <span>04</span>
+          <strong data-bm="Confirm & bayar" data-en="Confirm & pay">Confirm & bayar</strong>
+          <p data-bm="Bayaran dibuat selepas owner sahkan tarikh tersedia." data-en="Payment is made after the owner confirms availability.">Bayaran dibuat selepas owner sahkan tarikh tersedia.</p>
+        </div>
+      </div>
 
       <div class="date-check-layout">
         <div class="date-check-main">
@@ -564,154 +587,178 @@
 
       <div class="gallery-grid">
         <div class="gallery-item">
-          <img
-            src="images/halaman.jpg"
-            alt="Hadapan rumah Jitra2Stay"
-            data-bm-alt="Hadapan rumah Jitra2Stay"
-            data-en-alt="Jitra2Stay house exterior"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/halaman.jpg"
-            data-bm-caption="Hadapan Rumah"
-            data-en-caption="House Exterior"
-          >
+          <picture>
+            <source srcset="images/halaman.webp" type="image/webp">
+            <img
+              src="images/halaman.jpg"
+              alt="Hadapan rumah Jitra2Stay"
+              data-bm-alt="Hadapan rumah Jitra2Stay"
+              data-en-alt="Jitra2Stay house exterior"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/halaman.jpg"
+              data-bm-caption="Hadapan Rumah"
+              data-en-caption="House Exterior"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Hadapan Rumah" data-en="House Exterior">Hadapan Rumah</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/ruang-tamu.jpg"
-            alt="Ruang Tamu"
-            data-bm-alt="Ruang Tamu"
-            data-en-alt="Living Room"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/ruang-tamu.jpg"
-            data-bm-caption="Ruang Tamu"
-            data-en-caption="Living Room"
-          >
+          <picture>
+            <source srcset="images/ruang-tamu.webp" type="image/webp">
+            <img
+              src="images/ruang-tamu.jpg"
+              alt="Ruang Tamu"
+              data-bm-alt="Ruang Tamu"
+              data-en-alt="Living Room"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/ruang-tamu.jpg"
+              data-bm-caption="Ruang Tamu"
+              data-en-caption="Living Room"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Ruang Tamu" data-en="Living Room">Ruang Tamu</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/ruang-makan.jpg"
-            alt="Ruang Makan dan Pantry"
-            data-bm-alt="Ruang Makan dan Pantry"
-            data-en-alt="Dining Area and Pantry"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/ruang-makan.jpg"
-            data-bm-caption="Ruang Makan & Pantry"
-            data-en-caption="Dining Area & Pantry"
-          >
+          <picture>
+            <source srcset="images/ruang-makan.webp" type="image/webp">
+            <img
+              src="images/ruang-makan.jpg"
+              alt="Ruang Makan dan Pantry"
+              data-bm-alt="Ruang Makan dan Pantry"
+              data-en-alt="Dining Area and Pantry"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/ruang-makan.jpg"
+              data-bm-caption="Ruang Makan & Pantry"
+              data-en-caption="Dining Area & Pantry"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Ruang Makan &amp; Pantry" data-en="Dining Area &amp; Pantry">Ruang Makan &amp; Pantry</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/bilik-tidur.jpg"
-            alt="Bilik Tidur Utama"
-            data-bm-alt="Bilik Tidur Utama"
-            data-en-alt="Bedroom"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/bilik-tidur.jpg"
-            data-bm-caption="Bilik Tidur Utama"
-            data-en-caption="Bedroom"
-          >
+          <picture>
+            <source srcset="images/bilik-tidur.webp" type="image/webp">
+            <img
+              src="images/bilik-tidur.jpg"
+              alt="Bilik Tidur Utama"
+              data-bm-alt="Bilik Tidur Utama"
+              data-en-alt="Bedroom"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/bilik-tidur.jpg"
+              data-bm-caption="Bilik Tidur Utama"
+              data-en-caption="Bedroom"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Bilik Tidur Utama" data-en="Bedroom">Bilik Tidur Utama</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/bilik-keluarga.jpg"
-            alt="Bilik Keluarga"
-            data-bm-alt="Bilik Keluarga"
-            data-en-alt="Family Bedroom"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/bilik-keluarga.jpg"
-            data-bm-caption="Bilik Keluarga"
-            data-en-caption="Family Bedroom"
-          >
+          <picture>
+            <source srcset="images/bilik-keluarga.webp" type="image/webp">
+            <img
+              src="images/bilik-keluarga.jpg"
+              alt="Bilik Keluarga"
+              data-bm-alt="Bilik Keluarga"
+              data-en-alt="Family Bedroom"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/bilik-keluarga.jpg"
+              data-bm-caption="Bilik Keluarga"
+              data-en-caption="Family Bedroom"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Bilik Keluarga" data-en="Family Bedroom">Bilik Keluarga</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/dapur.jpg"
-            alt="Pantry dan Kemudahan Dapur"
-            data-bm-alt="Pantry dan Kemudahan Dapur"
-            data-en-alt="Pantry and Kitchen Facilities"
-            width="1400"
-            height="1050"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/dapur.jpg"
-            data-bm-caption="Pantry & Kemudahan Dapur"
-            data-en-caption="Pantry & Kitchen Facilities"
-          >
+          <picture>
+            <source srcset="images/dapur.webp" type="image/webp">
+            <img
+              src="images/dapur.jpg"
+              alt="Pantry dan Kemudahan Dapur"
+              data-bm-alt="Pantry dan Kemudahan Dapur"
+              data-en-alt="Pantry and Kitchen Facilities"
+              width="1400"
+              height="1050"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/dapur.jpg"
+              data-bm-caption="Pantry & Kemudahan Dapur"
+              data-en-caption="Pantry & Kitchen Facilities"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Pantry &amp; Dapur" data-en="Pantry &amp; Kitchen">Pantry &amp; Dapur</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/parking.jpg"
-            alt="Parking luas di kawasan rumah"
-            data-bm-alt="Parking luas di kawasan rumah"
-            data-en-alt="Spacious parking inside the house compound"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/parking.jpg"
-            data-bm-caption="Parking Luas"
-            data-en-caption="Spacious Parking"
-          >
+          <picture>
+            <source srcset="images/parking.webp" type="image/webp">
+            <img
+              src="images/parking.jpg"
+              alt="Parking luas di kawasan rumah"
+              data-bm-alt="Parking luas di kawasan rumah"
+              data-en-alt="Spacious parking inside the house compound"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/parking.jpg"
+              data-bm-caption="Parking Luas"
+              data-en-caption="Spacious Parking"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Parking Luas" data-en="Spacious Parking">Parking Luas</div>
         </div>
 
         <div class="gallery-item">
-          <img
-            src="images/porch-parking.jpg"
-            alt="Porch dan tempat duduk luar"
-            data-bm-alt="Porch dan tempat duduk luar"
-            data-en-alt="Porch and outdoor seating"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
-            loading="lazy"
-            decoding="async"
-            class="gallery-open"
-            data-full="images/porch-parking.jpg"
-            data-bm-caption="Porch & Kawasan Luar"
-            data-en-caption="Porch & Outdoor Area"
-          >
+          <picture>
+            <source srcset="images/porch-parking.webp" type="image/webp">
+            <img
+              src="images/porch-parking.jpg"
+              alt="Porch dan tempat duduk luar"
+              data-bm-alt="Porch dan tempat duduk luar"
+              data-en-alt="Porch and outdoor seating"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-open"
+              data-full="images/porch-parking.jpg"
+              data-bm-caption="Porch & Kawasan Luar"
+              data-en-caption="Porch & Outdoor Area"
+            >
+          </picture>
           <div class="gallery-label" data-bm="Porch &amp; Kawasan Luar" data-en="Porch &amp; Outdoor Area">Porch &amp; Kawasan Luar</div>
         </div>
       </div>
@@ -800,17 +847,20 @@
         </div>
 
         <div class="about-right">
-          <img
-            src="images/halaman.jpg"
-            alt="Hadapan rumah Jitra2Stay"
-            data-bm-alt="Hadapan rumah Jitra2Stay"
-            data-en-alt="Jitra2Stay house exterior"
-            width="1600"
-            height="1200"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            loading="lazy"
-            decoding="async"
-          >
+          <picture>
+            <source srcset="images/halaman.webp" type="image/webp">
+            <img
+              src="images/halaman.jpg"
+              alt="Hadapan rumah Jitra2Stay"
+              data-bm-alt="Hadapan rumah Jitra2Stay"
+              data-en-alt="Jitra2Stay house exterior"
+              width="1600"
+              height="1200"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+              decoding="async"
+            >
+          </picture>
           <div class="about-photo-badge" data-bm="Rumah luas untuk keluarga &amp; rombongan" data-en="Spacious stay for families &amp; groups">
             Rumah luas untuk keluarga &amp; rombongan
           </div>
@@ -1013,11 +1063,12 @@
     </section>
 
     <!-- ================= TEMPAT BERDEKATAN ================= -->
-    <section class="nearby reveal">
+    <section class="nearby reveal" id="nearby">
       <h3 data-bm="Tempat Berdekatan" data-en="Nearby Places">Tempat Berdekatan</h3>
       <p class="nearby-desc" data-bm="Lokasi strategik di sebelah pagar sisi Hospital Jitra dan mudah ke bandar, dewan, institusi, kedai serta tempat penting sekitar Kedah Utara." data-en="Strategic location beside Jitra Hospital side gate with easy access to town, halls, institutions, shops and key places around northern Kedah.">
         Lokasi strategik di sebelah pagar sisi Hospital Jitra dan mudah ke bandar, dewan, institusi, kedai serta tempat penting sekitar Kedah Utara.
       </p>
+      <a class="nearby-page-link" href="tempat-menarik-sekitar-jitra.html" data-bm="Lihat panduan tempat sekitar Jitra" data-en="View nearby places guide">Lihat panduan tempat sekitar Jitra</a>
 
       <div class="nearby-grid">
         <div class="nearby-item">
@@ -1087,12 +1138,14 @@
           <span>&#127973;</span>
           <h4 data-bm="Homestay Dekat Hospital Jitra" data-en="Homestay Near Jitra Hospital">Homestay Dekat Hospital Jitra</h4>
           <p data-bm="Lokasi berhampiran Hospital Jitra, sesuai untuk keluarga yang perlu urusan hospital atau melawat ahli keluarga." data-en="Located near Jitra Hospital, suitable for families handling hospital visits or appointments.">Lokasi berhampiran Hospital Jitra, sesuai untuk keluarga yang perlu urusan hospital atau melawat ahli keluarga.</p>
+          <a class="local-intent-link" href="homestay-dekat-hospital-jitra.html" data-bm="Baca lanjut" data-en="Read more">Baca lanjut</a>
         </article>
 
         <article class="local-intent-card">
           <span>&#128106;</span>
           <h4 data-bm="Homestay Keluarga Besar" data-en="Large Family Homestay">Homestay Keluarga Besar</h4>
           <p data-bm="Pakej 2 hingga 5 bilik, kapasiti maksimum 20 tetamu termasuk kanak-kanak dan sesuai untuk rombongan keluarga." data-en="2 to 5-room packages, maximum 20 guests including children, and suitable for family groups.">Pakej 2 hingga 5 bilik, kapasiti maksimum 20 tetamu termasuk kanak-kanak dan sesuai untuk rombongan keluarga.</p>
+          <a class="local-intent-link" href="homestay-keluarga-besar-jitra.html" data-bm="Baca lanjut" data-en="Read more">Baca lanjut</a>
         </article>
 
         <article class="local-intent-card">
@@ -1105,6 +1158,7 @@
           <span>&#127891;</span>
           <h4 data-bm="Konvokesyen &amp; Urusan Institusi" data-en="Convocation &amp; Institution Trips">Konvokesyen &amp; Urusan Institusi</h4>
           <p data-bm="Pilihan praktikal untuk keluarga yang datang ke Jitra, POLIMAS, MRSM Kubang Pasu atau kawasan sekitar." data-en="A practical option for families visiting Jitra, POLIMAS, MRSM Kubang Pasu or nearby areas.">Pilihan praktikal untuk keluarga yang datang ke Jitra, POLIMAS, MRSM Kubang Pasu atau kawasan sekitar.</p>
+          <a class="local-intent-link" href="homestay-konvokesyen-uum-jitra.html" data-bm="Baca lanjut" data-en="Read more">Baca lanjut</a>
         </article>
       </div>
     </section>
@@ -1356,17 +1410,20 @@
 
         <aside class="cta-side">
           <div class="cta-photo">
-            <img
-              src="images/ruang-tamu.jpg"
-              alt="Ruang tamu Jitra2Stay"
-              data-bm-alt="Ruang tamu Jitra2Stay"
-              data-en-alt="Jitra2Stay living room"
-              width="1000"
-              height="750"
-              sizes="(max-width: 768px) 100vw, 320px"
-              loading="lazy"
-              decoding="async"
-            >
+            <picture>
+              <source srcset="images/ruang-tamu.webp" type="image/webp">
+              <img
+                src="images/ruang-tamu.jpg"
+                alt="Ruang tamu Jitra2Stay"
+                data-bm-alt="Ruang tamu Jitra2Stay"
+                data-en-alt="Jitra2Stay living room"
+                width="1000"
+                height="750"
+                sizes="(max-width: 768px) 100vw, 320px"
+                loading="lazy"
+                decoding="async"
+              >
+            </picture>
           </div>
           <div class="cta-quote">
             <div class="stars" data-bm="Tip tempahan" data-en="Booking tip">Tip tempahan</div>

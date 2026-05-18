@@ -1,45 +1,53 @@
 # Jitra2Stay Pre-Live QA
 
-Checklist ringkas sebelum website diupload/deploy live.
+Checklist ringkas sebelum website diupload/deploy live. Gunakan ini untuk semakan terakhir dari phone sebenar dan URL live.
 
-## Content
+## 1. Semak Data Public
 
-- [ ] Nama homestay betul.
+- [ ] Nama homestay: Jitra2Stay.
 - [ ] Nombor WhatsApp/call betul.
 - [ ] Email betul.
 - [ ] Alamat dan Google Maps betul.
-- [ ] Harga semua pakej betul.
-- [ ] Deposit dan caj tambahan betul.
-- [ ] Polisi check-in/check-out betul.
-- [ ] House rules tiada info sensitif.
-- [ ] Gambar mewakili keadaan rumah sebenar.
+- [ ] Harga 2, 3, 4 dan 5 bilik betul.
+- [ ] Deposit, extra guest dan caj extra masa betul.
+- [ ] Polisi check-in/check-out dan house rules betul.
+- [ ] Tiada password WiFi, nombor akaun bank atau info sensitif dalam website public.
+- [ ] Gambar yang dipaparkan masih mewakili keadaan rumah sebenar.
 
-## Website Flow
+## 2. Test Website Dari Phone Sebenar
 
-- [ ] Homepage load dengan baik di desktop.
-- [ ] Homepage load dengan baik di phone.
+- [ ] Buka homepage di Android Chrome.
+- [ ] Buka homepage di iPhone Safari jika ada.
+- [ ] Test guna WiFi.
+- [ ] Test guna mobile data.
 - [ ] Dark mode boleh dibaca.
 - [ ] Light mode boleh dibaca.
-- [ ] Semua nav anchor boleh klik.
-- [ ] Form tarikh boleh isi.
-- [ ] Form reject check-out sebelum check-in.
-- [ ] Anggaran harga keluar selepas pilih tarikh dan bilik.
-- [ ] WhatsApp terbuka dengan mesej yang betul.
-- [ ] Policies page boleh dibuka.
-- [ ] Thank-you page boleh dibuka.
-- [ ] Google Maps boleh dibuka.
+- [ ] Header/nav boleh digunakan.
+- [ ] Sticky WhatsApp boleh klik.
+- [ ] Gallery/lightbox boleh dibuka.
 
-## Phone Test
+## 3. Test Flow Semak Tarikh
 
-- [ ] Test di Android Chrome.
-- [ ] Test di iPhone Safari jika ada.
-- [ ] Test menggunakan mobile data.
-- [ ] Klik sticky WhatsApp.
-- [ ] Klik CTA hero.
-- [ ] Submit form booking.
-- [ ] Buka gallery.
+- [ ] Isi check-in dan check-out valid.
+- [ ] Pastikan anggaran harga keluar.
+- [ ] Test check-out sebelum check-in dan pastikan warning keluar.
+- [ ] Test tarikh yang bertindih unavailable date dan pastikan warning keluar.
+- [ ] Submit form dan pastikan WhatsApp terbuka dengan mesej lengkap.
+- [ ] Owner boleh faham mesej WhatsApp yang diterima.
 
-## SEO dan Share
+## 4. Test Page Penting
+
+- [ ] `index.html` / homepage boleh dibuka.
+- [ ] `policies.html` boleh dibuka.
+- [ ] `thank-you.html` boleh dibuka.
+- [ ] `404.html` ada button balik/WhatsApp.
+- [ ] Halaman SEO Hospital Jitra boleh dibuka.
+- [ ] Halaman SEO Konvokesyen UUM boleh dibuka.
+- [ ] Halaman SEO Keluarga Besar boleh dibuka.
+- [ ] Halaman SEO Tempat Menarik Jitra boleh dibuka.
+- [ ] Google Maps boleh dibuka dari button lokasi.
+
+## 5. SEO dan Share Preview
 
 - [ ] Domain live betul.
 - [ ] `sitemap.xml` boleh dibuka.
@@ -49,10 +57,11 @@ Checklist ringkas sebelum website diupload/deploy live.
 - [ ] Sitemap submit ke Google Search Console.
 - [ ] Google Business Profile disemak.
 
-## Final Owner Approval
+## 6. Final Owner Approval
 
 - [ ] Owner baca homepage dari atas sampai bawah.
 - [ ] Owner baca policies page.
 - [ ] Owner sahkan semua data public boleh dipaparkan.
 - [ ] Owner sahkan website kekal view-only dan direct WhatsApp.
 - [ ] Owner sahkan payment manual melalui WhatsApp sahaja.
+- [ ] Owner simpan `WHATSAPP-TEMPLATES.md` sebagai rujukan balas customer.

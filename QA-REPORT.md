@@ -15,7 +15,7 @@ node tools/qa-check.js
 Keputusan:
 
 ```text
-All 55 QA checks passed.
+All 76 QA checks passed.
 ```
 
 ## Checks Yang Lulus
@@ -24,8 +24,10 @@ All 55 QA checks passed.
 - [x] Homepage ada tepat 1 `h1`.
 - [x] ID penting homepage wujud.
 - [x] Local SEO intent copy wujud.
+- [x] Halaman SEO tambahan wujud dan masuk sitemap.
 - [x] FAQ search-intent wujud.
 - [x] No-JS fallback wujud.
+- [x] Flow cara semak tarikh diterangkan di homepage.
 - [x] Public files tidak expose sensitive info yang biasa berlaku.
 - [x] Pasangan attribute BM/EN lengkap.
 - [x] Internal anchor homepage resolve.
@@ -38,6 +40,7 @@ All 55 QA checks passed.
 - [x] Referrer policy ada pada page utama.
 - [x] 404 page ada recovery actions.
 - [x] Policies page ada print styles.
+- [x] Template WhatsApp operasi owner didokumenkan.
 - [x] Semua gambar website dalam `images/` bawah 350 KB.
 - [x] Local static server load required paths.
 
@@ -56,6 +59,8 @@ All 55 QA checks passed.
 | `bilik-besar.jpg` | 267 KB |
 | `tangga-ruang-makan.jpg` | 215 KB |
 | `porch-parking.jpg` | 243 KB |
+
+Versi WebP juga tersedia untuk semua gambar di atas dan homepage menggunakan WebP dengan JPG fallback.
 
 Raw files asal disimpan di `source-images/latest-raw/` dan tidak digunakan sebagai public website assets.
 

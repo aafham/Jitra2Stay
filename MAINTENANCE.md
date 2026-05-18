@@ -67,6 +67,16 @@ Tambah tarikh dengan format:
 
 Jika mahu sync calendar kemudian, isi `bookingCalendarIcsUrl`.
 
+### Jika mahu guna Google Calendar / ICS kemudian
+
+1. Buat Google Calendar khas untuk booking Jitra2Stay.
+2. Masukkan booking sebagai event penuh hari.
+3. Ambil public/private ICS URL calendar.
+4. Letak URL tersebut di `bookingCalendarIcsUrl` dalam `app.config.js`.
+5. Run QA dan semak calendar preview.
+
+Nota: buat masa sekarang website masih boleh guna `unavailableRanges` secara manual tanpa calendar sync.
+
 ## Update Gambar
 
 Fail/folder:
@@ -87,6 +97,27 @@ Lepas update gambar:
 
 ```powershell
 node tools/qa-check.js
+```
+
+### Update gambar dengan WebP
+
+Untuk gambar baru, sediakan dua versi:
+
+- `.jpg` sebagai fallback.
+- `.webp` sebagai versi ringan untuk browser moden.
+
+Contoh nama:
+
+- `bilik-utama.jpg`
+- `bilik-utama.webp`
+
+Dalam `index.html`, gunakan format:
+
+```html
+<picture>
+  <source srcset="images/bilik-utama.webp" type="image/webp">
+  <img src="images/bilik-utama.jpg" alt="Bilik utama Jitra2Stay" width="1600" height="1200">
+</picture>
 ```
 
 ## Update Polisi / FAQ
@@ -111,12 +142,32 @@ Fail:
 - `sitemap.xml` untuk URL dan `lastmod`.
 - `robots.txt` jika domain berubah.
 - `SEO-SUBMISSION.md` untuk proses submit.
+- Halaman SEO tambahan seperti `homestay-dekat-hospital-jitra.html`.
 
 Selepas deploy:
 
 - [ ] Submit sitemap di Google Search Console.
 - [ ] Test share preview WhatsApp/Facebook.
 - [ ] Semak Google Business Profile.
+
+## Update Template WhatsApp
+
+Fail:
+
+- `WHATSAPP-TEMPLATES.md`
+
+Gunakan fail ini untuk simpan ayat balasan owner:
+
+- Pertanyaan baru.
+- Slot tersedia.
+- Slot tidak tersedia.
+- Payment manual.
+- Booking confirm.
+- Reminder check-in.
+- Check-out.
+- Minta review.
+
+Jangan masukkan detail bank, QR private, password WiFi atau arahan check-in sensitif ke dalam website public.
 
 ## Update Dokumentasi
 

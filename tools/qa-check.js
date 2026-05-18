@@ -4,8 +4,14 @@ const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
 const siteOrigin = "https://jitra2stay.com";
-const htmlPages = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html"];
-const publicFiles = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html", "app.js", "app.config.js", "sitemap.xml", "robots.txt"];
+const seoPages = [
+  "homestay-dekat-hospital-jitra.html",
+  "homestay-konvokesyen-uum-jitra.html",
+  "homestay-keluarga-besar-jitra.html",
+  "tempat-menarik-sekitar-jitra.html"
+];
+const htmlPages = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html", ...seoPages];
+const publicFiles = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html", ...seoPages, "app.js", "app.config.js", "sitemap.xml", "robots.txt"];
 const staticPaths = [
   "/",
   "/policies.html",
@@ -13,6 +19,10 @@ const staticPaths = [
   "/404.html",
   "/ms.html",
   "/en.html",
+  "/homestay-dekat-hospital-jitra.html",
+  "/homestay-konvokesyen-uum-jitra.html",
+  "/homestay-keluarga-besar-jitra.html",
+  "/tempat-menarik-sekitar-jitra.html",
   "/sitemap.xml",
   "/robots.txt",
   "/OWNER-DATA-CHECKLIST.md",
@@ -21,7 +31,8 @@ const staticPaths = [
   "/MAINTENANCE.md",
   "/QA-REPORT.md",
   "/HANDOVER.md",
-  "/CHANGELOG.md"
+  "/CHANGELOG.md",
+  "/WHATSAPP-TEMPLATES.md"
 ];
 
 const results = [];
@@ -44,6 +55,8 @@ const checkFilesExist = () => {
     "policies.html",
     "thank-you.html",
     "404.html",
+    ...seoPages,
+    "seo-page.css",
     "sitemap.xml",
     "robots.txt",
     "OWNER-DATA-CHECKLIST.md",
@@ -52,7 +65,8 @@ const checkFilesExist = () => {
     "MAINTENANCE.md",
     "QA-REPORT.md",
     "HANDOVER.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "WHATSAPP-TEMPLATES.md"
   ].forEach((file) => {
     exists(file) ? pass(`required file exists: ${file}`) : fail(`required file exists: ${file}`);
   });
@@ -125,6 +139,14 @@ const checkHomepage = () => {
   html.includes("<noscript>") && html.includes("no-js-banner")
     ? pass("homepage has no-JS fallback")
     : fail("homepage has no-JS fallback");
+
+  html.includes("class=\"date-flow\"") && html.includes("Tarikh di website ialah rujukan awal sahaja")
+    ? pass("homepage explains date checking flow")
+    : fail("homepage explains date checking flow");
+
+  html.includes("homestay-dekat-hospital-jitra.html") && html.includes("tempat-menarik-sekitar-jitra.html")
+    ? pass("homepage links to local SEO pages")
+    : fail("homepage links to local SEO pages");
 };
 
 const checkAnchorsAndImages = () => {
@@ -172,7 +194,7 @@ const checkLinks = () => {
 const checkSeoFiles = () => {
   const sitemap = read("sitemap.xml");
   const robots = read("robots.txt");
-  const requiredUrls = ["/", "/ms.html", "/en.html", "/policies.html"];
+  const requiredUrls = ["/", "/ms.html", "/en.html", "/policies.html", ...seoPages.map((page) => `/${page}`)];
   const missingUrls = requiredUrls.filter((urlPath) => !sitemap.includes(`${siteOrigin}${urlPath === "/" ? "/" : urlPath}`));
 
   missingUrls.length === 0
@@ -187,7 +209,7 @@ const checkSeoFiles = () => {
     const html = read(file);
     const hasTitle = /<title>[^<]+<\/title>/.test(html);
     const hasViewport = html.includes('name="viewport"');
-    const needsReferrer = ["index.html", "policies.html", "thank-you.html", "404.html"].includes(file);
+    const needsReferrer = ["index.html", "policies.html", "thank-you.html", "404.html", ...seoPages].includes(file);
     const hasReferrer = html.includes('name="referrer" content="strict-origin-when-cross-origin"');
     hasTitle ? pass(`${file} has title`) : fail(`${file} has title`);
     hasViewport ? pass(`${file} has viewport`) : fail(`${file} has viewport`);
@@ -208,6 +230,11 @@ const checkSpecialPages = () => {
   policies.includes("@media print") && policies.includes(".actions")
     ? pass("policies page has print styles")
     : fail("policies page has print styles");
+
+  const templates = read("WHATSAPP-TEMPLATES.md");
+  templates.includes("Balas Pertanyaan Baru") && templates.includes("Booking Confirm")
+    ? pass("WhatsApp templates are documented")
+    : fail("WhatsApp templates are documented");
 };
 
 const checkImageSizes = () => {

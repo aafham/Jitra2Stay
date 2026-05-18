@@ -9,6 +9,8 @@ Audit semasa untuk gambar dalam folder `images/`.
 - [x] Raw gambar/video besar dipindahkan ke `source-images/latest-raw/` supaya folder public `images/` kekal ringan.
 - [x] Video walkthrough diskip dahulu sehingga owner beri versi kecil.
 - [x] Gallery homepage telah dikemas kini dengan gambar latest.
+- [x] Versi WebP telah dibuat untuk semua gambar JPG semasa.
+- [x] Homepage guna `<picture>` untuk WebP dengan JPG fallback.
 
 ## Saiz Gambar Website Semasa
 
@@ -27,6 +29,22 @@ Audit semasa untuk gambar dalam folder `images/`.
 | `porch-parking.jpg` | `IMG_8021.JPG` | Porch dan kawasan luar | 243 KB |
 
 Semua gambar website semasa berada bawah 350 KB setiap satu.
+
+## Saiz WebP Semasa
+
+| Gambar | Saiz WebP |
+| --- | ---: |
+| `halaman.webp` | 317 KB |
+| `ruang-tamu.webp` | 154 KB |
+| `ruang-makan.webp` | 100 KB |
+| `tangga-ruang-makan.webp` | 103 KB |
+| `bilik-tidur.webp` | 131 KB |
+| `bilik-keluarga.webp` | 137 KB |
+| `bilik-besar.webp` | 139 KB |
+| `dapur.webp` | 148 KB |
+| `luar-rumah.webp` | 211 KB |
+| `parking.webp` | 209 KB |
+| `porch-parking.webp` | 141 KB |
 
 ## Gambar Yang Sudah Cukup Untuk Website Semasa
 
