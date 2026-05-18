@@ -15,6 +15,8 @@ Ringkasan perubahan penting website Jitra2Stay.
 - Run QA automatik dan semua 55 checks lulus.
 - Kemas kini section Tempat Berdekatan ikut kategori masa perjalanan.
 - Tambah copywriting promosi siap pakai untuk Facebook, WhatsApp dan listing website.
+- Audit semula checklist dalam `README.md` dan tick item yang memang sudah settle dalam website.
+- Ringkaskan checklist data owner dalam `README.md` supaya selari dengan `OWNER-DATA-CHECKLIST.md`.
 
 ## 2026-05-05
 
