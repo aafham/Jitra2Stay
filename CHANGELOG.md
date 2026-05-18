@@ -10,8 +10,11 @@ Ringkasan perubahan penting website Jitra2Stay.
 - Tukar hero background kepada gambar exterior rumah sebenar.
 - Pindahkan raw `IMG_*.JPG` dan `.MOV` besar ke `source-images/latest-raw/` supaya folder public `images/` kekal ringan.
 - Video walkthrough diskip dahulu sehingga owner beri versi kecil.
+- Kemas semula `OWNER-DATA-CHECKLIST.md` ikut status siap, test wajib sebelum live, data masih perlu confirm dan optional kemudian.
 - Update `README.md`, `OWNER-DATA-CHECKLIST.md`, `IMAGE-AUDIT.md`, dan `QA-REPORT.md`.
 - Run QA automatik dan semua 55 checks lulus.
+- Kemas kini section Tempat Berdekatan ikut kategori masa perjalanan.
+- Tambah copywriting promosi siap pakai untuk Facebook, WhatsApp dan listing website.
 
 ## 2026-05-05
 

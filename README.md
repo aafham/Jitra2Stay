@@ -283,7 +283,7 @@ Fail lain yang perlu selari dengan domain:
 - [ ] Tambah testimoni sebenar jika ada izin.
 - [ ] Tambah screenshot review jika ada izin.
 - [ ] Tambah rating Google/Facebook jika ada.
-- [ ] Tambah copy untuk pelanggan kenduri, konvo, hospital, cuti sekolah, dan rombongan sukan.
+- [x] Tambah copy promosi untuk pelanggan keluarga, kenduri, konvo, hospital dan rombongan.
 - [x] Tambah "Apa perlu bawa": IC, deposit, barang peribadi, makanan sendiri jika masak.
 - [x] Tambah FAQ: boleh bawa haiwan peliharaan atau tidak.
 - [x] Tambah FAQ: ada water heater atau tidak.
@@ -327,7 +327,7 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [x] Kapasiti maksimum final: 20 tetamu termasuk kanak-kanak.
 - [ ] Kapasiti selesa, had majlis kecil, parking kereta/van/bas.
 - [x] Lokasi final: Google Maps pin dan alamat penuh.
-- [ ] Jarak/minit ke tempat penting sekitar Jitra.
+- [x] Jarak/minit rujukan ke tempat penting sekitar Jitra.
 - [ ] Trust sebenar: testimoni/review/rating yang boleh dipaparkan dengan izin.
 - [ ] Tarikh unavailable terkini atau link Google Calendar/ICS jika mahu sync.
 
@@ -578,3 +578,78 @@ Hari 7:
 ## Nota Penting
 
 Website ini sekarang memang direka sebagai brochure + WhatsApp enquiry sahaja. Semua urusan bayaran, confirmation, refund, dan bukti pembayaran berlaku secara manual antara pelanggan dan owner melalui WhatsApp.
+
+## Copywriting Promosi Siap Pakai
+
+### Versi Facebook / Marketplace
+
+**Jitra2Stay Homestay Jitra**
+
+Homestay Semi-D 2 tingkat yang luas dan selesa, sesuai untuk keluarga besar, rombongan, kenduri kecil, konvokesyen, urusan Hospital Jitra atau penginapan sementara di sekitar Jitra.
+
+**Maklumat rumah**
+- 5 bilik tidur
+- 3 bilik air
+- Fully air-conditioned + kipas
+- WiFi
+- Pantry & basic facilities
+- Parking luas
+- Extra tilam, bantal dan comforter
+
+**Kadar sewa 1 malam**
+Harga bergantung pada bilangan bilik yang ditempah:
+- 2 bilik: RM180/malam
+- 3 bilik: RM230/malam
+- 4 bilik: RM280/malam
+- 5 bilik: RM330/malam
+
+Security deposit: RM100
+
+**Lokasi**
+49, Taman Jitra Indah, Jalan Hospital Daerah, 06000 Jitra, Kedah.
+Sebelah pagar sisi Hospital Jitra.
+
+Google Maps:
+https://goo.gl/maps/pjnMbwm5Pk2QqPeP8
+
+**Tempat berdekatan**
+5 - 10 minit: Hospital Jitra, Bandar Jitra, Dewan Jitra, Lotus Jitra, MRSM Kubang Pasu, IKBN Jitra, Masjid Sharifah Fatimah, Dewan Tunku Anum, Dewan Wawasan, MPKP, IPD Kubang Pasu dan Hotel Bustani.
+
+10 - 20 minit: Bandar Darulaman, ILP Jitra, POLIMAS, IPG Darulaman, IAB Cawangan Utara, C-Mart BDI, Yawata, Masjid Muttaqin, Hotel Darulaman, Kem Kelubi, Kem Askar Melayu, SMSAH/Jenan, Tasik Darulaman, Darulaman Golf Club dan Darulaman Fantasia Aquapark.
+
+20 - 30 minit: Airport Kepala Batas, Kolej Tentera Udara, Bandar Anak Bukit, Istana Anak Bukit, Masjid Zahir dan Bandar Alor Setar.
+
+30 minit ke atas: Changlun, UUM, UniMAP, Matrikulasi Kubang Pasu, Kolej Pertanian, MARDI, EDC-UUM Hotel, Bukit Kayu Hitam, UiTM Arau dan kawasan sekitar.
+
+**Hubungi / WhatsApp**
+019-441 0666
+019-442 0666
+
+Semak tarikh, harga dan ketersediaan melalui WhatsApp. Slot hujung minggu biasanya cepat penuh, jadi digalakkan booking awal.
+
+### Versi WhatsApp Pendek
+
+Jitra2Stay Homestay Jitra - Semi-D 2 tingkat, 5 bilik tidur, 3 bilik air, fully aircond + kipas, WiFi, pantry dan parking luas.
+
+Kadar 1 malam:
+2 bilik RM180
+3 bilik RM230
+4 bilik RM280
+5 bilik RM330
+
+Security deposit RM100.
+
+Lokasi: 49, Taman Jitra Indah, Jalan Hospital Daerah, 06000 Jitra, Kedah. Sebelah pagar sisi Hospital Jitra.
+
+Google Maps:
+https://goo.gl/maps/pjnMbwm5Pk2QqPeP8
+
+WhatsApp untuk semak tarikh dan slot:
+019-441 0666 / 019-442 0666
+
+### Versi Tajuk Posting
+
+- Homestay Semi-D 2 Tingkat di Jitra, Sebelah Hospital Jitra
+- Jitra2Stay Homestay, 5 Bilik 3 Bilik Air, Sesuai Untuk Keluarga & Rombongan
+- Homestay Jitra Untuk Kenduri, Konvokesyen, Urusan Hospital & Family Trip
+- Homestay Luas di Jitra Dengan Parking, WiFi dan Fully Aircond
