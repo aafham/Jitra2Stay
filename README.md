@@ -12,7 +12,7 @@ Tujuan website ini sangat direct:
 
 Current build status: **ready for owner data, phone test, and deploy**.
 
-QA automatik terakhir: `node tools/qa-check.js` pass **55 checks** pada 2026-05-08.
+QA automatik terakhir: `node tools/qa-check.js` pass **55 checks** pada 2026-05-18.
 
 Yang sudah ada:
 - [x] Homepage lengkap dengan hero, harga, cara tempah, form semak tarikh, galeri, lokasi, FAQ, dan CTA WhatsApp.
@@ -33,7 +33,7 @@ Yang sudah ada:
 - [x] Anggaran harga automatik dalam form ikut bilangan malam dan pakej bilik.
 
 Yang masih perlu dibuat sebelum live:
-- [ ] Sahkan semua data rumah, harga, polisi, dan lokasi dengan owner.
+- [x] Data asas rumah, harga, polisi PDF dan lokasi utama sudah dimasukkan.
 - [x] Masukkan gambar latest pilihan untuk hero, gallery, ruang tamu, ruang makan, pantry, bilik, parking, dan exterior.
 - [ ] Tambah gambar semua bilik air dan label semua 5 bilik satu per satu bila owner beri gambar final.
 - [x] Compress gambar sedia ada untuk prestasi mobile.
@@ -135,7 +135,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Nyatakan jumlah bilik air: 3.
 - [x] Sahkan kapasiti maksimum: 20 tetamu termasuk kanak-kanak.
 - [x] Nyatakan caj lebih tetamu: RM10 seorang.
-- [ ] Sahkan parking muat berapa kereta.
+- [ ] Sahkan parking muat berapa kereta secara tepat.
 - [x] Sahkan kemudahan daripada PDF: fully aircond, WiFi, pantry/basic facilities, water heater, extra tilam, bantal, comforter.
 - [ ] Sahkan kemudahan tambahan jika ada: TV, parking, mesin basuh, peti ais, penapis air, iron, toiletries, rice cooker, microwave.
 - [x] Tulis nota video dengan jelas: video sedang dikemas kini, galeri foto jadi rujukan sementara.
@@ -171,7 +171,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Audit automatik local untuk CTA WhatsApp, form validation, lightbox, map, BM/EN, dan dark/light.
 - [ ] Test semua CTA WhatsApp di phone sebenar.
 - [ ] Test submit form dari phone sebenar.
-- [ ] Tambah butang "Open Maps" atau "Copy alamat" selepas alamat final disahkan.
+- [x] Tambah butang "Open Maps" selepas alamat final disahkan.
 
 ### 4. Tarikh Tidak Tersedia
 
@@ -180,7 +180,7 @@ Fail lain yang perlu selari dengan domain:
 - [x] Buang owner/admin edit tarikh daripada website.
 - [ ] Update `unavailableRanges` dengan tarikh sebenar bila owner beri tarikh.
 - [ ] Sambung `bookingCalendarIcsUrl` kepada Google Calendar/OTA calendar jika mahu paparan rujukan lebih mudah.
-- [ ] Tetapkan proses operasi manual: bila booking confirm, owner update rekod sendiri dan maklum pelanggan melalui WhatsApp.
+- [x] Tetapkan proses operasi manual: bila booking confirm, owner update rekod sendiri dan maklum pelanggan melalui WhatsApp.
 
 ### 5. Admin / Login
 
@@ -306,175 +306,39 @@ Ini bukan scope sekarang, sebab website diminta view-only dan direct WhatsApp.
 - [ ] Tambah halaman SEO: Homestay untuk keluarga besar di Jitra.
 - [ ] Tambah halaman SEO: Tempat menarik sekitar Jitra.
 
-## Checklist Data Yang Owner Perlu Bagi Untuk Final Update
+## Checklist Data Owner Ringkas
 
-Guna checklist ini bila nak bagi data sebenar nanti. Mana yang belum pasti boleh tulis "belum confirm".
+Checklist detail yang paling kemas sekarang ada dalam `OWNER-DATA-CHECKLIST.md`. README ini hanya simpan ringkasan supaya tidak duplicate terlalu banyak.
 
-Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dalam website public. Beri password kepada tetamu selepas booking/check-in sahaja.
+### Sudah Selesai / Sudah Masuk Website
 
-### Ringkasan Paling Penting Untuk Saya Update Nanti
+- [x] Nama homestay, jenis rumah, alamat, Google Maps, nombor telefon dan email.
+- [x] Harga asas 2, 3, 4 dan 5 bilik.
+- [x] Security deposit RM100, extra guest RM10, early/late RM20/jam.
+- [x] Polisi asas daripada PDF.
+- [x] Kemudahan asas: WiFi, fully aircond, kipas, pantry/basic facilities, water heater, extra tilam, bantal dan comforter.
+- [x] Kapasiti maksimum 20 tetamu termasuk kanak-kanak.
+- [x] Gambar latest pilihan untuk hero, ruang tamu, ruang makan, pantry/dapur, bilik, parking, exterior dan porch.
+- [x] Lokasi dan tempat berdekatan ikut kategori masa perjalanan.
+- [x] Copywriting promosi untuk FB/WhatsApp/listing.
+- [x] Website kekal view-only dan direct WhatsApp.
 
-- [x] Gambar latest pilihan: exterior, parking, ruang tamu, ruang makan, pantry/dapur, beberapa bilik, dan kawasan luar.
-- [x] Pilih gambar hero utama final sementara dan gambar share preview final sementara.
-- [ ] Tambah gambar setiap bilik air, semua 5 bilik berlabel, dan kemudahan penting secara dekat.
-- [x] Harga final asas: 2 bilik RM180, 3 bilik RM230, 4 bilik RM280, 5 bilik RM330.
-- [ ] Harga tambahan: weekend, cuti sekolah, cuti umum, konvokesyen, peak season, dan diskaun 2 malam ke atas.
-- [ ] Sahkan ayat promosi final yang owner mahu guna untuk homepage.
-- [x] Polisi final asas daripada PDF: deposit keselamatan, late checkout/early check-in RM20/jam, extra guest RM10/seorang, pets tidak dibenarkan, merokok luar sahaja.
-- [ ] Polisi tambahan: deposit booking, refund, tukar tarikh, dan caj majlis/event.
-- [x] Kemudahan final asas daripada PDF: WiFi, fully aircond, pantry/basic facilities, water heater, extra tilam, bantal, comforter.
-- [ ] Kemudahan tambahan: TV, parking, peti ais, mesin basuh, iron, toiletries, rice cooker, microwave.
-- [x] Kapasiti maksimum final: 20 tetamu termasuk kanak-kanak.
-- [ ] Kapasiti selesa, had majlis kecil, parking kereta/van/bas.
-- [x] Lokasi final: Google Maps pin dan alamat penuh.
-- [x] Jarak/minit rujukan ke tempat penting sekitar Jitra.
-- [ ] Trust sebenar: testimoni/review/rating yang boleh dipaparkan dengan izin.
-- [ ] Tarikh unavailable terkini atau link Google Calendar/ICS jika mahu sync.
+### Masih Perlu Owner Confirm / Beri Nanti
 
-### A. Maklumat Asas Rumah
+- [ ] Gambar semua 3 bilik air.
+- [ ] Label semua 5 bilik tidur jika mahu gallery lebih lengkap.
+- [ ] Parking muat berapa kereta, dan status van/bas.
+- [ ] Harga tambahan: weekend, cuti sekolah, cuti umum, konvokesyen, peak season, diskaun 2 malam ke atas.
+- [ ] Kemudahan tambahan yang nak dipaparkan: TV, peti ais, mesin basuh, iron, toiletries, rice cooker, microwave, Coway/penapis air.
+- [ ] Polisi tambahan: booking deposit, refund, tukar tarikh, caj majlis/event.
+- [ ] Tarikh unavailable terkini atau link Google Calendar/ICS.
+- [ ] Video walkthrough kecil atau link YouTube unlisted jika mahu aktifkan section video.
+- [ ] Testimoni/review/rating sebenar jika mahu dipaparkan.
+- [ ] Final approval owner untuk ayat BM/EN sebelum live.
 
-- [ ] Nama rasmi homestay yang final.
-- [ ] Alamat penuh final.
-- [x] Google Maps link/pin yang final.
-- [x] Nombor WhatsApp final.
-- [x] Nombor call final jika berbeza.
-- [ ] Email final.
-- [ ] Jenis rumah final: Semi-D / teres / banglo / lain-lain.
-- [ ] Jumlah tingkat.
-- [ ] Jumlah bilik tidur.
-- [ ] Jumlah bilik air.
-- [ ] Kapasiti selesa.
-- [x] Kapasiti maksimum: 20 orang termasuk kanak-kanak.
-- [x] Caj extra guest jika lebih had: RM10 seorang.
-- [ ] Parking muat berapa kereta.
-- [ ] Boleh parking van atau tidak.
-- [ ] Boleh parking bas atau tidak.
+## Semakan Automatik & Manual Sebelum Live
 
-### B. Harga & Bayaran
-
-- [x] Harga 2 bilik: RM180/malam.
-- [x] Harga 3 bilik: RM230/malam.
-- [x] Harga 4 bilik: RM280/malam.
-- [x] Harga 5 bilik: RM330/malam.
-- [ ] Harga weekday/weekend jika berbeza.
-- [ ] Harga cuti sekolah.
-- [ ] Harga cuti umum.
-- [ ] Harga peak season / konvokesyen jika ada.
-- [ ] Detail diskaun/minimum stay 2 malam ke atas.
-- [x] Security deposit amount: RM100.
-- [ ] Booking deposit amount.
-- [x] Deposit dipulangkan selepas check-out jika tiada kerosakan/ketidakpatuhan rules.
-- [ ] Kaedah bayaran: bank transfer / DuitNow QR / cash / lain-lain.
-- [ ] Nama bank atau cara owner mahu beritahu payment detail.
-- [ ] Perlu hantar proof payment melalui WhatsApp atau tidak.
-- [ ] Bila booking dianggap confirmed.
-
-### C. Polisi
-
-- [x] Check-in time final: 3:00 PM.
-- [x] Check-out time final: 12:00 PM.
-- [x] Early check-in boleh jika diluluskan.
-- [x] Late checkout boleh jika diluluskan.
-- [x] Caj early/late time: RM20/jam.
-- [ ] Refund policy final.
-- [ ] Polisi tukar tarikh.
-- [x] Polisi kerosakan/ketidakpatuhan rules: deposit security boleh ditolak.
-- [x] Quiet/neighbour rule: elakkan bising dan hormati privacy kejiranan.
-- [x] Boleh merokok di luar rumah sahaja.
-- [x] Majlis/event boleh dipertimbang dengan izin semasa booking dan caj berbeza.
-- [x] Had maksimum kemasukan tetamu: 20 orang termasuk kanak-kanak.
-- [x] Binatang peliharaan tidak dibenarkan.
-- [ ] Syarat tambahan untuk van/bas/rombongan besar.
-
-### D. Kemudahan Rumah
-
-- [x] WiFi ada.
-- [ ] WiFi speed jika tahu.
-- [x] Fully aircond untuk bilik yang digunakan mengikut pakej.
-- [ ] Aircond di ruang tamu ada atau tidak.
-- [ ] Kipas di bilik/ruang mana.
-- [ ] TV ada atau tidak.
-- [ ] Peti ais ada atau tidak.
-- [x] Pantry/basic facilities ada.
-- [ ] Gas dapur disediakan atau tidak.
-- [ ] Rice cooker ada atau tidak.
-- [ ] Microwave ada atau tidak.
-- [ ] Cerek elektrik ada atau tidak.
-- [ ] Penapis air/Coway ada atau tidak.
-- [ ] Mesin basuh ada atau tidak.
-- [ ] Iron/iron board ada atau tidak.
-- [x] Water heater ada: 2 bilik air untuk pakej 2 bilik, 3 bilik air untuk pakej 3-5 bilik.
-- [x] Tuala digunakan perlu dimasukkan ke bakul semasa check-out.
-- [ ] Toiletries disediakan atau tidak.
-- [x] Extra tilam, bantal dan comforter ada.
-- [ ] Katil setiap bilik: queen/single/double/decker.
-- [ ] Keperluan bayi jika ada.
-
-### E. Gambar Yang Perlu Diberi Nanti
-
-- [x] Gambar exterior depan rumah siang.
-- [ ] Gambar exterior depan rumah malam jika ada.
-- [x] Gambar parking.
-- [x] Gambar ruang tamu wide angle.
-- [x] Gambar ruang makan jika ada.
-- [x] Gambar dapur.
-- [x] Gambar bilik tidur 1.
-- [x] Gambar bilik tidur 2.
-- [x] Gambar bilik tidur 3.
-- [ ] Gambar bilik tidur 4.
-- [ ] Gambar bilik tidur 5.
-- [ ] Gambar bilik air 1.
-- [ ] Gambar bilik air 2.
-- [ ] Gambar bilik air 3.
-- [ ] Gambar kemudahan penting: TV, dapur, peti ais, mesin basuh, iron, water heater jika ada.
-- [ ] Gambar landmark sekitar jika sesuai.
-- [x] Gambar yang owner mahu jadikan hero utama sementara.
-- [x] Gambar untuk share preview/thumbnail sementara.
-
-### F. Lokasi & Nearby Places
-
-- [ ] Jarak/minit ke Hospital Jitra.
-- [ ] Jarak/minit ke bandar Jitra.
-- [ ] Jarak/minit ke UUM jika target konvokesyen.
-- [ ] Jarak/minit ke IPDA jika relevan.
-- [ ] Jarak/minit ke POLIMAS jika relevan.
-- [ ] Jarak/minit ke Kolej Matrikulasi jika relevan.
-- [ ] Pasaraya terdekat.
-- [ ] Kedai makan popular terdekat.
-- [ ] Klinik/farmasi terdekat.
-- [ ] Masjid/surau terdekat jika mahu letak.
-
-### G. Trust / Marketing
-
-- [ ] Testimoni sebenar pelanggan jika ada.
-- [ ] Nama/label testimoni yang boleh dipaparkan.
-- [ ] Screenshot review dengan izin jika ada.
-- [ ] Google/Facebook rating jika ada.
-- [ ] Link Facebook/TikTok/Instagram jika mahu.
-- [ ] Google Business Profile link jika ada.
-- [ ] Ayat promosi yang owner suka.
-- [ ] Ayat/claim yang tidak mahu digunakan.
-
-### H. Tarikh & Operasi
-
-- [ ] Senarai tarikh unavailable terkini.
-- [ ] Cara owner rekod booking sekarang: WhatsApp / Google Calendar / notebook / Google Sheet.
-- [ ] Nak sync Google Calendar/ICS ke website atau tidak.
-- [ ] Nak paparkan "tarikh tidak tersedia" atau hanya minta WhatsApp sahaja.
-- [ ] Template mesej WhatsApp yang owner mahu.
-- [ ] Arahan check-in yang boleh dipaparkan public atau hanya selepas bayaran.
-
-### I. Final Content Approval
-
-- [ ] Owner semak homepage dari atas sampai bawah.
-- [ ] Owner sahkan semua ayat BM.
-- [ ] Owner sahkan semua ayat EN jika mahu guna bahasa Inggeris.
-- [ ] Owner sahkan tiada info sensitif dipaparkan public.
-- [ ] Owner sahkan flow website kekal view-only dan direct WhatsApp.
-- [ ] Owner pilih sama ada mahu paparkan review/testimoni sebenar.
-- [ ] Owner pilih sama ada mahu tambah halaman SEO tambahan kemudian.
-
-## Manual Test Sebelum Live
+Bahagian bertick ialah semakan yang sudah boleh disahkan melalui code/local QA. Bahagian belum tick ialah semakan yang memang perlu phone sebenar, URL live, atau tindakan owner.
 
 - [x] Homepage boleh load melalui local server.
 - [x] Thank-you page boleh load melalui local server.
@@ -497,7 +361,7 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [x] Audit saiz gambar semasa dibuat dalam `IMAGE-AUDIT.md`.
 - [x] Screenshot mobile headless semakan asas dibuat.
 - [x] Audit automatik local: CTA WhatsApp, form valid, form invalid, unavailable date, BM/EN, dark/light, gallery lightbox, Google Maps, dan page load.
-- [ ] Playwright browser smoke test terbaru belum lulus di environment ini kerana runner npx gagal resolve module `@playwright/test`; perlu ulang selepas dependency test dipasang dengan betul.
+- [ ] Browser smoke test manual di desktop dan mobile selepas deploy/live preview.
 - [ ] Buka homepage desktop Chrome secara manual.
 - [ ] Buka homepage mobile Chrome/Safari secara manual.
 - [ ] Klik semua nav anchor secara manual.
@@ -511,8 +375,8 @@ Nota: PDF house rules ada password WiFi, tapi password itu tidak dipaparkan dala
 - [ ] Klik Google Maps.
 - [ ] Buka policies page.
 - [ ] Buka thank-you page.
-- [ ] Guna `OWNER-DATA-CHECKLIST.md` untuk collect data final owner.
-- [ ] Guna `PRE-LIVE-QA.md` untuk semakan ringkas sebelum live.
+- [x] `OWNER-DATA-CHECKLIST.md` sudah dikemas untuk collect data final owner.
+- [x] `PRE-LIVE-QA.md` tersedia untuk semakan ringkas sebelum live.
 - [ ] Test dari phone sebenar menggunakan mobile data.
 
 ## Operasi Manual Owner
@@ -542,7 +406,8 @@ Setiap bulan:
 ## Cadangan Roadmap 7 Hari
 
 Hari 1:
-- [ ] Finalkan harga, polisi, kapasiti, kemudahan, nombor contact, dan alamat.
+- [x] Data asas harga, polisi PDF, kapasiti, nombor contact, dan alamat sudah dimasukkan.
+- [ ] Finalkan data tambahan owner: parking tepat, peak season, kemudahan tambahan dan polisi tambahan.
 - [x] Buang admin/login/user flow.
 - [x] Update `app.config.js`.
 
@@ -552,13 +417,14 @@ Hari 2:
 - [x] Pilih hero image terbaik sementara.
 
 Hari 3:
-- [ ] Test semua WhatsApp CTA dan form.
+- [x] Audit automatik WhatsApp CTA dan form.
+- [ ] Test semua WhatsApp CTA dan form dari phone sebenar.
 - [x] Polish mobile hero/header overflow.
 - [x] Betulkan copy BM/EN utama.
 - [x] Tambah anggaran harga automatik dalam form.
 
 Hari 4:
-- [x] Setup domain, sitemap, robots, canonical, Open Graph.
+- [x] Setup metadata domain, sitemap, robots, canonical, dan Open Graph.
 - [ ] Submit Google Search Console.
 
 Hari 5:
