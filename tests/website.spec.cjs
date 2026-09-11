@@ -91,6 +91,9 @@ for (const language of ["ms", "en"]) {
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(config.gallery.length);
     await expect(page.locator("#galleryControls")).toBeHidden();
     await expect(page.locator("#galleryMore")).toBeHidden();
+    await expect(page.locator(".room-description:visible")).toHaveCount(5);
+    await expect(page.locator("#shareStay")).toBeHidden();
+    await expect(page.locator("#clearEnquiryDraft")).toBeHidden();
     await expect(gallery.first()).toBeVisible();
     for (const rate of config.rates) await expect(page.getByText(`RM${rate.price}`, { exact: false }).first()).toBeVisible();
     await expect(page.locator("#dateForm")).toBeHidden();
@@ -101,6 +104,153 @@ for (const language of ["ms", "en"]) {
     await expect(page.locator("details").first()).toHaveAttribute("open", "");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await context.close();
+  });
+}
+
+for (const language of ["ms", "en"]) {
+  test(`${language} restored owner facts remain available on home and policies`, async ({ page }) => {
+    const en = language === "en";
+    await page.goto(en ? "/en.html" : "/");
+    await expect(page.locator('footer a[href="tel:+60194420666"]')).toBeVisible();
+    await expect(page.locator('a[href="https://www.facebook.com/media/set/?set=a.2393864657563587&type=3"]').first()).toBeVisible();
+    await expect(page.locator("#kemudahan")).toContainText(/WiFi.*TV/s);
+    await expect(page.locator(".extra-guest-note")).toContainText("RM10");
+    await expect(page.locator(".extra-guest-note")).toContainText("20");
+    const parking = page.locator("#faq details").filter({ has: page.locator("summary", { hasText: /parking/i }) });
+    await parking.locator("summary").click();
+    await expect(parking.locator("p")).toHaveText(en ? /3 to 4 cars/ : /3 hingga 4 kereta/);
+    await expect(page.locator(".stay-summary")).toContainText("DuitNow");
+    await page.locator('[data-gallery-filter="bedrooms"]').click();
+    await expect(page.locator(".room-description:visible")).toHaveCount(5);
+    await expect(page.locator("#galleryGrid .gallery-card")).toHaveCount(11);
+    const institutions = page.locator(".nearby-grid details").filter({ hasText: "POLIMAS" });
+    await institutions.locator("summary").click();
+    await expect(institutions).toContainText("IPG Darulaman");
+    await expect(page.locator(".nearby-grid details")).toHaveCount(6);
+    await page.goto(en ? "/policies-en.html" : "/policies.html");
+    await expect(page.locator("#cancellation")).toContainText(en ? /Less than 7 days/i : /Kurang 7 hari/i);
+    await expect(page.locator("#cancellation")).toContainText(en ? /non-refundable/ : /tidak dipulangkan/);
+    await expect(page.locator("#payment")).toContainText("DuitNow");
+    await expect(page.locator("#payment")).toContainText(en ? /payment proof|proof of payment/i : /bukti bayaran/i);
+    await expect(page.locator("#capacity")).toContainText("RM10");
+    await expect(page.locator("#checkout")).toContainText("0000");
+    await expect(page.locator("#checkout")).toContainText(en ? /green bin/ : /tong hijau/);
+  });
+}
+
+test("an editable enquiry draft survives language changes and reload, then clears completely", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await mockWhatsApp(page);
+  await fillEnquiry(page);
+  const values = { checkin: "2026-12-31", checkout: "2027-01-02", guests: "7", rooms: "3", notes: "A&B + C? #keluarga / ibu’s wheelchair 😊" };
+  async function expectFields(expected) {
+    for (const [name, value] of Object.entries(expected)) await expect(page.locator(`#dateForm [name=${name}]`)).toHaveValue(value);
+    expect(new URL(page.url()).search).toBe("");
+    expect(page.url()).not.toContain("2026-12-31");
+    expect(page.url()).not.toContain("keluarga");
+  }
+  await page.locator('nav a[hreflang="en"]').click();
+  await expectFields(values);
+  await expect(page.locator("#enquiryPreviewText")).toContainText("Guests: 7");
+  await page.locator('nav a[hreflang="ms"]').click();
+  await page.reload();
+  await expectFields(values);
+  await expect(page.locator("#enquiryPreviewText")).toContainText("Tetamu: 7");
+  await page.locator('#dateForm [name=checkout]').fill("2026-12-30");
+  await page.locator('#dateForm [name=guests]').fill("21");
+  await page.locator('nav a[hreflang="en"]').click();
+  await page.reload();
+  await expectFields({ ...values, checkout: "2026-12-30", guests: "21" });
+  await expect(page.locator("#checkoutError")).toBeVisible();
+  await expect(page.locator("#guestsError")).toBeVisible();
+  await expect(page.locator("#enquiryLink")).toBeHidden();
+  await page.locator("#clearEnquiryDraft").click();
+  await page.reload();
+  await expectFields({ checkin: "", checkout: "", guests: "6", rooms: "2", notes: "" });
+  expect(await page.evaluate(() => sessionStorage.getItem("jitra2stay.enquiry-draft.v1"))).toBeNull();
+  expect(await page.evaluate(() => window.__openedEnquiries)).toHaveLength(0);
+});
+
+test("unavailable browser storage leaves the enquiry usable and explains unsaved changes", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.addInitScript(() => {
+    for (const method of ["getItem", "setItem", "removeItem"]) Storage.prototype[method] = () => { throw new DOMException("Storage disabled", "SecurityError"); };
+  });
+  await mockWhatsApp(page);
+  await fillEnquiry(page);
+  await expect(page.locator("#draftFeedback")).toContainText("tidak dapat menyimpan");
+  await expect(page.locator("#priceEstimate")).toContainText("460");
+  await page.locator('#dateForm [type="submit"]').click();
+  expect(await page.evaluate(() => window.__openedEnquiries)).toHaveLength(1);
+  await expect(page.locator('#dateForm [name=notes]')).toHaveValue("A&B + C? #keluarga / ibu’s wheelchair 😊");
+  expect(errors).toEqual([]);
+});
+
+test("native sharing uses only the public homestay URL and cancellation has no clipboard side effect", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__shareCalls = [];
+    window.__copiedLinks = [];
+    Object.defineProperty(navigator, "share", { configurable: true, value: async data => {
+      window.__shareCalls.push(data);
+      if (window.__cancelShare) throw new DOMException("Cancelled", "AbortError");
+    } });
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async text => window.__copiedLinks.push(text) } });
+  });
+  await page.goto("/en.html?notes=private-draft#semak-tarikh");
+  await page.locator('#dateForm [name=notes]').fill("Do not share these enquiry notes");
+  await page.locator("#shareStay").click();
+  await expect.poll(() => page.evaluate(() => window.__shareCalls.length)).toBe(1);
+  expect(await page.evaluate(() => window.__shareCalls[0])).toEqual({ title: "Jitra2Stay", url: `${config.business.siteUrl}/en.html` });
+  await expect(page.locator("#shareStay")).toBeEnabled();
+  await page.evaluate(() => { window.__cancelShare = true; });
+  await page.locator("#shareStay").click();
+  await expect(page.locator("#shareStay")).toBeEnabled();
+  expect(await page.evaluate(() => window.__copiedLinks)).toEqual([]);
+  await expect(page.locator("#shareFallback")).toBeHidden();
+});
+
+test("sharing falls back to copying and then a selected public URL when clipboard is unavailable", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__copiedLinks = [];
+    Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async text => {
+      if (window.__clipboardBlocked) throw new DOMException("Clipboard disabled", "NotAllowedError");
+      window.__copiedLinks.push(text);
+    } } });
+  });
+  await page.goto("/?notes=private-draft#semak-tarikh");
+  await page.locator("#shareStay").click();
+  await expect.poll(() => page.evaluate(() => window.__copiedLinks)).toEqual([`${config.business.siteUrl}/`]);
+  await expect(page.locator("#shareFallback")).toBeHidden();
+  await page.evaluate(() => {
+    window.__clipboardBlocked = true;
+    Object.defineProperty(navigator, "share", { configurable: true, value: async () => { throw new DOMException("Sharing unavailable", "NotAllowedError"); } });
+  });
+  await page.locator("#shareStay").click();
+  const fallback = page.locator("#shareFallback");
+  await expect(fallback).toBeVisible();
+  await expect(fallback).toHaveValue(`${config.business.siteUrl}/`);
+  await expect(fallback).toBeFocused();
+  expect(await fallback.evaluate(input => input.readOnly && input.selectionStart === 0 && input.selectionEnd === input.value.length)).toBe(true);
+  expect(await page.evaluate(() => window.__copiedLinks)).toHaveLength(1);
+});
+
+for (const width of [320, 390]) {
+  test(`mobile hero shows property essentials, rate and enquiry action within the first screen at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 568 });
+    for (const route of ["/", "/en.html"]) {
+      await page.goto(route);
+      const hero = page.locator("#home");
+      await expect(hero.locator(".hero-details")).toContainText("5");
+      await expect(hero.locator(".hero-details")).toContainText("3");
+      for (const locator of [hero.locator(".hero-details"), hero.locator(".hero-rate"), page.locator("#heroPrimaryCta")]) {
+        const rect = await locator.boundingBox();
+        expect(rect.y).toBeGreaterThanOrEqual(0);
+        expect(rect.y + rect.height).toBeLessThanOrEqual(568);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
   });
 }
 

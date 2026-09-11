@@ -1,0 +1,60 @@
+# Restored property information
+
+The shared content in `site.config.cjs` restores the owner-provided information from original commit [`18a274d`](https://github.com/aafham/Jitra2Stay/tree/18a274d). The owner has confirmed that the original repository is authoritative for these property details. Its public content takes precedence over unfinished internal checklist items where they differ.
+
+The original `ms.html` and `en.html` were redirect pages, at lines 12–15. The actual bilingual copy was held in `index.html` through its `data-bm` and `data-en` attributes. The restoration preserves that content in shared Malay and English fields, with complete generated pages retained.
+
+## Source-to-config evidence
+
+| Restored information | Original evidence | Shared config field |
+| --- | --- | --- |
+| Additional call number: 019-442 0666 | [OWNER-DATA-CHECKLIST.md:31](https://github.com/aafham/Jitra2Stay/blob/18a274d/OWNER-DATA-CHECKLIST.md#L31), [README.md:503](https://github.com/aafham/Jitra2Stay/blob/18a274d/README.md#L503) | `business.secondaryPhone`, `business.secondaryPhoneDisplay` |
+| Public Facebook photo album | [index.html:767](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L767), [app.js:560](https://github.com/aafham/Jitra2Stay/blob/18a274d/app.js#L560) | `business.facebookUrl` |
+| Self check-in and full-house privacy | [index.html:209](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L209), [index.html:210](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L210) | `business.selfCheckIn`, `business.fullHousePrivacy`, `staySummary[privacy]`, `policies[packages]`, `facilities` |
+| Group size context of 6–10 guests, maximum 20 including children | [index.html:225](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L225), [index.html:495](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L495), [index.html:1262](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1262) | `business.typicalGuests`, `business.maxGuests`, `policies[capacity]`, family guide |
+| Original price-sharing examples use 6, 8, 9 and 10 guests for 2, 3, 4 and 5-room packages | [index.html:252](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L252), [index.html:259](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L259), [index.html:266](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L266), [index.html:274](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L274) | `rates[].exampleGuests` |
+| 2 water-heater bathrooms with the 2-room package; 3 with the 3–5-room packages | [index.html:250](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L250), [index.html:257](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L257), [index.html:1277](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1277) | `rates[].bathrooms`, `facilities`, `policies[packages]`, `faq[bathrooms]` |
+| Air conditioning and fans in every room | [index.html:916](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L916) | `facilities`, applicable `rooms[]` descriptions |
+| Free WiFi and TV | [index.html:931](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L931) | `facilities`, `faq[wifi-tv]` |
+| Extra mattresses, pillows and comforters | [index.html:936](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L936), [index.html:1272](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1272) | `facilities`, `policies[capacity]`, `faq[bedding]` |
+| Pantry/basic cooking facilities; meals in the dining area | [index.html:926](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L926), [index.html:1237](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1237) | `facilities`, `faq[kitchen]`, `policies[conduct]` |
+| Bring groceries and personal toiletries; used towels go in the basket | [index.html:970](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L970), [index.html:979](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L979), [index.html:1272](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1272) | `faq[kitchen]`, `faq[bedding]`, `policies[checkout]` |
+| Compound usually fits 3–4 cars; van/bus parking advice requested beforehand | [index.html:1257](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1257), [index.html:1292](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1292) | `business.parkingCars`, `facilities`, `faq[parking]`, `policies[events]` |
+| Extra-guest fee RM10 per person | [index.html:1262](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1262), [OWNER-DATA-CHECKLIST.md:43](https://github.com/aafham/Jitra2Stay/blob/18a274d/OWNER-DATA-CHECKLIST.md#L43) | `business.extraGuestFee`, `policies[capacity]` |
+| Cancellation less than 7 days before check-in: booking deposit non-refundable; earlier cancellation: date change subject to availability | [index.html:1252](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1252) | `business.cancellationNoticeDays`, `policies[cancellation]`, `staySummary[cancellation]`, policy-backed FAQ |
+| RM100 security deposit, refundable after check-out without damage or house-rule breaches; deductions possible | [index.html:280](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L280), [policies.html:246](https://github.com/aafham/Jitra2Stay/blob/18a274d/policies.html#L246) | `business.securityDeposit`, `policies[deposit]`, `staySummary[deposit]`, policy-backed FAQ |
+| Booking confirmed after slot confirmation and receipt of the required booking payment; payment proof sent through WhatsApp | [policies.html:225](https://github.com/aafham/Jitra2Stay/blob/18a274d/policies.html#L225), [index.html:325](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L325), [index.html:1267](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1267) | `policies[confirmation]`, `policies[payment]`, `staySummary[payment]` |
+| Bank transfer, DuitNow QR and cash accepted | [app.js:528](https://github.com/aafham/Jitra2Stay/blob/18a274d/app.js#L528); bank/DuitNow instructions also in [index.html:1267](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1267) | `business.paymentMethods`, `policies[payment]` |
+| Check-in 3 pm, check-out noon; approved early/late stays RM20/hour | [index.html:1232](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1232), [policies.html:232](https://github.com/aafham/Jitra2Stay/blob/18a274d/policies.html#L232) | Existing business time/fee fields, `policies[times]`, `staySummary[times]` |
+| Outdoor smoking area, no pets, prior event permission with differing charges | [index.html:1247](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1247), [index.html:1282](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1282), [index.html:1287](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1287) | `policies[conduct]`, `policies[events]`, `faq[pets]` |
+| Restore furniture, green rubbish bin, used-towel basket, key return and resetting box dials to 0000 | [index.html:574](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L574), [index.html:1317](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1317), [policies.html:239](https://github.com/aafham/Jitra2Stay/blob/18a274d/policies.html#L239) | `policies[checkout]`, policy-backed FAQ |
+| Nearby destinations grouped as nearby, 5–10, 10–15, 15–20, 20–30 and 30+ minutes | [index.html:1076](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1076), [index.html:1083](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1083), [index.html:1090](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1090), [index.html:1097](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1097), [index.html:1104](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1104), [index.html:1111](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1111) | `nearby[]`, `guides[]`; times remain approximate |
+
+`staySummary[]` uses shared business tokens for money, arrival/departure time and the cancellation notice period. FAQ entries reference a policy key when that policy already contains the answer, so these answers do not drift between homepage and policy pages.
+
+## Room photos and labels
+
+The main-bedroom and family-bedroom labels come from [index.html:674](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L674) and [index.html:696](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L696). The large-bedroom label is recorded in [IMAGE-AUDIT.md:25](https://github.com/aafham/Jitra2Stay/blob/18a274d/IMAGE-AUDIT.md#L25).
+
+| Config image | Original camera file | Basis of description |
+| --- | --- | --- |
+| `bilik-tidur` | `IMG_8001.JPG` | Original main-bedroom label; visible ceiling fan and clothes rack. Air conditioning is documented for bedrooms in original copy. |
+| `bilik-keluarga` | `IMG_7997.JPG` | Original family-bedroom label; two beds and a fan visible. |
+| `bilik-besar` | `IMG_7968.JPG` | Original large-bedroom image inventory; several beds visible. |
+| `bilik-dua-katil` | `IMG_7973.JPG` | Two separate beds, ceiling fan and clothes rack visible in the original camera photo. |
+| `bilik-kusyen-biru` | `IMG_7977.JPG` | Beds placed side by side, blue cushions, air conditioning and ceiling fan visible. |
+
+All five image groups have been visually inspected. `rooms[]` uses descriptive labels and visible features; it does not infer queen/king dimensions, room numbers, floor assignments, en-suite access or fixed bed capacity from camera order.
+
+## Precise limits of the recovered information
+
+- The original price examples are not per-package occupancy limits. `rates[].exampleGuests` must not drive guest validation or automatic extra-guest charges. The maximum remains 20 including children.
+- RM10 per extra guest is restored. The original text does not define the threshold, charge frequency, or a formula connecting that fee to the sample price-sharing guest counts; no such formula was added.
+- The cancellation copy retains the original less-than-7-days wording. It does not add a full-refund promise or invent special handling for exactly day 7. The booking-deposit amount is not specified in the original; RM100 is the separate security deposit.
+- No fixed number of hours for deposit return was recovered. The published promise remains after check-out, subject to the stated damage/rules conditions.
+- The checkout `0000` instruction is explicitly a dial reset after returning the key in the original public rules, not a newly published unlock credential.
+- The original room labels and images do not specify a room-to-floor map, exact bed dimensions, or which named rooms open in each package. Those fields remain absent.
+- The original 51 camera JPGs contain no bathroom images. No bathroom photo was fabricated or substituted.
+- No genuine testimonial text, guest names, dates, review counts or star ratings were recovered. [README.md:242](https://github.com/aafham/Jitra2Stay/blob/18a274d/README.md#L242) explicitly distinguishes sample testimonials from real reviews; [index.html:1172](https://github.com/aafham/Jitra2Stay/blob/18a274d/index.html#L1172) contains property highlights. `reviews` therefore remains empty. The restored Facebook URL is a photo album, not a review feed.
+- TV is explicitly provided in original public copy. Refrigerator, washing machine, iron, rice cooker, microwave and a complete toiletries inventory only appear as unchecked possibilities in [OWNER-DATA-CHECKLIST.md:131](https://github.com/aafham/Jitra2Stay/blob/18a274d/OWNER-DATA-CHECKLIST.md#L131); no new appliance list was invented.
+- The expired sample booking dates, empty calendar/video configuration and old unresolved `.com` origin are application defaults, not restored property facts. The current static enquiry flow, working URLs and complete language pages are retained.
