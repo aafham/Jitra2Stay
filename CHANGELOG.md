@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-12 — Kemasan UI/UX seluruh website
+
+- Susun empat pakej sebaris pada desktop, bezakan harga daripada deposit/caj dan kemaskan ringkasan penginapan.
+- Dahulukan foto galeri, tingkatkan ruang kapsyen, jadikan kemudahan satu kolum pada telefon dan kemaskan jarak FAQ/borang.
+- Baiki bar mobile yang menutup kawalan berfokus pada homepage dan halaman sokongan; pautan bar yang difokus kekal terlihat.
+- Bawa input tidak sah pertama ke tengah skrin dan selaraskan butang WhatsApp umum dengan pertanyaan sah yang sudah disediakan.
+- Tambah indeks 11 topik polisi, kekalkan topik sah ketika bertukar bahasa, dan dahulukan alamat/Google Maps/Waze dalam panduan.
+- Susun footer mengikut contact/penginapan dan tambah pintasan kembali ke atas; baiki konflik CSS yang menyebabkan teks bertindih pada telefon.
+- Kekalkan semua data owner dalam `site.config.cjs`, foto/background, kadar, kemudahan, polisi dan destinasi peta. QA: 464 statik, 11 unit, 53 browser.
+
 ## 2026-09-12 — Carian maklumat dan navigasi gambar
 
 - Tambah pilihan topik FAQ dan kiraan soalan, dengan semua 15 jawapan asal tetap tersedia tanpa JavaScript.

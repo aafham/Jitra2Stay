@@ -8,6 +8,7 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 - [English](https://jitra2stay.vercel.app/en.html)
 - [Pembaikan audit dan pengesahan](IMPLEMENTATION-2026-09-11.md)
 - [Audit baseline sebelum pembaikan](AUDIT-2026-09-11.md)
+- [Semakan UI/UX seluruh website](UI-UX-REVIEW-2026-09-12.md)
 
 ## Apa yang berubah
 
@@ -21,11 +22,16 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 - Dialog galeri menyokong keyboard, leretan kiri/kanan dan navigasi mengikut kategori. Jika gambar gagal dimuatkan, butang cuba lagi dan pautan JPG web tersedia. Dua foto bilik sebenar daripada arkib owner kekal digunakan.
 - Thumbnail dalam dialog memudahkan pertukaran gambar; gambar semasa ditandakan dan penerangan bilik asal turut dipaparkan dalam paparan besar.
 - Kad pakej memudahkan perbandingan bilik, bilik air dan kadar; pilihan kad terus diselaraskan dengan borang pertanyaan.
+- Empat pakej disusun sebaris pada desktop, dua kolum pada skrin kecil; deposit, caj tambahan dan syarat penginapan dipisahkan supaya harga mudah dibandingkan.
+- Foto galeri didahulukan sebelum panduan bilik. Kad kemudahan menggunakan satu kolum pada telefon, dan jarak FAQ/borang dikemaskan tanpa membuang kandungan.
 - Harga, contact dan polisi berkongsi satu sumber dalam `site.config.cjs`.
 - Borang pilihan mempunyai pintasan 1–3 malam, anggaran sewaan dengan deposit berasingan, ralat BM/EN di ruangan berkaitan dan pratonton mesej. Butiran kekal selepas membuka WhatsApp; pautan cuba semula dan salin mesej tersedia.
 - Draf pertanyaan kekal ketika menukar BM/EN atau memuat semula tab, melalui `sessionStorage` sehingga 2 jam sejak simpanan terakhir. Butang kosongkan draf tersedia; butiran tetamu tidak dimasukkan ke URL.
+- Butang WhatsApp umum pada header, hero, bahagian pertanyaan dan bar mobile menggunakan mesej borang yang sama apabila sah. Ralat pertama dibawa ke tengah skrin untuk dibetulkan; butang kosongkan borang hanya muncul selepas perubahan.
 - Pautan Google Maps dan album Facebook asal tersedia. Butang Kongsi berkongsi pautan homepage sahaja melalui menu peranti, salin pautan atau pilihan salin manual.
 - Navigasi menandakan bahagian yang sedang dibaca dan mengekalkan bahagian itu ketika menukar bahasa homepage. Bar mobile menyediakan Harga/WhatsApp dan menyorok semasa mengisi borang atau apabila kawalan borang sudah terlihat.
+- Bar mobile turut menyorok apabila menutup kawalan yang sedang difokus, termasuk pada halaman panduan/polisi. Pautan dalam bar yang sedang difokus kekal terlihat.
+- Polisi mempunyai indeks 11 topik dan mengekalkan topik sah ketika menukar BM/EN. Panduan mendahulukan alamat serta Google Maps/Waze sebelum pautan panduan lain. Footer mengumpulkan contact dan pautan penginapan, dengan pintasan kembali ke atas.
 - Kalendar lapuk, parser ICS, tracking lokal, CTA rawak dan redirect thank-you automatik telah dibuang.
 - Gambar responsif menggunakan saiz yang sesuai; fail kamera mentah tidak diterbitkan bersama website.
 - Build menghasilkan 16 halaman HTML, metadata bahasa, sitemap dan robots yang konsisten pada domain Vercel aktif.
@@ -54,11 +60,13 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 | `templates/stay-info.cjs` | Ringkasan penginapan, pautan profil/kongsi dan tempat berdekatan |
 | `templates/gallery.cjs` | Galeri, penapis kategori dan dialog gambar |
 | `templates/rates.cjs` | Kad pakej bilik dan maklumat kadar |
+| `rates.css` | Susunan perbandingan pakej, caj dan ringkasan penginapan |
 | `templates/enquiry.cjs` | Borang, pecahan anggaran dan pratonton mesej |
 | `templates/location.cjs` | Peta Google terbenam, butang Google Maps/Waze dan panduan lokasi |
 | `templates/faq.cjs`, `faq.js`, `faq.css` | Soalan asal BM/EN dan penapis topik dengan kiraan hasil |
 | `location.js`, `location.css` | Salin alamat dan pilihan salinan manual |
 | `templates/pages.cjs` | Polisi, panduan setempat, halaman legacy thank-you dan 404 |
+| `documents.css` | Indeks polisi, susunan panduan dan footer semua halaman |
 | `app.js` | Menu, tema, pakej, validasi, mesej dan draf pertanyaan dalam sesi tab |
 | `share.js` | Perkongsian URL homepage tanpa butiran borang |
 | `gallery.js`, `gallery.css` | Penapis, lihat lagi, dialog, leretan dan pemulihan gambar |
@@ -107,7 +115,7 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 12 September 2026: **454 semakan statik, 11 unit dan 47 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 12 September 2026: **464 semakan statik, 11 unit dan 53 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 

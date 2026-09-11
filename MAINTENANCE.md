@@ -28,15 +28,29 @@ Setiap item `gallery` dalam `site.config.cjs` mesti mempunyai `category`: `bedro
 
 `navigation.js` dan `navigation.css` menandakan bahagian homepage aktif serta menambah bahagian semasa pada pautan bahasa. Bar mobile Harga/WhatsApp menyorok ketika input borang difokus atau kawalan pertanyaan sudah kelihatan. Kekalkan ID bahagian serta pautan HTML biasa supaya navigasi tanpa JavaScript terus berfungsi. Draf borang dipulihkan secara berasingan melalui `app.js`.
 
+Bar mobile juga digunakan pada halaman sokongan. Jika kawalan berfokus bertindih dengan kawasan bar, bar menyorok sehingga kawalan itu jelas; pautan bar yang sedang difokus tidak disembunyikan. Ketinggian terakhir bar disimpan untuk mengelakkan kitaran sorok/papar. Selepas perubahan layout, uji Tab semula jadi dari header hingga borang serta pautan footer.
+
+Panduan bilik berada selepas grid galeri supaya foto muncul dahulu. Jangan buang penerangan bilik apabila menyusun semula galeri; data datang daripada `rooms` yang sama.
+
 Menu telefon dalam `app.js` menutup apabila fokus atau sentuhan bergerak keluar daripada header, selain klik pautan, toggle dan Escape. Semak dengan keyboard supaya menu terbuka tidak menutup elemen yang sedang difokus. Fokus pada ringkasan tempat berdekatan dilukis di dalam sempadan kad supaya tidak terpotong.
 
 ## Pakej dan borang pertanyaan
 
 `templates/rates.cjs` menjana kad perbandingan pakej; `templates/enquiry.cjs` menjana borang, ralat ruangan, pecahan anggaran dan pratonton mesej. `app.js` menyelaraskan pilihan pakej dan butiran WhatsApp. Jangan menambah kadar berasingan dalam template atau JavaScript; gunakan `rates` dan `business.securityDeposit` dalam config.
 
+`rates.css` mengurus empat kolum pakej pada desktop dan dua kolum di bawah 1100px. Kad, contoh pembahagian harga, deposit, caj tambahan dan ringkasan masih dijana daripada config. Semak 320px dan English selepas mengubah label.
+
 Pintasan 1–3 malam mengisi check-out berdasarkan check-in yang sah. Anggaran sewaan ialah kadar semalam × bilangan malam; deposit dipaparkan berasingan dan caj tambahan tidak dianggarkan. Caj tambahan RM10 seorang kekal dinyatakan dalam polisi; contoh pembahagian harga dalam `rates.exampleGuests` bukan had pakej atau formula menentukan siapa dikenakan caj. Anggaran tidak menyemak kekosongan atau menggantikan pengesahan owner melalui WhatsApp.
 
 Selepas perubahan, semak ralat BM/EN, tarikh akhir bulan/tahun, pilihan kad dan dropdown, serta kesamaan mesej pratonton dengan pautan WhatsApp. Membuka WhatsApp mesti mengekalkan borang, draf dan pautan alternatif.
+
+Apabila JavaScript aktif, validasi menggunakan constraint HTML serta ralat inline; submit tidak sah memfokus input pertama di tengah skrin supaya header tidak menutupnya. Butang WhatsApp umum pada header, hero, bahagian pertanyaan dan bar mobile menggunakan pertanyaan yang disediakan hanya apabila sah, dan kembali kepada URL asal apabila tidak sah/dikosongkan. Pautan pertanyaan khusus polisi/panduan kekal mengikut konteks halaman.
+
+## Polisi, panduan dan footer
+
+`documents.css` dimuat selepas CSS asas pada semua halaman. Indeks polisi dijana daripada `policies` serta privasi; kekalkan ID bahagian dan `tabindex="-1"` untuk pautan/fokus. `navigation.js` hanya membawa hash ke bahasa lain jika ia merujuk bahagian dokumen sebenar. Indeks berfungsi sebagai pautan HTML tanpa JavaScript.
+
+Panduan menyusun kandungan, alamat/Google Maps/Waze, kemudian panduan berkaitan dalam DOM. Destinasi menggunakan config peta yang sama dengan homepage. Footer dalam `templates/shared.cjs` berkongsi layout untuk semua halaman; semak 320/390/768/1440px kerana CSS asas turut mempunyai aturan footer. Elakkan selector yang kurang khusus daripada aturan asas sehingga kolum intro gagal merentasi baris telefon.
 
 ## Draf dan perkongsian
 

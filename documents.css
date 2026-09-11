@@ -1,0 +1,87 @@
+/* Reading and recovery pages, plus shared footer navigation. */
+.policy-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:64px;align-items:start}
+.policy-toc{position:sticky;top:calc(var(--header-height) + 24px);max-height:calc(100dvh - var(--header-height) - 48px);overflow:auto;padding:20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);scrollbar-gutter:stable}
+.policy-toc h2{font-family:inherit;font-size:1rem;font-weight:650;letter-spacing:0;line-height:1.4;margin-bottom:12px}
+.policy-toc ul{list-style:none;padding:0;margin:0}
+.policy-toc li+li{border-top:1px solid var(--line)}
+.policy-toc a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 0;font-size:.875rem;line-height:1.45;text-decoration:none}
+.policy-toc a:hover{text-decoration:underline;color:var(--green)}
+.policy-toc .icon{width:16px;height:16px}
+.policy-page .document-content{max-width:none;min-width:0}
+.policy-page .document-content>section:target{border-top-color:var(--green)}
+.policy-page .document-content>section:focus-visible{outline:3px solid var(--focus);outline-offset:8px;border-radius:4px}
+.guide-page .breadcrumb{display:inline-flex;align-items:center;min-height:44px;margin-bottom:20px}
+.guide-page .guide-layout{gap:44px 64px}
+.guide-page .guide-aside{max-width:none}
+.guide-page .guide-aside address{font-size:.95rem;line-height:1.75;color:var(--muted)}
+.guide-page .guide-aside img{aspect-ratio:16/10}
+.guide-directions{display:flex;flex-wrap:wrap;gap:0 22px;margin-top:14px}
+.guide-directions .text-link{margin-top:0;font-size:.9rem}
+.guide-page .related-guides{grid-column:1/-1;padding-top:30px;border-top:1px solid var(--line)}
+.guide-page .related-guides h2{font-size:1.9rem;margin-bottom:20px}
+.related-guide-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.related-guide-links a{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:72px;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:.95rem;line-height:1.55;text-decoration:none}
+.related-guide-links a:hover{background:var(--surface);text-decoration:underline}
+.related-guide-links .icon{width:18px;height:18px}
+.site-footer .footer-grid{grid-template-columns:1.2fr 1fr 1fr;gap:44px}
+.site-footer .footer-grid>*{min-width:0}
+.site-footer .footer-brand{display:inline-flex;align-items:center;min-height:44px}
+.site-footer .footer-grid h2{margin:10px 0 12px;font-size:.9rem;line-height:1.5}
+.site-footer .footer-links{list-style:none;margin:0;padding:0}
+.site-footer .footer-links a{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 0;font-size:.875rem;line-height:1.55;text-decoration:none;color:var(--muted);overflow-wrap:anywhere}
+.site-footer .footer-links a:hover{text-decoration:underline;color:var(--ink)}
+.site-footer .footer-links .footer-secondary-phone{flex-wrap:wrap;gap:0 6px}
+.site-footer .footer-link-note{font-size:.8rem}
+.site-footer .footer-bottom{align-items:center;gap:20px 32px}
+.footer-legal{display:flex;flex-wrap:wrap;gap:6px 28px}
+.footer-back-top{display:inline-flex;align-items:center;justify-content:flex-end;gap:9px;min-height:44px;flex-shrink:0;font-size:.875rem;text-decoration:none;color:var(--ink)}
+.footer-back-top:hover{text-decoration:underline}
+.footer-back-top .icon{width:18px;height:18px;transform:rotate(-90deg)}
+@media(max-width:1100px) and (min-width:901px){.policy-layout{grid-template-columns:250px minmax(0,1fr);gap:40px}.guide-page .guide-layout{gap:36px}}
+@media(max-width:900px){
+ .policy-layout{grid-template-columns:1fr;gap:32px}
+ .policy-toc{position:static;max-height:none;padding:20px 22px;overflow:visible;scrollbar-gutter:auto}
+ .policy-toc ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}
+ .policy-toc li+li{border-top:0}.policy-toc li{border-top:1px solid var(--line)}
+ .guide-page .guide-layout{gap:32px}
+ .guide-page .guide-aside{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);align-items:stretch}
+ .guide-page .guide-aside picture,.guide-page .guide-aside img{height:100%}
+ .guide-page .guide-aside img{aspect-ratio:auto;min-height:220px}
+ .related-guide-links{grid-template-columns:1fr;gap:10px}
+ .related-guide-links a{min-height:56px;padding:14px 18px}
+ .site-footer .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px;padding-bottom:28px}
+ .site-footer .footer-grid .footer-intro{grid-column:1/-1}
+ .site-footer .footer-intro{display:flex;align-items:center;justify-content:space-between;gap:20px}
+ .site-footer .footer-intro p{margin-top:0;text-align:right}
+ .footer-legal{flex-direction:column;gap:4px}
+ .site-footer .footer-bottom{align-items:flex-start}
+}
+@media(max-width:600px){
+ .policy-toc{padding:18px}
+ .policy-toc ul{column-gap:16px}
+ .policy-toc a{font-size:.8rem;gap:8px;padding-block:10px}
+ .policy-toc .icon{width:14px;height:14px}
+ .guide-page .guide-aside{display:block}
+ .guide-page .guide-aside img{aspect-ratio:16/9;min-height:0;height:auto}
+ .guide-page .guide-aside h2{margin-bottom:16px}
+ .site-footer{padding-top:32px}
+ .site-footer .footer-grid{column-gap:20px}
+ .site-footer .footer-intro{align-items:flex-start}
+ .site-footer .footer-intro p{font-size:.8rem;line-height:1.6;margin-top:8px}
+ .site-footer .footer-grid h2{font-size:.85rem}
+ .site-footer .footer-links a{font-size:.8125rem}
+ .site-footer .footer-links .footer-secondary-phone{display:block}
+ .site-footer .footer-secondary-phone span{display:block}
+ .site-footer .footer-bottom{flex-wrap:wrap;gap:12px;padding-block:18px}
+ .footer-back-top{font-size:.8rem}
+}
+@media(max-width:379px){
+ .policy-toc ul{grid-template-columns:1fr}
+ .policy-toc a{font-size:.875rem}
+ .site-footer .footer-grid{grid-template-columns:1fr;gap:18px}
+ .site-footer .footer-intro{display:block}
+ .site-footer .footer-intro p{text-align:left;margin-top:4px}
+ .site-footer .footer-links .footer-secondary-phone{display:flex}
+ .site-footer .footer-links a{font-size:.875rem}
+}
+@media print{.policy-toc,.related-guides,.guide-directions{display:none}.policy-layout{display:block}.guide-page .guide-layout{display:block}.guide-page .guide-aside{margin-top:24px;break-inside:avoid}.guide-page .guide-aside img{max-height:180px}.policy-page .document-content>section{outline:none}}
