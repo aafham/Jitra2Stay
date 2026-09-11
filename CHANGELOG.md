@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-11 — Galeri, pilihan pakej dan pertanyaan
+
+- Tambah penapis galeri Semua/Bilik tidur/Ruang bersama/Luar rumah, kiraan foto dan butang lihat lagi/ringkaskan. Semua 11 foto tetap tersedia tanpa JavaScript.
+- Dialog mengikuti kategori aktif, menyokong leretan mendatar dan keyboard, serta menyediakan status muatan, cuba lagi dan pautan JPG web apabila gambar gagal dimuatkan.
+- Gantikan jadual kadar dengan kad pakej yang menyelaraskan pilihan ke borang pertanyaan.
+- Tambah pintasan 1–3 malam, pecahan sewaan/deposit, ralat ruangan BM/EN dan pratonton mesej sebelum membuka WhatsApp. Tarikh dan harga akhir masih disahkan oleh owner.
+- Tambah penanda navigasi aktif dan kekalkan bahagian homepage semasa menukar bahasa. Bar mobile Harga/WhatsApp menyorok ketika mengisi borang atau apabila kawalan pertanyaan sudah terlihat.
+- Pecahkan bahagian kepada `templates/gallery.cjs`, `templates/rates.cjs` dan `templates/enquiry.cjs`, dengan aset `gallery.js`/`gallery.css` serta `navigation.js`/`navigation.css`. Background rumah dan peta Google/Google Maps/Waze daripada perubahan terdahulu dikekalkan.
+
 ## 2026-09-11 — Background dan navigasi peta
 
 - Kembalikan foto rumah sebagai background hero dengan overlay hijau dan warna cream/sage, termasuk mobile serta tema gelap.

@@ -5,13 +5,15 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 | Semakan | Keputusan |
 | --- | --- |
 | Build | 16 halaman HTML penuh |
-| Static output QA | 430 / 430 lulus |
+| Static output QA | 443 / 443 lulus |
 | Unit date-only / enquiry helpers | 5 / 5 lulus |
-| Playwright Chromium 153 | 24 / 24 lulus |
+| Playwright Chromium 153 | 31 / 31 lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
 
 Browser menguji lebar 320/390/768/1440, menu/fokus, no-JS BM/EN, roundtrip bahasa, package preset, dialog keyboard, form tidak sah/valid, anggaran, encoding, popup diblok dan metadata/aset. Unit cases termasuk leap day, hujung tahun dan timezone negatif. Static QA juga membuat HTTP requests terhadap output server dan menguji 404/private-path boundary.
+
+Penambahbaikan galeri/pakej/pertanyaan menambah semakan penapis dan lihat lagi, subset dialog, gambar gagal/cuba lagi, swipe mendatar berbanding gerakan menegak, pintasan malam merentas tahun, deposit berasingan, pratonton yang sama dengan mesej WhatsApp, ralat ruangan, kad pilihan dan bar mobile yang menghormati fokus. Pertukaran bahasa mengekalkan seksyen selepas galeri berkembang; Tab pada header juga tidak lagi menatal halaman tanpa sengaja. Semakan visual BM/EN, desktop/mobile dan tema gelap dibuat pada kad pakej serta borang; harga didahulukan daripada nota deposit pada telefon.
 
 Tiada mesej WhatsApp, pembayaran atau booking dihantar. Peranti fizikal/Safari/mobile data, ketepatan data owner, pin lapangan dan Search Console belum disahkan. Lihat PRE-LIVE-QA.md.
 
