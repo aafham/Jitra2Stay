@@ -7,7 +7,7 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 | Build | 16 halaman HTML penuh |
 | Static output QA | 427 / 427 lulus |
 | Unit date-only / enquiry helpers | 5 / 5 lulus |
-| Playwright Chrome | 23 / 23 lulus |
+| Playwright Chromium 153 | 24 / 24 lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
 
