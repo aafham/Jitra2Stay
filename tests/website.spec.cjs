@@ -87,7 +87,10 @@ for (const language of ["ms", "en"]) {
     await page.goto(test.info().project.use.baseURL + (language === "en" ? "/en.html" : "/"));
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     const gallery = page.locator(".gallery-trigger");
-    expect(await gallery.count()).toBeGreaterThanOrEqual(6);
+    await expect(gallery).toHaveCount(config.gallery.length);
+    await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(config.gallery.length);
+    await expect(page.locator("#galleryControls")).toBeHidden();
+    await expect(page.locator("#galleryMore")).toBeHidden();
     await expect(gallery.first()).toBeVisible();
     for (const rate of config.rates) await expect(page.getByText(`RM${rate.price}`, { exact: false }).first()).toBeVisible();
     await expect(page.locator("#dateForm")).toBeHidden();
@@ -158,18 +161,28 @@ test("invalid checkout, past arrival and excessive guest count never open a What
   const submit = form.locator('[type="submit"]');
   const checkout = form.locator("[name=checkout]");
   await checkout.fill("2026-12-31");
+  await form.locator("[name=notes]").focus();
+  await expect(page.locator("#checkoutError")).toBeVisible();
+  await expect(checkout).toHaveAttribute("aria-invalid", "true");
   await submit.click();
   expect(await checkout.evaluate(element => element.validity.valid)).toBe(false);
   await checkout.fill("2027-01-02");
+  await expect(page.locator("#checkoutError")).toBeHidden();
+  await expect(checkout).not.toHaveAttribute("aria-invalid", "true");
   const guests = form.locator("[name=guests]");
   await guests.fill(String(config.business.maxGuests + 1));
   await submit.click();
   expect(await guests.evaluate(element => element.validity.valid)).toBe(false);
+  await expect(page.locator("#guestsError")).toBeVisible();
+  await expect(guests).toHaveAttribute("aria-invalid", "true");
   await guests.fill("7");
+  await expect(page.locator("#guestsError")).toBeHidden();
   const checkin = form.locator("[name=checkin]");
   await checkin.fill("2020-01-01");
   await submit.click();
   expect(await checkin.evaluate(element => element.validity.valid)).toBe(false);
+  await expect(page.locator("#checkinError")).toBeVisible();
+  await expect(checkin).toHaveAttribute("aria-invalid", "true");
   expect(await page.evaluate(() => window.__openedEnquiries)).toHaveLength(0);
 });
 
@@ -234,8 +247,209 @@ test("choosing a room package carries the selected package into the enquiry form
   for (const rate of config.rates) {
     await page.locator(`.package-link[data-rooms="${rate.rooms}"]`).click();
     await expect(page.locator('#dateForm [name="rooms"]')).toHaveValue(String(rate.rooms));
+    await expect(page.locator('.package-card[data-selected="true"]')).toHaveCount(1);
+    const selectedCard = page.locator(`.package-card[data-package="${rate.rooms}"]`);
+    await expect(selectedCard).toHaveAttribute("data-selected", "true");
+    await expect(selectedCard.locator(".package-selected")).toBeVisible();
     expect(new URL(page.url()).hash).toBe("#semak-tarikh");
   }
+  await page.locator('#dateForm [name="rooms"]').selectOption(String(config.rates[0].rooms));
+  await expect(page.locator('.package-card[data-selected="true"]')).toHaveAttribute("data-package", String(config.rates[0].rooms));
+});
+
+test("gallery expansion and filters keep counts, visible photos and modal navigation in sync", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const visibleCards = page.locator("#galleryGrid .gallery-card:visible");
+  const more = page.locator("#galleryMore");
+  await expect(visibleCards).toHaveCount(6);
+  await more.click();
+  await expect(visibleCards).toHaveCount(config.gallery.length);
+  await expect(more).toHaveAttribute("aria-expanded", "true");
+  await more.click();
+  await expect(visibleCards).toHaveCount(6);
+  for (const category of ["bedrooms", "shared", "outside"]) {
+    const count = config.gallery.filter(photo => photo.category === category).length;
+    const button = page.locator(`[data-gallery-filter="${category}"]`);
+    await button.click();
+    await expect(button).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('#galleryControls [aria-pressed="true"]')).toHaveCount(1);
+    await expect(visibleCards).toHaveCount(count);
+    await expect(page.locator(`#galleryGrid .gallery-card:visible:not([data-gallery-category="${category}"])`)).toHaveCount(0);
+    await expect(page.locator("#galleryResults")).toContainText(`${count} daripada ${count}`);
+    await expect(more).toBeHidden();
+  }
+  const triggers = visibleCards.locator(".gallery-trigger");
+  const captions = await triggers.evaluateAll(anchors => anchors.map(anchor => anchor.dataset.caption));
+  const opener = triggers.first();
+  await opener.click();
+  await expect(page.locator("#galleryCount")).toHaveText(`1 / ${captions.length}`);
+  for (let step = 1; step <= captions.length; step += 1) {
+    await page.locator("#galleryNext").click();
+    await expect(page.locator("#galleryCaption")).toHaveText(captions[step % captions.length]);
+    await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
+  }
+  await page.keyboard.press("Escape");
+  await expect(opener).toBeFocused();
+  await page.locator('[data-gallery-filter="all"]').click();
+  await expect(visibleCards).toHaveCount(6);
+  await expect(page.locator("#galleryResults")).toContainText(`6 daripada ${config.gallery.length}`);
+});
+
+test("a failed gallery photo offers its original JPEG and can be retried without losing keyboard focus", async ({ page }) => {
+  await page.goto("/");
+  const trigger = page.locator(".gallery-trigger").nth(3);
+  await trigger.scrollIntoViewIfNeeded();
+  await expect.poll(() => trigger.locator("img").evaluate(image => image.complete)).toBe(true);
+  const fullUrl = new URL(await trigger.getAttribute("data-full"), page.url()).href;
+  const originalUrl = new URL(await trigger.getAttribute("data-original"), page.url()).href;
+  let attempts = 0;
+  await page.route(fullUrl, route => ++attempts === 1 ? route.abort("failed") : route.continue());
+  await trigger.click();
+  await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "error");
+  await expect(page.locator("#galleryImageStage")).toHaveAttribute("aria-busy", "false");
+  await expect(page.locator("#galleryImageStatus")).not.toHaveText("");
+  await expect(page.locator("#galleryOriginalLink")).toHaveJSProperty("href", originalUrl);
+  expect(new URL(originalUrl).pathname).toMatch(/\.jpg$/i);
+  await page.locator("#galleryRetry").click();
+  await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#galleryImage")).toBeVisible();
+  await expect(page.locator("#galleryRetry")).toBeHidden();
+  await expect(page.locator("#galleryClose")).toBeFocused();
+  expect(attempts).toBe(2);
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+});
+
+test.describe("touch gallery", () => {
+  test.use({ hasTouch: true, viewport: { width: 390, height: 844 } });
+  test("horizontal swipes move to the next filtered photo while vertical movement preserves it", async ({ page, context }) => {
+    await page.goto("/");
+    await page.locator('[data-gallery-filter="bedrooms"]').click();
+    const visiblePhotos = page.locator('#galleryGrid .gallery-card:visible .gallery-trigger');
+    const captions = await visiblePhotos.evaluateAll(anchors => anchors.map(anchor => anchor.dataset.caption));
+    await visiblePhotos.first().click();
+    await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
+    const box = await page.locator("#galleryImageStage").boundingBox();
+    const cdp = await context.newCDPSession(page);
+    const swipe = async (from, to) => {
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [from] });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [to] });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    };
+    const x = box.x + box.width / 2, y = box.y + box.height / 2;
+    await swipe({ x: x + 65, y }, { x: x - 65, y });
+    await expect(page.locator("#galleryCaption")).toHaveText(captions[1]);
+    await expect(page.locator("#galleryCount")).toHaveText(`2 / ${captions.length}`);
+    await swipe({ x, y: y - 50 }, { x, y: y + 60 });
+    await expect(page.locator("#galleryCaption")).toHaveText(captions[1]);
+    await cdp.detach();
+  });
+});
+
+test("stay shortcuts update rent, separate deposit and a safe preview matching both WhatsApp links", async ({ page }) => {
+  await mockWhatsApp(page);
+  const form = await fillEnquiry(page, "en");
+  const nightlyRate = config.rates.find(rate => rate.rooms === 3).price;
+  for (const nights of [1, 2, 3]) {
+    const shortcut = page.locator(`#stayShortcuts [data-nights="${nights}"]`);
+    await shortcut.click();
+    await expect(shortcut).toHaveAttribute("aria-pressed", "true");
+    await expect(form.locator("[name=checkin]")).toHaveValue("2026-12-31");
+    await expect(form.locator("[name=checkout]")).toHaveValue(`2027-01-0${nights}`);
+    await expect(page.locator("#estimateTotal")).toHaveText(`RM${nightlyRate * nights}`);
+  }
+  await expect(page.locator("#estimateBreakdown")).toContainText("Separate deposit");
+  await expect(page.locator("#estimateBreakdown")).toContainText(`RM${config.business.securityDeposit}`);
+  const notes = '<img src=x onerror="window.__previewExecuted=true"> & family + wheelchair';
+  await form.locator("[name=notes]").fill(notes);
+  await page.locator("#enquiryPreview summary").click();
+  const draftUrl = new URL(await page.locator("#enquiryLink").getAttribute("href"));
+  await expect(page.locator("#enquiryPreviewText")).toHaveText(draftUrl.searchParams.get("text"));
+  await expect(page.locator("#enquiryPreviewText")).toContainText(notes);
+  await expect(page.locator("#enquiryPreviewText img")).toHaveCount(0);
+  expect(await page.evaluate(() => window.__previewExecuted)).toBeUndefined();
+  await expect(page.locator(".mobile-whatsapp")).toHaveAttribute("href", draftUrl.href);
+  await form.locator("[name=checkout]").fill("2027-01-10");
+  await expect(page.locator('#stayShortcuts [aria-pressed="true"]')).toHaveCount(0);
+  const revisedUrl = new URL(await page.locator("#enquiryLink").getAttribute("href"));
+  await expect(page.locator("#enquiryPreviewText")).toHaveText(revisedUrl.searchParams.get("text"));
+  await expect(page.locator(".mobile-whatsapp")).toHaveAttribute("href", revisedUrl.href);
+  expect(await page.evaluate(() => window.__openedEnquiries)).toHaveLength(0);
+});
+
+test("reading-section navigation survives gallery expansion and preserves the section when switching language", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/#galeri");
+  await expect(page.locator('#mainNav > a[href="#galeri"]')).toHaveAttribute("aria-current", "location");
+  await page.locator("#galleryMore").click();
+  await expect(page.locator('#mainNav > a[href="#galeri"]')).toHaveAttribute("aria-current", "location");
+  await page.locator('#mainNav > a[href="#kadar"]').click();
+  await expect(page.locator('#mainNav > a[href="#kadar"]')).toHaveAttribute("aria-current", "location");
+  await expect(page.locator('#mainNav > a[aria-current="location"]')).toHaveCount(1);
+  const englishLink = page.locator('nav a[hreflang="en"]');
+  const readingScroll = await page.evaluate(() => scrollY);
+  // Tabbing across the already-visible sticky header must not move the reader
+  // away from the selected section before they activate a language link.
+  // Native hash navigation moves sequential focus to its destination, so start
+  // this header-keyboard journey by focusing the visible Rates link again.
+  await page.locator('#mainNav > a[href="#kadar"]').focus();
+  for (let step = 0; step < 8 && !await englishLink.evaluate(link => link === document.activeElement); step += 1) await page.keyboard.press("Tab");
+  await expect(englishLink).toBeFocused();
+  expect(Math.abs(await page.evaluate(() => scrollY) - readingScroll)).toBeLessThanOrEqual(1);
+  await expect(page.locator('#mainNav > a[href="#kadar"]')).toHaveAttribute("aria-current", "location");
+  await englishLink.click();
+  await expect(page).toHaveURL(/\/en\.html#kadar$/);
+  await expect(page.locator('#mainNav > a[href="#kadar"]')).toHaveAttribute("aria-current", "location");
+  await page.locator('nav a[hreflang="ms"]').click();
+  await expect(page).toHaveURL(/\/#kadar$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "ms");
+});
+
+test("opening the mobile menu near a section boundary preserves reading context for language links", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  // Read the final part of the gallery: expanding the sticky menu must not
+  // incorrectly replace this context with the Rates section underneath it.
+  await page.locator("#galeri").evaluate(section => {
+    const header = document.querySelector(".site-header");
+    scrollTo(0, section.getBoundingClientRect().bottom + scrollY - header.getBoundingClientRect().bottom - 54);
+  });
+  await expect(page.locator('#mainNav > a[href="#galeri"]')).toHaveAttribute("aria-current", "location");
+  await page.locator("#menuToggle").click();
+  await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator('#mainNav > a[href="#galeri"]')).toHaveAttribute("aria-current", "location");
+  await page.locator('nav a[hreflang="en"]').click();
+  await expect(page).toHaveURL(/\/en\.html#galeri$/);
+  await page.locator("#menuToggle").click();
+  await page.locator('#mainNav > a[href="#kadar"]').click();
+  await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator('#mainNav > a[href="#kadar"]')).toHaveAttribute("aria-current", "location");
+  await page.locator("#menuToggle").click();
+  await page.locator('nav a[hreflang="ms"]').click();
+  await expect(page).toHaveURL(/\/#kadar$/);
+});
+
+test("mobile actions stay reachable when focused and hide while the enquiry is being edited", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const bar = page.locator(".mobile-action-bar");
+  const rateShortcut = bar.locator(".rate-shortcut");
+  await expect(bar).toBeVisible();
+  await expect(bar.locator("a")).toHaveCount(2);
+  await rateShortcut.focus();
+  await page.locator('#dateForm [type="submit"]').scrollIntoViewIfNeeded();
+  await expect(rateShortcut).toBeFocused();
+  await expect(bar).toBeVisible();
+  await page.locator('#dateForm [name="checkin"]').focus();
+  await expect(bar).toBeHidden();
+  await page.locator('#dateForm [type="submit"]').focus();
+  await expect(bar).toBeHidden();
+  await page.locator("#galeri").scrollIntoViewIfNeeded();
+  await expect(bar).toBeVisible();
 });
 
 for (const width of [390, 1440]) {

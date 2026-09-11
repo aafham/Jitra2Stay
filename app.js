@@ -44,8 +44,8 @@
       : ["Salam Jitra2Stay, saya ingin bertanya tentang penginapan.", `Daftar masuk: ${checkin}`, `Daftar keluar: ${checkout}`, `Tetamu: ${guests}`, `Pakej bilik: ${rooms} bilik`];
     if (estimate) {
       lines.push(en
-        ? `Stay estimate: RM${estimate.total} (${estimate.nights} night(s) × RM${estimate.nightlyRate}). Security deposit excluded.`
-        : `Anggaran penginapan: RM${estimate.total} (${estimate.nights} malam × RM${estimate.nightlyRate}). Tidak termasuk deposit keselamatan.`);
+        ? `Stay estimate: RM${estimate.total} (${estimate.nights} night(s) × RM${estimate.nightlyRate}). Deposit and extra charges excluded.`
+        : `Anggaran penginapan: RM${estimate.total} (${estimate.nights} malam × RM${estimate.nightlyRate}). Tidak termasuk deposit dan caj tambahan.`);
     }
     if (String(notes).trim()) lines.push(`${en ? "Notes" : "Catatan"}: ${String(notes).trim()}`);
     lines.push(en
@@ -77,8 +77,9 @@
     checkout: en ? "Check-out must be after check-in." : "Tarikh daftar keluar mesti selepas tarikh daftar masuk.",
     guests: en ? `Enter 1–${config.maxGuests || 20} guests.` : `Masukkan 1–${config.maxGuests || 20} tetamu.`,
     rooms: en ? "Choose a room package." : "Pilih pakej bilik.",
-    prompt: en ? "Choose dates and a room package to see an estimate." : "Pilih tarikh dan pakej bilik untuk melihat anggaran.",
-    exclusions: en ? "Security deposit excluded. The host will confirm availability and the final price." : "Tidak termasuk deposit keselamatan. Hos akan sahkan kekosongan dan harga akhir.",
+    checkinRequired: en ? "Choose a check-in date." : "Pilih tarikh check-in.",
+    checkinPast: en ? "Choose today or a later date." : "Pilih hari ini atau tarikh selepasnya.",
+    checkoutRequired: en ? "Choose a check-out date or use a stay-length shortcut." : "Pilih tarikh check-out atau gunakan pilihan bilangan malam.",
     ready: en ? "Your enquiry is ready. Press Send in WhatsApp to send it to the owner. If WhatsApp did not open, use the link below. This does not confirm a booking." : "Pertanyaan anda sedia. Tekan Hantar dalam WhatsApp untuk menghantarnya kepada owner. Jika WhatsApp tidak terbuka, guna pautan di bawah. Ini belum mengesahkan tempahan.",
     invalid: en ? "Please check the highlighted fields." : "Sila semak ruangan yang ditandakan.",
     copied: en ? "Enquiry message copied." : "Mesej pertanyaan telah disalin.",
@@ -158,69 +159,6 @@
     applyTheme();
   }
 
-  const dialog = document.getElementById("galleryDialog");
-  const galleryImage = document.getElementById("galleryImage");
-  const galleryCaption = document.getElementById("galleryCaption");
-  const galleryClose = document.getElementById("galleryClose");
-  const galleryPrev = document.getElementById("galleryPrev");
-  const galleryNext = document.getElementById("galleryNext");
-  const galleryCount = document.getElementById("galleryCount");
-  const gallery = Array.from(document.querySelectorAll(".gallery-trigger"));
-  if (dialog && typeof dialog.showModal === "function" && galleryImage && gallery.length) {
-    let selected = 0;
-    let opener = null;
-    let previousOverflow = "";
-    function showImage(index) {
-      selected = (index + gallery.length) % gallery.length;
-      const item = gallery[selected];
-      const caption = item.dataset.caption || item.querySelector("img")?.alt || "";
-      galleryImage.src = item.dataset.full || item.href;
-      galleryImage.alt = caption;
-      if (galleryCaption) galleryCaption.textContent = caption;
-      if (galleryCount) galleryCount.textContent = `${selected + 1} / ${gallery.length}`;
-      if (galleryPrev) galleryPrev.hidden = gallery.length < 2;
-      if (galleryNext) galleryNext.hidden = gallery.length < 2;
-    }
-    gallery.forEach((item, index) => item.addEventListener("click", (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      opener = item;
-      showImage(index);
-      previousOverflow = document.body.style.overflow;
-      dialog.showModal();
-      document.body.style.overflow = "hidden";
-      galleryClose?.focus();
-    }));
-    galleryClose?.addEventListener("click", () => dialog.close());
-    galleryPrev?.addEventListener("click", () => showImage(selected - 1));
-    galleryNext?.addEventListener("click", () => showImage(selected + 1));
-    dialog.addEventListener("keydown", (event) => {
-      if (event.key === "Tab") {
-        const controls = Array.from(dialog.querySelectorAll("button:not([disabled])"))
-          .filter((button) => !button.closest("[hidden]") && button.getClientRects().length > 0);
-        const first = controls[0];
-        const last = controls.at(-1);
-        if (first && (event.shiftKey && document.activeElement === first || !event.shiftKey && document.activeElement === last || !controls.includes(document.activeElement))) {
-          event.preventDefault();
-          (event.shiftKey ? last : first).focus();
-        }
-      }
-      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        event.preventDefault();
-        showImage(selected + (event.key === "ArrowLeft" ? -1 : 1));
-      }
-    });
-    dialog.addEventListener("click", (event) => {
-      if (event.target !== dialog) return;
-      const bounds = dialog.getBoundingClientRect();
-      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
-    });
-    dialog.addEventListener("close", () => {
-      document.body.style.overflow = previousOverflow;
-      if (opener?.isConnected) opener.focus();
-    });
-  }
-
   const form = document.getElementById("dateForm");
   if (!form) return;
   const checkin = form.elements.namedItem("checkin");
@@ -228,17 +166,50 @@
   const guests = form.elements.namedItem("guests");
   const rooms = form.elements.namedItem("rooms");
   const notes = form.elements.namedItem("notes");
-  const estimateOutput = document.getElementById("priceEstimate");
+  const estimatePrompt = document.getElementById("estimatePrompt");
+  const estimateBreakdown = document.getElementById("estimateBreakdown");
+  const estimateTotal = document.getElementById("estimateTotal");
+  const estimateStayText = document.getElementById("estimateStay");
+  const estimateRate = document.getElementById("estimateRate");
+  const stayShortcuts = document.getElementById("stayShortcuts");
+  const preview = document.getElementById("enquiryPreview");
+  const previewText = document.getElementById("enquiryPreviewText");
   const feedback = document.getElementById("formFeedback");
   const enquiryLink = document.getElementById("enquiryLink");
   const copyMessage = document.getElementById("enquiryCopyMessage");
   if (!checkin || !checkout || !guests || !rooms || !enquiryLink || !getEnquiryUrl(config.phone, "")) return;
   let preparedMessage = "";
   let submitted = false;
+  let packageChosen = false;
+  const touched = new Set();
+  const mobileWhatsApp = document.querySelector(".mobile-whatsapp");
+  const defaultMobileUrl = mobileWhatsApp?.href;
+  const money = value => `RM${Number(value).toLocaleString(en ? "en-MY" : "ms-MY")}`;
   [checkin, checkout, guests, rooms].forEach((field) => { field.required = true; });
   guests.min = "1";
   guests.max = String(config.maxGuests || 20);
   guests.step = "1";
+
+  function showFieldError(field) {
+    const output = document.getElementById(`${field.name}Error`);
+    if (!output) return;
+    const invalid = touched.has(field.name) && !field.validity.valid;
+    output.hidden = !invalid;
+    if (!invalid) { field.removeAttribute("aria-invalid"); output.textContent = ""; return; }
+    field.setAttribute("aria-invalid", "true");
+    output.textContent = field === checkin ? (field.validity.valueMissing ? copy.checkinRequired : copy.checkinPast)
+      : field === checkout ? (field.validity.valueMissing ? copy.checkoutRequired : copy.checkout)
+      : field === guests ? copy.guests : copy.rooms;
+  }
+
+  function updatePackageCards() {
+    document.querySelectorAll(".package-card[data-package]").forEach(card => {
+      const selected = packageChosen && card.dataset.package === rooms.value;
+      card.dataset.selected = String(selected);
+      const badge = card.querySelector(".package-selected");
+      if (badge) badge.hidden = !selected;
+    });
+  }
 
   function updateEnquiry() {
     const now = new Date();
@@ -250,23 +221,65 @@
     guests.setCustomValidity(guests.value && (!Number.isInteger(guestCount) || guestCount < 1 || guestCount > Number(guests.max)) ? copy.guests : "");
     const estimate = estimateStay(checkin.value, checkout.value, rooms.value, config.roomRates);
     rooms.setCustomValidity(rooms.value && !Object.prototype.hasOwnProperty.call(config.roomRates || {}, rooms.value) ? copy.rooms : "");
-    if (estimateOutput) {
-      estimateOutput.textContent = estimate && checkin.validity.valid && checkout.validity.valid
-        ? `${en ? "Stay estimate" : "Anggaran penginapan"}: RM${estimate.total} · ${estimate.nights} ${en ? (estimate.nights === 1 ? "night" : "nights") : "malam"} × RM${estimate.nightlyRate}. ${copy.exclusions}`
-        : copy.prompt;
+    const validDates = Boolean(estimate && checkin.validity.valid && checkout.validity.valid);
+    if (estimatePrompt && estimateBreakdown) {
+      estimatePrompt.hidden = validDates;
+      estimateBreakdown.hidden = !validDates;
+      if (validDates) {
+        estimateTotal.textContent = money(estimate.total);
+        estimateStayText.textContent = `${rooms.value} ${en ? "rooms" : "bilik"} · ${estimate.nights} ${en ? (estimate.nights === 1 ? "night" : "nights") : "malam"}`;
+        estimateRate.textContent = `${money(estimate.nightlyRate)} / ${en ? "night" : "malam"}`;
+      }
     }
+    if (stayShortcuts) {
+      stayShortcuts.hidden = !(checkin.value && checkin.validity.valid);
+      stayShortcuts.querySelectorAll("[data-nights]").forEach(button => button.setAttribute("aria-pressed", String(validDates && estimate.nights === Number(button.dataset.nights))));
+    }
+    [checkin, checkout, guests, rooms].forEach(showFieldError);
+    updatePackageCards();
     const valid = estimate && Array.from(form.elements).every((field) => !field.willValidate || field.validity.valid);
     preparedMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate }) : "";
     enquiryLink.hidden = !preparedMessage;
     if (copyMessage) copyMessage.hidden = !preparedMessage;
     if (preparedMessage) enquiryLink.href = getEnquiryUrl(config.phone, preparedMessage);
     else enquiryLink.removeAttribute("href");
-    if (feedback && submitted) feedback.textContent = "";
+    if (preview) preview.hidden = !preparedMessage;
+    if (previewText) previewText.textContent = preparedMessage;
+    if (mobileWhatsApp) {
+      mobileWhatsApp.href = preparedMessage ? enquiryLink.href : defaultMobileUrl;
+      mobileWhatsApp.setAttribute("aria-label", preparedMessage
+        ? (en ? "Open your prepared enquiry in WhatsApp" : "Buka pertanyaan yang disediakan di WhatsApp")
+        : (en ? "Ask the owner on WhatsApp" : "Tanya owner di WhatsApp"));
+    }
     return Boolean(preparedMessage);
   }
 
-  form.addEventListener("input", updateEnquiry);
-  form.addEventListener("change", updateEnquiry);
+  form.addEventListener("input", () => { updateEnquiry(); if (feedback && submitted) feedback.textContent = ""; });
+  form.addEventListener("change", event => {
+    if (event.target === rooms) packageChosen = true;
+    updateEnquiry();
+    if (feedback && submitted) feedback.textContent = "";
+  });
+  form.addEventListener("focusout", event => {
+    if ([checkin, checkout, guests, rooms].includes(event.target)) {
+      touched.add(event.target.name);
+      showFieldError(event.target);
+    }
+  });
+  form.addEventListener("invalid", event => {
+    touched.add(event.target.name);
+    showFieldError(event.target);
+    if (feedback) feedback.textContent = copy.invalid;
+  }, true);
+  stayShortcuts?.addEventListener("click", event => {
+    const button = event.target.closest("button[data-nights]");
+    if (!button || !checkin.value || !checkin.validity.valid) return;
+    const nights = Number(button.dataset.nights);
+    if (![1, 2, 3].includes(nights)) return;
+    checkout.value = addDays(checkin.value, nights);
+    touched.add("checkout");
+    checkout.dispatchEvent(new Event("change", { bubbles: true }));
+  });
   document.querySelectorAll(".package-link[data-rooms]").forEach((link) => {
     link.addEventListener("click", (event) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -302,4 +315,6 @@
   });
   updateEnquiry();
   form.hidden = false;
+  window.addEventListener("pageshow", updateEnquiry);
+  window.addEventListener("focus", updateEnquiry);
 })();

@@ -23,17 +23,17 @@ module.exports = {
     { rooms: 5, bathrooms: 3, price: 330 }
   ],
   gallery: [
-    { image: 'halaman', ms: 'Hadapan rumah', en: 'House exterior' },
-    { image: 'ruang-tamu', ms: 'Ruang tamu', en: 'Living room' },
-    { image: 'ruang-makan', ms: 'Ruang makan', en: 'Dining area' },
-    { image: 'bilik-besar', ms: 'Bilik yang luas', en: 'Spacious bedroom' },
-    { image: 'bilik-keluarga', ms: 'Bilik keluarga', en: 'Family bedroom' },
-    { image: 'bilik-tidur', ms: 'Ruang bilik tidur', en: 'Bedroom interior' },
-    { image: 'bilik-dua-katil', ms: 'Bilik dengan dua katil', en: 'Bedroom with two beds' },
-    { image: 'bilik-kusyen-biru', ms: 'Bilik dengan kusyen biru', en: 'Bedroom with blue cushions' },
-    { image: 'dapur', ms: 'Pantry dan dapur', en: 'Pantry and kitchen' },
-    { image: 'parking', ms: 'Kawasan parking', en: 'Parking area' },
-    { image: 'porch-parking', ms: 'Porch dan tempat duduk luar', en: 'Porch and outdoor seating' }
+    { image: 'halaman', category: 'outside', ms: 'Hadapan rumah', en: 'House exterior' },
+    { image: 'ruang-tamu', category: 'shared', ms: 'Ruang tamu', en: 'Living room' },
+    { image: 'ruang-makan', category: 'shared', ms: 'Ruang makan', en: 'Dining area' },
+    { image: 'bilik-besar', category: 'bedrooms', ms: 'Bilik yang luas', en: 'Spacious bedroom' },
+    { image: 'bilik-keluarga', category: 'bedrooms', ms: 'Bilik keluarga', en: 'Family bedroom' },
+    { image: 'bilik-tidur', category: 'bedrooms', ms: 'Ruang bilik tidur', en: 'Bedroom interior' },
+    { image: 'bilik-dua-katil', category: 'bedrooms', ms: 'Bilik dengan dua katil', en: 'Bedroom with two beds' },
+    { image: 'bilik-kusyen-biru', category: 'bedrooms', ms: 'Bilik dengan kusyen biru', en: 'Bedroom with blue cushions' },
+    { image: 'dapur', category: 'shared', ms: 'Pantry dan dapur', en: 'Pantry and kitchen' },
+    { image: 'parking', category: 'outside', ms: 'Kawasan parking', en: 'Parking area' },
+    { image: 'porch-parking', category: 'outside', ms: 'Porch dan tempat duduk luar', en: 'Porch and outdoor seating' }
   ],
   facilities: [
     { icon: 'bed', ms: ['Ruang untuk berehat', 'Bilik berhawa dingin mengikut pakej, kipas serta tilam, bantal dan comforter tambahan.'], en: ['Room to rest', 'Air-conditioned bedrooms for your package, fans, and extra mattresses, pillows and comforters.'] },

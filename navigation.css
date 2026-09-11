@@ -1,0 +1,10 @@
+/* Underline and colour identify the reading section without moving the links.
+ * Shared tokens retain contrast in both light and dark themes.
+ */
+#mainNav > a[aria-current="location"] {
+  color: var(--green);
+  text-decoration-line: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+  text-decoration-skip-ink: auto;
+}
