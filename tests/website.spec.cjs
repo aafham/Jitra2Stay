@@ -5,6 +5,21 @@ const AxeBuilder = require("@axe-core/playwright").default;
 const config = require("../site.config.cjs");
 const englishPages = ["en.html", "policies-en.html", "thank-you-en.html", ...config.guides.map(guide => `${guide.slug}-en.html`)];
 
+async function stubGoogleMap(context) {
+  // Check our iframe and page layout without depending on Google's live UI/network.
+  // The real embedded pin and navigation destinations are verified separately.
+  await context.route(url => url.origin === "https://www.google.com" && url.pathname === "/maps/embed", async route => {
+    if (!route.request().isNavigationRequest() || !route.request().frame().parentFrame()) return route.continue();
+    await route.fulfill({
+      status: 200,
+      contentType: "text/html",
+      body: '<!doctype html><html lang="en"><head><title>Map fixture</title></head><body><main><p>Map content is verified separately.</p></main></body></html>'
+    });
+  });
+}
+
+test.beforeEach(async ({ context }) => { await stubGoogleMap(context); });
+
 async function mockWhatsApp(page, blocked = false) {
   await page.addInitScript(({ blocked }) => {
     window.__openedEnquiries = [];
@@ -67,6 +82,7 @@ for (const width of [320, 390, 768]) {
 for (const language of ["ms", "en"]) {
   test(`${language} home remains complete and usable without JavaScript`, async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+    await stubGoogleMap(context);
     const page = await context.newPage();
     await page.goto(test.info().project.use.baseURL + (language === "en" ? "/en.html" : "/"));
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -231,9 +247,21 @@ for (const width of [390, 1440]) {
     await expect.poll(() => hero.evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
     const resources = await hero.evaluate(image => {
       const candidates = new Set([image.src, ...[...image.parentElement.querySelectorAll("source")].flatMap(source => source.srcset.split(",").map(candidate => new URL(candidate.trim().split(/\s+/)[0], location.href).href)), ...image.srcset.split(",").filter(Boolean).map(candidate => new URL(candidate.trim().split(/\s+/)[0], location.href).href)]);
-      // The exterior also appears in the gallery at a smaller size; that is a separate image use.
-      const otherImages = new Set([...document.images].filter(other => other !== image).map(other => other.currentSrc));
-      return performance.getEntriesByType("resource").filter(entry => candidates.has(entry.name) && (entry.name === image.currentSrc || !otherImages.has(entry.name))).map(entry => entry.name);
+      // An unused image-format preload must still be caught, even if omitted from <picture>.
+      for (const preload of document.querySelectorAll('link[rel="preload"][as="image"]')) {
+        if (preload.href) candidates.add(preload.href);
+        for (const candidate of preload.imageSrcset.split(",").filter(Boolean)) candidates.add(new URL(candidate.trim().split(/\s+/)[0], location.href).href);
+      }
+      // The exterior is also used by the gallery and intentional hero backdrop.
+      const separateUses = new Set([...document.images].filter(other => other !== image).map(other => other.currentSrc));
+      const section = image.closest(".hero");
+      if (section) {
+        for (const pseudo of [null, "::before"]) {
+          const background = getComputedStyle(section, pseudo).backgroundImage;
+          for (const match of background.matchAll(/url\(["']?([^"')]+)["']?\)/g)) separateUses.add(new URL(match[1], location.href).href);
+        }
+      }
+      return performance.getEntriesByType("resource").filter(entry => candidates.has(entry.name) && (entry.name === image.currentSrc || !separateUses.has(entry.name))).map(entry => entry.name);
     });
     expect([...new Set(resources)]).toHaveLength(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

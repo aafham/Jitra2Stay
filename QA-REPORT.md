@@ -5,7 +5,7 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 | Semakan | Keputusan |
 | --- | --- |
 | Build | 16 halaman HTML penuh |
-| Static output QA | 427 / 427 lulus |
+| Static output QA | 430 / 430 lulus |
 | Unit date-only / enquiry helpers | 5 / 5 lulus |
 | Playwright Chromium 153 | 24 / 24 lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
@@ -14,5 +14,7 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 Browser menguji lebar 320/390/768/1440, menu/fokus, no-JS BM/EN, roundtrip bahasa, package preset, dialog keyboard, form tidak sah/valid, anggaran, encoding, popup diblok dan metadata/aset. Unit cases termasuk leap day, hujung tahun dan timezone negatif. Static QA juga membuat HTTP requests terhadap output server dan menguji 404/private-path boundary.
 
 Tiada mesej WhatsApp, pembayaran atau booking dihantar. Peranti fizikal/Safari/mobile data, ketepatan data owner, pin lapangan dan Search Console belum disahkan. Lihat PRE-LIVE-QA.md.
+
+Selepas pembaikan background dan peta: Google iframe sebenar menunjukkan pin Jitra2Stay pada desktop/mobile dan halaman English. Butang Google Maps membuka place sedia ada dan Waze membuka destinasi `6.2805462,100.4151952`. Kedua-dua pautan membuka tab/aplikasi navigasi tanpa mengubah borang. Dalam suite automatik, kandungan iframe Google menggunakan fixture bagi mengelakkan kebergantungan pada rangkaian pihak ketiga; semakan peta sebenar dibuat berasingan.
 
 Ulang semakan menggunakan arahan dalam README. Angka ini ialah snapshot suite semasa, bukan jaminan kualiti mutlak atau keputusan semua browser.

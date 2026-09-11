@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-11 — Background dan navigasi peta
+
+- Kembalikan foto rumah sebagai background hero dengan overlay hijau dan warna cream/sage, termasuk mobile serta tema gelap.
+- Paparkan Google Maps interaktif terus dalam bahagian lokasi BM/EN; tiada butang tambahan untuk memuatkan peta.
+- Tambah butang berasingan Google Maps dan Waze. Waze menggunakan koordinat yang disemak terhadap pin Google sedia ada.
+- Dokumentasi penyelenggaraan dan privasi menerangkan peta terbenam. Ujian imej membezakan penggunaan foreground, galeri dan background; Google iframe digantikan fixture hanya dalam suite automatik, dengan peta sebenar diperiksa berasingan.
+
 ## 2026-09-11 — Website paparan homestay v2
 
 - Susunan UI/UX baharu, gambar awal dan harga padat.

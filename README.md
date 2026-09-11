@@ -12,6 +12,8 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 ## Apa yang berubah
 
 - Homepage disusun: hero → fakta rumah → galeri → harga → kemudahan → lokasi → FAQ → pertanyaan.
+- Background foto rumah dengan tona hijau dikembalikan, bersama permukaan cream/sage untuk paparan yang lebih berisi.
+- Lokasi memaparkan Google Maps interaktif terus dalam halaman, serta butang Google Maps dan Waze ke pin rumah yang sama.
 - Halaman BM/EN lengkap dijana sebagai HTML statik; kandungan tetap terlihat tanpa JavaScript.
 - Galeri 11 foto mempunyai pautan gambar biasa dan native dialog dengan akses keyboard. Dua foto bilik sebenar ditambah daripada arkib owner.
 - Harga, contact dan polisi berkongsi satu sumber dalam `site.config.cjs`.
@@ -40,6 +42,7 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 | `site.config.cjs` | Business, kadar, fakta, polisi, kemudahan, kapsyen dan panduan BM/EN |
 | `templates/shared.cjs` | Layout, header/footer, metadata, schema dan gambar |
 | `templates/home.cjs` | Homepage dan form pertanyaan |
+| `templates/location.cjs` | Peta Google terbenam, butang Google Maps/Waze dan panduan lokasi |
 | `templates/pages.cjs` | Polisi, panduan setempat, halaman legacy thank-you dan 404 |
 | `app.js` | Menu, tema, dialog galeri dan pembina mesej; fungsi date-only boleh diuji |
 | `style.css` | Token warna, layout, komponen, responsive dan print |
@@ -80,7 +83,7 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 11 September 2026: **427 semakan statik, 5 unit dan 24 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440, BM/EN, menu, keyboard/dialog, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 11 September 2026: **430 semakan statik, 5 unit dan 24 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440, BM/EN, menu, keyboard/dialog, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Telefon fizikal, mobile data, Safari sebenar, terma owner dan akaun Search Console masih memerlukan semakan manual. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 
