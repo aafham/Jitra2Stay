@@ -1,6 +1,6 @@
 # Jitra2Stay WhatsApp Templates
 
-Template ini boleh copy/paste dan ubah ikut situasi. Jangan letak nombor akaun bank atau password WiFi dalam website public.
+Templat ini untuk owner gunakan secara manual selepas menyemak maklumat. Fail ini tidak diterbitkan dalam website. Jangan letak nombor akaun, kod akses, password WiFi, dokumen identiti atau data pelanggan dalam repo awam. Isi semua ruang kosong sebelum menghantar. Website hanya menyediakan draf; tetamu perlu menekan Hantar dalam WhatsApp.
 
 ## 1. Balas Pertanyaan Baru
 
@@ -30,7 +30,12 @@ Ringkasan tempahan:
 - Anggaran/sewa:
 - Security deposit: RM100
 
-Tempahan hanya confirm selepas bayaran/deposit dan bukti bayaran diterima.
+- Caj tambahan dan asasnya, jika ada:
+- Bayaran booking untuk mengunci tarikh dan baki:
+- Syarat pembatalan, refund dan tukar tarikh:
+- Syarat serta masa pemulangan security deposit:
+
+Mohon semak semua butiran sebelum membuat bayaran. Tempahan hanya disahkan oleh owner selepas semakan bayaran mengikut terma yang dipersetujui. Security deposit dan bayaran booking mesti dinyatakan berasingan. Tetapkan dahulu terma yang belum final dalam OWNER-DATA-CHECKLIST.md; jangan andaikan RM100 ialah bayaran mengunci tarikh.
 
 ## 3. Slot Tidak Tersedia
 
@@ -46,13 +51,16 @@ Jumlah perlu dibayar:
 
 - Sewa:
 - Security deposit: RM100
+- Caj tambahan, jika ada:
 - Jumlah:
+- Bayaran diperlukan sekarang:
+- Baki dan tarikh akhir:
 
 Sila hantar proof payment di WhatsApp selepas bayaran dibuat. Detail akaun/QR diberikan secara private melalui WhatsApp sahaja.
 
 ## 5. Booking Confirm
 
-Terima kasih, bayaran/proof payment sudah diterima.
+Gunakan hanya selepas owner menyemak bayaran dan rekod tempahan. Terima kasih, bayaran sudah disemak dan diterima.
 
 Booking Jitra2Stay telah disahkan:
 
@@ -62,7 +70,7 @@ Booking Jitra2Stay telah disahkan:
 - Pakej bilik:
 - Jumlah tetamu:
 
-House rules dan arahan check-in akan diberikan sebelum/masa hari check-in.
+House rules yang dipersetujui dan arahan check-in akan diberikan secara peribadi sebelum hari check-in.
 
 ## 6. Reminder Sebelum Check-in
 
@@ -71,7 +79,8 @@ Reminder booking Jitra2Stay:
 - Check-in: 3:00 petang
 - Check-out: 12:00 tengah hari
 - Security deposit: RM100
-- Sila bawa IC untuk rujukan booking.
+
+Arahan akses dan sebarang keperluan khusus perlu dimaklumkan oleh owner. Jangan meminta dokumen sensitif dalam pertanyaan awal tanpa keperluan yang jelas.
 
 Jika ada perubahan jumlah tetamu atau masa ketibaan, mohon maklumkan awal.
 
@@ -79,12 +88,7 @@ Jika ada perubahan jumlah tetamu atau masa ketibaan, mohon maklumkan awal.
 
 Terima kasih kerana menginap di Jitra2Stay.
 
-Sebelum keluar, mohon pastikan:
-
-- Semua suis elektrik ditutup kecuali modem WiFi.
-- Sampah dibuang ke tong hijau.
-- Tuala digunakan dimasukkan ke bakul.
-- Kunci dipulangkan ke security box.
+Sebelum keluar, mohon ikuti arahan check-out dan pemulangan kunci yang telah dipersetujui dengan owner. Owner perlu memasukkan arahan sebenar di sini sebelum menghantar. Status pemeriksaan rumah dan security deposit dimaklumkan selepas semakan, mengikut terma yang dipersetujui.
 
 Semoga perjalanan balik dipermudahkan.
 
@@ -92,4 +96,4 @@ Semoga perjalanan balik dipermudahkan.
 
 Terima kasih kerana memilih Jitra2Stay.
 
-Jika selesa, boleh tinggalkan review ringkas atau feedback melalui WhatsApp/Google/Facebook. Review tu sangat membantu tetamu lain untuk yakin sebelum booking.
+Jika selesa, boleh tinggalkan ulasan jujur atau feedback melalui WhatsApp atau profil business rasmi yang disahkan owner. Minta izin dahulu sebelum menggunakan nama, gambar atau ulasan tetamu dalam website.

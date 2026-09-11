@@ -1,0 +1,508 @@
+{
+  "version": 1,
+  "generatedBy": "tools/optimize-images.cjs",
+  "encoder": {
+    "sharp": "0.35.4",
+    "webp": "1.6.0",
+    "quality": 78,
+    "effort": 6,
+    "smartSubsample": true
+  },
+  "maxWidth": 1600,
+  "images": [
+    {
+      "source": "images/bilik-besar.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7968.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 272944,
+      "sha256": "5dba808e698976f32759c490bbd3d21204c9f5ddff1a41b44a65c443a39870e9",
+      "variants": [
+        {
+          "src": "images/responsive/bilik-besar-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 21158,
+          "sha256": "6b90a1c7d338fcdddec85b860b28c8a6fb3788e13d575cf351faf2e4efa76d58"
+        },
+        {
+          "src": "images/responsive/bilik-besar-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 49704,
+          "sha256": "e704cbc5a5859f2a22520a7d1320bae35b37de059a48915e36f8536e934d0eab"
+        },
+        {
+          "src": "images/responsive/bilik-besar-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 93122,
+          "sha256": "bc0672a35cc4a54760ffa0ce25ff4b8d959dd3de09c80f9a3f23a032d1698c20"
+        },
+        {
+          "src": "images/responsive/bilik-besar-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 142886,
+          "sha256": "48453c2bd0368fe5a8ea30d960e82b9d8971b83150bb32c09bc36f56e3611d34"
+        }
+      ]
+    },
+    {
+      "source": "images/bilik-dua-katil.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7973.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 229058,
+      "sha256": "f3207e47ef12aef9e25767ad3ad24b6f680c19973443b3255c6c605c034d3769",
+      "variants": [
+        {
+          "src": "images/responsive/bilik-dua-katil-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 18604,
+          "sha256": "93648830d040888c86a92dae90498421d2761e8d9fcbdc5c5f1572b672cdd1a9"
+        },
+        {
+          "src": "images/responsive/bilik-dua-katil-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 41836,
+          "sha256": "53f268b686c8bad85d51bff04ce0daeaa9d23f7a91782bc7fbccfc0130659d40"
+        },
+        {
+          "src": "images/responsive/bilik-dua-katil-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 75058,
+          "sha256": "c4956e8dbdd754d2b229fdd04cd3d959d9acedd1b4284bbef32609541d2da407"
+        },
+        {
+          "src": "images/responsive/bilik-dua-katil-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 111484,
+          "sha256": "cabee3fe3e8e9f64074ee47a1ed702509c96040cca3690ef75d7c722c476c013"
+        }
+      ]
+    },
+    {
+      "source": "images/bilik-keluarga.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7997.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 257771,
+      "sha256": "cb6927545111580e2eef417ed111f86f22a4c8ba425bb38decacf6ab72afa4e5",
+      "variants": [
+        {
+          "src": "images/responsive/bilik-keluarga-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 22478,
+          "sha256": "29b05692f0434466beec016fdd079d50f37b1c1a562a4270012cdabe540410cc"
+        },
+        {
+          "src": "images/responsive/bilik-keluarga-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 51828,
+          "sha256": "d0dac0231246d34081b7d9d9b852980ed8e5994380f57a29a602a18c25361c54"
+        },
+        {
+          "src": "images/responsive/bilik-keluarga-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 92336,
+          "sha256": "d076405eca9f8e50e1808ee74c7f640ed20b51ec2645395fc9b339ce5fff818a"
+        },
+        {
+          "src": "images/responsive/bilik-keluarga-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 142514,
+          "sha256": "7e6e49e7cfe71472808dfe52a92f6e0ad8f63662b7653e9d7b9f991042ecb77b"
+        }
+      ]
+    },
+    {
+      "source": "images/bilik-kusyen-biru.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7977.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 214487,
+      "sha256": "801ded3446d93c0a6ee220b8d71ab924fa46841490470d253cfbbd654a1d585b",
+      "variants": [
+        {
+          "src": "images/responsive/bilik-kusyen-biru-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 16066,
+          "sha256": "27873520150e37623daf630202f068e5625a4d6784e1eff5d96f26b42a06affd"
+        },
+        {
+          "src": "images/responsive/bilik-kusyen-biru-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 38346,
+          "sha256": "f1d249909b8c1cdd2347df4b206e803d8b2a19fd91fbcbc233bee69e35f71c0e"
+        },
+        {
+          "src": "images/responsive/bilik-kusyen-biru-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 71368,
+          "sha256": "c2a1cd34193e062b40ce18e62375adc2804d78a16abb32269a5d93d60fc21c5c"
+        },
+        {
+          "src": "images/responsive/bilik-kusyen-biru-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 105162,
+          "sha256": "dfe5f381976da503f9c6c766384d79dfbb55e71b901e14ceb152f25831527ca9"
+        }
+      ]
+    },
+    {
+      "source": "images/bilik-tidur.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_8001.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 255152,
+      "sha256": "e44faf56581189ac66eabdf58d6794b77841b6a8aa0df2f63f757aeffd8aed2d",
+      "variants": [
+        {
+          "src": "images/responsive/bilik-tidur-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 21574,
+          "sha256": "eff4d61212646fc3b80f99c1300283c149704946f7a6d632303c533276cc8bb5"
+        },
+        {
+          "src": "images/responsive/bilik-tidur-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 49572,
+          "sha256": "66b1655e8b90a9fc7efd4de5123c5b7bce678418fe7de1f71fae8c18e03c7ff2"
+        },
+        {
+          "src": "images/responsive/bilik-tidur-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 88408,
+          "sha256": "9d6d3e47ab524a01383d589e7e2d3e49c8cd2b98890150d67bcc128a16d8ee30"
+        },
+        {
+          "src": "images/responsive/bilik-tidur-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 134378,
+          "sha256": "4310ae394515e1743a91eea310e36414e738e6525dc1e026cb1a40ca5c4119b5"
+        }
+      ]
+    },
+    {
+      "source": "images/dapur.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_8005.JPG",
+      "width": 1400,
+      "height": 1050,
+      "bytes": 248353,
+      "sha256": "3055fe9b9824e79b5194b1dc5a2dad6b15e5633c62a98ff763ce4a6421b3ac01",
+      "variants": [
+        {
+          "src": "images/responsive/dapur-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 24972,
+          "sha256": "42ea347c6bf1f043461fa61b6492288c8c65c8562269cbaf51f395ad9c55961f"
+        },
+        {
+          "src": "images/responsive/dapur-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 58424,
+          "sha256": "aa7c9da275e9ef56ab6011404cbe4a241436a41eb1f8b14ff655ed97d9d91285"
+        },
+        {
+          "src": "images/responsive/dapur-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 113274,
+          "sha256": "44ca4585937ccfc1f25313393be1c24a1420108035e73a1edd7a23f1c95aee47"
+        },
+        {
+          "src": "images/responsive/dapur-1400.webp",
+          "width": 1400,
+          "height": 1050,
+          "bytes": 151702,
+          "sha256": "bd278536961f944a1ab276739e376f64f6b43f56b92f5376fa38075986f2392b"
+        }
+      ]
+    },
+    {
+      "source": "images/halaman.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_8012.JPG",
+      "width": 1500,
+      "height": 1125,
+      "bytes": 335810,
+      "sha256": "c2b92addc64b6d31a66748b0d11a2cbcbeea6edd2de3827eac18b7684bfc630e",
+      "variants": [
+        {
+          "src": "images/responsive/halaman-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 30970,
+          "sha256": "cd21075aae8bffabe2879c25027e19f954f2ffd0580b53275c8023f5639b68b1"
+        },
+        {
+          "src": "images/responsive/halaman-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 89434,
+          "sha256": "1a95db7fe5f80275012203fa01f3e22ea86deaf1c305462c3633bcf92af3ff53"
+        },
+        {
+          "src": "images/responsive/halaman-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 203428,
+          "sha256": "4d131637d9f98f2c131c47edfcc0117039986350fa45b1419b46d2c8be963841"
+        },
+        {
+          "src": "images/responsive/halaman-1500.webp",
+          "width": 1500,
+          "height": 1125,
+          "bytes": 326578,
+          "sha256": "a0a29eec6c65cc649244f196e6f289d988a338ffe522ab4b18dafbe82dcdf5d4"
+        }
+      ]
+    },
+    {
+      "source": "images/luar-rumah.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_8008.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 325508,
+      "sha256": "3ddfbc242413749a4ccfca759fdd324af8850dbd6ed197eef86def6ad8ccb257",
+      "variants": [
+        {
+          "src": "images/responsive/luar-rumah-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 25520,
+          "sha256": "34088ade2cefaeb6a911cc1e819a4a16397fec45b3cae7cad3c57921266223b0"
+        },
+        {
+          "src": "images/responsive/luar-rumah-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 63916,
+          "sha256": "e68cfe9e5a4f9c43d52ac4e0ddee55a382c1f9a9d5aa5d5c4d54a33831760c7e"
+        },
+        {
+          "src": "images/responsive/luar-rumah-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 128768,
+          "sha256": "653cd665fbd1c6393577b02249ca3299717dd3a98da2c624df0297c294e73295"
+        },
+        {
+          "src": "images/responsive/luar-rumah-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 217910,
+          "sha256": "4ade6b21c95d984f6060b5e013f57fbbb7461f9447eb1f4192b0f09e56636961"
+        }
+      ]
+    },
+    {
+      "source": "images/parking.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_8015.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 323293,
+      "sha256": "81160958d67ee98600f0a522fdd351d5c3c118dbcfaa00c453956db14605b2f6",
+      "variants": [
+        {
+          "src": "images/responsive/parking-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 24436,
+          "sha256": "6583587b590cb40e10f0f3199ba6d23d9defa4d8d4b7f89a85ee4a73c6cba4ac"
+        },
+        {
+          "src": "images/responsive/parking-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 62144,
+          "sha256": "bb362d18a8f8dbfb6b14ef2f1475fb1246083ecb3a30248b8fdaa496a5890230"
+        },
+        {
+          "src": "images/responsive/parking-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 127758,
+          "sha256": "533180dbbcffaec19ba509d150ebc67a507b1fb473ae1638814cb553f55677c3"
+        },
+        {
+          "src": "images/responsive/parking-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 217452,
+          "sha256": "84e30970a55d4907067e71b48b184e33d07482c3b415681c7cc603ca25fb5eaa"
+        }
+      ]
+    },
+    {
+      "source": "images/porch-parking.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_8021.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 249206,
+      "sha256": "8c825fa6893f132adce564e06931972764e7a421035ea8353adf5c6a15783a7a",
+      "variants": [
+        {
+          "src": "images/responsive/porch-parking-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 20138,
+          "sha256": "b61406a3c663d3ab0deba260e7c51067c87bf90fd4a3d5062a131c0e3a27609f"
+        },
+        {
+          "src": "images/responsive/porch-parking-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 46178,
+          "sha256": "d0524a2cdb388fe5bd4732a7b894bad32da001b60dd9b4a6eaa0d286e4b88a62"
+        },
+        {
+          "src": "images/responsive/porch-parking-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 89496,
+          "sha256": "11ccde98dfc482f3c405a112c178dcbb8c750d132de3e027035ecebc157f1827"
+        },
+        {
+          "src": "images/responsive/porch-parking-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 145536,
+          "sha256": "df29ee8c83099946b7d510bf82cdcb18adc36954d9cf6ac62f9930ab58cd8ac5"
+        }
+      ]
+    },
+    {
+      "source": "images/ruang-makan.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7991.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 209152,
+      "sha256": "587229bc7fc8a2d3181f189d00c61ac160525092a97eb006b697588949fda18c",
+      "variants": [
+        {
+          "src": "images/responsive/ruang-makan-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 16868,
+          "sha256": "ff071144c7875cf88bf6d77a2c0c97336b8b5c4b399b98bd57aba84b4b812898"
+        },
+        {
+          "src": "images/responsive/ruang-makan-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 37104,
+          "sha256": "a4977bc00f29a95a41c11cfd9851c0541366d6f4596fe608dfd7a13666418e92"
+        },
+        {
+          "src": "images/responsive/ruang-makan-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 67036,
+          "sha256": "a85362151422af3724d220cdb6912ba4a3d79db59db293235b6fe279fac20ade"
+        },
+        {
+          "src": "images/responsive/ruang-makan-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 103162,
+          "sha256": "900a34d10e07ef1eb74b415ff2cd3cbadc769cab065a5ff45c1ba56abb8d05cf"
+        }
+      ]
+    },
+    {
+      "source": "images/ruang-tamu.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7988.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 261611,
+      "sha256": "5665219194cc49ae955defda2bbb9ad86d035a9e527649f1746c4bef9a468f25",
+      "variants": [
+        {
+          "src": "images/responsive/ruang-tamu-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 20764,
+          "sha256": "87ee9082a3d8678f74027914cbeff33216ae96e6b699f0140f9b7274bef027ef"
+        },
+        {
+          "src": "images/responsive/ruang-tamu-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 53628,
+          "sha256": "ecd55c947fa1c64994f128c8f8e16289198d5b6b493663ce8db8e445171377b3"
+        },
+        {
+          "src": "images/responsive/ruang-tamu-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 102478,
+          "sha256": "2bf35eb77669d321e1968afd0abf747e1434ce70a996a11111a2badb555c2864"
+        },
+        {
+          "src": "images/responsive/ruang-tamu-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 159116,
+          "sha256": "cae48db471496b0c4742db77c303ca1fd1844e081ab6cc642e65a5d271208845"
+        }
+      ]
+    },
+    {
+      "source": "images/tangga-ruang-makan.jpg",
+      "originalCameraFile": "source-images/latest-raw/IMG_7992.JPG",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 219889,
+      "sha256": "0b365658b3cdb67a049af19f9608bd7e1cfb4b0bb2bf58db0b88777a0e6b7274",
+      "variants": [
+        {
+          "src": "images/responsive/tangga-ruang-makan-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 18564,
+          "sha256": "28a18c750291da083c89878808fd591a620864b8337db26ef683331249f96dd1"
+        },
+        {
+          "src": "images/responsive/tangga-ruang-makan-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 39766,
+          "sha256": "a7ba7908e07ce8efa01547d15d8b220ac97a1276b90db501f515446db451e247"
+        },
+        {
+          "src": "images/responsive/tangga-ruang-makan-1200.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 69596,
+          "sha256": "6e2049d1730e4869f8b1a5d8ba146309ad931a594c15bda86dd34d98642af348"
+        },
+        {
+          "src": "images/responsive/tangga-ruang-makan-1600.webp",
+          "width": 1600,
+          "height": 1200,
+          "bytes": 105722,
+          "sha256": "7a4b284501ee86fe1ebde3d25742a9524eaa5911f211d31fef33600c6688882c"
+        }
+      ]
+    }
+  ]
+}

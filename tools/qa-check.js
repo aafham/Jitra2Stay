@@ -1,330 +1,138 @@
-const fs = require("fs");
-const http = require("http");
-const path = require("path");
+"use strict";
 
-const rootDir = path.resolve(__dirname, "..");
-const siteOrigin = "https://jitra2stay.com";
-const seoPages = [
-  "homestay-dekat-hospital-jitra.html",
-  "homestay-konvokesyen-uum-jitra.html",
-  "homestay-keluarga-besar-jitra.html",
-  "tempat-menarik-sekitar-jitra.html"
-];
-const htmlPages = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html", ...seoPages];
-const publicFiles = ["index.html", "policies.html", "thank-you.html", "404.html", "ms.html", "en.html", ...seoPages, "app.js", "app.config.js", "sitemap.xml", "robots.txt"];
-const staticPaths = [
-  "/",
-  "/policies.html",
-  "/thank-you.html",
-  "/404.html",
-  "/ms.html",
-  "/en.html",
-  "/homestay-dekat-hospital-jitra.html",
-  "/homestay-konvokesyen-uum-jitra.html",
-  "/homestay-keluarga-besar-jitra.html",
-  "/tempat-menarik-sekitar-jitra.html",
-  "/sitemap.xml",
-  "/robots.txt",
-  "/OWNER-DATA-CHECKLIST.md",
-  "/PRE-LIVE-QA.md",
-  "/CONTENT-REVIEW.md",
-  "/MAINTENANCE.md",
-  "/QA-REPORT.md",
-  "/HANDOVER.md",
-  "/CHANGELOG.md",
-  "/WHATSAPP-TEMPLATES.md"
-];
-
+const fs = require("node:fs");
+const path = require("node:path");
+const http = require("node:http");
+const { createServer, publishDir } = require("./serve.cjs");
+const config = require("../site.config.cjs");
+const siteOrigin = new URL(config.business.siteUrl).origin;
+const pages = ["index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html",
+  ...config.guides.flatMap(guide => [`${guide.slug}.html`, `${guide.slug}-en.html`])];
+const publicFiles = new Set([...pages, "style.css", "app.js", "app.config.js", "robots.txt", "sitemap.xml"]);
 const results = [];
-
-const pass = (name, detail = "") => results.push({ ok: true, name, detail });
-const fail = (name, detail = "") => results.push({ ok: false, name, detail });
-
-const read = (file) => fs.readFileSync(path.join(rootDir, file), "utf8");
-const exists = (file) => fs.existsSync(path.join(rootDir, file));
-
-const getHrefValues = (html) => [...html.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]);
-const getImageRefs = (html) => [...html.matchAll(/(?:src|poster|href)="(images\/[^"]+)"/g)].map((match) => match[1]);
-
-const checkFilesExist = () => {
-  [
-    "index.html",
-    "style.css",
-    "app.js",
-    "app.config.js",
-    "policies.html",
-    "thank-you.html",
-    "404.html",
-    ...seoPages,
-    "seo-page.css",
-    "sitemap.xml",
-    "robots.txt",
-    "OWNER-DATA-CHECKLIST.md",
-    "PRE-LIVE-QA.md",
-    "CONTENT-REVIEW.md",
-    "MAINTENANCE.md",
-    "QA-REPORT.md",
-    "HANDOVER.md",
-    "CHANGELOG.md",
-    "WHATSAPP-TEMPLATES.md"
-  ].forEach((file) => {
-    exists(file) ? pass(`required file exists: ${file}`) : fail(`required file exists: ${file}`);
-  });
-};
-
-const checkSensitiveInfo = () => {
-  const patterns = [
-    { name: "WiFi password", pattern: /(wifi|wi-fi)[\s\S]{0,40}(password|pass|kata laluan)/i },
-    { name: "bank account number", pattern: /(account\s*number|no\.?\s*akaun|nombor\s*akaun|account\s*no)/i },
-    { name: "owner password config", pattern: /ownerPassword\s*[:=]/i },
-    { name: "admin page reference", pattern: /admin\.html/i },
-    { name: "login form", pattern: /<form[\s\S]{0,400}(login|password)/i },
-    { name: "possible Malaysian IC number", pattern: /\b\d{6}-\d{2}-\d{4}\b/ }
-  ];
-
-  const findings = [];
-  publicFiles.forEach((file) => {
-    const content = read(file);
-    patterns.forEach(({ name, pattern }) => {
-      if (pattern.test(content)) {
-        findings.push(`${file}: ${name}`);
-      }
-    });
-  });
-
-  findings.length === 0
-    ? pass("public files do not expose sensitive info")
-    : fail("public files do not expose sensitive info", findings.join("; "));
-};
-
-const countAttr = (html, attr) => (html.match(new RegExp(`\\s${attr}=`, "g")) || []).length;
-
-const checkTranslationPairs = () => {
-  const html = read("index.html");
-  const pairs = [
-    ["data-bm", "data-en"],
-    ["data-bm-alt", "data-en-alt"],
-    ["data-bm-href", "data-en-href"],
-    ["data-bm-placeholder", "data-en-placeholder"],
-    ["data-bm-title", "data-en-title"],
-    ["data-bm-aria-label", "data-en-aria-label"]
-  ];
-
-  const mismatches = pairs
-    .map(([bm, en]) => ({ bm, en, bmCount: countAttr(html, bm), enCount: countAttr(html, en) }))
-    .filter((item) => item.bmCount !== item.enCount);
-
-  mismatches.length === 0
-    ? pass("BM/EN translation attributes are paired")
-    : fail("BM/EN translation attributes are paired", mismatches.map((item) => `${item.bm}/${item.en}: ${item.bmCount}/${item.enCount}`).join("; "));
-};
-
-const checkHomepage = () => {
-  const html = read("index.html");
-  const h1Count = (html.match(/<h1\b/g) || []).length;
-  h1Count === 1 ? pass("homepage has exactly one h1") : fail("homepage has exactly one h1", `found ${h1Count}`);
-
-  ["lodgingSchema", "mainContent", "heroTitle", "semak-tarikh", "kadar", "lokasi", "hubungi"].forEach((id) => {
-    html.includes(`id="${id}"`) ? pass(`homepage id exists: ${id}`) : fail(`homepage id exists: ${id}`);
-  });
-
-  html.includes("Homestay Dekat Hospital Jitra")
-    ? pass("local SEO intent copy exists")
-    : fail("local SEO intent copy exists");
-
-  html.includes("Boleh booking last minute?") && html.includes("Boleh sewa ikut bilangan bilik?")
-    ? pass("search-intent FAQ exists")
-    : fail("search-intent FAQ exists");
-
-  html.includes("<noscript>") && html.includes("no-js-banner")
-    ? pass("homepage has no-JS fallback")
-    : fail("homepage has no-JS fallback");
-
-  html.includes("class=\"date-flow\"") && html.includes("Tarikh di website ialah rujukan awal sahaja")
-    ? pass("homepage explains date checking flow")
-    : fail("homepage explains date checking flow");
-
-  html.includes("homestay-dekat-hospital-jitra.html") && html.includes("tempat-menarik-sekitar-jitra.html")
-    ? pass("homepage links to local SEO pages")
-    : fail("homepage links to local SEO pages");
-};
-
-const checkAnchorsAndImages = () => {
-  const html = read("index.html");
-  const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-  const anchors = getHrefValues(html).filter((href) => href.startsWith("#")).map((href) => href.slice(1));
-  const missingAnchors = anchors.filter((id) => !ids.has(id));
-
-  missingAnchors.length === 0
-    ? pass("homepage internal anchors resolve", `${anchors.length} checked`)
-    : fail("homepage internal anchors resolve", missingAnchors.join(", "));
-
-  const missingImages = getImageRefs(html).filter((imagePath) => !exists(imagePath));
-  missingImages.length === 0
-    ? pass("homepage image references exist")
-    : fail("homepage image references exist", missingImages.join(", "));
-};
-
-const checkLinks = () => {
-  const badBlank = [];
-  const badWhatsApp = [];
-
-  htmlPages.forEach((file) => {
-    const html = read(file);
-    const blankLinks = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map((match) => match[0]);
-    blankLinks
-      .filter((tag) => !/rel="[^"]*noopener/.test(tag))
-      .forEach((tag) => badBlank.push(`${file}: ${tag}`));
-
-    getHrefValues(html)
-      .filter((href) => href.startsWith("https://wa.me/60194410666"))
-      .filter((href) => !href.includes("text="))
-      .forEach((href) => badWhatsApp.push(`${file}: ${href}`));
-  });
-
-  badBlank.length === 0
-    ? pass('target="_blank" links include noopener')
-    : fail('target="_blank" links include noopener', badBlank.join("\n"));
-
-  badWhatsApp.length === 0
-    ? pass("WhatsApp links include default text")
-    : fail("WhatsApp links include default text", badWhatsApp.join("\n"));
-};
-
-const checkSeoFiles = () => {
-  const sitemap = read("sitemap.xml");
-  const robots = read("robots.txt");
-  const requiredUrls = ["/", "/ms.html", "/en.html", "/policies.html", ...seoPages.map((page) => `/${page}`)];
-  const missingUrls = requiredUrls.filter((urlPath) => !sitemap.includes(`${siteOrigin}${urlPath === "/" ? "/" : urlPath}`));
-
-  missingUrls.length === 0
-    ? pass("sitemap contains required public URLs")
-    : fail("sitemap contains required public URLs", missingUrls.join(", "));
-
-  robots.includes(`Sitemap: ${siteOrigin}/sitemap.xml`)
-    ? pass("robots points to sitemap")
-    : fail("robots points to sitemap");
-
-  htmlPages.forEach((file) => {
-    const html = read(file);
-    const hasTitle = /<title>[^<]+<\/title>/.test(html);
-    const hasViewport = html.includes('name="viewport"');
-    const needsReferrer = ["index.html", "policies.html", "thank-you.html", "404.html", ...seoPages].includes(file);
-    const hasReferrer = html.includes('name="referrer" content="strict-origin-when-cross-origin"');
-    hasTitle ? pass(`${file} has title`) : fail(`${file} has title`);
-    hasViewport ? pass(`${file} has viewport`) : fail(`${file} has viewport`);
-    if (needsReferrer) {
-      hasReferrer ? pass(`${file} has referrer policy`) : fail(`${file} has referrer policy`);
-    }
-  });
-};
-
-const checkSpecialPages = () => {
-  const notFound = read("404.html");
-  const policies = read("policies.html");
-
-  notFound.includes("Page tidak dijumpai") && notFound.includes("WhatsApp Jitra2Stay")
-    ? pass("404 page has recovery actions")
-    : fail("404 page has recovery actions");
-
-  policies.includes("@media print") && policies.includes(".actions")
-    ? pass("policies page has print styles")
-    : fail("policies page has print styles");
-
-  const templates = read("WHATSAPP-TEMPLATES.md");
-  templates.includes("Balas Pertanyaan Baru") && templates.includes("Booking Confirm")
-    ? pass("WhatsApp templates are documented")
-    : fail("WhatsApp templates are documented");
-};
-
-const checkImageSizes = () => {
-  const imageDir = path.join(rootDir, "images");
-  const imageFiles = fs.readdirSync(imageDir).filter((file) => /\.(jpe?g|png|webp)$/i.test(file));
-  const tooLarge = imageFiles
-    .map((file) => ({ file, size: fs.statSync(path.join(imageDir, file)).size }))
-    .filter((item) => item.size > 350 * 1024);
-
-  tooLarge.length === 0
-    ? pass("current images are below 350KB each", `${imageFiles.length} checked`)
-    : fail("current images are below 350KB each", tooLarge.map((item) => `${item.file}: ${item.size}`).join(", "));
-};
-
-const startStaticServer = () => new Promise((resolve, reject) => {
-  const server = http.createServer((req, res) => {
-    const urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
-    const filePath = urlPath === "/" ? "index.html" : urlPath.replace(/^\/+/, "");
-    const absolutePath = path.resolve(rootDir, filePath);
-
-    if (!absolutePath.startsWith(rootDir) || !fs.existsSync(absolutePath) || fs.statSync(absolutePath).isDirectory()) {
-      res.writeHead(404);
-      res.end("Not found");
-      return;
-    }
-
-    res.writeHead(200);
-    fs.createReadStream(absolutePath).pipe(res);
-  });
-
-  server.once("error", reject);
-  server.listen(0, "127.0.0.1", () => {
-    const address = server.address();
-    resolve({ server, port: address.port });
-  });
+const check = (condition, name, detail = "") => results.push({ ok: Boolean(condition), name, detail: condition ? "" : detail });
+const read = file => fs.readFileSync(path.join(publishDir, file), "utf8");
+const exists = file => fs.existsSync(path.join(publishDir, file));
+const decode = value => value.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+const attributes = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*["']([^"']*)["']/g)].map(match => [match[1].toLowerCase(), decode(match[2])]));
+const tags = (html, tagName) => [...html.matchAll(new RegExp(`<${tagName}\\b[^>]*>`, "gi"))].map(match => attributes(match[0]));
+const walk = (directory, prefix = "") => fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+  const relative = prefix + entry.name;
+  return entry.isDirectory() ? walk(path.join(directory, entry.name), `${relative}/`) : [relative];
 });
 
-const requestPath = (port, urlPath) => new Promise((resolve, reject) => {
-  const req = http.get({ hostname: "127.0.0.1", port, path: urlPath }, (res) => {
-    res.resume();
-    res.on("end", () => resolve(res.statusCode));
+function pageMetadata(file) {
+  const language = file === "en.html" || file.endsWith("-en.html") ? "en" : "ms";
+  const canonicalPath = file === "index.html" || file === "ms.html" ? "/" : `/${file}`;
+  const baseFile = file === "en.html" || file === "ms.html" ? "index.html" : file.replace(/-en\.html$/, ".html");
+  const bmPath = baseFile === "index.html" ? "/" : `/${baseFile}`;
+  const enPath = baseFile === "index.html" ? "/en.html" : `/${baseFile.replace(/\.html$/, "-en.html")}`;
+  return { language, canonical: siteOrigin + canonicalPath, ms: siteOrigin + bmPath, en: siteOrigin + enPath };
+}
+
+function inspectPage(file) {
+  const html = read(file);
+  const meta = pageMetadata(file);
+  const links = tags(html, "link");
+  const metas = tags(html, "meta");
+  check(tags(html, "html")[0]?.lang === meta.language, `${file}: rendered document language`);
+  check(/<title>[^<]+<\/title>/.test(html), `${file}: nonempty title`);
+  check(tags(html, "h1").length === 1, `${file}: exactly one h1`);
+  check(tags(html, "main").length === 1, `${file}: exactly one main landmark`);
+  check(metas.some(item => item.name === "viewport"), `${file}: mobile viewport`);
+  check(metas.some(item => item.name === "description" && item.content?.length >= 40), `${file}: description`);
+  check(links.some(item => item.rel === "canonical" && item.href === meta.canonical), `${file}: canonical matches configured origin`, meta.canonical);
+  if (file !== "404.html" && !file.startsWith("thank-you")) {
+    for (const language of ["ms", "en"]) check(links.some(item => item.rel === "alternate" && item.hreflang === language && item.href === meta[language]), `${file}: ${language} language alternate`);
+  }
+  if (file === "404.html" || file.startsWith("thank-you")) check(metas.some(item => item.name === "robots" && item.content.includes("noindex")), `${file}: utility page excluded from indexing`);
+  check(!/jitra2stay\.com/i.test(html), `${file}: no obsolete domain`);
+  check(!/http-equiv\s*=\s*["']refresh/i.test(html), `${file}: no automatic meta refresh`);
+  check(!/<(?:html|body)[^>]*\b(?:hidden|style=["'][^"']*display:\s*none)/i.test(html), `${file}: static content visible by default`);
+  const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
+  check(ids.length === new Set(ids).size, `${file}: unique element ids`);
+
+  const missingLinks = [];
+  const localLinks = [...tags(html, "a"), ...links, ...tags(html, "script"), ...tags(html, "img"), ...tags(html, "source")];
+  for (const tag of localLinks) {
+    const refs = [tag.href, tag.src, ...(tag.srcset || "").split(",").map(value => value.trim().split(/\s+/)[0])].filter(Boolean);
+    for (const ref of refs) {
+      if (/^(?:https?:|mailto:|tel:|data:)/.test(ref)) continue;
+      const url = new URL(ref, `${siteOrigin}/${file}`);
+      const target = url.pathname === "/" ? "index.html" : decodeURIComponent(url.pathname.slice(1));
+      if (!exists(target)) { missingLinks.push(ref); continue; }
+      if (url.hash && target.endsWith(".html") && !read(target).includes(`id="${decodeURIComponent(url.hash.slice(1))}"`)) missingLinks.push(ref);
+    }
+    if (tag.target === "_blank") check((tag.rel || "").split(/\s+/).includes("noopener"), `${file}: new-tab link protects opener`, tag.href);
+    if (tag.href?.startsWith("https://wa.me/")) {
+      const url = new URL(tag.href);
+      check(url.pathname === `/${config.business.phone}` && Boolean(url.searchParams.get("text")), `${file}: configured WhatsApp destination and draft`, tag.href);
+    }
+  }
+  check(missingLinks.length === 0, `${file}: local links, anchors and image candidates resolve`, [...new Set(missingLinks)].join(", "));
+  const invalidImages = tags(html, "img").filter(img => !("alt" in img) || !(Number(img.width) > 0) || !(Number(img.height) > 0));
+  check(invalidImages.length === 0, `${file}: images have alt and intrinsic dimensions`, invalidImages.map(img => img.src).join(", "));
+  for (const script of [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/g)]) {
+    try { const schema = JSON.parse(script[1]); check(Boolean(schema["@context"]), `${file}: parseable structured data`); }
+    catch (error) { check(false, `${file}: parseable structured data`, error.message); }
+  }
+}
+
+const requestPath = (port, route) => new Promise((resolve, reject) => {
+  const req = http.get({ hostname: "127.0.0.1", port, path: route }, response => {
+    let body = "";
+    response.setEncoding("utf8");
+    response.on("data", chunk => { body += chunk; });
+    response.on("end", () => resolve({ status: response.statusCode, body, type: response.headers["content-type"] }));
   });
   req.on("error", reject);
-  req.setTimeout(5000, () => {
-    req.destroy(new Error(`Timeout loading ${urlPath}`));
-  });
+  req.setTimeout(5000, () => req.destroy(new Error(`Timeout: ${route}`)));
 });
 
-const checkPageLoads = async () => {
-  const { server, port } = await startStaticServer();
+async function inspectServer() {
+  const server = createServer();
+  await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
+  const port = server.address().port;
   try {
-    const statuses = await Promise.all(staticPaths.map(async (urlPath) => ({
-      path: urlPath,
-      status: await requestPath(port, urlPath)
-    })));
-    const bad = statuses.filter((item) => item.status !== 200);
-    bad.length === 0
-      ? pass("local static server loads required paths", `${statuses.length} checked`)
-      : fail("local static server loads required paths", bad.map((item) => `${item.path}: ${item.status}`).join(", "));
-  } finally {
-    server.close();
+    const publicRoutes = ["/", ...pages.map(file => `/${file}`), "/app.js", "/style.css", "/sitemap.xml", "/robots.txt"];
+    const responses = await Promise.all(publicRoutes.map(async route => ({ route, ...await requestPath(port, route) })));
+    check(responses.every(response => response.status === 200), "publish server returns public pages and assets", responses.filter(response => response.status !== 200).map(response => response.route).join(", "));
+    const blocked = ["/missing-page", "/tools/qa-check.js", "/site.config.cjs", "/package.json", "/README.md", "/OWNER-DATA-CHECKLIST.md", "/AUDIT-2026-09-11.md", "/.git/config", "/images/raw/hero.jpg", "/../site.config.cjs", "/%2e%2e%2fsite.config.cjs", "/images%5c..%5c..%5csite.config.cjs"];
+    for (const route of blocked) {
+      const response = await requestPath(port, route);
+      check(response.status === 404 && response.body === read("404.html"), `publish server returns genuine custom 404: ${route}`);
+    }
+  } finally { await new Promise(resolve => server.close(resolve)); }
+}
+
+async function main() {
+  if (!fs.existsSync(publishDir)) throw new Error("Build output is missing. Run npm run build before npm run qa.");
+  const files = walk(publishDir);
+  for (const file of publicFiles) check(exists(file), `required publish file: ${file}`);
+  const unexpected = files.filter(file => !publicFiles.has(file) && !/^images\/(?!raw\/)[a-z0-9_./-]+\.(avif|webp|jpe?g|png|svg|ico)$/i.test(file));
+  check(unexpected.length === 0, "publish allowlist excludes source, raw images, docs and build tools", unexpected.join(", "));
+  check(!files.some(file => /(^|\/)(?:node_modules|\.git|raw|tests|tools)\//.test(file)), "publish output contains no private/source directories");
+  for (const file of pages.filter(exists)) inspectPage(file);
+  const sitemap = read("sitemap.xml");
+  const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => decode(match[1]));
+  const indexable = pages.filter(file => !["ms.html", "404.html", "thank-you.html", "thank-you-en.html"].includes(file)).map(file => pageMetadata(file).canonical);
+  check(sitemapUrls.length === indexable.length && new Set(sitemapUrls).size === indexable.length && indexable.every(url => sitemapUrls.includes(url)), "sitemap includes each indexable canonical page exactly once");
+  check(read("robots.txt").includes(`Sitemap: ${siteOrigin}/sitemap.xml`), "robots uses configured production origin");
+  const images = files.filter(file => /\.(avif|webp|jpe?g|png)$/i.test(file));
+  const oversized = images.filter(file => fs.statSync(path.join(publishDir, file)).size > 350 * 1024);
+  check(images.length > 0 && oversized.length === 0, "published raster images fit 350 KiB budget", oversized.join(", "));
+  for (const home of ["index.html", "en.html", "ms.html"]) {
+    const html = read(home);
+    const priorityImages = tags(html, "img").filter(img => img.fetchpriority === "high");
+    check(priorityImages.length === 1 && priorityImages[0].loading !== "lazy", `${home}: one eager priority hero`);
+    check(tags(html, "link").filter(link => link.rel === "preload" && link.as === "image").length <= 1, `${home}: no competing image preloads`);
+    check(!/\bdata-(?:bm|en)=/.test(html), `${home}: language is rendered at build time`);
   }
-};
+  await inspectServer();
+  const failures = results.filter(result => !result.ok);
+  for (const result of failures) console.error(`FAIL ${result.name}${result.detail ? `: ${result.detail}` : ""}`);
+  console.log(`${results.length - failures.length}/${results.length} static QA checks passed (${pages.length} pages, links, metadata, publish boundary, images and HTTP status).`);
+  if (failures.length) process.exitCode = 1;
+}
 
-const main = async () => {
-  checkFilesExist();
-  checkHomepage();
-  checkSensitiveInfo();
-  checkTranslationPairs();
-  checkAnchorsAndImages();
-  checkLinks();
-  checkSeoFiles();
-  checkSpecialPages();
-  checkImageSizes();
-  await checkPageLoads();
-
-  results.forEach((result) => {
-    console.log(`${result.ok ? "PASS" : "FAIL"} ${result.name}${result.detail ? ` - ${result.detail}` : ""}`);
-  });
-
-  const failed = results.filter((result) => !result.ok);
-  if (failed.length > 0) {
-    console.error(`\n${failed.length} QA check(s) failed.`);
-    process.exit(1);
-  }
-
-  console.log(`\nAll ${results.length} QA checks passed.`);
-};
-
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+main().catch(error => { console.error(error.message); process.exitCode = 1; });

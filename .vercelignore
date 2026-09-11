@@ -1,0 +1,14 @@
+node_modules
+source-images
+.git
+.github
+.env*
+!.env.example
+dist
+tests
+test-results
+playwright-report
+playwright.config.cjs
+*.md
+work
+outputs

@@ -1,84 +1,17 @@
-# Jitra2Stay SEO Submission Guide
+# SEO dan pengesahan selepas release
 
-Gunakan guide ini selepas domain live.
+Domain production dalam site.config.cjs ialah https://jitra2stay.vercel.app. Domain .com lama tidak resolve semasa audit. Build menjana canonical, metadata OG/Twitter, schema, sitemap dan robots daripada sumber sama.
 
-## 1. Semak Domain Live
+Halaman BM/EN sebenar mempunyai URL berasingan serta hreflang dua hala. Root / ialah BM, /en.html ialah EN; /ms.html menjadi alias BM dengan canonical root. Empat panduan dan polisi mempunyai pasangan -en.html. Thank-you dan 404 ialah noindex; sitemap mengandungi 12 URL yang dimaksudkan untuk diindeks.
 
-- [ ] Buka `https://jitra2stay.com/`.
-- [ ] Buka `https://jitra2stay.com/sitemap.xml`.
-- [ ] Buka `https://jitra2stay.com/robots.txt`.
-- [ ] Pastikan page polisi boleh dibuka: `https://jitra2stay.com/policies.html`.
+Langkah yang memerlukan akaun/semakan owner:
 
-## 2. Google Search Console
+- [ ] Sahkan property domain/URL dalam Google Search Console.
+- [ ] Submit /sitemap.xml dan semak hasil URL Inspection selepas deploy.
+- [ ] Uji preview WhatsApp/Facebook daripada URL production sebenar.
+- [ ] Selaraskan nama, alamat dan nombor dengan profil business rasmi.
+- [ ] Jika domain .com tersedia kemudian, aktifkan DNS/SSL, ubah config dan redirect host lama secara konsisten.
 
-1. Pergi ke Google Search Console.
-2. Add property untuk domain `jitra2stay.com`.
-3. Verify domain ikut kaedah DNS atau HTML file.
-4. Masuk menu Sitemaps.
-5. Submit:
+Jangan menjanjikan ranking, rating atau rich result daripada kewujudan JSON-LD. Tiada rating/review atau isyarat InStock tarikh ditambah. Kandungan panduan menerangkan perbezaan urusan hospital/keluarga/UUM dan merujuk Maps untuk laluan semasa.
 
-```text
-https://jitra2stay.com/sitemap.xml
-```
-
-Selepas submit:
-
-- [ ] Pastikan status sitemap `Success`.
-- [ ] Request indexing untuk homepage.
-- [ ] Request indexing untuk `policies.html` jika perlu.
-
-## 3. Google Business Profile
-
-Semak supaya NAP konsisten:
-
-- Name: `Jitra2Stay`
-- Address: ikut alamat final website.
-- Phone: `+60 19-441 0666`
-- Website: `https://jitra2stay.com/`
-
-Tambah juga:
-
-- [ ] Kategori business yang sesuai.
-- [ ] Gambar exterior dan ruang utama.
-- [ ] Waktu operasi jika mahu.
-- [ ] WhatsApp/call contact.
-- [ ] Link website.
-
-## 4. Share Preview
-
-Test link website di:
-
-- WhatsApp
-- Facebook post/message
-- Telegram jika ada
-
-Semak:
-
-- [ ] Tajuk preview betul.
-- [ ] Description betul.
-- [ ] Gambar preview jelas.
-- [ ] Link buka homepage betul.
-
-Jika preview gambar lama masih keluar, tunggu cache refresh atau guna sharing debugger platform berkaitan.
-
-## 5. Local SEO Content Yang Sudah Ada
-
-Homepage sudah ada content untuk intent:
-
-- Homestay dekat Hospital Jitra.
-- Homestay keluarga besar di Jitra.
-- Homestay untuk kenduri dan majlis keluarga.
-- Homestay untuk konvokesyen dan urusan institusi.
-- Pakej sewa ikut bilangan bilik.
-- Booking direct WhatsApp.
-
-## 6. Cadangan SEO Kemudian
-
-Bila data/gambar dah lengkap, boleh tambah page khusus:
-
-- `homestay-dekat-hospital-jitra.html`
-- `homestay-konvokesyen-jitra.html`
-- `homestay-keluarga-besar-jitra.html`
-- `tempat-menarik-jitra.html`
-
-Jangan buat page ini sampai data final dan gambar mencukupi supaya content tidak nampak kosong.
+Rujukan: [canonical Google](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), [halaman pelbagai bahasa](https://developers.google.com/search/docs/specialty/international/localized-versions).

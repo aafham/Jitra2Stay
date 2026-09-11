@@ -1,1374 +1,305 @@
 (() => {
+  "use strict";
+
+  const DAY_MS = 86400000;
+
+  // Date inputs are calendar dates, so arithmetic must not depend on time zones or DST.
+  function parseDateOnly(value) {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const [year, month, day] = value.split("-").map(Number);
+    const date = new Date(0);
+    date.setUTCFullYear(year, month - 1, day);
+    date.setUTCHours(0, 0, 0, 0);
+    if (year < 1 || date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+    return date.getTime() / DAY_MS;
+  }
+
+  function addDays(value, days) {
+    const start = parseDateOnly(value);
+    if (start === null || !Number.isInteger(days)) return null;
+    const result = new Date((start + days) * DAY_MS);
+    const year = result.getUTCFullYear();
+    return year >= 1 && year <= 9999 ? result.toISOString().slice(0, 10) : null;
+  }
+
+  function nightsBetween(checkin, checkout) {
+    const start = parseDateOnly(checkin);
+    const end = parseDateOnly(checkout);
+    return start !== null && end !== null && end > start ? end - start : null;
+  }
+
+  function estimateStay(checkin, checkout, rooms, roomRates) {
+    const nights = nightsBetween(checkin, checkout);
+    if (!roomRates || !Object.prototype.hasOwnProperty.call(roomRates, String(rooms))) return null;
+    const nightlyRate = Number(roomRates[String(rooms)]);
+    return nights !== null && Number.isFinite(nightlyRate) && nightlyRate > 0
+      ? { nights, nightlyRate, total: nights * nightlyRate }
+      : null;
+  }
+
+  function buildEnquiryMessage({ language, checkin, checkout, guests, rooms, notes = "", estimate }) {
+    const en = language === "en";
+    const lines = en
+      ? ["Hi Jitra2Stay, I would like to ask about a stay.", `Check-in: ${checkin}`, `Check-out: ${checkout}`, `Guests: ${guests}`, `Room package: ${rooms} rooms`]
+      : ["Salam Jitra2Stay, saya ingin bertanya tentang penginapan.", `Daftar masuk: ${checkin}`, `Daftar keluar: ${checkout}`, `Tetamu: ${guests}`, `Pakej bilik: ${rooms} bilik`];
+    if (estimate) {
+      lines.push(en
+        ? `Stay estimate: RM${estimate.total} (${estimate.nights} night(s) × RM${estimate.nightlyRate}). Security deposit excluded.`
+        : `Anggaran penginapan: RM${estimate.total} (${estimate.nights} malam × RM${estimate.nightlyRate}). Tidak termasuk deposit keselamatan.`);
+    }
+    if (String(notes).trim()) lines.push(`${en ? "Notes" : "Catatan"}: ${String(notes).trim()}`);
+    lines.push(en
+      ? "Please confirm availability, the final price and booking terms. This is an enquiry, not a confirmed booking."
+      : "Mohon sahkan kekosongan, harga akhir dan syarat tempahan. Ini pertanyaan, belum merupakan tempahan yang disahkan.");
+    return lines.join("\n");
+  }
+
+  function getEnquiryUrl(phone, message) {
+    const digits = String(phone || "").replace(/\D/g, "");
+    return digits ? `https://wa.me/${digits}?text=${encodeURIComponent(message)}` : null;
+  }
+
+  if (typeof module === "object" && module.exports) {
+    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, getEnquiryUrl };
+  }
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+
   const root = document.documentElement;
+  root.classList.add("js");
   const config = window.APP_CONFIG || {};
-  const business = config.business || {};
-  const analyticsConfig = config.analytics || {};
-  const defaultUnavailableRanges = Array.isArray(config.unavailableRanges) ? config.unavailableRanges : [];
-  const bookingCalendarIcsUrl = `${config.bookingCalendarIcsUrl || ""}`.trim();
-  const walkthroughVideoUrl = `${config.walkthroughVideoUrl || ""}`.trim();
-  const abVariantStorageKey = "abCtaVariant";
-  const analyticsEventsStorageKey = "analyticsEvents";
-  let unavailableRanges = defaultUnavailableRanges.slice();
-  let abVariantTracked = false;
-  let hasTrackedFormStart = false;
-  let lastAvailabilityState = "";
-  const roomRates = {
-    "2": 180,
-    "3": 230,
-    "4": 280,
-    "5": 330
+  const language = config.language || (root.lang.startsWith("en") ? "en" : "ms");
+  const en = language === "en";
+  const copy = {
+    openMenu: en ? "Open navigation" : "Buka menu navigasi",
+    closeMenu: en ? "Close navigation" : "Tutup menu navigasi",
+    lightTheme: en ? "Use light theme" : "Guna tema cerah",
+    darkTheme: en ? "Use dark theme" : "Guna tema gelap",
+    checkout: en ? "Check-out must be after check-in." : "Tarikh daftar keluar mesti selepas tarikh daftar masuk.",
+    guests: en ? `Enter 1–${config.maxGuests || 20} guests.` : `Masukkan 1–${config.maxGuests || 20} tetamu.`,
+    rooms: en ? "Choose a room package." : "Pilih pakej bilik.",
+    prompt: en ? "Choose dates and a room package to see an estimate." : "Pilih tarikh dan pakej bilik untuk melihat anggaran.",
+    exclusions: en ? "Security deposit excluded. The host will confirm availability and the final price." : "Tidak termasuk deposit keselamatan. Hos akan sahkan kekosongan dan harga akhir.",
+    ready: en ? "Your enquiry is ready. Press Send in WhatsApp to send it to the owner. If WhatsApp did not open, use the link below. This does not confirm a booking." : "Pertanyaan anda sedia. Tekan Hantar dalam WhatsApp untuk menghantarnya kepada owner. Jika WhatsApp tidak terbuka, guna pautan di bawah. Ini belum mengesahkan tempahan.",
+    invalid: en ? "Please check the highlighted fields." : "Sila semak ruangan yang ditandakan.",
+    copied: en ? "Enquiry message copied." : "Mesej pertanyaan telah disalin.",
+    copyFailed: en ? "Unable to copy here. Use the WhatsApp link to open your prepared message." : "Mesej tidak dapat disalin di sini. Guna pautan WhatsApp untuk membuka mesej yang disediakan."
   };
 
-  const header = document.getElementById("siteHeader");
+  // Preserve links used by the previous single-page language switcher.
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("lang") === "en" && !en) {
+    const destination = new URL("en.html", url);
+    destination.hash = url.hash;
+    url.searchParams.delete("lang");
+    destination.search = url.search;
+    window.location.replace(destination.href);
+    return;
+  }
+
   const nav = document.getElementById("mainNav");
   const menuToggle = document.getElementById("menuToggle");
-  const reveals = Array.from(document.querySelectorAll(".reveal"));
-  const finalCTA = document.querySelector(".final-cta");
-  const floatingCta = document.getElementById("floatingCta");
-  const backToTop = document.getElementById("backToTop");
-  const dateForm = document.getElementById("dateForm");
-  const formFeedback = document.getElementById("formFeedback");
-  const formAvailabilityStatus = document.getElementById("formAvailabilityStatus");
-  const formPriceEstimate = document.getElementById("formPriceEstimate");
-  const availabilityList = document.getElementById("availabilityList");
-  const availabilityCalendar = document.getElementById("availabilityCalendar");
-  const availabilityUpdated = document.getElementById("availabilityUpdated");
+  if (nav && menuToggle) {
+    const mobile = window.matchMedia("(max-width: 900px)");
+    let menuOpen = false;
+    function updateMenu() {
+      nav.dataset.mobile = String(mobile.matches);
+      nav.hidden = mobile.matches && !menuOpen;
+      nav.inert = mobile.matches && !menuOpen;
+      menuToggle.hidden = !mobile.matches;
+      menuToggle.setAttribute("aria-expanded", String(mobile.matches && menuOpen));
+      menuToggle.setAttribute("aria-label", menuOpen ? copy.closeMenu : copy.openMenu);
+    }
+    menuToggle.addEventListener("click", () => { menuOpen = !menuOpen; updateMenu(); });
+    nav.addEventListener("click", (event) => {
+      if (event.target.closest("a") && mobile.matches) { menuOpen = false; updateMenu(); }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mobile.matches && menuOpen) {
+        menuOpen = false;
+        updateMenu();
+        menuToggle.focus();
+      }
+    });
+    const onResize = () => { menuOpen = false; updateMenu(); };
+    if (mobile.addEventListener) mobile.addEventListener("change", onResize);
+    else mobile.addListener(onResize);
+    updateMenu();
+  }
+
   const themeToggle = document.getElementById("themeToggle");
-  const themeLabel = themeToggle ? themeToggle.querySelector(".theme-label") : null;
-  const themeIcon = themeToggle ? themeToggle.querySelector(".theme-icon") : null;
-  const loadMapBtn = document.getElementById("loadMapBtn");
-  const locationMap = document.getElementById("locationMap");
-  const locationMapFrame = document.getElementById("locationMapFrame");
-  const videoTour = document.querySelector(".video-tour");
-  const walkthroughVideo = document.getElementById("walkthroughVideo");
-  const walkthroughSource = document.getElementById("walkthroughSource");
-  const videoFallback = document.getElementById("videoFallback");
-  const langButtons = Array.from(document.querySelectorAll(".lang-btn"));
-  const translatable = document.querySelectorAll("[data-bm][data-en]");
-  const ariaTranslatable = document.querySelectorAll("[data-bm-aria-label][data-en-aria-label]");
-  const altTranslatable = document.querySelectorAll("[data-bm-alt][data-en-alt]");
-  const titleTranslatable = document.querySelectorAll("[data-bm-title][data-en-title]");
-  const hrefTranslatable = document.querySelectorAll("[data-bm-href][data-en-href]");
-  const placeholderTranslatable = document.querySelectorAll("[data-bm-placeholder][data-en-placeholder]");
-  const abCtaLinks = Array.from(document.querySelectorAll(".ab-cta"));
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImage = document.getElementById("lightboxImage");
-  const lightboxCaption = document.getElementById("lightboxCaption");
-  const lightboxClose = document.getElementById("lightboxClose");
-  const lightboxPrev = document.getElementById("lightboxPrev");
-  const lightboxNext = document.getElementById("lightboxNext");
-  const galleryOpenImages = Array.from(document.querySelectorAll(".gallery-open"));
-  const faqItems = Array.from(document.querySelectorAll(".faq-item"));
-  const waLinks = Array.from(document.querySelectorAll('a[href*="wa.me/"]'));
-  const schemaNode = document.getElementById("lodgingSchema");
-  const canonicalLink = document.querySelector('link[rel="canonical"]');
-
-  const getSessionId = () => {
-    try {
-      const existing = sessionStorage.getItem("sessionId");
-      if (existing) {
-        return existing;
-      }
-      const next = `s_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
-      sessionStorage.setItem("sessionId", next);
-      return next;
-    } catch (error) {
-      return `s_${Date.now()}`;
-    }
-  };
-
-  const sessionId = getSessionId();
-
-  const readStorage = (key) => {
-    try {
-      return localStorage.getItem(key);
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const writeStorage = (key, value) => {
-    try {
-      localStorage.setItem(key, value);
-    } catch (error) {
-      // Ignore storage errors (private mode, blocked storage, etc.)
-    }
-  };
-
-  const loadAnalyticsEvents = () => {
-    const raw = readStorage(analyticsEventsStorageKey);
-    if (!raw) {
-      return [];
-    }
-    try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-      return [];
-    }
-  };
-
-  const saveAnalyticsEvents = (events) => {
-    writeStorage(analyticsEventsStorageKey, JSON.stringify(events.slice(-500)));
-  };
-
-  const recordLocalEvent = (eventName, params = {}) => {
-    const events = loadAnalyticsEvents();
-    events.push({
-      event: eventName,
-      ts: new Date().toISOString(),
-      sessionId,
-      params
-    });
-    saveAnalyticsEvents(events);
-  };
-
-  const getSiteUrl = () => {
-    const fromConfig = `${business.siteUrl || ""}`.trim().replace(/\/+$/, "");
-    if (fromConfig) {
-      return fromConfig;
-    }
-    return window.location.origin.replace(/\/+$/, "");
-  };
-
-  const parseIcsDateToIso = (rawDate) => {
-    if (!rawDate) {
-      return "";
-    }
-    const clean = rawDate.trim();
-    const match = clean.match(/^(\d{4})(\d{2})(\d{2})/);
-    if (!match) {
-      return "";
-    }
-    return `${match[1]}-${match[2]}-${match[3]}`;
-  };
-
-  const minusOneDayIso = (isoDate) => {
-    const date = new Date(`${isoDate}T00:00:00`);
-    if (Number.isNaN(date.getTime())) {
-      return isoDate;
-    }
-    date.setDate(date.getDate() - 1);
-    return date.toISOString().slice(0, 10);
-  };
-
-  const parseIcsRanges = (icsText) => {
-    const ranges = [];
-    if (!icsText) {
-      return ranges;
-    }
-    const normalized = icsText.replace(/\r\n[ \t]/g, "");
-    const blocks = normalized.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || [];
-
-    blocks.forEach((block) => {
-      const dtStartRaw = (block.match(/DTSTART(?:;[^:]+)?:([^\r\n]+)/) || [])[1];
-      const dtEndRaw = (block.match(/DTEND(?:;[^:]+)?:([^\r\n]+)/) || [])[1];
-      const summary = (block.match(/SUMMARY:([^\r\n]+)/) || [])[1] || "Booked";
-      const start = parseIcsDateToIso(dtStartRaw);
-      let end = parseIcsDateToIso(dtEndRaw);
-      if (end) {
-        end = minusOneDayIso(end);
-      } else {
-        end = start;
-      }
-      if (!start || !end) {
-        return;
-      }
-      ranges.push({
-        start,
-        end: end < start ? start : end,
-        labelBm: `Tempahan Kalendar: ${summary}`,
-        labelEn: `Calendar Booking: ${summary}`
-      });
-    });
-
-    return ranges;
-  };
-
-  const fetchIcsRanges = async () => {
-    if (!bookingCalendarIcsUrl) {
-      return [];
-    }
-    try {
-      const response = await fetch(bookingCalendarIcsUrl, { method: "GET" });
-      if (!response.ok) {
-        return [];
-      }
-      const text = await response.text();
-      return parseIcsRanges(text);
-    } catch (error) {
-      return [];
-    }
-  };
-
-  const isDateWithinRange = (day, start, end) => day >= start && day <= end;
-
-  const getDateValue = (value) => {
-    const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? null : date;
-  };
-
-  const dateToIso = (date) => {
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, "0");
-    const day = `${date.getDate()}`.padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const addDaysIso = (isoDate, days) => {
-    const date = getDateValue(isoDate);
-    if (!date) {
-      return "";
-    }
-    date.setDate(date.getDate() + days);
-    return dateToIso(date);
-  };
-
-  const isBlockedDay = (isoDate) => unavailableRanges.some((range) => {
-    if (!range.start || !range.end) {
-      return false;
-    }
-    return isoDate >= range.start && isoDate <= range.end;
-  });
-
-  const renderAvailabilityCalendar = (lang) => {
-    if (!availabilityCalendar) {
-      return;
-    }
-
-    availabilityCalendar.innerHTML = "";
-    const locale = lang === "en" ? "en-MY" : "ms-MY";
-    const weekdayNames = lang === "en"
-      ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-      : ["Isn", "Sel", "Rab", "Kha", "Jum", "Sab", "Aha"];
-    const today = new Date();
-    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-    for (let offset = 0; offset < 2; offset += 1) {
-      const monthDate = new Date(todayStart.getFullYear(), todayStart.getMonth() + offset, 1);
-      const year = monthDate.getFullYear();
-      const month = monthDate.getMonth();
-      const monthLabel = monthDate.toLocaleString(locale, { month: "long", year: "numeric" });
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const startWeekday = (monthDate.getDay() + 6) % 7;
-
-      const monthCard = document.createElement("div");
-      monthCard.className = "availability-month";
-
-      const heading = document.createElement("p");
-      heading.className = "availability-month-title";
-      heading.textContent = monthLabel;
-      monthCard.appendChild(heading);
-
-      const weekdays = document.createElement("div");
-      weekdays.className = "availability-weekdays";
-      weekdayNames.forEach((dayName) => {
-        const cell = document.createElement("span");
-        cell.textContent = dayName;
-        weekdays.appendChild(cell);
-      });
-      monthCard.appendChild(weekdays);
-
-      const grid = document.createElement("div");
-      grid.className = "availability-days";
-
-      for (let i = 0; i < startWeekday; i += 1) {
-        const empty = document.createElement("span");
-        empty.className = "availability-day is-empty";
-        empty.textContent = "";
-        grid.appendChild(empty);
-      }
-
-      for (let day = 1; day <= daysInMonth; day += 1) {
-        const currentDate = new Date(year, month, day);
-        const isoDate = dateToIso(currentDate);
-        const cell = document.createElement("span");
-        const blocked = isBlockedDay(isoDate);
-        const isPast = currentDate < todayStart;
-        const isToday = isoDate === dateToIso(todayStart);
-
-        cell.className = `availability-day ${blocked ? "is-blocked" : "is-open"}`;
-        if (isPast) {
-          cell.classList.add("is-past");
-        }
-        if (isToday) {
-          cell.classList.add("is-today");
-        }
-        cell.textContent = `${day}`;
-        cell.title = blocked
-          ? (lang === "en" ? `${isoDate} booked` : `${isoDate} ditempah`)
-          : (lang === "en" ? `${isoDate} available` : `${isoDate} tersedia`);
-        grid.appendChild(cell);
-      }
-
-      monthCard.appendChild(grid);
-      availabilityCalendar.appendChild(monthCard);
-    }
-  };
-
-  const setupWalkthroughVideo = () => {
-    if (!walkthroughVideo || !walkthroughSource) {
-      return;
-    }
-    if (!walkthroughVideoUrl) {
-      if (videoTour) {
-        videoTour.hidden = true;
-      }
-      walkthroughVideo.hidden = true;
-      if (videoFallback) {
-        videoFallback.hidden = true;
-      }
-      return;
-    }
-
-    if (videoTour) {
-      videoTour.hidden = false;
-    }
-    walkthroughSource.src = walkthroughVideoUrl;
-    walkthroughVideo.hidden = false;
-    walkthroughVideo.load();
-
-    walkthroughVideo.addEventListener("error", () => {
-      walkthroughVideo.hidden = true;
-      if (videoFallback) {
-        videoFallback.hidden = false;
-      }
-    });
-  };
-
-  const overlapsWithUnavailable = (startDateText, endDateText) => {
-    const startDate = getDateValue(startDateText);
-    const endDate = getDateValue(endDateText);
-    if (!startDate || !endDate) {
-      return null;
-    }
-
-    const startValue = startDate.toISOString().slice(0, 10);
-    const endValue = endDate.toISOString().slice(0, 10);
-
-    return unavailableRanges.find((range) => {
-      const blockedStart = range.start;
-      const blockedEnd = range.end;
-      if (!blockedStart || !blockedEnd) {
-        return false;
-      }
-      return isDateWithinRange(startValue, blockedStart, blockedEnd) ||
-        isDateWithinRange(endValue, blockedStart, blockedEnd) ||
-        isDateWithinRange(blockedStart, startValue, endValue);
-    }) || null;
-  };
-
-  const getStayNights = (checkin, checkout) => {
-    const checkinDate = getDateValue(checkin);
-    const checkoutDate = getDateValue(checkout);
-    if (!checkinDate || !checkoutDate || checkoutDate <= checkinDate) {
-      return 0;
-    }
-    const msPerNight = 24 * 60 * 60 * 1000;
-    return Math.round((checkoutDate - checkinDate) / msPerNight);
-  };
-
-  const getPriceEstimate = (checkin, checkout, rooms) => {
-    const nights = getStayNights(checkin, checkout);
-    const rate = roomRates[`${rooms || ""}`] || 0;
-    if (!nights || !rate) {
-      return null;
-    }
-    return {
-      nights,
-      rate,
-      total: nights * rate
-    };
-  };
-
-  const formatRm = (amount) => `RM${Number(amount || 0).toLocaleString("en-MY")}`;
-
-  const renderPriceEstimate = () => {
-    if (!dateForm || !formPriceEstimate) {
-      return null;
-    }
-    const data = new FormData(dateForm);
-    const checkin = `${data.get("checkin") || ""}`.trim();
-    const checkout = `${data.get("checkout") || ""}`.trim();
-    const rooms = `${data.get("rooms") || ""}`.trim();
-    const lang = root.dataset.lang || "ms";
-    const estimate = getPriceEstimate(checkin, checkout, rooms);
-
-    if (!estimate) {
-      formPriceEstimate.textContent = lang === "en"
-        ? "Choose valid dates and rooms to see the estimated rate."
-        : "Pilih tarikh dan bilik yang sah untuk lihat anggaran harga.";
-      return null;
-    }
-
-    formPriceEstimate.textContent = lang === "en"
-      ? `Estimated rate: ${estimate.nights} night${estimate.nights > 1 ? "s" : ""} x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}. Final price will be confirmed via WhatsApp.`
-      : `Anggaran harga: ${estimate.nights} malam x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}. Harga akhir akan disahkan melalui WhatsApp.`;
-    return estimate;
-  };
-
-  const setupAnalytics = () => {
-    const gaMeasurementId = analyticsConfig.gaMeasurementId;
-    const plausibleDomain = analyticsConfig.plausibleDomain;
-
-    if (gaMeasurementId) {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = window.gtag || function gtag() {
-        window.dataLayer.push(arguments);
-      };
-
-      window.gtag("js", new Date());
-      window.gtag("config", gaMeasurementId, { anonymize_ip: true });
-
-      const gaScript = document.createElement("script");
-      gaScript.async = true;
-      gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`;
-      document.head.appendChild(gaScript);
-    }
-
-    if (plausibleDomain) {
-      const plausibleScript = document.createElement("script");
-      plausibleScript.defer = true;
-      plausibleScript.dataset.domain = plausibleDomain;
-      plausibleScript.src = "https://plausible.io/js/script.js";
-      document.head.appendChild(plausibleScript);
-    }
-  };
-
-  const trackEvent = (eventName, params = {}) => {
-    recordLocalEvent(eventName, params);
-    if (window.gtag) {
-      window.gtag("event", eventName, params);
-    }
-    if (window.plausible && analyticsConfig.plausibleDomain) {
-      window.plausible(eventName, { props: params });
-    }
-  };
-
-  const openWhatsApp = (url, source = "unknown") => {
-    if (!url) {
-      return;
-    }
-    trackEvent("whatsapp_click", { source });
-    window.open(url, "_blank", "noopener");
-    if (config.enableThankYouRedirect) {
-      window.setTimeout(() => {
-        window.location.href = "thank-you.html";
-      }, 160);
-    }
-  };
-
-  const updateHeaderOffset = () => {
-    if (!header) {
-      return;
-    }
-    const height = header.getBoundingClientRect().height;
-    root.style.setProperty("--header-offset", `${Math.ceil(height + 16)}px`);
-  };
-
-  const closeMobileNav = () => {
-    if (!nav || !menuToggle) {
-      return;
-    }
-    nav.classList.remove("show");
-    menuToggle.setAttribute("aria-expanded", "false");
-  };
-
-  const renderSchema = () => {
-    const siteUrl = getSiteUrl();
-    if (!schemaNode || !siteUrl) {
-      return;
-    }
-    const faqEntities = Array.from(document.querySelectorAll(".faq-item"))
-      .map((item) => {
-        const question = item.querySelector("h4")?.textContent?.replace(/\s+/g, " ").trim();
-        const answer = item.querySelector("p")?.textContent?.replace(/\s+/g, " ").trim();
-        if (!question || !answer) {
-          return null;
-        }
-        return {
-          "@type": "Question",
-          "name": question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": answer
-          }
-        };
-      })
-      .filter(Boolean);
-    const lodgingId = `${siteUrl}/#lodging`;
-    const websiteId = `${siteUrl}/#website`;
-    const roomOffers = Object.entries(roomRates).map(([rooms, rate]) => ({
-      "@type": "Offer",
-      "name": `${rooms} Bilik / ${rooms} Room Package`,
-      "price": rate,
-      "priceCurrency": "MYR",
-      "availability": "https://schema.org/InStock",
-      "url": `${siteUrl}/#kadar`,
-      "itemOffered": {
-        "@type": "Accommodation",
-        "name": `${rooms} Bilik Jitra2Stay`
-      }
-    }));
-    const schema = {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "LodgingBusiness",
-          "@id": lodgingId,
-          "name": business.name || "Jitra2Stay",
-          "url": siteUrl,
-          "telephone": business.phone || "",
-          "email": business.email || "",
-          "description": business.description || "Homestay Semi-D 2 tingkat di Jitra.",
-          "image": business.image || `${siteUrl}/images/halaman.jpg`,
-          "checkinTime": "15:00",
-          "checkoutTime": "12:00",
-          "hasMap": "https://goo.gl/maps/pjnMbwm5Pk2QqPeP8",
-          "paymentAccepted": "Bank transfer, DuitNow QR, Cash",
-          "currenciesAccepted": "MYR",
-          "petsAllowed": false,
-          "smokingAllowed": false,
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "49, Taman Jitra Indah, Jalan Hospital Daerah",
-            "addressLocality": "Jitra",
-            "postalCode": "06000",
-            "addressRegion": "Kedah",
-            "addressCountry": "MY"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 6.2805462,
-            "longitude": 100.4151952
-          },
-          "amenityFeature": [
-            { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Air Conditioning", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Parking", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Pantry", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Water Heater", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Extra Mattresses, Pillows and Comforters", "value": true }
-          ],
-          "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Pakej bilik Jitra2Stay",
-            "itemListElement": roomOffers
-          },
-          "priceRange": "RM180-RM330 per night",
-          "sameAs": [
-            "https://www.facebook.com/media/set/?set=a.2393864657563587&type=3"
-          ]
-        },
-        {
-          "@type": "WebSite",
-          "@id": websiteId,
-          "name": business.name || "Jitra2Stay",
-          "url": siteUrl,
-          "inLanguage": ["ms-MY", "en-MY"],
-          "publisher": {
-            "@id": lodgingId
-          }
-        },
-        {
-          "@type": "WebPage",
-          "@id": `${siteUrl}/#webpage`,
-          "url": siteUrl,
-          "name": document.title || "Jitra2Stay | Homestay di Jitra",
-          "description": document.querySelector('meta[name="description"]')?.content || business.description || "",
-          "inLanguage": root.dataset.lang === "en" ? "en-MY" : "ms-MY",
-          "isPartOf": {
-            "@id": websiteId
-          },
-          "about": {
-            "@id": lodgingId
-          }
-        },
-        {
-          "@type": "FAQPage",
-          "@id": `${siteUrl}/#faq`,
-          "mainEntity": faqEntities
-        }
-      ]
-    };
-    schemaNode.textContent = JSON.stringify(schema);
-  };
-
-  const applyCanonical = () => {
-    if (!canonicalLink) {
-      return;
-    }
-    const siteUrl = getSiteUrl();
-    const path = window.location.pathname;
-    const currentPath = (path === "/" || path.endsWith("/index.html")) ? "/" : path;
-    canonicalLink.href = `${siteUrl}${currentPath}`;
-  };
-
-  const renderAvailability = (lang) => {
-    if (!availabilityList) {
-      return;
-    }
-    if (availabilityUpdated) {
-      availabilityUpdated.textContent = lang === "en"
-        ? "Displayed dates are for reference. Please WhatsApp for final confirmation."
-        : "Tarikh dipaparkan sebagai rujukan. Sila WhatsApp untuk pengesahan akhir.";
-    }
-    availabilityList.innerHTML = "";
-    if (unavailableRanges.length === 0) {
-      const item = document.createElement("li");
-      item.textContent = lang === "en"
-        ? "No blocked dates listed yet."
-        : "Tiada tarikh blok ditetapkan lagi.";
-      availabilityList.appendChild(item);
-      renderAvailabilityCalendar(lang);
-      return;
-    }
-
-    unavailableRanges.forEach((range) => {
-      const item = document.createElement("li");
-      const label = lang === "en" ? (range.labelEn || range.labelBm) : (range.labelBm || range.labelEn);
-      item.textContent = `${range.start} - ${range.end}  ${label ? `(${label})` : ""}`.trim();
-      availabilityList.appendChild(item);
-    });
-
-    renderAvailabilityCalendar(lang);
-  };
-
-  const getIntentText = (intentValue, lang) => {
-    const value = `${intentValue || ""}`.toLowerCase();
-    if (lang === "en") {
-      if (value === "event") {
-        return "Event / Gathering";
-      }
-      if (value === "convocation") {
-        return "Convocation";
-      }
-      if (value === "work") {
-        return "Work / Business";
-      }
-      return "Family";
-    }
-    if (value === "event") {
-      return "Kenduri / Majlis";
-    }
-    if (value === "convocation") {
-      return "Konvokesyen";
-    }
-    if (value === "work") {
-      return "Kerja / Urusan";
-    }
-    return "Keluarga";
-  };
-
-  const updateLiveAvailabilityStatus = () => {
-    if (!dateForm || !formAvailabilityStatus) {
-      return;
-    }
-    const checkinInput = dateForm.querySelector('input[name="checkin"]');
-    const checkoutInput = dateForm.querySelector('input[name="checkout"]');
-    if (!checkinInput || !checkoutInput) {
-      return;
-    }
-
-    const checkin = `${checkinInput.value || ""}`.trim();
-    const checkout = `${checkoutInput.value || ""}`.trim();
-    const lang = root.dataset.lang || "ms";
-
-    formAvailabilityStatus.classList.remove("is-open", "is-blocked", "is-warn");
-    if (!checkin || !checkout) {
-      formAvailabilityStatus.textContent = lang === "en"
-        ? "Choose check-in and check-out dates to see quick availability status."
-        : "Pilih tarikh check-in dan check-out untuk lihat status ketersediaan segera.";
-      return;
-    }
-
-    if (checkout <= checkin) {
-      formAvailabilityStatus.classList.add("is-warn");
-      formAvailabilityStatus.textContent = lang === "en"
-        ? "Check-out must be after check-in."
-        : "Tarikh check-out mesti selepas check-in.";
-      return;
-    }
-
-    const conflict = overlapsWithUnavailable(checkin, checkout);
-    const nextState = conflict ? "blocked" : "open";
-    if (nextState !== lastAvailabilityState) {
-      lastAvailabilityState = nextState;
-      trackEvent("date_availability_check", {
-        status: nextState,
-        checkin,
-        checkout
-      });
-    }
-
-    if (conflict) {
-      formAvailabilityStatus.classList.add("is-blocked");
-      const label = lang === "en"
-        ? (conflict.labelEn || conflict.labelBm || "")
-        : (conflict.labelBm || conflict.labelEn || "");
-      formAvailabilityStatus.textContent = lang === "en"
-        ? `These dates overlap with booked range ${conflict.start} - ${conflict.end}${label ? ` (${label})` : ""}.`
-        : `Tarikh ini bertindih dengan slot ditempah ${conflict.start} - ${conflict.end}${label ? ` (${label})` : ""}.`;
-      return;
-    }
-
-    formAvailabilityStatus.classList.add("is-open");
-    formAvailabilityStatus.textContent = lang === "en"
-      ? "Great, these dates look available. Send now for final confirmation."
-      : "Bagus, tarikh ini nampak tersedia. Hantar sekarang untuk pengesahan akhir.";
-  };
-
-  const getOrCreateAbVariant = () => {
-    const saved = readStorage(abVariantStorageKey);
-    if (saved === "A" || saved === "B") {
-      return saved;
-    }
-    const generated = Math.random() < 0.5 ? "A" : "B";
-    writeStorage(abVariantStorageKey, generated);
-    return generated;
-  };
-
-  const applyAbCta = () => {
-    const variant = getOrCreateAbVariant();
-    const lang = root.dataset.lang || "ms";
-
-    abCtaLinks.forEach((link) => {
-      const bmText = variant === "A" ? link.dataset.abABm : link.dataset.abBBm;
-      const enText = variant === "A" ? link.dataset.abAEn : link.dataset.abBEn;
-      const nextHref = variant === "A" ? link.dataset.abAHref : link.dataset.abBHref;
-
-      const text = lang === "en" ? (enText || bmText) : (bmText || enText);
-      if (text) {
-        link.innerHTML = text;
-      }
-      if (nextHref) {
-        link.setAttribute("href", nextHref);
-      }
-      const isAnchor = nextHref ? nextHref.startsWith("#") : false;
-      if (isAnchor) {
-        link.removeAttribute("target");
-        link.removeAttribute("rel");
-      } else {
-        link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener");
-      }
-    });
-
-    if (!abVariantTracked) {
-      trackEvent("ab_variant_assigned", { variant });
-      abVariantTracked = true;
-    }
-  };
-
-  const closeLightbox = () => {
-    if (!lightbox) {
-      return;
-    }
-    lightbox.hidden = true;
-    if (lightboxImage) {
-      lightboxImage.src = "";
-    }
-    if (lightboxCaption) {
-      lightboxCaption.textContent = "";
-    }
-    document.body.style.overflow = "";
-  };
-
-  let activeGalleryIndex = -1;
-  let touchStartX = 0;
-
-  const openGalleryAtIndex = (index) => {
-    if (!lightbox || !lightboxImage || !lightboxCaption) {
-      return;
-    }
-    const item = galleryOpenImages[index];
-    if (!item) {
-      return;
-    }
-    activeGalleryIndex = index;
-    const full = item.dataset.full || item.currentSrc || item.src;
-    const lang = root.dataset.lang || "ms";
-    const caption = lang === "en" ? (item.dataset.enCaption || item.alt) : (item.dataset.bmCaption || item.alt);
-    lightboxImage.src = full;
-    lightboxImage.alt = caption || "Gallery image";
-    lightboxCaption.textContent = caption || "";
-    lightbox.hidden = false;
-    document.body.style.overflow = "hidden";
-    trackEvent("gallery_lightbox_open", { image: full, index });
-  };
-
-  const showNextGallery = () => {
-    if (galleryOpenImages.length === 0) {
-      return;
-    }
-    const nextIndex = activeGalleryIndex < 0
-      ? 0
-      : (activeGalleryIndex + 1) % galleryOpenImages.length;
-    openGalleryAtIndex(nextIndex);
-  };
-
-  const showPrevGallery = () => {
-    if (galleryOpenImages.length === 0) {
-      return;
-    }
-    const prevIndex = activeGalleryIndex <= 0
-      ? galleryOpenImages.length - 1
-      : activeGalleryIndex - 1;
-    openGalleryAtIndex(prevIndex);
-  };
-
-  const updateThemeToggleUI = () => {
-    if (!themeToggle) {
-      return;
-    }
-    const theme = root.dataset.theme || "light";
-    const lang = root.dataset.lang || "ms";
-    const isDark = theme === "dark";
-
-    if (themeIcon) {
-      const icon = isDark ? themeIcon.dataset.dark : themeIcon.dataset.light;
-      if (icon) {
-        themeIcon.innerHTML = icon;
-      }
-    }
-
-    if (themeLabel) {
-      const label = isDark
-        ? (lang === "en" ? themeLabel.dataset.enDark : themeLabel.dataset.bmDark)
-        : (lang === "en" ? themeLabel.dataset.enLight : themeLabel.dataset.bmLight);
-      if (label) {
-        themeLabel.textContent = label;
-      }
-    }
-
-    const ariaLabel = isDark
-      ? (lang === "en" ? "Switch to light mode" : "Tukar ke mod terang")
-      : (lang === "en" ? "Switch to dark mode" : "Tukar ke mod gelap");
-    themeToggle.setAttribute("aria-label", ariaLabel);
-    themeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
-  };
-
-  const setTheme = (theme, persist = true) => {
-    root.dataset.theme = theme;
-    updateThemeToggleUI();
-    if (persist) {
-      writeStorage("preferredTheme", theme);
-    }
-  };
-
-  const getPreferredTheme = () => {
-    const savedTheme = readStorage("preferredTheme");
-    if (savedTheme === "light" || savedTheme === "dark") {
-      return savedTheme;
-    }
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-    return "light";
-  };
-
-  const applyLanguage = (lang) => {
-    root.lang = lang;
-    root.dataset.lang = lang;
-
-    const title = lang === "en" ? root.dataset.titleEn : root.dataset.titleBm;
-    if (title) {
-      document.title = title;
-    }
-
-    translatable.forEach((el) => {
-      const text = lang === "en" ? el.dataset.en : el.dataset.bm;
-      if (text !== undefined) {
-        el.innerHTML = text;
-      }
-    });
-
-    ariaTranslatable.forEach((el) => {
-      const label = lang === "en" ? el.dataset.enAriaLabel : el.dataset.bmAriaLabel;
-      if (label) {
-        el.setAttribute("aria-label", label);
-      }
-    });
-
-    altTranslatable.forEach((el) => {
-      const alt = lang === "en" ? el.dataset.enAlt : el.dataset.bmAlt;
-      if (alt) {
-        el.setAttribute("alt", alt);
-      }
-    });
-
-    titleTranslatable.forEach((el) => {
-      const titleText = lang === "en" ? el.dataset.enTitle : el.dataset.bmTitle;
-      if (titleText) {
-        el.setAttribute("title", titleText);
-      }
-    });
-
-    hrefTranslatable.forEach((el) => {
-      const href = lang === "en" ? el.dataset.enHref : el.dataset.bmHref;
-      if (href) {
-        el.setAttribute("href", href);
-      }
-    });
-
-    placeholderTranslatable.forEach((el) => {
-      const placeholder = lang === "en" ? el.dataset.enPlaceholder : el.dataset.bmPlaceholder;
-      if (placeholder) {
-        el.setAttribute("placeholder", placeholder);
-      }
-    });
-
-    langButtons.forEach((btn) => {
-      const isActive = btn.dataset.lang === lang;
-      btn.classList.toggle("active", isActive);
-      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
-    });
-
-    renderAvailability(lang);
-    updateLiveAvailabilityStatus();
-    renderPriceEstimate();
-    applyAbCta();
-    updateThemeToggleUI();
-    renderSchema();
-  };
-
-  if (menuToggle && nav) {
-    menuToggle.addEventListener("click", () => {
-      const isOpen = nav.classList.toggle("show");
-      menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
-
-    nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", closeMobileNav);
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeMobileNav();
-      }
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!nav.classList.contains("show")) {
-        return;
-      }
-      const target = event.target;
-      if (target instanceof Node && !nav.contains(target) && !menuToggle.contains(target)) {
-        closeMobileNav();
-      }
-    });
-  }
-
-  if (backToTop) {
-    backToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      trackEvent("back_to_top_click");
-    });
-  }
-
-  if (faqItems.length > 0) {
-    faqItems.forEach((item, index) => {
-      const heading = item.querySelector("h4");
-      const answer = item.querySelector("p");
-      if (!heading) {
-        return;
-      }
-      if (answer) {
-        answer.id = answer.id || `faq-answer-${index + 1}`;
-        answer.hidden = index !== 0;
-        heading.setAttribute("aria-controls", answer.id);
-      }
-      heading.setAttribute("role", "button");
-      heading.setAttribute("tabindex", "0");
-      heading.setAttribute("aria-expanded", index === 0 ? "true" : "false");
-      item.classList.toggle("open", index === 0);
-
-      const toggle = () => {
-        const willOpen = !item.classList.contains("open");
-        faqItems.forEach((other) => {
-          other.classList.remove("open");
-          const h = other.querySelector("h4");
-          const p = other.querySelector("p");
-          if (h) {
-            h.setAttribute("aria-expanded", "false");
-          }
-          if (p) {
-            p.hidden = true;
-          }
-        });
-        if (willOpen) {
-          item.classList.add("open");
-          heading.setAttribute("aria-expanded", "true");
-          if (answer) {
-            answer.hidden = false;
-          }
-        }
-      };
-
-      heading.addEventListener("click", toggle);
-      heading.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          toggle();
-        }
-      });
-    });
-  }
-
-  if (loadMapBtn && locationMap && locationMapFrame) {
-    loadMapBtn.addEventListener("click", () => {
-      if (!locationMapFrame.src) {
-        locationMapFrame.src = locationMapFrame.dataset.src || "";
-      }
-      locationMap.classList.add("loaded");
-      loadMapBtn.setAttribute("aria-expanded", "true");
-      trackEvent("map_load_click");
-    });
-  }
-
-  if (lightbox && lightboxImage && lightboxCaption) {
-    galleryOpenImages.forEach((img, index) => {
-      img.addEventListener("click", () => {
-        openGalleryAtIndex(index);
-      });
-    });
-
-    if (lightboxClose) {
-      lightboxClose.addEventListener("click", closeLightbox);
-    }
-    if (lightboxPrev) {
-      lightboxPrev.addEventListener("click", showPrevGallery);
-    }
-    if (lightboxNext) {
-      lightboxNext.addEventListener("click", showNextGallery);
-    }
-
-    lightbox.addEventListener("click", (event) => {
-      if (event.target === lightbox) {
-        closeLightbox();
-      }
-    });
-
-    lightbox.addEventListener("touchstart", (event) => {
-      touchStartX = event.changedTouches[0]?.clientX || 0;
-    }, { passive: true });
-
-    lightbox.addEventListener("touchend", (event) => {
-      const endX = event.changedTouches[0]?.clientX || 0;
-      const delta = endX - touchStartX;
-      if (Math.abs(delta) < 40) {
-        return;
-      }
-      if (delta < 0) {
-        showNextGallery();
-      } else {
-        showPrevGallery();
-      }
-    }, { passive: true });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !lightbox.hidden) {
-        closeLightbox();
-      } else if (event.key === "ArrowRight" && !lightbox.hidden) {
-        showNextGallery();
-      } else if (event.key === "ArrowLeft" && !lightbox.hidden) {
-        showPrevGallery();
-      }
-    });
-  }
-
-  waLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      const href = link.getAttribute("href") || "";
-      if (!href.includes("wa.me/")) {
-        return;
-      }
-      event.preventDefault();
-      openWhatsApp(link.href, link.className || "wa_link");
-    });
-  });
-
-  if (dateForm) {
-    const checkinInput = dateForm.querySelector('input[name="checkin"]');
-    const checkoutInput = dateForm.querySelector('input[name="checkout"]');
-    const guestsInput = dateForm.querySelector('input[name="guests"]');
-    const roomsSelect = dateForm.querySelector('select[name="rooms"]');
-    const intentSelect = dateForm.querySelector('select[name="intent"]');
-
-    if (checkinInput && checkoutInput) {
-      const today = dateToIso(new Date());
-      checkinInput.setAttribute("min", today);
-      checkoutInput.setAttribute("min", addDaysIso(today, 1));
-
-      checkinInput.addEventListener("change", () => {
-        if (formFeedback) {
-          formFeedback.textContent = "";
-        }
-        if (checkinInput.value) {
-          checkoutInput.setAttribute("min", addDaysIso(checkinInput.value, 1) || today);
-          if (checkoutInput.value && checkoutInput.value <= checkinInput.value) {
-            checkoutInput.value = "";
-          }
-        } else {
-          checkoutInput.setAttribute("min", addDaysIso(today, 1));
-        }
-        updateLiveAvailabilityStatus();
-        renderPriceEstimate();
-      });
-
-      checkoutInput.addEventListener("change", () => {
-        updateLiveAvailabilityStatus();
-        renderPriceEstimate();
-      });
-    }
-
-    dateForm.addEventListener("input", () => {
-      if (formFeedback) {
-        formFeedback.textContent = "";
-      }
-      updateLiveAvailabilityStatus();
-      renderPriceEstimate();
-      if (!hasTrackedFormStart) {
-        hasTrackedFormStart = true;
-        trackEvent("date_form_start");
-      }
-    });
-
-    dateForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = new FormData(dateForm);
-      const checkin = `${data.get("checkin") || ""}`.trim();
-      const checkout = `${data.get("checkout") || ""}`.trim();
-      const guests = `${data.get("guests") || ""}`.trim();
-      const rooms = `${data.get("rooms") || ""}`.trim();
-      const intent = `${data.get("intent") || "family"}`.trim();
-      const notes = `${data.get("notes") || ""}`.trim();
-      const lang = root.dataset.lang || "ms";
-      const estimate = getPriceEstimate(checkin, checkout, rooms);
-
-      if (checkin && checkout && checkout <= checkin) {
-        if (formFeedback) {
-          formFeedback.textContent = lang === "en"
-            ? "Please choose a valid check-out date."
-            : "Sila pilih tarikh check-out yang sah.";
-        }
-        window.alert(
-          lang === "en"
-            ? "Check-out date must be after check-in date."
-            : "Tarikh check-out mesti selepas check-in."
-        );
-        return;
-      }
-
-      const conflict = overlapsWithUnavailable(checkin, checkout);
-      if (conflict) {
-        if (formFeedback) {
-          formFeedback.textContent = lang === "en"
-            ? "Selected dates are unavailable. Please choose different dates."
-            : "Tarikh dipilih tidak tersedia. Sila pilih tarikh lain.";
-        }
-        const label = lang === "en"
-          ? (conflict.labelEn || conflict.labelBm || "")
-          : (conflict.labelBm || conflict.labelEn || "");
-        window.alert(
-          lang === "en"
-            ? `Selected dates overlap with unavailable dates: ${conflict.start} - ${conflict.end}${label ? ` (${label})` : ""}`
-            : `Tarikh dipilih bertindih dengan tarikh tidak tersedia: ${conflict.start} - ${conflict.end}${label ? ` (${label})` : ""}`
-        );
-        return;
-      }
-
-      const lines = [];
-      if (lang === "en") {
-        lines.push(`Hi ${business.name || "Jitra2Stay"}, I would like to check availability:`);
-        lines.push(`Check-in: ${checkin}`);
-        lines.push(`Check-out: ${checkout}`);
-        lines.push(`Guests: ${guests}`);
-        lines.push(`Rooms: ${rooms}`);
-        if (estimate) {
-          lines.push(`Estimated rate: ${estimate.nights} night${estimate.nights > 1 ? "s" : ""} x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}`);
-        }
-        lines.push(`Purpose: ${getIntentText(intent, lang)}`);
-        if (notes) {
-          lines.push(`Notes: ${notes}`);
-        }
-      } else {
-        lines.push(`Hai ${business.name || "Jitra2Stay"}, saya ingin semak ketersediaan:`);
-        lines.push(`Check-in: ${checkin}`);
-        lines.push(`Check-out: ${checkout}`);
-        lines.push(`Tetamu: ${guests}`);
-        lines.push(`Bilik: ${rooms}`);
-        if (estimate) {
-          lines.push(`Anggaran harga: ${estimate.nights} malam x ${formatRm(estimate.rate)} = ${formatRm(estimate.total)}`);
-        }
-        lines.push(`Tujuan: ${getIntentText(intent, lang)}`);
-        if (notes) {
-          lines.push(`Nota: ${notes}`);
-        }
-      }
-
-      trackEvent("date_form_submit", {
-        checkin,
-        checkout,
-        guests,
-        rooms,
-        intent
-      });
-
-      const phone = (business.phone || "+60194410666").replace(/\D/g, "");
-      const message = encodeURIComponent(lines.join("\n"));
-      if (formFeedback) {
-        formFeedback.textContent = lang === "en"
-          ? "Opening WhatsApp with your details. The owner will check the slot and reply as soon as possible."
-          : "Membuka WhatsApp dengan maklumat anda. Owner akan semak slot dan reply secepat mungkin.";
-      }
-      openWhatsApp(`https://wa.me/${phone}?text=${message}`, "date_form_submit");
-    });
-
-    if (guestsInput) {
-      guestsInput.addEventListener("change", () => {
-        const value = Number(guestsInput.value);
-        if (Number.isFinite(value) && value > 10) {
-          trackEvent("guest_count_over_limit", { guests: value });
-        }
-      });
-    }
-
-    if (roomsSelect) {
-      roomsSelect.addEventListener("change", () => {
-        renderPriceEstimate();
-        trackEvent("room_package_change", { rooms: roomsSelect.value || "" });
-      });
-    }
-
-    if (intentSelect) {
-      intentSelect.addEventListener("change", () => {
-        trackEvent("booking_intent_change", { intent: intentSelect.value || "family" });
-      });
-    }
-
-    updateLiveAvailabilityStatus();
-    renderPriceEstimate();
-  }
-
-  setupAnalytics();
-  applyCanonical();
-  renderSchema();
-  setupWalkthroughVideo();
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlTheme = urlParams.get("theme");
-  if (urlTheme === "light" || urlTheme === "dark") {
-    setTheme(urlTheme);
-  } else {
-    setTheme(getPreferredTheme(), false);
-  }
-
   if (themeToggle) {
+    const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)");
+    let savedTheme = null;
+    try { savedTheme = window.localStorage.getItem("theme"); } catch { /* Theme preference is optional. */ }
+    let theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : preferredTheme.matches ? "dark" : "light";
+    function applyTheme() {
+      root.dataset.theme = theme;
+      root.style.colorScheme = theme;
+      const label = theme === "dark" ? copy.lightTheme : copy.darkTheme;
+      themeToggle.setAttribute("aria-label", label);
+      themeToggle.title = label;
+      themeToggle.removeAttribute("aria-pressed");
+      themeToggle.hidden = false;
+    }
     themeToggle.addEventListener("click", () => {
-      const nextTheme = (root.dataset.theme || "light") === "dark" ? "light" : "dark";
-      setTheme(nextTheme);
-      trackEvent("theme_toggle", { nextTheme });
+      theme = theme === "dark" ? "light" : "dark";
+      savedTheme = theme;
+      try { window.localStorage.setItem("theme", theme); } catch { /* Theme still changes when storage is unavailable. */ }
+      applyTheme();
+    });
+    const onPreference = () => {
+      if (savedTheme !== "light" && savedTheme !== "dark") {
+        theme = preferredTheme.matches ? "dark" : "light";
+        applyTheme();
+      }
+    };
+    if (preferredTheme.addEventListener) preferredTheme.addEventListener("change", onPreference);
+    else preferredTheme.addListener(onPreference);
+    applyTheme();
+  }
+
+  const dialog = document.getElementById("galleryDialog");
+  const galleryImage = document.getElementById("galleryImage");
+  const galleryCaption = document.getElementById("galleryCaption");
+  const galleryClose = document.getElementById("galleryClose");
+  const galleryPrev = document.getElementById("galleryPrev");
+  const galleryNext = document.getElementById("galleryNext");
+  const galleryCount = document.getElementById("galleryCount");
+  const gallery = Array.from(document.querySelectorAll(".gallery-trigger"));
+  if (dialog && typeof dialog.showModal === "function" && galleryImage && gallery.length) {
+    let selected = 0;
+    let opener = null;
+    let previousOverflow = "";
+    function showImage(index) {
+      selected = (index + gallery.length) % gallery.length;
+      const item = gallery[selected];
+      const caption = item.dataset.caption || item.querySelector("img")?.alt || "";
+      galleryImage.src = item.dataset.full || item.href;
+      galleryImage.alt = caption;
+      if (galleryCaption) galleryCaption.textContent = caption;
+      if (galleryCount) galleryCount.textContent = `${selected + 1} / ${gallery.length}`;
+      if (galleryPrev) galleryPrev.hidden = gallery.length < 2;
+      if (galleryNext) galleryNext.hidden = gallery.length < 2;
+    }
+    gallery.forEach((item, index) => item.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      opener = item;
+      showImage(index);
+      previousOverflow = document.body.style.overflow;
+      dialog.showModal();
+      document.body.style.overflow = "hidden";
+      galleryClose?.focus();
+    }));
+    galleryClose?.addEventListener("click", () => dialog.close());
+    galleryPrev?.addEventListener("click", () => showImage(selected - 1));
+    galleryNext?.addEventListener("click", () => showImage(selected + 1));
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        const controls = Array.from(dialog.querySelectorAll("button:not([disabled])"))
+          .filter((button) => !button.closest("[hidden]") && button.getClientRects().length > 0);
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (first && (event.shiftKey && document.activeElement === first || !event.shiftKey && document.activeElement === last || !controls.includes(document.activeElement))) {
+          event.preventDefault();
+          (event.shiftKey ? last : first).focus();
+        }
+      }
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        showImage(selected + (event.key === "ArrowLeft" ? -1 : 1));
+      }
+    });
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+    });
+    dialog.addEventListener("close", () => {
+      document.body.style.overflow = previousOverflow;
+      if (opener?.isConnected) opener.focus();
     });
   }
 
-  let initialLang = root.dataset.lang || "ms";
-  const urlLang = urlParams.get("lang");
-  if (urlLang === "ms" || urlLang === "en") {
-    initialLang = urlLang;
-    writeStorage("preferredLang", urlLang);
-  }
-  const savedLang = readStorage("preferredLang");
-  if ((!urlLang || (urlLang !== "ms" && urlLang !== "en")) && (savedLang === "ms" || savedLang === "en")) {
-    initialLang = savedLang;
-  }
-  applyLanguage(initialLang);
-  trackEvent("page_view", { page: window.location.pathname, lang: initialLang });
+  const form = document.getElementById("dateForm");
+  if (!form) return;
+  const checkin = form.elements.namedItem("checkin");
+  const checkout = form.elements.namedItem("checkout");
+  const guests = form.elements.namedItem("guests");
+  const rooms = form.elements.namedItem("rooms");
+  const notes = form.elements.namedItem("notes");
+  const estimateOutput = document.getElementById("priceEstimate");
+  const feedback = document.getElementById("formFeedback");
+  const enquiryLink = document.getElementById("enquiryLink");
+  const copyMessage = document.getElementById("enquiryCopyMessage");
+  if (!checkin || !checkout || !guests || !rooms || !enquiryLink || !getEnquiryUrl(config.phone, "")) return;
+  let preparedMessage = "";
+  let submitted = false;
+  [checkin, checkout, guests, rooms].forEach((field) => { field.required = true; });
+  guests.min = "1";
+  guests.max = String(config.maxGuests || 20);
+  guests.step = "1";
 
-  fetchIcsRanges().then((calendarRanges) => {
-    if (!calendarRanges || calendarRanges.length === 0) {
+  function updateEnquiry() {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    checkin.min = today;
+    checkout.min = addDays(checkin.value, 1) || addDays(today, 1);
+    checkout.setCustomValidity(checkin.value && checkout.value && nightsBetween(checkin.value, checkout.value) === null ? copy.checkout : "");
+    const guestCount = Number(guests.value);
+    guests.setCustomValidity(guests.value && (!Number.isInteger(guestCount) || guestCount < 1 || guestCount > Number(guests.max)) ? copy.guests : "");
+    const estimate = estimateStay(checkin.value, checkout.value, rooms.value, config.roomRates);
+    rooms.setCustomValidity(rooms.value && !Object.prototype.hasOwnProperty.call(config.roomRates || {}, rooms.value) ? copy.rooms : "");
+    if (estimateOutput) {
+      estimateOutput.textContent = estimate && checkin.validity.valid && checkout.validity.valid
+        ? `${en ? "Stay estimate" : "Anggaran penginapan"}: RM${estimate.total} · ${estimate.nights} ${en ? (estimate.nights === 1 ? "night" : "nights") : "malam"} × RM${estimate.nightlyRate}. ${copy.exclusions}`
+        : copy.prompt;
+    }
+    const valid = estimate && Array.from(form.elements).every((field) => !field.willValidate || field.validity.valid);
+    preparedMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate }) : "";
+    enquiryLink.hidden = !preparedMessage;
+    if (copyMessage) copyMessage.hidden = !preparedMessage;
+    if (preparedMessage) enquiryLink.href = getEnquiryUrl(config.phone, preparedMessage);
+    else enquiryLink.removeAttribute("href");
+    if (feedback && submitted) feedback.textContent = "";
+    return Boolean(preparedMessage);
+  }
+
+  form.addEventListener("input", updateEnquiry);
+  form.addEventListener("change", updateEnquiry);
+  document.querySelectorAll(".package-link[data-rooms]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const selectedRooms = link.dataset.rooms;
+      if (!Array.from(rooms.options).some((option) => option.value === selectedRooms)) return;
+      form.hidden = false;
+      rooms.value = selectedRooms;
+      rooms.dispatchEvent(new Event("change", { bubbles: true }));
+      // The normal anchor scrolls to the enquiry section, including without JavaScript.
+    });
+  });
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const valid = updateEnquiry();
+    submitted = true;
+    const nativeValid = form.reportValidity();
+    if (!valid || !nativeValid) {
+      if (feedback) feedback.textContent = copy.invalid;
       return;
     }
-    const map = new Map();
-    unavailableRanges.forEach((range) => {
-      map.set(`${range.start}|${range.end}|${range.labelBm || ""}|${range.labelEn || ""}`, range);
-    });
-    calendarRanges.forEach((range) => {
-      map.set(`${range.start}|${range.end}|${range.labelBm || ""}|${range.labelEn || ""}`, range);
-    });
-    unavailableRanges = Array.from(map.values()).sort((a, b) => a.start.localeCompare(b.start));
-    renderAvailability(root.dataset.lang || "ms");
-    trackEvent("ical_sync_loaded", { count: calendarRanges.length });
+    if (feedback) feedback.textContent = copy.ready;
+    // Keep the prepared link and form intact when the browser blocks a new tab.
+    try { window.open(enquiryLink.href, "_blank", "noopener,noreferrer"); } catch { /* The real link remains available. */ }
   });
-
-  langButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const lang = btn.dataset.lang;
-      if (!lang) {
-        return;
-      }
-      applyLanguage(lang);
-      writeStorage("preferredLang", lang);
-      trackEvent("language_switch", { lang });
-    });
+  copyMessage?.addEventListener("click", async () => {
+    if (!preparedMessage) return;
+    try {
+      await navigator.clipboard.writeText(preparedMessage);
+      if (feedback) feedback.textContent = copy.copied;
+    } catch {
+      if (feedback) feedback.textContent = copy.copyFailed;
+    }
   });
-
-  let didShrink = false;
-  let ticking = false;
-
-  const updateOnScroll = () => {
-    const scrollY = window.scrollY;
-    const viewportHeight = window.innerHeight;
-
-    if (header) {
-      const shouldShrink = scrollY > 80;
-      if (shouldShrink !== didShrink) {
-        header.classList.toggle("shrink", shouldShrink);
-        didShrink = shouldShrink;
-        updateHeaderOffset();
-      }
-    }
-
-    reveals.forEach((section) => {
-      if (section.classList.contains("active")) {
-        return;
-      }
-      const sectionTop = section.getBoundingClientRect().top;
-      if (sectionTop < viewportHeight - 120) {
-        section.classList.add("active");
-      }
-    });
-
-    if (finalCTA && !finalCTA.classList.contains("show")) {
-      const top = finalCTA.getBoundingClientRect().top;
-      if (top < viewportHeight - 100) {
-        finalCTA.classList.add("show");
-      }
-    }
-
-    const showFloating = scrollY > 500;
-    if (floatingCta) {
-      floatingCta.classList.toggle("show", showFloating);
-    }
-    if (backToTop) {
-      backToTop.classList.toggle("show", showFloating);
-    }
-
-    ticking = false;
-  };
-
-  const requestScrollUpdate = () => {
-    if (ticking) {
-      return;
-    }
-    ticking = true;
-    window.requestAnimationFrame(updateOnScroll);
-  };
-
-  window.addEventListener("scroll", requestScrollUpdate, { passive: true });
-  window.addEventListener("resize", () => {
-    updateHeaderOffset();
-    requestScrollUpdate();
-  });
-  updateHeaderOffset();
-  requestScrollUpdate();
+  updateEnquiry();
+  form.hidden = false;
 })();

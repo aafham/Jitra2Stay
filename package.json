@@ -1,0 +1,23 @@
+{
+  "name": "jitra2stay",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Static bilingual homestay information and WhatsApp enquiries",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node tools/build.cjs",
+    "dev": "node tools/build.cjs && node tools/serve.cjs",
+    "preview": "node tools/serve.cjs",
+    "qa": "node tools/qa-check.js",
+    "test": "playwright test",
+    "test:unit": "node --test tests/*.test.cjs",
+    "optimize:images": "node tools/optimize-images.cjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "sharp": "0.35.4"
+  }
+}
