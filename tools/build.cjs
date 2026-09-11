@@ -33,7 +33,7 @@ const copy=relative=>{
   if(!source.startsWith(root+path.sep)||!target.startsWith(output+path.sep)) throw new Error('Asset outside project');
   fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(source,target);
 };
-for(const asset of ['app.js','style.css','gallery.js','gallery.css','navigation.js','navigation.css','share.js','faq.js','faq.css','location.js','location.css','images/favicon.svg']) copy(asset);
+for(const asset of ['app.js','style.css','gallery.js','gallery.css','navigation.js','navigation.css','share.js','faq.js','faq.css','location.js','location.css','rates.css','documents.css','images/favicon.svg']) copy(asset);
 const usedImages=new Set(['halaman','ruang-tamu',...config.gallery.map(p=>p.image)]);
 for(const name of usedImages){
   const info=manifest.images.find(i=>i.source===`images/${name}.jpg`);

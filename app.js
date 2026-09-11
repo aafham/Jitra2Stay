@@ -220,10 +220,12 @@
   let submitted = false;
   let packageChosen = false;
   const touched = new Set();
-  const mobileWhatsApp = document.querySelector(".mobile-whatsapp");
-  const defaultMobileUrl = mobileWhatsApp?.href;
+  const enquiryShortcuts = Array.from(document.querySelectorAll('#heroPrimaryCta, #mainNav > .button, .enquiry-section .button-light, .mobile-whatsapp')).map(link => ({link, href:link.href, label:link.getAttribute('aria-label')}));
   const money = value => `RM${Number(value).toLocaleString(en ? "en-MY" : "ms-MY")}`;
   [checkin, checkout, guests, rooms].forEach((field) => { field.required = true; });
+  // Keep native validity checks, but use the inline errors and a visible focus
+  // target instead of a browser popup underneath the sticky header.
+  form.noValidate = true;
   guests.min = "1";
   guests.max = String(config.maxGuests || 20);
   guests.step = "1";
@@ -359,12 +361,13 @@
     else enquiryLink.removeAttribute("href");
     if (preview) preview.hidden = !preparedMessage;
     if (previewText) previewText.textContent = preparedMessage;
-    if (mobileWhatsApp) {
-      mobileWhatsApp.href = preparedMessage ? enquiryLink.href : defaultMobileUrl;
-      mobileWhatsApp.setAttribute("aria-label", preparedMessage
-        ? (en ? "Open your prepared enquiry in WhatsApp" : "Buka pertanyaan yang disediakan di WhatsApp")
-        : (en ? "Ask the owner on WhatsApp" : "Tanya owner di WhatsApp"));
-    }
+    enquiryShortcuts.forEach(({link,href,label}) => {
+      link.href = preparedMessage ? enquiryLink.href : href;
+      if (preparedMessage) link.setAttribute('aria-label', en ? 'Open your prepared enquiry in WhatsApp' : 'Buka pertanyaan yang disediakan di WhatsApp');
+      else if (label) link.setAttribute('aria-label', label);
+      else link.removeAttribute('aria-label');
+    });
+    if (clearDraft) clearDraft.hidden = !packageChosen && Object.entries(draftFields).every(([name,field]) => (field?.value || '') === draftDefaults[name]);
     return Boolean(preparedMessage);
   }
 
@@ -411,9 +414,14 @@
     event.preventDefault();
     const valid = updateEnquiry();
     submitted = true;
-    const nativeValid = form.reportValidity();
+    const nativeValid = form.checkValidity();
     if (!valid || !nativeValid) {
       if (feedback) feedback.textContent = copy.invalid;
+      const firstInvalid = Array.from(form.elements).find(field => field.willValidate && !field.validity.valid);
+      if (firstInvalid) {
+        firstInvalid.focus({preventScroll:true});
+        firstInvalid.scrollIntoView({block:'center',behavior:'instant'});
+      }
       return;
     }
     if (feedback) feedback.textContent = copy.ready;
@@ -445,7 +453,6 @@
   restoreDraft();
   updateEnquiry();
   form.hidden = false;
-  if (clearDraft) clearDraft.hidden = false;
   window.addEventListener("pageshow", event => {
     if (event.persisted) {
       const restored = restoreDraft();
