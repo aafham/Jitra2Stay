@@ -14,9 +14,12 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 - Hero diringkaskan dengan foto rumah, harga permulaan dan tindakan utama. Background hijau serta permukaan cream/sage dikekalkan.
 - Foto dan penerangan lima bilik, kemudahan, tempat berdekatan serta ringkasan penginapan menggunakan semula maklumat owner dalam repo asal.
 - Lokasi memaparkan Google Maps interaktif terus dalam halaman, serta butang Google Maps dan Waze ke pin rumah yang sama.
+- Alamat penuh boleh disalin terus; jika clipboard tidak tersedia, ruangan salin manual dipaparkan dengan alamat dipilih.
+- FAQ boleh ditapis mengikut Rumah & kemudahan, Harga & tempahan atau Ketibaan & peraturan. Semua 15 jawapan asal kekal dalam HTML dan tersedia tanpa JavaScript.
 - Halaman BM/EN lengkap dijana sebagai HTML statik; kandungan tetap terlihat tanpa JavaScript.
 - Galeri 11 foto boleh ditapis mengikut bilik tidur, ruang bersama dan luar rumah. Paparan awal menunjukkan 6 foto dengan butang lihat lagi/ringkaskan; tanpa JavaScript, semua foto terus tersedia.
 - Dialog galeri menyokong keyboard, leretan kiri/kanan dan navigasi mengikut kategori. Jika gambar gagal dimuatkan, butang cuba lagi dan pautan JPG web tersedia. Dua foto bilik sebenar daripada arkib owner kekal digunakan.
+- Thumbnail dalam dialog memudahkan pertukaran gambar; gambar semasa ditandakan dan penerangan bilik asal turut dipaparkan dalam paparan besar.
 - Kad pakej memudahkan perbandingan bilik, bilik air dan kadar; pilihan kad terus diselaraskan dengan borang pertanyaan.
 - Harga, contact dan polisi berkongsi satu sumber dalam `site.config.cjs`.
 - Borang pilihan mempunyai pintasan 1–3 malam, anggaran sewaan dengan deposit berasingan, ralat BM/EN di ruangan berkaitan dan pratonton mesej. Butiran kekal selepas membuka WhatsApp; pautan cuba semula dan salin mesej tersedia.
@@ -53,6 +56,8 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 | `templates/rates.cjs` | Kad pakej bilik dan maklumat kadar |
 | `templates/enquiry.cjs` | Borang, pecahan anggaran dan pratonton mesej |
 | `templates/location.cjs` | Peta Google terbenam, butang Google Maps/Waze dan panduan lokasi |
+| `templates/faq.cjs`, `faq.js`, `faq.css` | Soalan asal BM/EN dan penapis topik dengan kiraan hasil |
+| `location.js`, `location.css` | Salin alamat dan pilihan salinan manual |
 | `templates/pages.cjs` | Polisi, panduan setempat, halaman legacy thank-you dan 404 |
 | `app.js` | Menu, tema, pakej, validasi, mesej dan draf pertanyaan dalam sesi tab |
 | `share.js` | Perkongsian URL homepage tanpa butiran borang |
@@ -102,7 +107,7 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 12 September 2026: **450 semakan statik, 11 unit dan 39 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440, BM/EN, menu, keyboard/dialog, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 12 September 2026: **454 semakan statik, 11 unit dan 47 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 

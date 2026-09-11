@@ -1,4 +1,4 @@
-const {config,e,t,icon,timeText,pageHref}=require('./shared.cjs');
+const {config,e,t,icon,timeText,pageHref,address}=require('./shared.cjs');
 
 const {renderNearby}=require('./stay-info.cjs');
 
@@ -12,7 +12,9 @@ function renderLocation(lang) {
       <div class="location-copy">
         <p class="eyebrow">${icon('pin')} JITRA, KEDAH</p>
         <h2 id="locationTitle">${t(lang,'Jumpa kami<br>di Jitra.','Find us<br>in Jitra.')}</h2>
-        <address>${e(b.address.street)}<br>${e(b.address.postalCode)} ${e(b.address.city)}, ${e(b.address.region)}</address>
+        <div class="location-address"><address id="stayAddress">${e(b.address.street)}<br>${e(b.address.postalCode)} ${e(b.address.city)}, ${e(b.address.region)}</address><button class="copy-address-button" id="copyAddress" type="button" data-copy-address="${e(address)}" hidden>${t(lang,'Salin alamat','Copy address')}</button></div>
+        <p class="copy-address-feedback" id="copyAddressFeedback" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div class="address-copy-fallback" id="addressCopyFallback" hidden><label for="addressCopyText">${t(lang,'Alamat untuk disalin','Address to copy')}</label><textarea id="addressCopyText" readonly rows="3" spellcheck="false" aria-describedby="copyAddressFeedback">${e(address)}</textarea></div>
         <p>${t(lang,'Di sebelah pagar sisi Hospital Jitra. Lihat kawasan rumah pada peta, kemudian buka aplikasi pilihan anda untuk panduan perjalanan.','Beside the side fence of Jitra Hospital. Explore the house location on the map, then open your preferred app for directions.')}</p>
         <div class="location-actions" aria-label="${t(lang,'Pilihan navigasi','Navigation options')}">
           <a class="button" data-navigation="google" href="${e(b.mapUrl)}" target="_blank" rel="noopener noreferrer">${icon('pin')} Google Maps ${icon('arrow')}</a>

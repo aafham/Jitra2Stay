@@ -175,6 +175,7 @@ html:not(.js) .site-header{position:static}
 .faq-list summary>span{font-size:1.3rem;font-weight:400;flex-shrink:0;line-height:1}
 .faq-list details[open] summary>span{transform:rotate(45deg)}
 .faq-list details>p{padding:0 25px 24px 0;color:var(--muted);font-size:.95rem;line-height:1.75}
+.nearby-grid summary:focus-visible{outline-offset:-4px}
 /* Optional enquiry builder. */
 .enquiry-section{background:#174b3a;color:#e9f4ed}
 .enquiry-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:100px;align-items:center}

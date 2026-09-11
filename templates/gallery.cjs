@@ -13,7 +13,7 @@ function galleryCard(photo, lang) {
   const info = imageInfo(photo.image);
   const full = info.variants.at(-1).src;
   const room=config.rooms.find(item=>item.image===photo.image);
-  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-full="${e(full)}" data-original="${e(info.source)}" data-caption="${e(photo[lang])}" aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang])}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
+  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-full="${e(full)}" data-original="${e(info.source)}" data-thumbnail="${e(info.variants[0].src)}" data-caption="${e(photo[lang])}"${room?` data-description="${e(room[lang][1])}"`:''} aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang])}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
 }
 
 function renderGallery(lang) {
@@ -25,12 +25,14 @@ function renderGallery(lang) {
   <div class="gallery-more-control"><button class="gallery-more-button" id="galleryMore" type="button" aria-controls="galleryGrid" aria-expanded="false" hidden>${t(lang, "Lihat lebih banyak gambar", "Show more photos")}</button></div>
   <p class="section-footnote">${t(lang, "Foto sebenar rumah, bilik dan kemudahan Jitra2Stay.", "Real photos of Jitra2Stay’s house, bedrooms and facilities.")}</p>
   </section>
-  <dialog id="galleryDialog" class="gallery-dialog" aria-labelledby="galleryCaption">
+  <dialog id="galleryDialog" class="gallery-dialog" aria-labelledby="galleryCaption" aria-describedby="galleryDescription">
   <div class="dialog-top"><span id="galleryCount" aria-live="polite" aria-atomic="true"></span><button id="galleryClose" class="icon-button" type="button" aria-label="${t(lang, "Tutup gambar", "Close photo")}">${icon("close")}</button></div>
   <div class="dialog-image" id="galleryImageStage" aria-busy="false"><img id="galleryImage" alt="" width="1600" height="1200" decoding="async" draggable="false" hidden></div>
   <div class="gallery-image-feedback"><p id="galleryImageStatus" class="gallery-image-status" role="status" aria-live="polite" aria-atomic="true"></p><button id="galleryRetry" class="text-button" type="button" hidden>${t(lang, "Cuba lagi", "Try again")}</button></div>
   <div class="dialog-bottom"><button id="galleryPrev" class="icon-button previous" type="button" aria-label="${t(lang, "Gambar sebelumnya", "Previous photo")}">${icon("arrow")}</button><p id="galleryCaption" aria-live="polite"></p><button id="galleryNext" class="icon-button" type="button" aria-label="${t(lang, "Gambar seterusnya", "Next photo")}">${icon("arrow")}</button></div>
-  <div class="gallery-dialog-footer"><a id="galleryOriginalLink" class="text-link" href="${e(imageInfo(config.gallery[0].image).source)}" target="_blank" rel="noopener">${t(lang, "Buka gambar asal", "Open original photo")} ${icon("arrow")}</a><p>${t(lang, "Guna anak panah atau leret kiri dan kanan untuk gambar seterusnya.", "Use the arrows or swipe left and right to browse photos.")}</p></div>
+  <p class="gallery-room-description" id="galleryDescription" hidden></p>
+  <div class="gallery-thumbnails" id="galleryThumbnails" role="group" aria-label="${t(lang, "Pilih gambar dalam kategori semasa", "Choose a photo in this category")}" hidden></div>
+  <div class="gallery-dialog-footer"><a id="galleryOriginalLink" class="text-link" href="${e(imageInfo(config.gallery[0].image).source)}" target="_blank" rel="noopener">${t(lang, "Buka gambar asal", "Open original photo")} ${icon("arrow")}</a><p>${t(lang, "Pilih pratonton, guna anak panah atau leret kiri dan kanan untuk gambar seterusnya.", "Choose a thumbnail, use the arrows or swipe left and right to browse photos.")}</p></div>
   </dialog>`;
 }
 
