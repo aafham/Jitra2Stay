@@ -1,71 +1,18 @@
-# Jitra2Stay Image Audit
+# Gambar website — 11 September 2026
 
-Audit semasa untuk gambar dalam folder `images/`.
+Semua 51 JPG kamera sedia ada diperiksa. Lima kumpulan bilik yang berbeza dikenali; dua kumpulan yang belum digunakan ditambah sebagai foto web. Tiada foto bilik air, exterior malam atau close-up mesin basuh dalam set tersebut.
 
-## Status 2026-05-18
+| Tambahan | Asal | Kapsyen awam |
+| --- | --- | --- |
+| bilik-dua-katil.jpg | IMG_7973.JPG | Bilik dengan dua katil / Bedroom with two beds |
+| bilik-kusyen-biru.jpg | IMG_7977.JPG | Bilik dengan kusyen biru / Bedroom with blue cushions |
 
-- [x] Gambar latest telah direview.
-- [x] Gambar pilihan telah dioptimize untuk website.
-- [x] Raw gambar/video besar dipindahkan ke `source-images/latest-raw/` supaya folder public `images/` kekal ringan.
-- [x] Video walkthrough diskip dahulu sehingga owner beri versi kecil.
-- [x] Gallery homepage telah dikemas kini dengan gambar latest.
-- [x] Versi WebP telah dibuat untuk semua gambar JPG semasa.
-- [x] Homepage guna `<picture>` untuk WebP dengan JPG fallback.
+Kedua-duanya diorientasi ikut EXIF, diresize secara berkadar maksimum 1600px dan dibuang metadata. Tiada objek/warna/kelengkapan ditambah atau dipadam. Label tidak mendakwa nombor bilik atau ukuran katil rasmi.
 
-## Saiz Gambar Website Semasa
+13 JPG web mempunyai 52 WebP responsif: 480, 800, 1200 dan saiz penuh. Halaman ialah 1500px, dapur 1400px; yang lain 1600px. Tiada upscaling. Saiz/sha/dimensi/provenance dalam images/responsive/manifest.json; file itu bukan output awam.
 
-| Gambar | Sumber raw | Kegunaan | Saiz |
-| --- | --- | --- | ---: |
-| `halaman.jpg` | `IMG_8012.JPG` | Hero, share preview, exterior depan | 328 KB |
-| `ruang-tamu.jpg` | `IMG_7988.JPG` | Ruang tamu, CTA | 255 KB |
-| `ruang-makan.jpg` | `IMG_7991.JPG` | Ruang makan dan pantry | 204 KB |
-| `tangga-ruang-makan.jpg` | `IMG_7992.JPG` | Ruang makan + tangga 2 tingkat | 215 KB |
-| `bilik-tidur.jpg` | `IMG_8001.JPG` | Bilik tidur utama | 249 KB |
-| `bilik-keluarga.jpg` | `IMG_7997.JPG` | Bilik keluarga | 252 KB |
-| `bilik-besar.jpg` | `IMG_7968.JPG` | Bilik besar / simpanan gallery | 267 KB |
-| `dapur.jpg` | `IMG_8005.JPG` | Pantry dan kemudahan dapur | 243 KB |
-| `luar-rumah.jpg` | `IMG_8008.JPG` | Exterior / halaman | 318 KB |
-| `parking.jpg` | `IMG_8015.JPG` | Parking luas | 316 KB |
-| `porch-parking.jpg` | `IMG_8021.JPG` | Porch dan kawasan luar | 243 KB |
+Hero 480px: 30,970 bait; 800px: 89,434 bait. Pelayar memilih calon melalui picture/srcset/sizes. Tiada preload format lain yang tidak menjadi hero. Foto galeri boleh menggunakan thumbnail berlainan daripada hero bagi subjek sama.
 
-Semua gambar website semasa berada bawah 350 KB setiap satu.
+Regenerasi: npm ci, kemudian npm run optimize:images. Script membaca JPG web yang dikomit; raw 315.5 MiB tidak diperlukan. Semua 52 output disahkan dimensi, metadata kosong dan repeat-run hash sama pada runtime yang diuji.
 
-## Saiz WebP Semasa
-
-| Gambar | Saiz WebP |
-| --- | ---: |
-| `halaman.webp` | 317 KB |
-| `ruang-tamu.webp` | 154 KB |
-| `ruang-makan.webp` | 100 KB |
-| `tangga-ruang-makan.webp` | 103 KB |
-| `bilik-tidur.webp` | 131 KB |
-| `bilik-keluarga.webp` | 137 KB |
-| `bilik-besar.webp` | 139 KB |
-| `dapur.webp` | 148 KB |
-| `luar-rumah.webp` | 211 KB |
-| `parking.webp` | 209 KB |
-| `porch-parking.webp` | 141 KB |
-
-## Gambar Yang Sudah Cukup Untuk Website Semasa
-
-- [x] Hero utama website.
-- [x] Share preview / thumbnail.
-- [x] Exterior depan rumah siang.
-- [x] Parking jelas.
-- [x] Ruang tamu wide angle.
-- [x] Ruang makan.
-- [x] Dapur / pantry.
-- [x] Beberapa gambar bilik tidur untuk gallery.
-- [x] Gambar porch / kawasan luar.
-
-## Masih Elok Tambah Kemudian
-
-- [ ] Gambar semua 5 bilik tidur yang owner mahu label satu per satu.
-- [ ] Gambar semua 3 bilik air.
-- [ ] Gambar exterior malam jika ada.
-- [ ] Gambar kemudahan penting secara dekat: TV, peti ais, mesin basuh, iron, water heater.
-- [ ] Video walkthrough kecil, contoh 15-40 saat dan saiz web-friendly.
-
-## Nota
-
-Raw files asal disimpan dalam `source-images/latest-raw/`. Jangan upload folder itu sebagai public website jika deploy manual, sebab ada fail besar termasuk video.
+Build hanya menyalin 11 foto galeri yang digunakan beserta varian dan fallback JPG. Arkib sumber dan foto web tidak digunakan tidak dipublish. Tambah foto tiga bilik air apabila owner beri gambar sebenar.

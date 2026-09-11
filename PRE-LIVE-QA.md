@@ -1,67 +1,26 @@
-# Jitra2Stay Pre-Live QA
+# QA release dan peranti sebenar
 
-Checklist ringkas sebelum website diupload/deploy live. Gunakan ini untuk semakan terakhir dari phone sebenar dan URL live.
+## Automatik
 
-## 1. Semak Data Public
+- npm run build
+- npm run qa
+- npm run test:unit
+- npm test
 
-- [ ] Nama homestay: Jitra2Stay.
-- [ ] Nombor WhatsApp/call betul.
-- [ ] Email betul.
-- [ ] Alamat dan Google Maps betul.
-- [ ] Harga 2, 3, 4 dan 5 bilik betul.
-- [ ] Deposit, extra guest dan caj extra masa betul.
-- [ ] Polisi check-in/check-out dan house rules betul.
-- [ ] Tiada password WiFi, nombor akaun bank atau info sensitif dalam website public.
-- [ ] Gambar yang dipaparkan masih mewakili keadaan rumah sebenar.
+CI menjalankan semakan sama. Suite browser memintas pembukaan WhatsApp; ia tidak menghantar mesej sebenar. Keputusan implementasi 11 September 2026: 427 statik, 5 unit, 24 browser lulus.
 
-## 2. Test Website Dari Phone Sebenar
+## Selepas deploy
 
-- [ ] Buka homepage di Android Chrome.
-- [ ] Buka homepage di iPhone Safari jika ada.
-- [ ] Test guna WiFi.
-- [ ] Test guna mobile data.
-- [ ] Dark mode boleh dibaca.
-- [ ] Light mode boleh dibaca.
-- [ ] Header/nav boleh digunakan.
-- [ ] Sticky WhatsApp boleh klik.
-- [ ] Gallery/lightbox boleh dibuka.
+- [ ] Buka homepage BM/EN dan polisi pada Android serta iPhone sebenar.
+- [ ] Buka/tutup menu, tukar bahasa/tema, scroll semua section dan zoom teks.
+- [ ] Buka foto, next/previous, tutup dan semak fokus keyboard.
+- [ ] Semak foto bilik/parking dan pin Maps tepat.
+- [ ] Cuba semua CTA WhatsApp, termasuk fallback apabila popup/app tidak terbuka.
+- [ ] Isi tarikh valid, checkout salah, tetamu 20/21 dan nota bersimbol; mesej praisi tepat.
+- [ ] Ingat mesej hanya dihantar apabila pengguna menekan Send dalam WhatsApp.
+- [ ] Semak pada mobile data sebenar dan tanpa JavaScript.
+- [ ] Semak raw/tools/docs tidak boleh dicapai pada production dan Pages mirror.
+- [ ] Semak URL 404, share preview, canonical, hreflang dan sitemap.
+- [ ] Owner sahkan harga/polisi/kemudahan sebelum promosi.
 
-## 3. Test Flow Semak Tarikh
-
-- [ ] Isi check-in dan check-out valid.
-- [ ] Pastikan anggaran harga keluar.
-- [ ] Test check-out sebelum check-in dan pastikan warning keluar.
-- [ ] Test tarikh yang bertindih unavailable date dan pastikan warning keluar.
-- [ ] Submit form dan pastikan WhatsApp terbuka dengan mesej lengkap.
-- [ ] Owner boleh faham mesej WhatsApp yang diterima.
-
-## 4. Test Page Penting
-
-- [ ] `index.html` / homepage boleh dibuka.
-- [ ] `policies.html` boleh dibuka.
-- [ ] `thank-you.html` boleh dibuka.
-- [ ] `404.html` ada button balik/WhatsApp.
-- [ ] Halaman SEO Hospital Jitra boleh dibuka.
-- [ ] Halaman SEO Konvokesyen UUM boleh dibuka.
-- [ ] Halaman SEO Keluarga Besar boleh dibuka.
-- [ ] Halaman SEO Tempat Menarik Jitra boleh dibuka.
-- [ ] Google Maps boleh dibuka dari button lokasi.
-
-## 5. SEO dan Share Preview
-
-- [ ] Domain live betul.
-- [ ] `sitemap.xml` boleh dibuka.
-- [ ] `robots.txt` boleh dibuka.
-- [ ] WhatsApp/Facebook preview nampak betul.
-- [ ] Google Search Console disediakan.
-- [ ] Sitemap submit ke Google Search Console.
-- [ ] Google Business Profile disemak.
-
-## 6. Final Owner Approval
-
-- [ ] Owner baca homepage dari atas sampai bawah.
-- [ ] Owner baca policies page.
-- [ ] Owner sahkan semua data public boleh dipaparkan.
-- [ ] Owner sahkan website kekal view-only dan direct WhatsApp.
-- [ ] Owner sahkan payment manual melalui WhatsApp sahaja.
-- [ ] Owner simpan `WHATSAPP-TEMPLATES.md` sebagai rujukan balas customer.
+Jangan menandakan ujian peranti/owner sebagai selesai berdasarkan ujian Chrome headless sahaja.

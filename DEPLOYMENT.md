@@ -1,93 +1,42 @@
-# Jitra2Stay Deployment Guide
+# Deployment Jitra2Stay
 
-Website ini ialah static site. Tiada backend, tiada login, tiada database, dan tiada payment gateway.
+Semua host mesti menerbitkan **dist/**, bukan root repository. Source HTML sekarang dijana daripada templates dan site.config.cjs.
 
-## Sebelum Deploy
+## Build
 
-Jalankan QA automatik:
-
-```powershell
-node tools/qa-check.js
+```sh
+npm ci
+npm run build
+npm run qa
 ```
 
-Pastikan checklist ini selesai:
+Build membersihkan hanya folder dist yang dimiliki projek. Aset foto kamera asal dan sejarah Git kekal. Output mengandungi 16 HTML, style.css, app.js, public app.config.js, robots, sitemap, favicon dan JPG/WebP yang digunakan. Raw, tools, tests, docs dan manifest provenance tidak disalin.
 
-- [ ] `OWNER-DATA-CHECKLIST.md` sudah disemak untuk data final.
-- [ ] `PRE-LIVE-QA.md` sudah dibuat untuk phone test.
-- [x] Gambar pilihan website sudah masuk folder `images/`.
-- [ ] Gambar bilik air/video kecil ditambah kemudian jika mahu.
-- [ ] Nombor WhatsApp betul.
-- [ ] Domain dalam `app.config.js`, `index.html`, `sitemap.xml`, dan `robots.txt` betul.
-- [ ] Tiada password WiFi atau info sensitif dalam website public.
+## Vercel
 
-## Deploy Ke Vercel
+Import repo sedia ada. vercel.json menetapkan install npm ci, build npm run build, framework null dan outputDirectory dist. Push branch menghasilkan preview melalui Git integration; production mengikuti main. Semak preview sebelum merge. Jangan cipta projek Vercel kedua jika integration sedia ada sudah berfungsi.
 
-Cara paling mudah:
+Header nosniff/referrer/permissions dan cache aset ditetapkan dalam config. app.config.js yang dipublish hanya data yang memang public; jangan tambah secret.
 
-1. Push repo ini ke GitHub.
-2. Masuk Vercel.
-3. Import GitHub repo `Jitra2Stay`.
-4. Framework preset: pilih `Other` jika ditanya.
-5. Build command: kosongkan.
-6. Output directory: kosongkan atau root.
-7. Deploy.
-8. Set domain `jitra2stay.com` jika domain sudah tersedia.
+## GitHub Pages
 
-Selepas deploy:
+Dalam Settings → Pages, gunakan Source **GitHub Actions**. Job deploy dalam .github/workflows/qa.yml hanya berjalan pada main selepas unit/static/browser checks lulus, membina output dan upload artifact dari dist sahaja. Job PR tidak deploy ke Pages. URL mirror menggunakan path /Jitra2Stay/; pautan/aset relatif kekal berfungsi, canonical production tetap Vercel.
 
-- [ ] Buka homepage live.
-- [ ] Buka `https://jitra2stay.com/sitemap.xml`.
-- [ ] Buka `https://jitra2stay.com/robots.txt`.
-- [ ] Test WhatsApp CTA dari phone sebenar.
-- [ ] Test Google Maps link.
+## Netlify
 
-## Deploy Ke Netlify
+netlify.toml menetapkan npm run build dan publish dist serta fallback 404. Jalankan npm ci mengikut lockfile. Jangan ubah publish directory kepada root.
 
-1. Push repo ini ke GitHub.
-2. Masuk Netlify.
-3. Add new site from Git.
-4. Pilih repo.
-5. Build command: kosongkan.
-6. Publish directory: root repo.
-7. Deploy.
-8. Set custom domain jika perlu.
+## cPanel / hosting statik
 
-## Deploy Ke cPanel / Shared Hosting
+Jalankan build local dan upload semua kandungan dist, termasuk halaman English, empat pasang panduan, favicon dan folder images. Tetapkan custom error document kepada 404.html dengan status HTTP 404. Jangan muat naik repository, node_modules atau raw archive. Pastikan fail output lama yang sudah tidak digunakan tidak kekal dalam folder public hosting.
 
-Upload semua fail ini ke `public_html`:
+## Pengesahan selepas deploy
 
-- `index.html`
-- `style.css`
-- `app.js`
-- `app.config.js`
-- `policies.html`
-- `thank-you.html`
-- `ms.html`
-- `en.html`
-- `sitemap.xml`
-- `robots.txt`
-- folder `images/`
+- Homepage BM/EN, polisi, panduan dan gambar memberi 200.
+- URL tidak wujud memberi 404 sebenar.
+- /source-images/latest-raw/IMG_8012.JPG, /tools/qa-check.js dan /OWNER-DATA-CHECKLIST.md tidak boleh dicapai.
+- Canonical, hreflang, OG dan sitemap menggunakan business.siteUrl yang aktif.
+- WhatsApp membuka nombor yang betul; pautan fallback mengekalkan input.
+- Test pada telefon sebenar sebelum menganggap phone flow selesai.
 
-Fail dokumentasi seperti `README.md`, `CHANGELOG.md`, `OWNER-DATA-CHECKLIST.md`, dan `PRE-LIVE-QA.md` tidak wajib upload.
-
-Jangan upload folder `source-images/latest-raw/` untuk shared hosting/cPanel kerana folder itu hanya simpan raw gambar dan video besar.
-
-## Deploy Ke GitHub Pages
-
-1. Push repo ke GitHub.
-2. Buka Settings > Pages.
-3. Source: Deploy from a branch.
-4. Branch: `main`.
-5. Folder: `/root`.
-6. Save.
-
-Nota: Untuk domain sendiri, tambah custom domain dalam GitHub Pages dan update DNS.
-
-## Selepas Deploy
-
-- [ ] Buka website live di desktop.
-- [ ] Buka website live di phone.
-- [ ] Semak dark/light mode.
-- [ ] Submit sitemap ke Google Search Console.
-- [ ] Test share preview WhatsApp/Facebook.
-- [ ] Semak Google Business Profile.
+Rollback menggunakan release/commit terakhir yang lulus. Jangan rollback dengan menerbitkan root sumber yang mengandungi arkib.

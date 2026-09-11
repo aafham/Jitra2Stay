@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-09-11 — Website paparan homestay v2
+
+- Susunan UI/UX baharu, gambar awal dan harga padat.
+- Halaman statik BM/EN, polisi/panduan berpasangan dan metadata domain aktif.
+- Menu/no-JS/keyboard/dialog/kontras diperbaiki; enquiry date-only tanpa kalendar/tracking/redirect.
+- Dua foto bilik sebenar serta 52 varian responsif; output dist mengecualikan raw dan dokumen.
+- 427 static checks, 5 unit, 24 browser tests dan CI/Pages pipeline.
+- Source/template/build/documentation diselaraskan. Terma owner dan gambar bilik air masih memerlukan pengesahan.
+
+## Rekod perubahan terdahulu
+
 Ringkasan perubahan penting website Jitra2Stay.
 
 ## 2026-05-18
