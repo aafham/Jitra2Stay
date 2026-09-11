@@ -6,7 +6,6 @@
   "outputDirectory": "dist",
   "cleanUrls": false,
   "trailingSlash": false,
-  "public": false,
   "headers": [
     {
       "source": "/(.*)",
