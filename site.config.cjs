@@ -81,22 +81,27 @@ module.exports = {
     { key: 'events', ms: ['Majlis dan rombongan', 'Reunion, hari jadi, aqiqah, pertunangan, akad nikah, perkahwinan atau acara lain mesti mendapat izin semasa booking kerana caj berbeza. Untuk van atau bas, WhatsApp awal bagi pilihan parking yang sesuai.'], en: ['Events and groups', 'Reunions, birthdays, aqiqah, engagements, solemnizations, weddings and other events need approval during booking because charges differ. For vans or coaches, WhatsApp ahead for suitable parking options.'] },
     { key: 'checkout', ms: ['Sebelum pulang', 'Kembalikan kedudukan katil, perabot dan peralatan seperti semasa check-in. Tutup semua punca elektrik kecuali modem WiFi, buang sampah ke tong hijau, letakkan tuala yang digunakan dalam bakul dan pulangkan kunci ke security box. Selepas memasukkan kunci, putar nombor pada kotak kepada 0000.'], en: ['Before leaving', 'Return beds, furniture and equipment to their check-in positions. Switch off all electrical points except the WiFi modem, put rubbish in the green bin, place used towels in the basket and return the key to the security box. After returning the key, turn the box dials to 0000.'] }
   ],
+  faqTopics: [
+    {key:'house',ms:'Rumah & kemudahan',en:'House & amenities'},
+    {key:'booking',ms:'Harga & tempahan',en:'Rates & booking'},
+    {key:'arrival',ms:'Ketibaan & peraturan',en:'Arrival & rules'}
+  ],
   faq: [
-    { key: 'packages', policy: 'packages', ms: ['Boleh sewa ikut bilangan bilik?'], en: ['Can we book by room count?'] },
-    { key: 'capacity', policy: 'capacity', ms: ['Berapa orang boleh menginap?'], en: ['How many guests can stay?'] },
-    { key: 'deposit', policy: 'deposit', ms: ['Adakah deposit diperlukan?'], en: ['Is a deposit required?'] },
-    { key: 'cancellation', policy: 'cancellation', ms: ['Bagaimana polisi pembatalan dan tukar tarikh?'], en: ['What are the cancellation and date-change terms?'] },
-    { key: 'parking', ms: ['Berapa banyak parking tersedia?', 'Kawasan rumah biasanya muat 3 hingga 4 kereta. Untuk van atau bas, WhatsApp awal untuk nasihat pilihan parking yang sesuai.'], en: ['How much parking is available?', 'The house compound usually fits 3 to 4 cars. For vans or coaches, WhatsApp ahead for advice on suitable parking options.'] },
-    { key: 'kitchen', ms: ['Boleh masak?', 'Ya, pantry dan kemudahan asas disediakan untuk penyediaan makanan ringkas. Makan dan minum di ruang makan, bukan dalam bilik tidur. Bawa bahan makanan anda sendiri jika mahu masak.'], en: ['Can we cook?', 'Yes, a pantry and basic facilities are provided for simple food preparation. Eat and drink in the dining area, rather than the bedrooms. Bring your own groceries if you plan to cook.'] },
-    { key: 'bedding', ms: ['Apa yang disediakan untuk tidur?', 'Tilam, bantal dan comforter tambahan disediakan. Letakkan tuala yang telah digunakan dalam bakul ketika check-out. Bawa barangan mandi peribadi anda.'], en: ['What bedding is provided?', 'Extra mattresses, pillows and comforters are provided. Place used towels in the basket at check-out. Bring your personal toiletries.'] },
-    { key: 'wifi-tv', ms: ['Ada WiFi dan TV?', 'Ya, WiFi percuma dan TV disediakan untuk tetamu.'], en: ['Are WiFi and TV available?', 'Yes, free WiFi and TV are provided for guests.'] },
-    { key: 'bathrooms', ms: ['Ada water heater?', 'Ya. Pakej 2 bilik menggunakan 2 bilik air dengan water heater. Pakej 3 hingga 5 bilik menggunakan 3 bilik air dengan water heater.'], en: ['Are water heaters available?', 'Yes. The 2-room package includes 2 bathrooms with water heaters. The 3 to 5-room packages include 3 bathrooms with water heaters.'] },
-    { key: 'payment', policy: 'payment', ms: ['Bagaimana cara bayaran?'], en: ['How does payment work?'] },
-    { key: 'times', policy: 'times', ms: ['Pukul berapa check-in dan check-out?'], en: ['What time are check-in and check-out?'] },
-    { key: 'events', policy: 'events', ms: ['Boleh buat majlis atau acara?'], en: ['Can we host a gathering or event?'] },
-    { key: 'pets', ms: ['Boleh bawa haiwan peliharaan?', 'Tidak. Haiwan peliharaan tidak dibenarkan masuk ke dalam homestay.'], en: ['Are pets allowed?', 'No. Pets are not allowed inside the homestay.'] },
-    { key: 'last-minute', ms: ['Boleh booking last minute?', 'WhatsApp untuk semak tarikh terdekat. Jika masih tersedia, maklumat bayaran dan arahan seterusnya akan diberikan.'], en: ['Can we book last minute?', 'WhatsApp to check the nearest available dates. If they are available, payment details and next steps will be shared.'] },
-    { key: 'checkout', policy: 'checkout', ms: ['Apa perlu dibuat semasa check-out?'], en: ['What should we do at check-out?'] }
+    { key: 'packages', topic: 'house', policy: 'packages', ms: ['Boleh sewa ikut bilangan bilik?'], en: ['Can we book by room count?'] },
+    { key: 'capacity', topic: 'house', policy: 'capacity', ms: ['Berapa orang boleh menginap?'], en: ['How many guests can stay?'] },
+    { key: 'deposit', topic: 'booking', policy: 'deposit', ms: ['Adakah deposit diperlukan?'], en: ['Is a deposit required?'] },
+    { key: 'cancellation', topic: 'booking', policy: 'cancellation', ms: ['Bagaimana polisi pembatalan dan tukar tarikh?'], en: ['What are the cancellation and date-change terms?'] },
+    { key: 'parking', topic: 'house', ms: ['Berapa banyak parking tersedia?', 'Kawasan rumah biasanya muat 3 hingga 4 kereta. Untuk van atau bas, WhatsApp awal untuk nasihat pilihan parking yang sesuai.'], en: ['How much parking is available?', 'The house compound usually fits 3 to 4 cars. For vans or coaches, WhatsApp ahead for advice on suitable parking options.'] },
+    { key: 'kitchen', topic: 'house', ms: ['Boleh masak?', 'Ya, pantry dan kemudahan asas disediakan untuk penyediaan makanan ringkas. Makan dan minum di ruang makan, bukan dalam bilik tidur. Bawa bahan makanan anda sendiri jika mahu masak.'], en: ['Can we cook?', 'Yes, a pantry and basic facilities are provided for simple food preparation. Eat and drink in the dining area, rather than the bedrooms. Bring your own groceries if you plan to cook.'] },
+    { key: 'bedding', topic: 'house', ms: ['Apa yang disediakan untuk tidur?', 'Tilam, bantal dan comforter tambahan disediakan. Letakkan tuala yang telah digunakan dalam bakul ketika check-out. Bawa barangan mandi peribadi anda.'], en: ['What bedding is provided?', 'Extra mattresses, pillows and comforters are provided. Place used towels in the basket at check-out. Bring your personal toiletries.'] },
+    { key: 'wifi-tv', topic: 'house', ms: ['Ada WiFi dan TV?', 'Ya, WiFi percuma dan TV disediakan untuk tetamu.'], en: ['Are WiFi and TV available?', 'Yes, free WiFi and TV are provided for guests.'] },
+    { key: 'bathrooms', topic: 'house', ms: ['Ada water heater?', 'Ya. Pakej 2 bilik menggunakan 2 bilik air dengan water heater. Pakej 3 hingga 5 bilik menggunakan 3 bilik air dengan water heater.'], en: ['Are water heaters available?', 'Yes. The 2-room package includes 2 bathrooms with water heaters. The 3 to 5-room packages include 3 bathrooms with water heaters.'] },
+    { key: 'payment', topic: 'booking', policy: 'payment', ms: ['Bagaimana cara bayaran?'], en: ['How does payment work?'] },
+    { key: 'times', topic: 'arrival', policy: 'times', ms: ['Pukul berapa check-in dan check-out?'], en: ['What time are check-in and check-out?'] },
+    { key: 'events', topic: 'arrival', policy: 'events', ms: ['Boleh buat majlis atau acara?'], en: ['Can we host a gathering or event?'] },
+    { key: 'pets', topic: 'arrival', ms: ['Boleh bawa haiwan peliharaan?', 'Tidak. Haiwan peliharaan tidak dibenarkan masuk ke dalam homestay.'], en: ['Are pets allowed?', 'No. Pets are not allowed inside the homestay.'] },
+    { key: 'last-minute', topic: 'booking', ms: ['Boleh booking last minute?', 'WhatsApp untuk semak tarikh terdekat. Jika masih tersedia, maklumat bayaran dan arahan seterusnya akan diberikan.'], en: ['Can we book last minute?', 'WhatsApp to check the nearest available dates. If they are available, payment details and next steps will be shared.'] },
+    { key: 'checkout', topic: 'arrival', policy: 'checkout', ms: ['Apa perlu dibuat semasa check-out?'], en: ['What should we do at check-out?'] }
   ],
   nearby: [
     { ms: ['Berhampiran', 'Hospital Jitra', 'Di sebelah pagar sisi Hospital Jitra, sesuai untuk urusan hospital dan lawatan keluarga.'], en: ['Nearby', 'Jitra Hospital', 'Beside the side fence of Jitra Hospital, convenient for hospital visits and accompanying family.'] },

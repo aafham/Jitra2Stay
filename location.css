@@ -1,0 +1,11 @@
+/* Optional address copying uses the shared light/dark colors and focus styles. */
+.location-address{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:26px}
+.location-layout .location-address address{flex:1 1 260px;margin-top:0;min-width:0}
+.copy-address-button{flex:0 0 auto;min-height:44px;padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:.875rem;font-weight:600;line-height:1.4}
+.copy-address-button:hover{background:var(--surface);border-color:var(--green)}
+.location-layout .copy-address-feedback{margin-top:0;font-size:.875rem;line-height:1.6}
+.location-layout .copy-address-feedback:not(:empty){margin-top:12px}
+.address-copy-fallback{width:100%;max-width:460px;margin-top:14px}
+.address-copy-fallback label{font-size:.875rem}
+.address-copy-fallback textarea{min-height:96px;resize:vertical;overflow-wrap:break-word}
+@media(max-width:600px){.location-address{gap:10px}.location-layout .location-address address{flex-basis:100%}.copy-address-button{font-size:.85rem}.location-layout .copy-address-feedback{font-size:.8rem}}

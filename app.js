@@ -142,6 +142,14 @@
     nav.addEventListener("click", (event) => {
       if (event.target.closest("a") && mobile.matches) { menuOpen = false; updateMenu(); }
     });
+    const header = menuToggle.closest("header");
+    function dismissOutsideMenu(event) {
+      if (!mobile.matches || !menuOpen || !header || header.contains(event.target)) return;
+      menuOpen = false;
+      updateMenu();
+    }
+    document.addEventListener("focusin", dismissOutsideMenu);
+    document.addEventListener("pointerdown", dismissOutsideMenu);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && mobile.matches && menuOpen) {
         menuOpen = false;

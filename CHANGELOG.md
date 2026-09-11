@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-12 — Carian maklumat dan navigasi gambar
+
+- Tambah pilihan topik FAQ dan kiraan soalan, dengan semua 15 jawapan asal tetap tersedia tanpa JavaScript.
+- Tambah salin alamat penuh, maklum balas BM/EN dan salinan manual apabila clipboard tidak tersedia.
+- Tambah thumbnail dalam dialog galeri serta penerangan bilik daripada rekod asal; navigasi mengikut kategori kekal diselaraskan.
+- Tutup menu telefon apabila fokus atau sentuhan meninggalkan header; baiki outline keyboard pada kad tempat berdekatan.
+- Kekalkan maklumat owner, background rumah, harga, draf pertanyaan, Google Maps dan Waze.
+
 ## 2026-09-12 — Kandungan owner, draf dan perkongsian
 
 - Pulihkan maklumat owner daripada repo asal `18a274d`: penerangan bilik, parking 3–4 kereta, privasi satu rumah, self check-in, WiFi/TV, kemudahan dan senarai tempat berdekatan.

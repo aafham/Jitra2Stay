@@ -8,6 +8,10 @@ Bahagian lokasi dijana dalam `templates/location.cjs`. `business.mapUrl` membuka
 
 ## Kandungan dan kadar
 
+FAQ dijana oleh `templates/faq.cjs`. Tetapkan `topic` setiap item `faq` kepada key dalam `faqTopics`; labels topik mempunyai BM/EN. `faq.js` hanya menapis paparan, tanpa membuang soalan atau menukar jawapan. Tanpa JavaScript, semua soalan tersedia melalui `details` biasa.
+
+Salin alamat dalam `location.js` menggunakan alamat owner yang dijana oleh template, tanpa menyimpan butiran tetamu. Uji kedua-dua keadaan clipboard dibenarkan dan disekat; pilihan salinan manual mesti kekal boleh dipilih. `location.css` mengurus layout kawalan ini.
+
 `site.config.cjs` ialah sumber semasa. Fakta owner yang tersedia dalam repo `18a274d` telah dipulihkan, termasuk parking 3–4 kereta, privasi rumah, self check-in, TV, bayaran manual dan polisi pembatalan 7 hari. Rujuk `RESTORED-CONTENT.md` sebelum mengganti maklumat ini dengan ayat umum meminta pengesahan; pemulihan sumber bukan pemeriksaan fizikal baharu.
 
 Edit `business` untuk nombor/domain/fakta, `rates` untuk kadar, `policies` untuk copy BM/EN, dan `rooms`, `staySummary`, `facilities`, `gallery`, `nearby`, `guides` untuk kandungan. Harga dan metadata dijana bersama. Gunakan token seperti `{{securityDeposit}}`, `{{maxGuests}}`, `{{earlyLateFee}}`, `{{extraGuestFee}}` dan `{{cancellationNoticeDays}}`; jangan salin nombor ke beberapa template.
@@ -18,9 +22,13 @@ Jalankan npm run build, npm run qa, npm run test:unit dan npm test. Jangan edit 
 
 `templates/gallery.cjs` menjana satu grid foto dan dialog; `gallery.js` serta `gallery.css` mengurus penapis, lihat lagi/ringkaskan, keyboard dan leretan mendatar. Semua foto tersedia tanpa JavaScript. Dengan JavaScript, paparan Semua bermula dengan 6 foto, tetapi dialog boleh melayari kesemua foto kategori aktif.
 
+Thumbnail dialog dijana hanya apabila dialog dibuka, menggunakan foto kecil sedia ada dan subset kategori aktif. Pilihan semasa dikemas apabila menggunakan thumbnail, anak panah atau leretan. Penerangan bilik bersumber daripada rekod `rooms` yang sama dengan galeri; kekalkan hubungan `image` apabila menukar rekod.
+
 Setiap item `gallery` dalam `site.config.cjs` mesti mempunyai `category`: `bedrooms`, `shared` atau `outside`. Gunakan kategori berdasarkan ruang dalam foto. Kekalkan kapsyen BM/EN dan pautan JPG web apabila menukar gambar; pautan ini menjadi pilihan alternatif jika versi dialog gagal dimuatkan. Semak butang cuba lagi, penutupan Escape dan fokus kembali ke gambar asal selepas perubahan galeri.
 
 `navigation.js` dan `navigation.css` menandakan bahagian homepage aktif serta menambah bahagian semasa pada pautan bahasa. Bar mobile Harga/WhatsApp menyorok ketika input borang difokus atau kawalan pertanyaan sudah kelihatan. Kekalkan ID bahagian serta pautan HTML biasa supaya navigasi tanpa JavaScript terus berfungsi. Draf borang dipulihkan secara berasingan melalui `app.js`.
+
+Menu telefon dalam `app.js` menutup apabila fokus atau sentuhan bergerak keluar daripada header, selain klik pautan, toggle dan Escape. Semak dengan keyboard supaya menu terbuka tidak menutup elemen yang sedang difokus. Fokus pada ringkasan tempat berdekatan dilukis di dalam sempadan kad supaya tidak terpotong.
 
 ## Pakej dan borang pertanyaan
 

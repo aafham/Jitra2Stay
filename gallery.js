@@ -49,6 +49,8 @@
   const image = document.getElementById("galleryImage");
   const stage = document.getElementById("galleryImageStage");
   const caption = document.getElementById("galleryCaption");
+  const roomDescription = document.getElementById("galleryDescription");
+  const thumbnails = document.getElementById("galleryThumbnails");
   const close = document.getElementById("galleryClose");
   const previous = document.getElementById("galleryPrev");
   const next = document.getElementById("galleryNext");
@@ -64,6 +66,63 @@
   let previousOverflow = "";
   let requestId = 0;
   let touchStart = null;
+  let thumbnailButtons = [];
+
+  function renderThumbnails() {
+    if (!thumbnails) return;
+    // Build only after opening. The initial page has no thumbnail image nodes,
+    // and these small previews never trigger preloading of full-size photos.
+    const fragment = document.createDocumentFragment();
+    thumbnailButtons = dialogItems.map((item, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "gallery-thumbnail";
+      button.dataset.galleryIndex = String(index);
+      const title = item.anchor.dataset.caption || item.anchor.querySelector("img")?.alt || "";
+      button.setAttribute("aria-label", en
+        ? `Show photo ${index + 1} of ${dialogItems.length}: ${title}`
+        : `Lihat gambar ${index + 1} daripada ${dialogItems.length}: ${title}`);
+      button.setAttribute("aria-controls", "galleryImageStage");
+      if (item.anchor.dataset.thumbnail) {
+        const preview = document.createElement("img");
+        preview.alt = "";
+        preview.width = 80;
+        preview.height = 60;
+        preview.loading = "lazy";
+        preview.decoding = "async";
+        preview.draggable = false;
+        preview.src = item.anchor.dataset.thumbnail;
+        button.append(preview);
+      }
+      const number = document.createElement("span");
+      number.className = "gallery-thumbnail-number";
+      number.textContent = String(index + 1);
+      number.setAttribute("aria-hidden", "true");
+      button.append(number);
+      // Selection updates existing nodes, preserving native button focus.
+      button.addEventListener("click", () => showImage(index));
+      fragment.append(button);
+      return button;
+    });
+    thumbnails.replaceChildren(fragment);
+    thumbnails.hidden = false;
+    thumbnails.scrollLeft = 0;
+  }
+
+  function updateThumbnails() {
+    thumbnailButtons.forEach((button, index) => {
+      if (index === selected) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    });
+    const current = thumbnailButtons[selected];
+    if (!thumbnails || !current) return;
+    const bounds = thumbnails.getBoundingClientRect();
+    const target = current.getBoundingClientRect();
+    // Scroll this strip only: scrollIntoView would also move the dialog/page.
+    // Immediate movement avoids animation, including under reduced motion.
+    if (target.left < bounds.left + 6) thumbnails.scrollLeft += target.left - bounds.left - 6;
+    else if (target.right > bounds.right - 6) thumbnails.scrollLeft += target.right - bounds.right + 6;
+  }
 
   function showImage(index) {
     selected = (index + dialogItems.length) % dialogItems.length;
@@ -71,6 +130,11 @@
     const description = anchor.dataset.caption || anchor.querySelector("img")?.alt || "";
     const currentRequest = ++requestId;
     caption.textContent = description;
+    if (roomDescription) {
+      roomDescription.textContent = anchor.dataset.description || "";
+      roomDescription.hidden = !roomDescription.textContent;
+    }
+    updateThumbnails();
     count.textContent = `${selected + 1} / ${dialogItems.length}`;
     image.hidden = true;
     image.alt = description;
@@ -114,6 +178,9 @@
     catch { requestId++; return; }
     event.preventDefault();
     document.body.style.overflow = "hidden";
+    dialog.scrollTop = 0;
+    renderThumbnails();
+    updateThumbnails();
     close.focus();
   }));
 
@@ -152,6 +219,11 @@
     touchStart = null;
     document.body.style.overflow = previousOverflow;
     stage.setAttribute("aria-busy", "false");
+    if (thumbnails) {
+      thumbnails.replaceChildren();
+      thumbnails.hidden = true;
+      thumbnailButtons = [];
+    }
     if (opener?.isConnected && !opener.closest("[hidden]")) opener.focus();
     else filters.find(button => button.dataset.galleryFilter === activeCategory)?.focus();
   });
