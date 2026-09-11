@@ -1,5 +1,11 @@
 # Penyelenggaraan
 
+## Background dan navigasi peta
+
+Background hero menggunakan foto asal rumah melalui WebP responsif dalam `style.css`. Gambar foreground, galeri dan background ialah penggunaan berbeza; elakkan menambah preload JPG yang tidak dirender.
+
+Bahagian lokasi dijana dalam `templates/location.cjs`. `business.mapUrl` membuka Google Maps, `business.mapEmbedUrl` ialah embed Google daripada pin sedia ada, dan `business.coordinates` membina pautan Waze. Koordinat `6.2805462,100.4151952` disemak terhadap pin Google Jitra2Stay pada 11 September 2026. Jika pin berpindah, selaraskan ketiga-tiga nilai dan semak destinasi kedua-dua aplikasi. Peta dimuat secara lazy apabila menghampiri bahagian lokasi; butang navigasi ialah pautan biasa yang berfungsi tanpa JavaScript.
+
 ## Kandungan dan kadar
 
 Edit site.config.cjs: business untuk nombor/domain/fakta, rates untuk kadar, policies untuk copy BM/EN, facilities/gallery/guides untuk kandungan. Harga dan metadata dijana bersama. Gunakan token {{securityDeposit}}, {{maxGuests}}, {{earlyLateFee}}, {{checkInTime}}, {{checkOutTime}} dalam copy polisi; jangan salin nombor ke beberapa template.

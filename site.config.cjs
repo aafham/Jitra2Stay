@@ -9,6 +9,9 @@ module.exports = {
     email: 'jitra2stay@gmail.com',
     address: { street: '49, Taman Jitra Indah, Jalan Hospital Daerah', city: 'Jitra', region: 'Kedah', postalCode: '06000', country: 'MY' },
     mapUrl: 'https://goo.gl/maps/pjnMbwm5Pk2QqPeP8',
+    // Coordinates verified against the existing Google Maps place pin on 2026-09-11.
+    coordinates: { latitude: 6.2805462, longitude: 100.4151952 },
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.8720554542947!2d100.4151952!3d6.2805462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304b592244adad0b%3A0x5a66d4c44467c0f6!2sJitra2Stay!5e0!3m2!1sen!2sus!4v1770206439318!5m2!1sen!2sus',
     bedrooms: 5, bathrooms: 3, maxGuests: 20,
     securityDeposit: 100, earlyLateFee: 20,
     checkInTime: '15:00', checkOutTime: '12:00'
