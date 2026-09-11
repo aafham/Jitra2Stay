@@ -1,31 +1,27 @@
-# Data owner yang masih perlu disahkan
+# Status data owner
 
-Dokumen ini membezakan data sedia ada daripada perkara yang tidak boleh dipastikan melalui kod. Semakan teknikal berada dalam QA-REPORT.md.
+Maklumat owner dalam repo asal `18a274d` digunakan semula sebagai sumber berautoriti untuk website. Dokumen ini merekodkan apa yang tersedia dan bahan yang memang tiada; ia bukan permintaan supaya owner mengesahkan semula fakta yang sudah diberi. Jejak sumber berada dalam [RESTORED-CONTENT.md](RESTORED-CONTENT.md); semakan teknikal dalam [QA-REPORT.md](QA-REPORT.md).
 
-## Data asas daripada kandungan sedia ada
+## Tersedia dalam sumber dan dipulihkan
 
-- Jitra2Stay, Semi-D dua tingkat, 5 bilik, 3 bilik air.
-- Alamat: 49, Taman Jitra Indah, Jalan Hospital Daerah, 06000 Jitra, Kedah.
-- WhatsApp utama +60 19-441 0666; email jitra2stay@gmail.com.
-- Pakej 2/3/4/5 bilik: RM180/RM230/RM280/RM330 semalam.
-- Security deposit RM100; maksimum 20 orang termasuk kanak-kanak.
-- Check-in 3 petang, check-out 12 tengah hari; early/late RM20 sejam jika diluluskan.
-- WiFi, bilik berhawa dingin mengikut pakej, pantry, water heater dan tilam tambahan.
-- Pets tidak dibenarkan; merokok hanya di luar; acara perlu izin.
+- [x] Jitra2Stay, Semi-D dua tingkat, 5 bilik dan 3 bilik air; alamat 49, Taman Jitra Indah, Jalan Hospital Daerah, 06000 Jitra, Kedah.
+- [x] Nombor utama +60 19-441 0666, nombor kedua +60 19-442 0666, email, pin Google Maps dan album Facebook asal.
+- [x] Privasi satu rumah dan self check-in; pakej 2/3/4/5 bilik RM180/RM230/RM280/RM330 semalam. Pakej 2 bilik mendapat 2 bilik air; pakej lain mendapat 3 bilik air.
+- [x] Sesuai untuk 6–10 orang; maksimum 20 termasuk kanak-kanak. Caj tetamu tambahan RM10 seorang dinyatakan dalam polisi.
+- [x] Parking biasanya 3–4 kereta. Untuk van atau bas, aliran sedia ada ialah WhatsApp awal bagi pilihan parking.
+- [x] Aircond/kipas, WiFi percuma, TV, water heater, pantry, ruang makan serta tilam, bantal dan comforter tambahan.
+- [x] Foto/penerangan bilik tidur utama, bilik keluarga, bilik besar, bilik dua katil dan bilik kusyen biru; galeri rumah dan ruang bersama.
+- [x] Check-in 3 petang, check-out 12 tengah hari; awal/lewat RM20 sejam jika diluluskan. Deposit keselamatan RM100 berasingan dan dipulangkan selepas check-out jika tiada kerosakan atau pelanggaran house rules.
+- [x] Bayaran manual melalui pindahan bank, DuitNow QR atau tunai. Tarikh disahkan dan bayaran diterima; bukti bayaran dihantar melalui WhatsApp untuk pengesahan booking.
+- [x] Pembatalan kurang 7 hari sebelum check-in: deposit booking tidak dipulangkan. Pembatalan lebih awal: pertukaran tarikh tertakluk kepada ketersediaan.
+- [x] House rules, izin acara, arahan checkout serta senarai destinasi berdekatan dengan julat perjalanan asal.
 
-## Owner perlu beri / sahkan
+Pemulihan ini berdasarkan bahan owner sedia ada, bukan lawatan atau pemeriksaan fizikal baharu. Anggaran perjalanan tidak dijadikan jaminan masa trafik semasa. Contoh pembahagian harga pakej bukan had penghunian atau formula caj tetamu tambahan.
 
-- [ ] Susunan bilik mengikut tingkat, jenis/bilangan katil, kapasiti tidur selesa dan label lima bilik.
-- [ ] Gambar tiga bilik air. Semua 51 raw JPG sedia ada telah diperiksa; foto bilik air tiada.
-- [ ] Bilangan kereta sebenar dalam parking serta syarat van/bas.
-- [ ] Skop pakej: bilik dibuka/dikunci, akses bilik air dan privasi penggunaan rumah.
-- [ ] Kadar weekend/peak season, minimum stay dan diskaun jika ada.
-- [ ] Asas caj lebihan tetamu RM10 (lebih daripada kuota mana) serta sebarang caj acara. Angka yang tidak jelas tidak diiklankan sebagai formula anggaran.
-- [ ] Bayaran booking untuk mengunci tarikh, kaedah bayaran, cutoff confirmation dan masa pemulangan security deposit.
-- [ ] Terma pembatalan, refund dan tukar tarikh final. Cutoff tujuh hari yang bercanggah telah dikeluarkan sehingga disahkan.
-- [ ] Tuala, toiletries, peralatan dapur, TV, peti ais, mesin basuh, iron dan aircond ruang tamu.
-- [ ] Pin Maps dan akses sebenar ke rumah/pintu Hospital Jitra.
-- [ ] Review/rating berizin dan profil business rasmi jika mahu digunakan.
-- [ ] Kelulusan akhir ayat BM/EN serta ujian WhatsApp di telefon sebenar.
+## Bahan yang belum terdapat dalam sumber
 
-Website menggunakan arahan mengesahkan perkara belum jelas dengan owner sebelum bayaran. Tiada testimoni, rating, polisi refund, foto atau kemudahan direka. Tarikh booking dan data pelanggan kekal di luar public repository.
+- [ ] Tingkat/lokasi setiap bilik dan ukuran atau jenis katil terperinci; label deskriptif dan perkara yang terlihat dalam foto tetap digunakan.
+- [ ] Foto tiga bilik air. Semakan arkib 51 raw JPG terdahulu tidak menemui foto bilik air.
+- [ ] Petikan ulasan tetamu dengan atribusi dan izin penggunaan. `reviews` kekal kosong; pautan Google/Facebook tidak dianggap testimoni.
+
+Bahan tambahan ini tidak direka dan tidak menghalang website paparan yang sudah berfungsi. Tiada pertanyaan baharu kepada owner diperlukan untuk menggunakan fakta yang telah tersedia. Tarikh booking dan data pelanggan kekal di luar public repository.

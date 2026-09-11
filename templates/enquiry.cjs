@@ -21,7 +21,7 @@ function renderEnquiry(lang) {
       <details id="enquiryPreview" class="enquiry-preview" hidden><summary>${t(lang,'Semak mesej pertanyaan','Review your enquiry message')} <span aria-hidden="true">+</span></summary><pre id="enquiryPreviewText"></pre></details>
       <button class="button form-submit" type="submit">${t(lang,'Buka pertanyaan di WhatsApp','Open enquiry in WhatsApp')} ${icon('arrow')}</button><p id="formFeedback" class="form-feedback" role="status" aria-live="polite"></p>
       <div class="enquiry-fallback"><a id="enquiryLink" class="text-link" hidden target="_blank" rel="noopener">${t(lang,'Buka semula mesej WhatsApp','Open the WhatsApp message again')}</a><button id="enquiryCopyMessage" class="text-button" type="button" hidden>${t(lang,'Salin mesej','Copy message')}</button></div>
-    </form></div>
+    <div class="draft-controls"><button id="clearEnquiryDraft" class="text-button" type="button" hidden>${t(lang,'Kosongkan borang','Clear form')}</button><p id="draftFeedback" class="field-note" role="status" aria-live="polite"></p></div></form></div>
   </div></section>`;
 }
 

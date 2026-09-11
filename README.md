@@ -11,8 +11,8 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 
 ## Apa yang berubah
 
-- Homepage disusun: hero → fakta rumah → galeri → harga → kemudahan → lokasi → FAQ → pertanyaan.
-- Background foto rumah dengan tona hijau dikembalikan, bersama permukaan cream/sage untuk paparan yang lebih berisi.
+- Hero diringkaskan dengan foto rumah, harga permulaan dan tindakan utama. Background hijau serta permukaan cream/sage dikekalkan.
+- Foto dan penerangan lima bilik, kemudahan, tempat berdekatan serta ringkasan penginapan menggunakan semula maklumat owner dalam repo asal.
 - Lokasi memaparkan Google Maps interaktif terus dalam halaman, serta butang Google Maps dan Waze ke pin rumah yang sama.
 - Halaman BM/EN lengkap dijana sebagai HTML statik; kandungan tetap terlihat tanpa JavaScript.
 - Galeri 11 foto boleh ditapis mengikut bilik tidur, ruang bersama dan luar rumah. Paparan awal menunjukkan 6 foto dengan butang lihat lagi/ringkaskan; tanpa JavaScript, semua foto terus tersedia.
@@ -20,6 +20,8 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 - Kad pakej memudahkan perbandingan bilik, bilik air dan kadar; pilihan kad terus diselaraskan dengan borang pertanyaan.
 - Harga, contact dan polisi berkongsi satu sumber dalam `site.config.cjs`.
 - Borang pilihan mempunyai pintasan 1–3 malam, anggaran sewaan dengan deposit berasingan, ralat BM/EN di ruangan berkaitan dan pratonton mesej. Butiran kekal selepas membuka WhatsApp; pautan cuba semula dan salin mesej tersedia.
+- Draf pertanyaan kekal ketika menukar BM/EN atau memuat semula tab, melalui `sessionStorage` sehingga 2 jam sejak simpanan terakhir. Butang kosongkan draf tersedia; butiran tetamu tidak dimasukkan ke URL.
+- Pautan Google Maps dan album Facebook asal tersedia. Butang Kongsi berkongsi pautan homepage sahaja melalui menu peranti, salin pautan atau pilihan salin manual.
 - Navigasi menandakan bahagian yang sedang dibaca dan mengekalkan bahagian itu ketika menukar bahasa homepage. Bar mobile menyediakan Harga/WhatsApp dan menyorok semasa mengisi borang atau apabila kawalan borang sudah terlihat.
 - Kalendar lapuk, parser ICS, tracking lokal, CTA rawak dan redirect thank-you automatik telah dibuang.
 - Gambar responsif menggunakan saiz yang sesuai; fail kamera mentah tidak diterbitkan bersama website.
@@ -42,15 +44,18 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 
 | Fail / folder | Fungsi |
 | --- | --- |
-| `site.config.cjs` | Business, kadar, fakta, polisi, kemudahan, kategori/kapsyen galeri dan panduan BM/EN |
+| `site.config.cjs` | Fakta owner, kadar/polisi, bilik, kemudahan, galeri dan tempat berdekatan BM/EN |
 | `templates/shared.cjs` | Layout, header/footer, metadata, schema dan gambar |
 | `templates/home.cjs` | Susunan homepage dan gabungan template bahagian |
+| `templates/hero.cjs` | Hero ringkas dengan foto rumah dan tindakan utama |
+| `templates/stay-info.cjs` | Ringkasan penginapan, pautan profil/kongsi dan tempat berdekatan |
 | `templates/gallery.cjs` | Galeri, penapis kategori dan dialog gambar |
 | `templates/rates.cjs` | Kad pakej bilik dan maklumat kadar |
 | `templates/enquiry.cjs` | Borang, pecahan anggaran dan pratonton mesej |
 | `templates/location.cjs` | Peta Google terbenam, butang Google Maps/Waze dan panduan lokasi |
 | `templates/pages.cjs` | Polisi, panduan setempat, halaman legacy thank-you dan 404 |
-| `app.js` | Menu, tema, pilihan pakej, validasi dan pembina mesej; fungsi date-only boleh diuji |
+| `app.js` | Menu, tema, pakej, validasi, mesej dan draf pertanyaan dalam sesi tab |
+| `share.js` | Perkongsian URL homepage tanpa butiran borang |
 | `gallery.js`, `gallery.css` | Penapis, lihat lagi, dialog, leretan dan pemulihan gambar |
 | `navigation.js`, `navigation.css` | Penanda bahagian aktif, pautan bahasa dan tingkah laku bar mobile |
 | `style.css` | Token warna, layout, komponen, responsive dan print |
@@ -68,9 +73,15 @@ Root HTML, `app.config.js`, robots dan sitemap lama telah diganti oleh template/
 
 Edit `site.config.cjs` kemudian build semula. Harga pakej dijana dalam kad, borang, mesej anggaran dan schema daripada `rates`; telefon serta domain daripada `business`. Polisi menggunakan token seperti `{{securityDeposit}}` dan `{{maxGuests}}` supaya nilai selari. Kategori `gallery` menggunakan `bedrooms`, `shared` atau `outside` mengikut foto sebenar.
 
-Maklumat sedia ada: 5 bilik, 3 bilik air, maksimum 20 tetamu termasuk kanak-kanak; kadar 2/3/4/5 bilik RM180/RM230/RM280/RM330 semalam; security deposit RM100; check-in 3 petang, check-out 12 tengah hari.
+Maklumat owner daripada repo asal `18a274d` dipulihkan dalam config semasa; ini pemulihan sumber sedia ada, bukan pemeriksaan fizikal baharu. Jejak sumber direkodkan dalam [RESTORED-CONTENT.md](RESTORED-CONTENT.md).
 
-**Masih perlukan owner:** foto tiga bilik air, nombor/nama bilik dan susunan katil, bilangan parking sebenar, skop kemudahan tambahan, peak-season/minimum stay, booking payment, refund/tukar tarikh, serta asas caj lebihan tetamu. Website tidak meneka cutoff refund, jumlah booking deposit atau caj tambahan yang belum jelas. Lihat [checklist owner](OWNER-DATA-CHECKLIST.md).
+- 5 bilik, 3 bilik air, privasi satu rumah dan self check-in; sesuai untuk 6–10 orang, maksimum 20 termasuk kanak-kanak.
+- Pakej 2/3/4/5 bilik RM180/RM230/RM280/RM330 semalam; deposit keselamatan RM100, caj tetamu tambahan RM10 seorang dan awal/lewat RM20 sejam jika diluluskan.
+- Parking biasanya 3–4 kereta, WiFi percuma, TV, aircond/kipas, water heater dan kelengkapan tidur tambahan.
+- Check-in 3 petang, check-out 12 tengah hari. Pindahan bank, DuitNow QR dan tunai diterima; tarikh dan bayaran diurus melalui WhatsApp.
+- Pembatalan kurang 7 hari sebelum check-in: deposit booking tidak dipulangkan. Pembatalan lebih awal: tukar tarikh tertakluk kepada ketersediaan.
+
+Butiran yang memang tiada dalam sumber—seperti tingkat setiap bilik, ukuran katil, foto bilik air dan petikan ulasan tetamu—tidak direka atau dijadikan penghalang kepada website paparan ini. Lihat [status data owner](OWNER-DATA-CHECKLIST.md).
 
 Domain `jitra2stay.com` tidak digunakan kerana tidak resolve semasa audit. Jika owner menyediakan domain itu kemudian, aktifkan DNS/domain terlebih dahulu, ubah `business.siteUrl` dan build/deploy. Tidak perlu menyunting URL berasingan dalam setiap halaman atau QA.
 
@@ -91,9 +102,9 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 11 September 2026: **443 semakan statik, 5 unit dan 31 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440, BM/EN, menu, keyboard/dialog, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 12 September 2026: **450 semakan statik, 11 unit dan 39 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440, BM/EN, menu, keyboard/dialog, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
-Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Telefon fizikal, mobile data, Safari sebenar, terma owner dan akaun Search Console masih memerlukan semakan manual. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
+Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 
 ## Deploy
 

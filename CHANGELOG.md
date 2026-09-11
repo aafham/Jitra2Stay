@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-12 — Kandungan owner, draf dan perkongsian
+
+- Pulihkan maklumat owner daripada repo asal `18a274d`: penerangan bilik, parking 3–4 kereta, privasi satu rumah, self check-in, WiFi/TV, kemudahan dan senarai tempat berdekatan.
+- Pulihkan kaedah bank/DuitNow QR/tunai, aliran pengesahan manual, pembatalan kurang 7 hari, deposit keselamatan RM100 dan caj tetamu tambahan RM10. Jejak sumber berada dalam `RESTORED-CONTENT.md`; tiada dakwaan pemeriksaan fizikal baharu.
+- Ringkaskan hero dan tambah pautan Google Maps/album Facebook asal. Ulasan atau rating tetamu tidak direka.
+- Draf borang dipulihkan merentas BM/EN dan reload dalam sesi tab sehingga 2 jam, dengan validasi rekod serta butang kosongkan draf. Membuka WhatsApp tidak memadam draf.
+- Tambah perkongsian URL homepage melalui menu peranti, clipboard atau salinan manual; tiada butiran tetamu dalam URL yang dikongsi.
+- Selaraskan dokumentasi semasa supaya fakta owner yang tersedia tidak lagi disenaraikan sebagai maklumat yang perlu diminta semula. Rekod audit terdahulu kekal sebagai sejarah.
+
 ## 2026-09-11 — Galeri, pilihan pakej dan pertanyaan
 
 - Tambah penapis galeri Semua/Bilik tidur/Ruang bersama/Luar rumah, kiraan foto dan butang lihat lagi/ringkaskan. Semua 11 foto tetap tersedia tanpa JavaScript.
@@ -67,10 +76,8 @@ Ringkasan perubahan penting website Jitra2Stay.
 - Tambah local SEO intent section untuk carian seperti Hospital Jitra, keluarga besar, kenduri dan konvokesyen.
 - Tambah FAQ search-intent untuk Hospital Jitra, konvokesyen, sewa ikut bilik dan last-minute booking.
 
-## Belum Final
+## Bahan tambahan yang belum ada dalam sumber
 
-- Gambar bilik air dan label semua 5 bilik masih perlu diberi owner jika mahu lengkap satu per satu.
-- Video walkthrough kecil masih perlu diberi owner jika mahu aktifkan section video.
-- Harga peak season, cuti sekolah, cuti umum dan konvokesyen masih perlu disahkan owner.
-- Parking sebenar untuk kereta/van/bas masih perlu disahkan owner.
-- Test WhatsApp dan QA akhir perlu dibuat dari phone sebenar sebelum live.
+- Foto bilik air, tingkat setiap bilik dan ukuran/jenis katil terperinci.
+- Petikan ulasan tetamu beserta atribusi/izin penggunaan; `reviews` kekal kosong.
+- Perincian ini tidak direka dan tidak menghalang website paparan yang menggunakan fakta owner sedia ada.

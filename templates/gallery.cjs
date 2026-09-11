@@ -12,16 +12,18 @@ const categories = [
 function galleryCard(photo, lang) {
   const info = imageInfo(photo.image);
   const full = info.variants.at(-1).src;
-  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-full="${e(full)}" data-original="${e(info.source)}" data-caption="${e(photo[lang])}" aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang])}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(photo[lang])}</figcaption></figure>`;
+  const room=config.rooms.find(item=>item.image===photo.image);
+  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-full="${e(full)}" data-original="${e(info.source)}" data-caption="${e(photo[lang])}" aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang])}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
 }
 
 function renderGallery(lang) {
   return `<section class="section wrap" id="galeri" aria-labelledby="galleryTitle">
   <div class="section-heading"><div><p class="eyebrow">${t(lang, "KENALI RUANGNYA", "GET TO KNOW THE SPACE")}</p><h2 id="galleryTitle">${t(lang, "Lihat sebelum menginap.", "A look inside your stay.")}</h2></div><p>${t(lang, "Gambar sebenar rumah, bilik dan ruang bersama. Buka gambar untuk lihat dengan lebih dekat.", "Real photos of the house, bedrooms and shared spaces. Open a photo for a closer look.")}</p></div>
+  <div class="room-guide"><h3>${config.business.bedrooms} ${t(lang,'bilik tidur · Rumah dua tingkat','bedrooms · Two-storey house')}</h3><p>${t(lang,'Privasi satu rumah dan self check-in. Pakej 2 bilik menggunakan 2 bilik air; pakej 3–5 bilik menggunakan 3 bilik air, semuanya dengan water heater.','Full-house privacy and self check-in. The 2-room package uses 2 bathrooms; 3–5-room packages use 3 bathrooms, all with water heaters.')}</p></div>
   <div class="gallery-tools" id="galleryControls" hidden><div class="gallery-filters" role="group" aria-label="${t(lang, "Tapis gambar mengikut ruang", "Filter photos by space")}">${categories.map(category => `<button class="gallery-filter" type="button" data-gallery-filter="${category.key}" aria-pressed="${category.key === "all"}" aria-controls="galleryGrid">${e(category[lang])}</button>`).join("")}</div><p class="gallery-results" id="galleryResults" role="status" aria-live="polite" aria-atomic="true"></p></div>
   <div class="gallery-grid" id="galleryGrid">${config.gallery.map(photo => galleryCard(photo, lang)).join("")}</div>
   <div class="gallery-more-control"><button class="gallery-more-button" id="galleryMore" type="button" aria-controls="galleryGrid" aria-expanded="false" hidden>${t(lang, "Lihat lebih banyak gambar", "Show more photos")}</button></div>
-  <p class="section-footnote">${t(lang, "Perlukan gambar bilik air atau susunan katil yang lebih terperinci? Tanya owner melalui WhatsApp.", "Need bathroom photos or more detail on the bed arrangement? Ask the owner on WhatsApp.")}</p>
+  <p class="section-footnote">${t(lang, "Foto sebenar rumah, bilik dan kemudahan Jitra2Stay.", "Real photos of Jitra2Stay’s house, bedrooms and facilities.")}</p>
   </section>
   <dialog id="galleryDialog" class="gallery-dialog" aria-labelledby="galleryCaption">
   <div class="dialog-top"><span id="galleryCount" aria-live="polite" aria-atomic="true"></span><button id="galleryClose" class="icon-button" type="button" aria-label="${t(lang, "Tutup gambar", "Close photo")}">${icon("close")}</button></div>

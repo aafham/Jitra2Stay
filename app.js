@@ -2,6 +2,8 @@
   "use strict";
 
   const DAY_MS = 86400000;
+  const DRAFT_KEY = "jitra2stay.enquiry-draft.v1";
+  const DRAFT_TTL_MS = 2 * 60 * 60 * 1000;
 
   // Date inputs are calendar dates, so arithmetic must not depend on time zones or DST.
   function parseDateOnly(value) {
@@ -59,8 +61,28 @@
     return digits ? `https://wa.me/${digits}?text=${encodeURIComponent(message)}` : null;
   }
 
+  // Validate the storage envelope without requiring the enquiry itself to be valid.
+  // Past dates, reversed dates and out-of-range guest counts remain editable drafts.
+  function parseEnquiryDraft(serialized, roomValues, now = Date.now()) {
+    if (typeof serialized !== "string" || serialized.length > 7000 || !Array.isArray(roomValues) || !Number.isFinite(now)) return null;
+    let draft;
+    try { draft = JSON.parse(serialized); } catch { return null; }
+    if (!draft || typeof draft !== "object" || Array.isArray(draft) || draft.version !== 1 || typeof draft.packageChosen !== "boolean") return null;
+    if (Object.keys(draft).some(key => !["version", "savedAt", "fields", "packageChosen"].includes(key))) return null;
+    if (!Number.isSafeInteger(draft.savedAt) || draft.savedAt < 0 || draft.savedAt > now || now - draft.savedAt >= DRAFT_TTL_MS) return null;
+    const fields = draft.fields;
+    const names = ["checkin", "checkout", "guests", "rooms", "notes"];
+    if (!fields || typeof fields !== "object" || Array.isArray(fields) || Object.keys(fields).length !== names.length) return null;
+    if (!names.every(name => Object.prototype.hasOwnProperty.call(fields, name) && typeof fields[name] === "string")) return null;
+    if (![fields.checkin, fields.checkout].every(value => value === "" || parseDateOnly(value) !== null)) return null;
+    if (fields.guests.length > 20 || fields.guests !== "" && (!/^-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(fields.guests) || !Number.isFinite(Number(fields.guests)))) return null;
+    if (fields.rooms !== "" && !roomValues.includes(fields.rooms)) return null;
+    if (fields.notes.length > 1000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(fields.notes)) return null;
+    return { version: 1, savedAt: draft.savedAt, packageChosen: draft.packageChosen, fields: Object.fromEntries(names.map(name => [name, fields[name]])) };
+  }
+
   if (typeof module === "object" && module.exports) {
-    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, getEnquiryUrl };
+    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, getEnquiryUrl, parseEnquiryDraft, DRAFT_KEY, DRAFT_TTL_MS };
   }
   if (typeof window === "undefined" || typeof document === "undefined") return;
 
@@ -83,7 +105,13 @@
     ready: en ? "Your enquiry is ready. Press Send in WhatsApp to send it to the owner. If WhatsApp did not open, use the link below. This does not confirm a booking." : "Pertanyaan anda sedia. Tekan Hantar dalam WhatsApp untuk menghantarnya kepada owner. Jika WhatsApp tidak terbuka, guna pautan di bawah. Ini belum mengesahkan tempahan.",
     invalid: en ? "Please check the highlighted fields." : "Sila semak ruangan yang ditandakan.",
     copied: en ? "Enquiry message copied." : "Mesej pertanyaan telah disalin.",
-    copyFailed: en ? "Unable to copy here. Use the WhatsApp link to open your prepared message." : "Mesej tidak dapat disalin di sini. Guna pautan WhatsApp untuk membuka mesej yang disediakan."
+    copyFailed: en ? "Unable to copy here. Use the WhatsApp link to open your prepared message." : "Mesej tidak dapat disalin di sini. Guna pautan WhatsApp untuk membuka mesej yang disediakan.",
+    draftSaved: en ? "Draft saved in this tab for up to 2 hours. You can switch language or reload." : "Draf disimpan dalam tab ini sehingga 2 jam. Anda boleh tukar bahasa atau muat semula.",
+    draftRestored: en ? "Your draft was restored. Review the details before opening WhatsApp." : "Draf anda dipulihkan. Semak butiran sebelum membuka WhatsApp.",
+    draftUnavailable: en ? "This browser could not save the draft. Keep this page open to retain your details." : "Browser ini tidak dapat menyimpan draf. Kekalkan halaman ini untuk mengekalkan butiran anda.",
+    draftExpired: en ? "The saved draft expired. Details on this page remain available until you leave or reset them." : "Draf simpanan telah tamat tempoh. Butiran di halaman ini kekal sehingga anda meninggalkan halaman atau mengosongkannya.",
+    draftCleared: en ? "Draft cleared. You can start a new enquiry." : "Draf dikosongkan. Anda boleh mulakan pertanyaan baharu.",
+    draftClearFailed: en ? "The form was reset, but this browser could not remove the saved draft." : "Borang ditetapkan semula, tetapi browser ini tidak dapat memadamkan draf simpanan."
   };
 
   // Preserve links used by the previous single-page language switcher.
@@ -177,6 +205,8 @@
   const feedback = document.getElementById("formFeedback");
   const enquiryLink = document.getElementById("enquiryLink");
   const copyMessage = document.getElementById("enquiryCopyMessage");
+  const clearDraft = document.getElementById("clearEnquiryDraft");
+  const draftFeedback = document.getElementById("draftFeedback");
   if (!checkin || !checkout || !guests || !rooms || !enquiryLink || !getEnquiryUrl(config.phone, "")) return;
   let preparedMessage = "";
   let submitted = false;
@@ -189,6 +219,82 @@
   guests.min = "1";
   guests.max = String(config.maxGuests || 20);
   guests.step = "1";
+
+  const draftFields = { checkin, checkout, guests, rooms, notes };
+  const draftDefaults = Object.fromEntries(Object.entries(draftFields).map(([name, field]) => [name, field?.value || ""]));
+  const roomValues = Array.from(rooms.options).map(option => option.value);
+  let expiryTimer = 0;
+  let draftChanged = false;
+  let savedDraftAt = null;
+
+  function announceDraft(message) {
+    if (draftFeedback && draftFeedback.textContent !== message) draftFeedback.textContent = message;
+  }
+
+  function removeSavedDraft() {
+    window.clearTimeout(expiryTimer);
+    savedDraftAt = null;
+    try { window.sessionStorage.removeItem(DRAFT_KEY); return true; }
+    catch { return false; }
+  }
+
+  function scheduleDraftExpiry(savedAt) {
+    window.clearTimeout(expiryTimer);
+    savedDraftAt = savedAt;
+    expiryTimer = window.setTimeout(() => {
+      removeSavedDraft();
+      announceDraft(copy.draftExpired);
+    }, Math.max(0, savedAt + DRAFT_TTL_MS - Date.now()));
+  }
+
+  function saveDraft() {
+    // Avoid creating a personal-data record for an untouched form or just after reset.
+    if (!draftChanged) return;
+    const candidate = {
+      version: 1, savedAt: Date.now(), packageChosen,
+      fields: Object.fromEntries(Object.entries(draftFields).map(([name, field]) => [name, field?.value || ""]))
+    };
+    const serialized = JSON.stringify(candidate);
+    if (!parseEnquiryDraft(serialized, roomValues, candidate.savedAt)) {
+      removeSavedDraft();
+      announceDraft(copy.draftUnavailable);
+      return;
+    }
+    try { window.sessionStorage.setItem(DRAFT_KEY, serialized); }
+    catch { announceDraft(copy.draftUnavailable); return; }
+    scheduleDraftExpiry(candidate.savedAt);
+    announceDraft(copy.draftSaved);
+  }
+
+  function restoreDraft() {
+    let stored;
+    try { stored = window.sessionStorage.getItem(DRAFT_KEY); }
+    catch { return "unavailable"; }
+    if (stored === null) return "missing";
+    const draft = parseEnquiryDraft(stored, roomValues);
+    if (!draft) { removeSavedDraft(); return "invalid"; }
+    Object.entries(draft.fields).forEach(([name, value]) => {
+      if (draftFields[name]) draftFields[name].value = value;
+      if (value && name !== "notes") touched.add(name);
+    });
+    packageChosen = draft.packageChosen;
+    draftChanged = true;
+    scheduleDraftExpiry(draft.savedAt);
+    announceDraft(copy.draftRestored);
+    return "restored";
+  }
+
+  function resetDraftForm() {
+    form.reset();
+    packageChosen = false;
+    draftChanged = false;
+    submitted = false;
+    touched.clear();
+    if (preview) preview.open = false;
+    if (feedback) feedback.textContent = "";
+    announceDraft("");
+    updateEnquiry();
+  }
 
   function showFieldError(field) {
     const output = document.getElementById(`${field.name}Error`);
@@ -254,10 +360,12 @@
     return Boolean(preparedMessage);
   }
 
-  form.addEventListener("input", () => { updateEnquiry(); if (feedback && submitted) feedback.textContent = ""; });
+  form.addEventListener("input", () => { draftChanged = true; updateEnquiry(); saveDraft(); if (feedback && submitted) feedback.textContent = ""; });
   form.addEventListener("change", event => {
     if (event.target === rooms) packageChosen = true;
+    draftChanged = true;
     updateEnquiry();
+    saveDraft();
     if (feedback && submitted) feedback.textContent = "";
   });
   form.addEventListener("focusout", event => {
@@ -313,8 +421,35 @@
       if (feedback) feedback.textContent = copy.copyFailed;
     }
   });
+  document.querySelectorAll(".language-links a[hreflang]").forEach(link => {
+    const snapshotLanguageDraft = () => {
+      if (packageChosen || Object.entries(draftFields).some(([name, field]) => (field?.value || "") !== draftDefaults[name])) draftChanged = true;
+      saveDraft();
+    };
+    link.addEventListener("click", snapshotLanguageDraft);
+    link.addEventListener("auxclick", snapshotLanguageDraft);
+  });
+  clearDraft?.addEventListener("click", () => {
+    const removed = removeSavedDraft();
+    resetDraftForm();
+    announceDraft(removed ? copy.draftCleared : copy.draftClearFailed);
+  });
+  restoreDraft();
   updateEnquiry();
   form.hidden = false;
-  window.addEventListener("pageshow", updateEnquiry);
-  window.addEventListener("focus", updateEnquiry);
+  if (clearDraft) clearDraft.hidden = false;
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) {
+      const restored = restoreDraft();
+      if (restored === "missing" || restored === "invalid") resetDraftForm();
+    }
+    updateEnquiry();
+  });
+  window.addEventListener("focus", () => {
+    if (savedDraftAt !== null && Date.now() - savedDraftAt >= DRAFT_TTL_MS) {
+      removeSavedDraft();
+      announceDraft(copy.draftExpired);
+    }
+    updateEnquiry();
+  });
 })();

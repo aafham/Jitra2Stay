@@ -8,7 +8,7 @@ const config = require("../site.config.cjs");
 const siteOrigin = new URL(config.business.siteUrl).origin;
 const pages = ["index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html",
   ...config.guides.flatMap(guide => [`${guide.slug}.html`, `${guide.slug}-en.html`])];
-const publicFiles = new Set([...pages, "style.css", "app.js", "gallery.js", "gallery.css", "navigation.js", "navigation.css", "app.config.js", "robots.txt", "sitemap.xml"]);
+const publicFiles = new Set([...pages, "style.css", "app.js", "gallery.js", "gallery.css", "navigation.js", "navigation.css", "share.js", "app.config.js", "robots.txt", "sitemap.xml"]);
 const results = [];
 const check = (condition, name, detail = "") => results.push({ ok: Boolean(condition), name, detail: condition ? "" : detail });
 const read = file => fs.readFileSync(path.join(publishDir, file), "utf8");

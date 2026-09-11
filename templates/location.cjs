@@ -1,5 +1,7 @@
 const {config,e,t,icon,timeText,pageHref}=require('./shared.cjs');
 
+const {renderNearby}=require('./stay-info.cjs');
+
 function renderLocation(lang) {
   const b=config.business;
   const waze=new URL('https://www.waze.com/ul');
@@ -22,7 +24,7 @@ function renderLocation(lang) {
         <iframe id="locationMapFrame" src="${e(b.mapEmbedUrl)}" title="${t(lang,'Google Maps: lokasi Jitra2Stay','Google Maps: Jitra2Stay location')}" width="600" height="430" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         <div class="map-caption"><span>${icon('pin')} <strong>Jitra2Stay</strong></span><p>${t(lang,'Zum dan gerakkan peta untuk lihat kawasan sekitar.','Zoom and move the map to explore the neighbourhood.')}</p></div>
       </div>
-      <div class="location-guides"><h3>${t(lang,'Panduan untuk perjalanan anda','Plan your visit')}</h3><div class="guide-links">${config.guides.map(g=>`<a href="${pageHref(g.slug,lang)}"><span>${e(g[lang][0])}</span>${icon('arrow')}</a>`).join('')}</div></div>
+      <div class="location-guides">${renderNearby(lang)}<h3>${t(lang,'Panduan untuk perjalanan anda','Plan your visit')}</h3><div class="guide-links">${config.guides.map(g=>`<a href="${pageHref(g.slug,lang)}"><span>${e(g[lang][0])}</span>${icon('arrow')}</a>`).join('')}</div></div>
     </div>
   </section>`;
 }
