@@ -78,7 +78,9 @@ Untuk mengemas kini jarak, buka laluan kereta dengan origin pin Jitra2Stay, sema
 
 Hotel Regency, kampus UniMAP, Kem Askar Melayu dan cawangan MARDI belum dapat dikenal pasti secara pasti daripada nama asal. Katalog mengekalkan nama/pautan Maps dan arahan memilih lokasi; tiada nombor jarak untuk empat item ini. Rujuk `NEARBY-ROUTES-2026-09-20.md` sebelum menambah rekod. Enam panduan kawasan asal kekal dalam panel berasingan dan dilabel sebagai anggaran umum.
 
-Tanpa JavaScript semua kad/pautan destinasi tersedia. Dengan JavaScript, enam kad dipaparkan dahulu; carian menapis semua 50 nama dan butang lihat semua tersedia. Uji nama pendek, huruf besar/kecil, tiada padanan, padam carian, nota tol serta origin semua pautan selepas mengubah katalog.
+`destination-categories.cjs` menyimpan 10 kategori, label BM/EN dan ID destinasi yang termasuk dalam setiap kategori. Semua destinasi mesti mempunyai kategori; ID yang tidak wujud atau destinasi tanpa kategori menggagalkan build. Sesuatu tempat boleh mempunyai lebih daripada satu kategori (contohnya Masjid Zahir), tetapi template tetap menjana satu kad. Kategori tidak mengesahkan kemasukan awam, waktu operasi atau akses ke institusi/kem.
+
+Tanpa JavaScript semua kad/pautan dan label kategori tersedia. Dengan JavaScript, enam kad dalam kategori dipaparkan dahulu dan butang lihat semua mengembangkan kategori itu. Carian nama ditapis bersama kategori, mengekalkan teks apabila kategori ditukar. Semua menghilangkan penapis kategori sahaja; Set semula mengosongkan teks dan kategori. Uji pertindihan carian/kategori, hasil kosong, reset, pagination, Tab pada kategori yang perlu dileret, nota tol serta origin semua pautan selepas mengubah katalog.
 
 ## Gambar
 

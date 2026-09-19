@@ -7,9 +7,11 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 | Build | 16 halaman HTML penuh |
 | Static output QA | 617 / 617 lulus |
 | Unit tarikh, draf dan perkongsian | 13 / 13 lulus |
-| Playwright Chromium 153 | 74 / 74 lulus |
+| Playwright Chromium 153 | 75 / 75 lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
+
+Penapis destinasi kini mempunyai 10 kategori BM/EN dan pilihan Semua. Enam ujian destinasi meliputi gabungan kategori dengan carian, teks yang kekal ketika bertukar kategori, pagination dalam kategori, reset, liputan 50 kad unik, label tanpa JavaScript dan fokus pada setiap butang kategori yang perlu dileret. Pemeriksaan visual 320/390/768/1440px menemui dan membetulkan grid yang melebar; ujian Tab semula jadi turut mengesan butang kategori separa tersembunyi dan kini memastikan butang berfokus kelihatan sepenuhnya. Jarak dan pautan Maps sedia ada tidak berubah.
 
 Browser menguji lebar 320/390/768/1440, menu/fokus, no-JS BM/EN, roundtrip bahasa, package preset, dialog keyboard, form tidak sah/valid, anggaran, encoding, popup diblok dan metadata/aset. Unit cases termasuk leap day, hujung tahun dan timezone negatif. Static QA juga membuat HTTP requests terhadap output server dan menguji 404/private-path boundary.
 
