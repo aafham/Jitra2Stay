@@ -22,10 +22,16 @@ function directionsUrl(destination) {
 }
 
 function renderDestinationFinder(lang) {
+  const shortcuts=[
+    ['Hospital Jitra','Hospital Jitra'], ['UUM','UUM'], ['airport','Airport'],
+    ['POLIMAS','POLIMAS'], ['IPG','IPG Darulaman'],
+    [t(lang,'tempat menarik','places to visit'),t(lang,'Tempat menarik','Places to visit')],
+    [t(lang,'dewan','hall'),t(lang,'Dewan','Halls')]
+  ];
   return `<div class="destination-finder" aria-labelledby="destinationsTitle">
     <h3 id="destinationsTitle">${t(lang,'Nak ke mana dari homestay?','Where are you heading from the homestay?')}</h3>
     <p class="destination-intro">${t(lang,'Cari tempat dalam senarai kami dan buka laluan pemanduan dari Jitra2Stay.','Find a place in our list and open driving directions from Jitra2Stay.')}</p>
-    <div id="destinationControls" class="destination-controls" hidden><label for="destinationSearch">${t(lang,'Cari destinasi','Find a destination')}</label><div class="destination-search-row"><input type="search" id="destinationSearch" placeholder="${t(lang,'Contoh: UUM, hospital, airport','Try: UUM, hospital, airport')}" autocomplete="off" aria-controls="destinationsList" aria-describedby="destinationResults"><button id="destinationClear" class="text-button" type="button" hidden>${t(lang,'Padam carian','Clear search')}</button></div><div class="destination-shortcuts" role="group" aria-label="${t(lang,'Pintasan destinasi','Destination shortcuts')}">${[['Hospital Jitra','Hospital Jitra'],['UUM','UUM'],['airport','Airport']].map(([query,label])=>`<button type="button" data-destination-query="${e(query)}">${e(label)}</button>`).join('')}</div></div>
+    <div id="destinationControls" class="destination-controls" hidden><label for="destinationSearch">${t(lang,'Cari destinasi','Find a destination')}</label><div class="destination-search-row"><input type="search" id="destinationSearch" placeholder="${t(lang,'Contoh: POLIMAS, tasik, dewan','Try: POLIMAS, lake, hall')}" autocomplete="off" aria-controls="destinationsList" aria-describedby="destinationResults"><button id="destinationClear" class="text-button" type="button" hidden>${t(lang,'Padam carian','Clear search')}</button></div><div class="destination-shortcuts" role="group" aria-label="${t(lang,'Pintasan destinasi','Destination shortcuts')}">${shortcuts.map(([query,label])=>`<button type="button" data-destination-query="${e(query)}" aria-controls="destinationsList" aria-pressed="false">${e(label)}</button>`).join('')}</div></div>
     <p id="destinationResults" class="destination-results" role="status" aria-live="polite" aria-atomic="true"></p>
     <div id="destinationsList" class="destinations-list">${destinations.map(destination=>{
       const route=routes[destination.id];

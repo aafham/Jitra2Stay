@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-20 — Pintasan kampus, tempat menarik dan dewan
+
+- Tambah POLIMAS dan IPG Darulaman pada pintasan carian.
+- Kumpulkan Tasik Darulaman, Fantasia Aquapark, Darulaman Golf Club dan Masjid Zahir dalam pilihan Tempat menarik / Places to visit.
+- Tambah pilihan Dewan / Halls untuk Dewan Jitra, Dewan Tunku Anum dan Dewan Wawasan.
+- Tandakan pintasan aktif dan kekalkan fokus pada butang selepas memilih, termasuk penggunaan keyboard. Gunakan semula jarak, tarikh semakan dan pautan Maps sedia ada.
+
 ## 2026-09-20 — Rancang penginapan dan perjalanan
 
 - Bandingkan jumlah semua pakej untuk 1–3 malam; tempoh pilihan diselaraskan dengan tarikh borang, termasuk tempoh manual lebih panjang.

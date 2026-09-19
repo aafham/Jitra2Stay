@@ -11,10 +11,13 @@
   const normalise=value=>String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
   const cards=Array.from(list.querySelectorAll('[data-destination-id]')).map(card=>({card,search:normalise(card.dataset.destinationSearch)}));
   const en=document.documentElement.lang.startsWith('en');
+  const shortcuts=Array.from(controls.querySelectorAll('[data-destination-query]'));
   const initialCount=6;
   let expanded=false;
   function render() {
-    const terms=normalise(input.value).split(' ').filter(Boolean);
+    const query=normalise(input.value);
+    const terms=query.split(' ').filter(Boolean);
+    shortcuts.forEach(button=>button.setAttribute('aria-pressed',String(query===normalise(button.dataset.destinationQuery))));
     const matches=cards.filter(item=>terms.every(term=>item.search.includes(term)));
     const visible=terms.length||expanded?matches:matches.slice(0,initialCount);
     const shown=new Set(visible);
@@ -28,7 +31,7 @@
   }
   input.addEventListener('input',()=>{expanded=false;render();});
   clear.addEventListener('click',()=>{input.value='';expanded=false;render();input.focus({preventScroll:true});});
-  controls.querySelectorAll('[data-destination-query]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.destinationQuery;expanded=false;render();input.focus({preventScroll:true});}));
+  shortcuts.forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.destinationQuery;expanded=false;render();}));
   more.addEventListener('click',()=>{expanded=!expanded;render();});
   render();
   controls.hidden=false;
