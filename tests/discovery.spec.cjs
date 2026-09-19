@@ -42,10 +42,26 @@ for(const lang of ['ms','en']) {
       await expect(page.locator('[data-gallery-filter="outside"]')).toHaveAttribute('aria-pressed','true');
       await expect(page.locator('#galleryGrid .gallery-card:visible')).toHaveCount(3);
     }
+    const photoLink=page.locator('.amenity-photo[data-gallery-photo="dapur"]');
+    const imageUrl=new URL(await photoLink.getAttribute('href'),page.url()).href;
+    const openerUrl=page.url();
+    const imageResponsePromise=context.waitForEvent('response',response=>response.url()===imageUrl&&response.request().isNavigationRequest());
     const popupPromise=context.waitForEvent('page');
-    await page.locator('.amenity-photo[data-gallery-photo="dapur"]').click({modifiers:['Control']});
+    // Ctrl+Shift keeps native modified-link navigation, but opens the image in
+    // the foreground. A background image tab can defer its initial navigation
+    // in headless Chromium on CI, before Playwright has a usable page event.
+    await photoLink.click({modifiers:['Control','Shift']});
     const popup=await popupPromise;
-    await expect(popup).toHaveURL(/\/images\/responsive\/dapur-\d+\.webp$/);
+    await popup.bringToFront();
+    const imageResponse=await imageResponsePromise;
+    expect(imageResponse.status()).toBe(200);
+    expect(imageResponse.headers()['content-type']).toMatch(/^image\/webp(?:;|$)/);
+    await expect(popup).toHaveURL(imageUrl);
+    const nativeImage=popup.locator('img');
+    await expect(nativeImage).toHaveAttribute('src',imageUrl);
+    await nativeImage.evaluate(image=>image.decode());
+    expect(await nativeImage.evaluate(image=>image.complete&&image.naturalWidth>0&&image.naturalHeight>0)).toBe(true);
+    await expect(page).toHaveURL(openerUrl);
     await expect(page.locator('#galleryDialog')).not.toHaveAttribute('open','');
     await popup.close();
   });
