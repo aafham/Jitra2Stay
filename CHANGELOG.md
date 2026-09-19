@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-20 — Kategori destinasi
+
+- Ganti pintasan nama tempat dengan pilihan Semua dan 10 kategori BM/EN yang meliputi semua 50 destinasi asal.
+- Carian nama ditapis dalam kategori dipilih; teks kekal apabila bertukar kategori. Set semula membersihkan kedua-dua penapis.
+- Tambah label kategori pada kad, kiraan hasil mengikut kategori dan lihat semua/ringkaskan dalam kategori semasa.
+- Susun kategori sebagai butang pil yang boleh dileret pada telefon, dengan penanda aktif, fokus keyboard dan sasaran sentuhan sekurang-kurangnya 44px.
+- Kekalkan jarak, tarikh semakan, nota lokasi belum pasti, pautan Maps dan kandungan tanpa JavaScript.
+
 ## 2026-09-20 — Pintasan kampus, tempat menarik dan dewan
 
 - Tambah POLIMAS dan IPG Darulaman pada pintasan carian.

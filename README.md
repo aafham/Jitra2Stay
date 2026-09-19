@@ -12,7 +12,7 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 
 ## Apa yang berubah
 
-- Pintasan destinasi kini merangkumi POLIMAS, IPG Darulaman, empat tempat menarik dan tiga dewan. Pilihan aktif ditandakan; menekan pintasan mengekalkan fokus pada butang supaya keyboard telefon tidak dibuka tanpa perlu.
+- Destinasi ditapis mengikut 10 kategori: Pendidikan, Tempat menarik, Dewan, Beli-belah, Kesihatan, Masjid, Hotel, Pengangkutan, Agensi & kem dan Bandar. Carian berfungsi dalam kategori dipilih; Semua memaparkan seluruh katalog dan Set semula mengosongkan kedua-dua penapis. Butang kategori boleh dileret pada telefon serta digunakan dengan keyboard.
 - Jumlah sewaan semua pakej boleh dibandingkan untuk 1–3 malam, atau tempoh lain daripada tarikh borang. Pilihan malam diselaraskan dengan check-out dan disimpan bersama draf; deposit/caj tambahan kekal berasingan.
 - Ringkasan pakej, tarikh dan anggaran boleh dipratonton lalu dikongsi dengan keluarga. Nota peribadi dan jumlah tetamu tidak dimasukkan; pembatalan menu kongsi tidak menyalin atau menghantar mesej.
 - Pautan gambar pada kemudahan membuka foto sebenar yang berkaitan dan mengembalikan fokus apabila dialog ditutup.
@@ -72,7 +72,7 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 | `templates/location.cjs` | Peta Google terbenam, butang Google Maps/Waze dan panduan lokasi |
 | `templates/faq.cjs`, `faq.js`, `faq.css` | Soalan asal BM/EN dan penapis topik dengan kiraan hasil |
 | `location.js`, `location.css` | Salin alamat dan pilihan salinan manual |
-| `destinations.cjs`, `destination-routes.cjs` | Katalog tempat asal dan snapshot laluan Google Maps yang disahkan |
+| `destinations.cjs`, `destination-categories.cjs`, `destination-routes.cjs` | Katalog tempat asal, kategori BM/EN dan snapshot laluan Google Maps yang disahkan |
 | `templates/nearby.cjs`, `nearby.js`, `nearby.css` | Carian destinasi, jarak bertarikh, nota tol dan pautan laluan dari rumah |
 | `templates/pages.cjs` | Polisi, panduan setempat, halaman legacy thank-you dan 404 |
 | `documents.css` | Indeks polisi, susunan panduan dan footer semua halaman |
@@ -124,7 +124,7 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 20 September 2026: **617 semakan statik, 13 unit dan 74 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 20 September 2026: **617 semakan statik, 13 unit dan 75 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 
