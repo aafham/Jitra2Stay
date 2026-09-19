@@ -1,0 +1,44 @@
+/* Stay-length comparison and an explicit, editable-before-sharing family plan. */
+.stay-comparison{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 32px;padding:20px 24px;margin-bottom:20px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.stay-comparison fieldset{border:0;padding:0;margin:0;min-width:0}
+.stay-comparison legend{padding:0;margin-bottom:12px;color:var(--ink);font-size:.95rem;font-weight:650}
+.comparison-nights{display:flex;flex-wrap:wrap;gap:8px}
+.comparison-nights button{min-height:44px;min-width:80px;padding:10px 15px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:.9rem;font-weight:600}
+.comparison-nights button[aria-pressed="true"]{border-color:var(--green);background:var(--green);color:var(--on-green)}
+.comparison-help{max-width:440px;font-size:.875rem;color:var(--muted)}
+.comparison-help a{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--ink)}
+.comparison-help .icon{width:17px;height:17px}
+#kadar.has-comparison .package-price{margin-top:16px;margin-bottom:12px;gap:5px}
+#kadar.has-comparison .package-price strong{font-size:1.2rem;line-height:1.4}
+#kadar.has-comparison .package-price>span{font-size:.8rem}
+.package-total{display:flex;flex-direction:column;gap:6px;padding-top:14px;margin-bottom:20px;border-top:1px solid var(--line)}
+.package-total-label{font-size:.8rem;line-height:1.5;color:var(--muted)}
+.package-total-value{font-size:1.9rem;font-weight:650;line-height:1.3;letter-spacing:-.025em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;color:var(--ink)}
+.family-plan{margin-top:20px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text)}
+.family-plan summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:14px 16px;font-size:.9rem;font-weight:600;cursor:pointer;list-style:none;color:var(--ink)}
+.family-plan summary::-webkit-details-marker{display:none}
+.family-plan summary::after{content:"+";font-size:1.2rem;line-height:1;font-weight:400}
+.family-plan[open] summary::after{content:"−"}
+.family-plan summary .icon{width:18px;height:18px;margin-left:auto}
+.family-plan-content{padding:0 16px 16px}
+.family-plan-content>p{font-size:.8rem;line-height:1.6;color:var(--muted)}
+.family-plan-content pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:14px 0;padding:16px;background:var(--surface);border-radius:6px;color:var(--text);font:inherit;font-size:.85rem;line-height:1.75}
+.family-plan-content .button{min-height:44px;font-size:.9rem}
+#familyPlanFeedback:not(:empty){margin-top:12px}
+#familyPlanFallback{margin-top:16px}
+#familyPlanCopyText{width:100%;margin-top:8px;resize:vertical;font-size:.875rem;line-height:1.65}
+@media(max-width:600px){
+ .stay-comparison{padding:18px;gap:14px}
+ .stay-comparison legend{font-size:.9rem}
+ .comparison-nights{gap:6px}
+ .comparison-nights button{min-width:72px;padding:10px 12px;font-size:.85rem}
+ .comparison-help{font-size:.8rem}
+ #kadar.has-comparison .package-price{display:flex;flex-wrap:wrap;margin-top:14px;margin-bottom:12px}
+ #kadar.has-comparison .package-price>span{margin-top:0}
+ .package-total-label{font-size:.75rem}
+ .package-total-value{font-size:1.65rem}
+ .family-plan summary{padding:12px;font-size:.85rem}
+ .family-plan-content{padding:0 12px 14px}
+ .family-plan-content pre{padding:12px;font-size:.8rem}
+}
+@media(max-width:360px){.package-total-value{font-size:1.4rem}.comparison-nights button{min-width:66px;padding-inline:10px}}

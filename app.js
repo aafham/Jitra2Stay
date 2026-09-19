@@ -61,6 +61,32 @@
     return digits ? `https://wa.me/${digits}?text=${encodeURIComponent(message)}` : null;
   }
 
+  // The family summary deliberately accepts only the public planning fields.
+  // Guest counts and private enquiry notes cannot enter the shared text.
+  function buildFamilyPlanMessage({ language, checkin, checkout, rooms, roomRates, securityDeposit, publicUrl }) {
+    const estimate = estimateStay(checkin, checkout, rooms, roomRates);
+    if (!estimate || !Number.isFinite(securityDeposit) || securityDeposit < 0) return null;
+    let url;
+    try { url = new URL(publicUrl); } catch { return null; }
+    if (url.protocol !== "https:" || url.username || url.password) return null;
+    url.search = "";
+    url.hash = "";
+    const en = language === "en";
+    const money = value => `RM${Number(value).toLocaleString(en ? "en-MY" : "ms-MY")}`;
+    return [
+      en ? "A stay to discuss · Jitra2Stay" : "Cadangan penginapan · Jitra2Stay",
+      `${en ? "Room package" : "Pakej bilik"}: ${rooms} ${en ? "rooms" : "bilik"}`,
+      `Check-in: ${checkin}`,
+      `Check-out: ${checkout}`,
+      `${en ? "Stay length" : "Tempoh"}: ${estimate.nights} ${en ? estimate.nights === 1 ? "night" : "nights" : "malam"}`,
+      `${en ? "Accommodation estimate" : "Anggaran sewaan"}: ${money(estimate.total)} (${money(estimate.nightlyRate)} / ${en ? "night" : "malam"})`,
+      `${en ? "Separate security deposit" : "Deposit keselamatan berasingan"}: ${money(securityDeposit)}`,
+      en ? "Extra charges are excluded. Dates and the final price need the owner's confirmation. This is a plan, not a confirmed booking."
+        : "Caj tambahan tidak termasuk. Tarikh dan harga akhir perlu disahkan oleh owner. Ini rancangan, belum merupakan tempahan yang disahkan.",
+      url.href
+    ].join("\n");
+  }
+
   // Validate the storage envelope without requiring the enquiry itself to be valid.
   // Past dates, reversed dates and out-of-range guest counts remain editable drafts.
   function parseEnquiryDraft(serialized, roomValues, now = Date.now()) {
@@ -68,7 +94,8 @@
     let draft;
     try { draft = JSON.parse(serialized); } catch { return null; }
     if (!draft || typeof draft !== "object" || Array.isArray(draft) || draft.version !== 1 || typeof draft.packageChosen !== "boolean") return null;
-    if (Object.keys(draft).some(key => !["version", "savedAt", "fields", "packageChosen"].includes(key))) return null;
+    if (Object.keys(draft).some(key => !["version", "savedAt", "fields", "packageChosen", "plannedNights"].includes(key))) return null;
+    if (Object.prototype.hasOwnProperty.call(draft, "plannedNights") && ![1, 2, 3].includes(draft.plannedNights)) return null;
     if (!Number.isSafeInteger(draft.savedAt) || draft.savedAt < 0 || draft.savedAt > now || now - draft.savedAt >= DRAFT_TTL_MS) return null;
     const fields = draft.fields;
     const names = ["checkin", "checkout", "guests", "rooms", "notes"];
@@ -78,11 +105,11 @@
     if (fields.guests.length > 20 || fields.guests !== "" && (!/^-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(fields.guests) || !Number.isFinite(Number(fields.guests)))) return null;
     if (fields.rooms !== "" && !roomValues.includes(fields.rooms)) return null;
     if (fields.notes.length > 1000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(fields.notes)) return null;
-    return { version: 1, savedAt: draft.savedAt, packageChosen: draft.packageChosen, fields: Object.fromEntries(names.map(name => [name, fields[name]])) };
+    return { version: 1, savedAt: draft.savedAt, packageChosen: draft.packageChosen, fields: Object.fromEntries(names.map(name => [name, fields[name]])), ...(draft.plannedNights ? { plannedNights: draft.plannedNights } : {}) };
   }
 
   if (typeof module === "object" && module.exports) {
-    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, getEnquiryUrl, parseEnquiryDraft, DRAFT_KEY, DRAFT_TTL_MS };
+    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, buildFamilyPlanMessage, getEnquiryUrl, parseEnquiryDraft, DRAFT_KEY, DRAFT_TTL_MS };
   }
   if (typeof window === "undefined" || typeof document === "undefined") return;
 
@@ -208,6 +235,14 @@
   const estimateStayText = document.getElementById("estimateStay");
   const estimateRate = document.getElementById("estimateRate");
   const stayShortcuts = document.getElementById("stayShortcuts");
+  const comparison = document.getElementById("stayComparison");
+  const comparisonStatus = document.getElementById("comparisonStatus");
+  const familyPlan = document.getElementById("familyPlan");
+  const familyPlanText = document.getElementById("familyPlanText");
+  const familyPlanShare = document.getElementById("familyPlanShare");
+  const familyPlanFeedback = document.getElementById("familyPlanFeedback");
+  const familyPlanFallback = document.getElementById("familyPlanFallback");
+  const familyPlanCopyText = document.getElementById("familyPlanCopyText");
   const preview = document.getElementById("enquiryPreview");
   const previewText = document.getElementById("enquiryPreviewText");
   const feedback = document.getElementById("formFeedback");
@@ -219,6 +254,10 @@
   let preparedMessage = "";
   let submitted = false;
   let packageChosen = false;
+  let plannedNights = null;
+  let familyMessage = "";
+  let familyPlanRevision = 0;
+  let familyShareInFlight = false;
   const touched = new Set();
   const enquiryShortcuts = Array.from(document.querySelectorAll('#heroPrimaryCta, #mainNav > .button, .enquiry-section .button-light, .mobile-whatsapp')).map(link => ({link, href:link.href, label:link.getAttribute('aria-label')}));
   const money = value => `RM${Number(value).toLocaleString(en ? "en-MY" : "ms-MY")}`;
@@ -262,7 +301,8 @@
     if (!draftChanged) return;
     const candidate = {
       version: 1, savedAt: Date.now(), packageChosen,
-      fields: Object.fromEntries(Object.entries(draftFields).map(([name, field]) => [name, field?.value || ""]))
+      fields: Object.fromEntries(Object.entries(draftFields).map(([name, field]) => [name, field?.value || ""])),
+      ...(plannedNights !== null ? { plannedNights } : {})
     };
     const serialized = JSON.stringify(candidate);
     if (!parseEnquiryDraft(serialized, roomValues, candidate.savedAt)) {
@@ -288,6 +328,7 @@
       if (value && name !== "notes") touched.add(name);
     });
     packageChosen = draft.packageChosen;
+    plannedNights = draft.plannedNights || null;
     draftChanged = true;
     scheduleDraftExpiry(draft.savedAt);
     announceDraft(copy.draftRestored);
@@ -297,10 +338,12 @@
   function resetDraftForm() {
     form.reset();
     packageChosen = false;
+    plannedNights = null;
     draftChanged = false;
     submitted = false;
     touched.clear();
     if (preview) preview.open = false;
+    if (familyPlan) familyPlan.open = false;
     if (feedback) feedback.textContent = "";
     announceDraft("");
     updateEnquiry();
@@ -325,6 +368,68 @@
       const badge = card.querySelector(".package-selected");
       if (badge) badge.hidden = !selected;
     });
+  }
+
+  function updateComparison(validDates, estimate) {
+    if (!comparison) return;
+    const nights = validDates ? estimate.nights : plannedNights || 1;
+    comparison.querySelectorAll("[data-compare-nights]").forEach(button => {
+      button.setAttribute("aria-pressed", String(nights === Number(button.dataset.compareNights)));
+    });
+    document.querySelectorAll(".package-card[data-package]").forEach(card => {
+      const total = card.querySelector(".package-total");
+      const value = card.querySelector(".package-total-value");
+      const label = card.querySelector(".package-total-label");
+      const nightlyRate = Number(config.roomRates?.[card.dataset.package]);
+      if (!total || !value || !label || !Number.isFinite(nightlyRate)) return;
+      label.textContent = en ? `Estimate · ${nights} ${nights === 1 ? "night" : "nights"}` : `Anggaran · ${nights} malam`;
+      value.textContent = money(nightlyRate * nights);
+      total.hidden = false;
+    });
+    const statusMessage = validDates
+      ? en ? `Comparing ${nights} ${nights === 1 ? "night" : "nights"}, following your enquiry dates.` : `Perbandingan ${nights} malam, mengikut tarikh dalam borang.`
+      : checkin.value || checkout.value
+        ? en ? `Comparing ${nights} ${nights === 1 ? "night" : "nights"}. Complete or correct your dates to match your stay.` : `Perbandingan ${nights} malam. Lengkapkan atau betulkan tarikh penginapan dalam borang.`
+        : plannedNights !== null
+          ? en ? `${nights} ${nights === 1 ? "night" : "nights"} selected. Choose check-in and check-out will follow.` : `${nights} malam dipilih. Tetapkan check-in untuk mengisi check-out.`
+          : en ? "Compare a stay before choosing your dates." : "Bandingkan sewaan sebelum memilih tarikh.";
+    if (comparisonStatus && comparisonStatus.textContent !== statusMessage) comparisonStatus.textContent = statusMessage;
+    comparison.hidden = false;
+    document.getElementById("kadar")?.classList.add("has-comparison");
+  }
+
+  function updateFamilyPlan(valid) {
+    const message = (valid ? buildFamilyPlanMessage({ language, checkin: checkin.value, checkout: checkout.value, rooms: rooms.value, roomRates: config.roomRates, securityDeposit: config.securityDeposit, publicUrl: familyPlan?.dataset.shareUrl }) : "") || "";
+    if (message !== familyMessage) {
+      familyPlanRevision++;
+      if (familyPlanFeedback) familyPlanFeedback.textContent = "";
+      if (familyPlanFallback) familyPlanFallback.hidden = true;
+    }
+    familyMessage = message || "";
+    if (familyPlan) familyPlan.hidden = !familyMessage;
+    if (familyPlanText) familyPlanText.textContent = familyMessage;
+    if (familyPlanCopyText) familyPlanCopyText.value = familyMessage;
+  }
+
+  function chooseNights(nights) {
+    if (![1, 2, 3].includes(nights)) return;
+    plannedNights = nights;
+    draftChanged = true;
+    if (checkin.value && checkin.validity.valid) {
+      checkout.value = addDays(checkin.value, nights) || "";
+      touched.add("checkout");
+    }
+    updateEnquiry();
+    saveDraft();
+  }
+
+  function followPlannedNights(field) {
+    // A direct checkout edit takes precedence, including an incomplete/invalid
+    // date that the guest is still correcting. Restore never rewrites dates.
+    if (field === checkout) plannedNights = null;
+    if (field === checkin && plannedNights !== null && checkin.value && checkin.validity.valid) {
+      checkout.value = addDays(checkin.value, plannedNights) || "";
+    }
   }
 
   function updateEnquiry() {
@@ -353,6 +458,7 @@
     }
     [checkin, checkout, guests, rooms].forEach(showFieldError);
     updatePackageCards();
+    updateComparison(validDates, estimate);
     const valid = estimate && Array.from(form.elements).every((field) => !field.willValidate || field.validity.valid);
     preparedMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate }) : "";
     enquiryLink.hidden = !preparedMessage;
@@ -367,12 +473,14 @@
       else if (label) link.setAttribute('aria-label', label);
       else link.removeAttribute('aria-label');
     });
-    if (clearDraft) clearDraft.hidden = !packageChosen && Object.entries(draftFields).every(([name,field]) => (field?.value || '') === draftDefaults[name]);
+    updateFamilyPlan(valid);
+    if (clearDraft) clearDraft.hidden = !packageChosen && plannedNights === null && Object.entries(draftFields).every(([name,field]) => (field?.value || '') === draftDefaults[name]);
     return Boolean(preparedMessage);
   }
 
-  form.addEventListener("input", () => { draftChanged = true; updateEnquiry(); saveDraft(); if (feedback && submitted) feedback.textContent = ""; });
+  form.addEventListener("input", event => { followPlannedNights(event.target); draftChanged = true; updateEnquiry(); saveDraft(); if (feedback && submitted) feedback.textContent = ""; });
   form.addEventListener("change", event => {
+    followPlannedNights(event.target);
     if (event.target === rooms) packageChosen = true;
     draftChanged = true;
     updateEnquiry();
@@ -393,11 +501,11 @@
   stayShortcuts?.addEventListener("click", event => {
     const button = event.target.closest("button[data-nights]");
     if (!button || !checkin.value || !checkin.validity.valid) return;
-    const nights = Number(button.dataset.nights);
-    if (![1, 2, 3].includes(nights)) return;
-    checkout.value = addDays(checkin.value, nights);
-    touched.add("checkout");
-    checkout.dispatchEvent(new Event("change", { bubbles: true }));
+    chooseNights(Number(button.dataset.nights));
+  });
+  comparison?.addEventListener("click", event => {
+    const button = event.target.closest("button[data-compare-nights]");
+    if (button) chooseNights(Number(button.dataset.compareNights));
   });
   document.querySelectorAll(".package-link[data-rooms]").forEach((link) => {
     link.addEventListener("click", (event) => {
@@ -435,6 +543,48 @@
       if (feedback) feedback.textContent = copy.copied;
     } catch {
       if (feedback) feedback.textContent = copy.copyFailed;
+    }
+  });
+  familyPlanShare?.addEventListener("click", async () => {
+    if (!familyMessage || !familyPlan?.open || familyShareInFlight) return;
+    const text = familyMessage;
+    const revision = familyPlanRevision;
+    // Keep the button focused while the native share/clipboard request is
+    // pending. A revision also catches edits that later restore the same text.
+    const currentPlanVisible = () => revision === familyPlanRevision && familyMessage === text &&
+      familyPlan.open && !familyPlan.hidden && familyPlanShare.getClientRects().length > 0;
+    familyShareInFlight = true;
+    familyPlanShare.setAttribute("aria-busy", "true");
+    if (familyPlanFeedback) familyPlanFeedback.textContent = "";
+    if (familyPlanFallback) familyPlanFallback.hidden = true;
+    try {
+      if (typeof navigator.share === "function") {
+        try {
+          await navigator.share({ title: en ? "Jitra2Stay stay plan" : "Rancangan penginapan Jitra2Stay", text });
+          if (currentPlanVisible() && familyPlanFeedback) familyPlanFeedback.textContent = en ? "The sharing menu was opened." : "Menu perkongsian telah dibuka.";
+          return;
+        } catch (error) { if (error?.name === "AbortError") return; }
+      }
+      // Do not start copying the old snapshot after a failed native request if
+      // the guest has since edited, cleared or closed the preview.
+      if (!currentPlanVisible()) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        if (currentPlanVisible() && familyPlanFeedback) familyPlanFeedback.textContent = en ? "Summary copied. You can paste it into your family conversation." : "Ringkasan disalin. Anda boleh tampal dalam perbualan keluarga.";
+      } catch {
+        if (!currentPlanVisible()) return;
+        if (familyPlanFeedback) familyPlanFeedback.textContent = en ? "Copy the selected summary below." : "Salin ringkasan yang dipilih di bawah.";
+        if (familyPlanFallback && familyPlanCopyText) {
+          familyPlanCopyText.value = text;
+          familyPlanFallback.hidden = false;
+          familyPlanCopyText.focus({ preventScroll: true });
+          familyPlanCopyText.select();
+          familyPlanCopyText.scrollIntoView({ block: "center", behavior: "instant" });
+        }
+      }
+    } finally {
+      familyShareInFlight = false;
+      familyPlanShare.removeAttribute("aria-busy");
     }
   });
   document.querySelectorAll(".language-links a[hreflang]").forEach(link => {

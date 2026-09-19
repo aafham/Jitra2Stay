@@ -13,7 +13,7 @@ function galleryCard(photo, lang) {
   const info = imageInfo(photo.image);
   const full = info.variants.at(-1).src;
   const room=config.rooms.find(item=>item.image===photo.image);
-  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-full="${e(full)}" data-original="${e(info.source)}" data-thumbnail="${e(info.variants[0].src)}" data-caption="${e(photo[lang])}"${room?` data-description="${e(room[lang][1])}"`:''} aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang])}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
+  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-gallery-photo="${e(photo.image)}" data-full="${e(full)}" data-original="${e(info.source)}" data-thumbnail="${e(info.variants[0].src)}" data-caption="${e(photo[lang])}"${room?` data-description="${e(room[lang][1])}"`:''} aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang])}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
 }
 
 function renderGallery(lang) {

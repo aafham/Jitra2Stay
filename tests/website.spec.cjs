@@ -123,6 +123,7 @@ for (const language of ["ms", "en"]) {
     await page.locator('[data-gallery-filter="bedrooms"]').click();
     await expect(page.locator(".room-description:visible")).toHaveCount(5);
     await expect(page.locator("#galleryGrid .gallery-card")).toHaveCount(11);
+    await page.locator(".nearby-original > summary").click();
     const institutions = page.locator(".nearby-grid details").filter({ hasText: "POLIMAS" });
     await institutions.locator("summary").click();
     await expect(institutions).toContainText("IPG Darulaman");

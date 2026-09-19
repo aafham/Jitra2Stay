@@ -1,17 +1,21 @@
-# Laporan QA — UI/UX seluruh website 12 September 2026
+# Laporan QA — perancangan dan destinasi 20 September 2026
 
 Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan sekarang berdasarkan output dist dan browser sebenar.
 
 | Semakan | Keputusan |
 | --- | --- |
 | Build | 16 halaman HTML penuh |
-| Static output QA | 464 / 464 lulus |
-| Unit tarikh, draf dan perkongsian | 11 / 11 lulus |
-| Playwright Chromium 153 | 53 / 53 lulus |
+| Static output QA | 617 / 617 lulus |
+| Unit tarikh, draf dan perkongsian | 13 / 13 lulus |
+| Playwright Chromium 153 | 74 / 74 lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
 
 Browser menguji lebar 320/390/768/1440, menu/fokus, no-JS BM/EN, roundtrip bahasa, package preset, dialog keyboard, form tidak sah/valid, anggaran, encoding, popup diblok dan metadata/aset. Unit cases termasuk leap day, hujung tahun dan timezone negatif. Static QA juga membuat HTTP requests terhadap output server dan menguji 404/private-path boundary.
+
+Pusingan 20 September menambah 21 kes browser dan 2 unit: perbandingan semua pakej mengikut malam, tempoh draf sebelum tarikh, tarikh manual, perkongsian keluarga dan async/fokus, pautan kemudahan-ke-foto, FAQ deep link/salin pautan, serta carian 50 destinasi. Semua 53 kes terdahulu masih dijalankan; satu langkah membuka panel panduan kawasan ditambah untuk susunan baharu. Tiada assertion kandungan atau fungsi dibuang. Screenshot 320/390/768/1440px serta EN tema gelap diperiksa; tiada overflow mendatar atau uncaught page error pada state yang diuji.
+
+Google Maps diperiksa secara berasingan untuk kesemua 50 nama destinasi asal: 46 pin/laluan dapat dikenal pasti, 4 kekal tanpa angka jarak kerana nama/cawangan tidak pasti. 10 laluan terpilih menunjukkan amaran tol. Tarikh semakan setiap laluan ialah 19 atau 20 September 2026. Angka ialah laluan memandu yang dipaparkan ketika semakan, bukan jarak garis lurus atau trafik masa nyata. Pautan untuk empat nama belum pasti membuka carian Maps dan meminta pengguna memilih lokasi; ia tidak memulakan panduan ke pin yang tidak disahkan. Rujuk `NEARBY-ROUTES-2026-09-20.md`.
 
 Penambahbaikan galeri/pakej/pertanyaan menambah semakan penapis dan lihat lagi, subset dialog, gambar gagal/cuba lagi, swipe mendatar berbanding gerakan menegak, pintasan malam merentas tahun, deposit berasingan, pratonton yang sama dengan mesej WhatsApp, ralat ruangan, kad pilihan dan bar mobile yang menghormati fokus. Pertukaran bahasa mengekalkan seksyen selepas galeri berkembang; Tab pada header juga tidak lagi menatal halaman tanpa sengaja. Semakan visual BM/EN, desktop/mobile dan tema gelap dibuat pada kad pakej serta borang; harga didahulukan daripada nota deposit pada telefon.
 

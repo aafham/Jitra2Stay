@@ -166,12 +166,12 @@
     loader.src = anchor.dataset.full || anchor.href;
   }
 
-  items.forEach(item => item.anchor.addEventListener("click", event => {
+  function openGallery(event, item, collection) {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const index = activeItems.indexOf(item);
+    const index = collection.indexOf(item);
     if (index < 0) return;
-    dialogItems = activeItems.slice();
-    opener = item.anchor;
+    dialogItems = collection.slice();
+    opener = event.currentTarget;
     previousOverflow = document.body.style.overflow;
     showImage(index);
     try { dialog.showModal(); }
@@ -182,7 +182,15 @@
     renderThumbnails();
     updateThumbnails();
     close.focus();
-  }));
+  }
+  items.forEach(item => item.anchor.addEventListener("click", event => openGallery(event, item, activeItems)));
+  // Contextual links open the matching real photo and its category without
+  // changing the gallery filter or expansion the guest already chose.
+  document.querySelectorAll('.amenity-photo[data-gallery-photo]').forEach(link => {
+    const item = items.find(entry => entry.anchor.dataset.galleryPhoto === link.dataset.galleryPhoto);
+    if (!item) return;
+    link.addEventListener('click', event => openGallery(event, item, items.filter(entry => entry.category === item.category)));
+  });
 
   close.addEventListener("click", () => dialog.close());
   previous.addEventListener("click", () => showImage(selected - 1));

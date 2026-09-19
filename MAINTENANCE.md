@@ -20,6 +20,10 @@ Jalankan npm run build, npm run qa, npm run test:unit dan npm test. Jangan edit 
 
 ## Galeri dan navigasi
 
+Pautan foto kemudahan dalam `templates/home.cjs` menggunakan `data-gallery-photo` dengan href gambar sebenar sebagai fallback. `gallery.js` membuka kategori foto yang dirujuk tanpa menukar penapis grid, lalu memulangkan fokus kepada pautan asal. Jangan padankan kemudahan dengan foto ruang lain; bilik air tidak diberi pautan foto kerana tiada sumber fotonya.
+
+FAQ mempunyai ID stabil `faq-{key}` daripada config. `faq.js` membuka jawapan untuk hash sah, menjadikannya terlihat walaupun topik berbeza, dan menyediakan pautan awam bersih tanpa query atau butiran borang. `navigation.js` mengekalkan jawapan sah apabila bertukar bahasa. Jangan ubah key FAQ tanpa menyediakan pengalihan pautan lama.
+
 `templates/gallery.cjs` menjana satu grid foto dan dialog; `gallery.js` serta `gallery.css` mengurus penapis, lihat lagi/ringkaskan, keyboard dan leretan mendatar. Semua foto tersedia tanpa JavaScript. Dengan JavaScript, paparan Semua bermula dengan 6 foto, tetapi dialog boleh melayari kesemua foto kategori aktif.
 
 Thumbnail dialog dijana hanya apabila dialog dibuka, menggunakan foto kecil sedia ada dan subset kategori aktif. Pilihan semasa dikemas apabila menggunakan thumbnail, anak panah atau leretan. Penerangan bilik bersumber daripada rekod `rooms` yang sama dengan galeri; kekalkan hubungan `image` apabila menukar rekod.
@@ -35,6 +39,8 @@ Panduan bilik berada selepas grid galeri supaya foto muncul dahulu. Jangan buang
 Menu telefon dalam `app.js` menutup apabila fokus atau sentuhan bergerak keluar daripada header, selain klik pautan, toggle dan Escape. Semak dengan keyboard supaya menu terbuka tidak menutup elemen yang sedang difokus. Fokus pada ringkasan tempat berdekatan dilukis di dalam sempadan kad supaya tidak terpotong.
 
 ## Pakej dan borang pertanyaan
+
+Pilihan 1–3 malam dalam `#stayComparison` mengemas kini semua jumlah pakej; harga semalam masih terlihat. `plannedNights` hanya ditetapkan apabila pengguna memilih tempoh. Selepas check-in sah, check-out mengikuti tempoh tersebut; pengeditan check-out secara langsung membatalkan pilihan tempoh automatik. Tarikh sah menentukan perbandingan termasuk penginapan melebihi tiga malam. Tarikh tidak sah yang sedang dibetulkan tidak ditulis semula ketika memulihkan draf.
 
 `templates/rates.cjs` menjana kad perbandingan pakej; `templates/enquiry.cjs` menjana borang, ralat ruangan, pecahan anggaran dan pratonton mesej. `app.js` menyelaraskan pilihan pakej dan butiran WhatsApp. Jangan menambah kadar berasingan dalam template atau JavaScript; gunakan `rates` dan `business.securityDeposit` dalam config.
 
@@ -54,11 +60,25 @@ Panduan menyusun kandungan, alamat/Google Maps/Waze, kemudian panduan berkaitan 
 
 ## Draf dan perkongsian
 
+Envelope draf versi 1 menerima medan pilihan `plannedNights` bernilai 1, 2 atau 3. Draf lama tanpa medan itu kekal sah; field asing dan nilai tidak sah ditolak. Tempoh luput 2 jam/key sedia ada tidak berubah. Reset juga membuang pilihan malam.
+
+Perkongsian keluarga dalam `app.js` ialah tindakan berasingan daripada `share.js`. Pengguna membuka pratonton kemudian menekan kongsi; hanya pakej, tarikh, bilangan malam, anggaran sewaan, deposit dan pautan awam dimasukkan. Jangan menambah nota peribadi/jumlah tetamu secara senyap. Uji pembatalan menu native, clipboard ditolak, perubahan tarikh semasa proses kongsi dan pemulihan fokus. Perkongsian tidak menghantar mesej automatik kepada owner atau keluarga.
+
 `app.js` menyimpan check-in, check-out, jumlah tetamu, pakej, nota dan status pilihan pakej dalam `sessionStorage` dengan key `jitra2stay.enquiry-draft.v1`. Draf terhad kepada sesi tab dan sah sehingga 2 jam sejak simpanan terakhir. Input/perubahan dan klik bahasa menyimpan draf; pemulihan sahaja tidak melanjutkan tempohnya. Draf rosak atau tamat tempoh tidak dipulihkan. Ralat yang boleh dibetulkan, seperti check-out lebih awal atau tetamu melebihi had, dikekalkan untuk pembetulan.
 
 Butang kosongkan draf membuang rekod itu dan menetapkan semula borang. Menghantar pertanyaan tidak memadamkannya. Jika simpanan tamat ketika halaman masih terbuka, rekod simpanan dibuang sementara butiran yang sedang dilihat kekal. Jika browser menyekat storage, borang masih berfungsi dan memaklumkan bahawa draf tidak dapat disimpan. Pilihan tema menggunakan `localStorage`; butiran tetamu tidak dimasukkan ke URL atau dihantar ke server website.
 
 `share.js` menggunakan URL homepage awam daripada markup, tanpa query/hash atau butiran borang. Menu perkongsian peranti digunakan dahulu; jika tidak tersedia, pautan disalin atau dipaparkan untuk salinan manual. Pembatalan menu kongsi tidak dianggap ralat. Kekalkan pautan Google Maps dan album Facebook berdasarkan `business.mapUrl` serta `business.facebookUrl`; pautan tersebut bukan bukti rating atau petikan ulasan.
+
+## Destinasi dan laluan
+
+`destinations.cjs` menyenaraikan 50 nama daripada panduan kawasan asal. Alias membantu carian BM/EN. `destination-routes.cjs` hanya mengandungi 46 laluan yang disahkan dalam Google Maps pada 19–20 September 2026; ia tidak dihantar sebagai fail source awam. Template menjana teks/URL HTML sahaja, tanpa API berbayar atau permintaan lokasi peranti.
+
+Untuk mengemas kini jarak, buka laluan kereta dengan origin pin Jitra2Stay, semak destinasi/cawangan sebenar, dan catat `distanceKm`, `durationMinutes`, `routeLabel`, `checkedAt`, `mapsUrl` serta `tollsWarningDisplayed`. Masa ialah snapshot trafik ketika semakan. Tiada amaran tol tidak bermaksud jalan bebas tol. Jangan guna jarak garis lurus, menukar pin rumah atau menganggarkan angka untuk nama yang belum jelas.
+
+Hotel Regency, kampus UniMAP, Kem Askar Melayu dan cawangan MARDI belum dapat dikenal pasti secara pasti daripada nama asal. Katalog mengekalkan nama/pautan Maps dan arahan memilih lokasi; tiada nombor jarak untuk empat item ini. Rujuk `NEARBY-ROUTES-2026-09-20.md` sebelum menambah rekod. Enam panduan kawasan asal kekal dalam panel berasingan dan dilabel sebagai anggaran umum.
+
+Tanpa JavaScript semua kad/pautan destinasi tersedia. Dengan JavaScript, enam kad dipaparkan dahulu; carian menapis semua 50 nama dan butang lihat semua tersedia. Uji nama pendek, huruf besar/kecil, tiada padanan, padam carian, nota tol serta origin semua pautan selepas mengubah katalog.
 
 ## Gambar
 
