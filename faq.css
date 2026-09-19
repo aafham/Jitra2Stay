@@ -5,5 +5,14 @@
 .faq-filter[aria-pressed="true"]{border-color:var(--green);background:var(--green);color:var(--on-green)}
 .faq-results{margin-top:13px;color:var(--muted);font-size:.85rem}
 .faq-content{min-width:0}
+.faq-list details[id]{scroll-margin-top:calc(var(--header-height,88px) + 22px)}
+.faq-list details:target{border-color:var(--green)}
+.faq-answer-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin:0 0 18px}
+.faq-answer-link,.faq-copy-link{display:inline-flex;align-items:center;gap:7px;min-height:44px;font-size:.8rem;font-weight:600;line-height:1.5;color:var(--green)}
+.faq-answer-link .icon{width:16px;height:16px}
+.faq-copy-link{padding:8px 12px;border:1px solid var(--line);border-radius:7px;background:var(--card)}
+.faq-copy-link:hover{background:var(--surface)}
+.faq-copy-feedback:not(:empty){flex-basis:100%;color:var(--muted);font-size:.8rem;line-height:1.5}
+.faq-copy-fallback{width:100%;min-width:0;flex-basis:100%;font-size:1rem}
 @media(max-width:600px){.faq-filter{padding-inline:12px;font-size:.8rem}.faq-filters{gap:7px}}
-@media print{.faq-tools{display:none}.faq-list details[hidden]{display:block!important}}
+@media print{.faq-tools,.faq-answer-actions{display:none}.faq-list details[hidden]{display:block!important}}

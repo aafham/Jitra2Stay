@@ -129,7 +129,14 @@
     const originalHref = link.getAttribute('href');
     const prepareLanguageLink = () => {
       let section;
-      if (isHome) section = findReadingSection(viewport());
+      if (isHome) {
+        section = findReadingSection(viewport());
+        let id;
+        try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { id = ''; }
+        const question = id && /^faq-[a-z0-9-]+$/.test(id) ? document.getElementById(id) : null;
+        // Carry only an actual FAQ answer while the guest is reading that section.
+        if (section === 'faq' && question?.matches('#faqList > details[data-faq-category]')) section = id;
+      }
       else {
         let id;
         try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { id = ''; }

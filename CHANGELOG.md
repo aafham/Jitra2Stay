@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-20 — Rancang penginapan dan perjalanan
+
+- Bandingkan jumlah semua pakej untuk 1–3 malam; tempoh pilihan diselaraskan dengan tarikh borang, termasuk tempoh manual lebih panjang.
+- Tambah pratonton dan perkongsian ringkasan keluarga melalui menu peranti, clipboard atau salinan manual; nota/jumlah tetamu tidak dimasukkan.
+- Pautan kemudahan membuka foto sebenar yang berkaitan sambil mengekalkan penapis galeri dan fokus asal.
+- Tambah pautan terus setiap jawapan FAQ, salin pautan dan sokongan BM/EN/keyboard.
+- Jadikan semua 50 nama destinasi asal boleh dicari. Google Maps diperiksa untuk semua nama: 46 laluan disahkan dan 4 lokasi/cawangan belum pasti; hanya angka yang disahkan dipaparkan, bersama tarikh serta nota tol.
+- Panduan enam kawasan dan semua fakta owner asal dikekalkan. Website terus statik untuk paparan/pertanyaan, tanpa kalendar kekosongan atau pembayaran.
+
 ## 2026-09-12 — Kemasan UI/UX seluruh website
 
 - Susun empat pakej sebaris pada desktop, bezakan harga daripada deposit/caj dan kemaskan ringkasan penginapan.
