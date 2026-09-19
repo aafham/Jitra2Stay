@@ -45,15 +45,29 @@ for(const lang of ['ms','en']) {
     const photoLink=page.locator('.amenity-photo[data-gallery-photo="dapur"]');
     const imageUrl=new URL(await photoLink.getAttribute('href'),page.url()).href;
     const openerUrl=page.url();
-    const imageResponsePromise=context.waitForEvent('response',response=>response.url()===imageUrl&&response.request().isNavigationRequest());
-    const popupPromise=context.waitForEvent('page');
-    // Ctrl+Shift keeps native modified-link navigation, but opens the image in
-    // the foreground. A background image tab can defer its initial navigation
-    // in headless Chromium on CI, before Playwright has a usable page event.
+    // Verify the site's modifier guard with a real trusted click. Observe it at
+    // document level, after the application's link handlers, then prevent only
+    // the browser default. Native image-tab startup is flaky in headless CI;
+    // the real href's navigation and image decoding are verified separately.
+    await photoLink.evaluate(link=>{
+      const observe=event=>{
+        if(!link.contains(event.target)) return;
+        window.__modifiedPhotoClick={defaultPrevented:event.defaultPrevented,ctrlKey:event.ctrlKey,shiftKey:event.shiftKey,button:event.button,isTrusted:event.isTrusted,href:link.href};
+        event.preventDefault();
+        document.removeEventListener('click',observe);
+      };
+      document.addEventListener('click',observe);
+    });
     await photoLink.click({modifiers:['Control','Shift']});
-    const popup=await popupPromise;
+    expect(await page.evaluate(()=>window.__modifiedPhotoClick)).toEqual({defaultPrevented:false,ctrlKey:true,shiftKey:true,button:0,isTrusted:true,href:imageUrl});
+    await expect(page).toHaveURL(openerUrl);
+    await expect(page.locator('#galleryDialog')).not.toHaveAttribute('open','');
+    // Starting from an initialized page tests the fallback content without
+    // depending on Chromium's native new-tab initialization/event ordering.
+    const popup=await context.newPage();
     await popup.bringToFront();
-    const imageResponse=await imageResponsePromise;
+    const imageResponse=await popup.goto(imageUrl);
+    expect(imageResponse).not.toBeNull();
     expect(imageResponse.status()).toBe(200);
     expect(imageResponse.headers()['content-type']).toMatch(/^image\/webp(?:;|$)/);
     await expect(popup).toHaveURL(imageUrl);

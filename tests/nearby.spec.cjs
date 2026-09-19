@@ -23,12 +23,29 @@ for(const lang of ['ms','en']) test(`${lang} destination search finds aliases, r
   await page.locator('[data-destination-query="airport"]').click();
   await expect(page.locator('#destinationsList .destination-card:visible')).toHaveCount(1);
   await expect(page.locator('[data-destination-id="airport"]')).toBeVisible();
-  await expect(page.locator('#destinationSearch')).toBeFocused();
+  await expect(page.locator('[data-destination-query="airport"]')).toBeFocused();
+  for(const [query,ids] of [
+    ['POLIMAS',['polimas']],
+    ['IPG',['ipg-darulaman']],
+    [lang==='en'?'places to visit':'tempat menarik',['tasik-darulaman','darulaman-fantasia','masjid-zahir','darulaman-golf']],
+    [lang==='en'?'hall':'dewan',['dewan-jitra','dewan-tunku-anum','dewan-wawasan']]
+  ]) {
+    const shortcut=page.locator(`[data-destination-query="${query}"]`);
+    await shortcut.click();
+    await expect(shortcut).toHaveAttribute('aria-pressed','true');
+    await expect(shortcut).toBeFocused();
+    await expect(page.locator('.destination-shortcuts [aria-pressed="true"]')).toHaveCount(1);
+    await expect(page.locator('#destinationsMore')).toBeHidden();
+    await expect(page.locator('#destinationEmpty')).toBeHidden();
+    expect(await page.locator('#destinationsList .destination-card:visible').evaluateAll(cards=>cards.map(card=>card.dataset.destinationId))).toEqual(ids);
+  }
   await page.locator('#destinationSearch').fill('destination-that-does-not-exist <script>');
+  await expect(page.locator('.destination-shortcuts [aria-pressed="true"]')).toHaveCount(0);
   await expect(page.locator('#destinationEmpty')).toBeVisible();
   await expect(page.locator('#destinationsList .destination-card:visible')).toHaveCount(0);
   await page.locator('#destinationClear').click();
   await expect(page.locator('#destinationSearch')).toHaveValue('');
+  await expect(page.locator('#destinationSearch')).toBeFocused();
   await expect(page.locator('#destinationEmpty')).toBeHidden();
   await page.locator('#destinationsMore').click();
   await expect(page.locator('#destinationsList .destination-card:visible')).toHaveCount(destinations.length);
@@ -76,9 +93,12 @@ test('destination search remains usable on a narrow dark screen and passes acces
   await page.setViewportSize({width:320,height:568});
   await page.emulateMedia({colorScheme:'dark'});
   await page.goto('/en.html');
-  await page.locator('#destinationSearch').fill('hospital');
-  await expect(page.locator('#destinationsList .destination-card:visible')).toHaveCount(1);
-  await expect(page.locator('#destinationResults')).toContainText('1 destination found');
+  await page.locator('[data-destination-query="hall"]').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-destination-query="hall"]')).toBeFocused();
+  await expect(page.locator('[data-destination-query="hall"]')).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('#destinationsList .destination-card:visible')).toHaveCount(3);
+  await expect(page.locator('#destinationResults')).toContainText('3 destinations found');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   expect((await new AxeBuilder({page}).include('.destination-finder').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations).toEqual([]);
 });

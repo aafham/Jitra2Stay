@@ -4,7 +4,8 @@
 .destination-search-row{display:flex;align-items:center;gap:16px;margin-top:8px}.destination-search-row input{flex:1;min-width:0;max-width:520px;margin:0}.destination-search-row button{min-height:44px;flex-shrink:0}
 .destination-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .destination-shortcuts button,.destination-more{font:inherit;font-size:.875rem;min-height:44px;padding:9px 15px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer}
-.destination-shortcuts button:hover,.destination-more:hover{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.destination-shortcuts button:hover,.destination-more:hover{background:var(--bg);color:var(--ink);border-color:var(--green)}
+.destination-shortcuts button[aria-pressed="true"]{background:var(--green);color:var(--on-green);border-color:var(--green)}
 .destination-results{font-size:.875rem;color:var(--muted);margin:16px 0 12px}
 .destinations-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .destination-card{display:flex;flex-direction:column;min-width:0;padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}

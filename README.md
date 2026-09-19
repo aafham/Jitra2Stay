@@ -12,6 +12,7 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 
 ## Apa yang berubah
 
+- Pintasan destinasi kini merangkumi POLIMAS, IPG Darulaman, empat tempat menarik dan tiga dewan. Pilihan aktif ditandakan; menekan pintasan mengekalkan fokus pada butang supaya keyboard telefon tidak dibuka tanpa perlu.
 - Jumlah sewaan semua pakej boleh dibandingkan untuk 1–3 malam, atau tempoh lain daripada tarikh borang. Pilihan malam diselaraskan dengan check-out dan disimpan bersama draf; deposit/caj tambahan kekal berasingan.
 - Ringkasan pakej, tarikh dan anggaran boleh dipratonton lalu dikongsi dengan keluarga. Nota peribadi dan jumlah tetamu tidak dimasukkan; pembatalan menu kongsi tidak menyalin atau menghantar mesej.
 - Pautan gambar pada kemudahan membuka foto sebenar yang berkaitan dan mengembalikan fokus apabila dialog ditutup.

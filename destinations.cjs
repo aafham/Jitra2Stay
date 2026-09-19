@@ -8,6 +8,8 @@ const locationNotes = {
   'kem-askar-melayu': {ms:'Pilih kem yang dituju dalam Google Maps.',en:'Choose your intended army camp in Google Maps.'},
   'mardi': {ms:'Pilih cawangan MARDI yang dituju dalam Google Maps.',en:'Choose your intended MARDI branch in Google Maps.'}
 };
+// Curated shortcuts reuse the existing destinations and their verified routes.
+const placesToVisit = new Set(['tasik-darulaman', 'darulaman-fantasia', 'darulaman-golf', 'masjid-zahir']);
 const destinations = [
   ['hospital-jitra', 'Hospital Jitra', 'Jitra Hospital', 'Hospital Jitra Kedah', 'hospital klinik'],
   ['uum', 'Universiti Utara Malaysia (UUM)', 'Universiti Utara Malaysia (UUM)', 'Universiti Utara Malaysia Sintok Kedah', 'uum universiti konvokesyen university'],
@@ -59,6 +61,6 @@ const destinations = [
   ['polipauh', 'PoliPauh', 'PoliPauh', 'Politeknik Tuanku Syed Sirajuddin Pauh Perlis', 'polipauh politeknik pauh'],
   ['matrikulasi-arau', 'Matrikulasi Arau', 'Arau Matriculation College', 'Kolej Matrikulasi Perlis Arau', 'matrikulasi kolej college'],
   ['uitm-arau', 'UiTM Arau', 'UiTM Arau', 'UiTM Arau Perlis', 'uitm universiti university']
-].map(([id, ms, en, query, aliases]) => ({ id, ms, en, query, aliases, locationNote:locationNotes[id] }));
+].map(([id, ms, en, query, aliases]) => ({ id, ms, en, query, aliases: `${aliases}${placesToVisit.has(id) ? ' tempat menarik places to visit attractions' : ''}`, locationNote:locationNotes[id] }));
 
 module.exports = destinations;
