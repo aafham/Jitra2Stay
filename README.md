@@ -12,6 +12,8 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 
 ## Apa yang berubah
 
+- Pilihan pakej terus membawa pengguna ke ruangan tarikh yang belum lengkap, dengan ringkasan bilik, bilik air dan kadar semalam di atas borang. Tukar pakej membawa kembali ke kad semasa tanpa memadam tarikh, jumlah tetamu atau nota.
+- Jika salin mesej pertanyaan disekat, mesej lengkap tersedia dalam ruangan salin manual. Pengeditan atau pengosongan borang membuang salinan lama; respons clipboard yang lewat tidak mengembalikan mesej lapuk.
 - Destinasi ditapis mengikut 10 kategori: Pendidikan, Tempat menarik, Dewan, Beli-belah, Kesihatan, Masjid, Hotel, Pengangkutan, Agensi & kem dan Bandar. Carian berfungsi dalam kategori dipilih; Semua memaparkan seluruh katalog dan Set semula mengosongkan kedua-dua penapis. Butang kategori boleh dileret pada telefon serta digunakan dengan keyboard.
 - Jumlah sewaan semua pakej boleh dibandingkan untuk 1–3 malam, atau tempoh lain daripada tarikh borang. Pilihan malam diselaraskan dengan check-out dan disimpan bersama draf; deposit/caj tambahan kekal berasingan.
 - Ringkasan pakej, tarikh dan anggaran boleh dipratonton lalu dikongsi dengan keluarga. Nota peribadi dan jumlah tetamu tidak dimasukkan; pembatalan menu kongsi tidak menyalin atau menghantar mesej.
@@ -124,7 +126,7 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 20 September 2026: **617 semakan statik, 13 unit dan 75 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 20 September 2026: **617 semakan statik, 13 unit dan 84 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 

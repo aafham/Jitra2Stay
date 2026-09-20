@@ -132,7 +132,7 @@
     ready: en ? "Your enquiry is ready. Press Send in WhatsApp to send it to the owner. If WhatsApp did not open, use the link below. This does not confirm a booking." : "Pertanyaan anda sedia. Tekan Hantar dalam WhatsApp untuk menghantarnya kepada owner. Jika WhatsApp tidak terbuka, guna pautan di bawah. Ini belum mengesahkan tempahan.",
     invalid: en ? "Please check the highlighted fields." : "Sila semak ruangan yang ditandakan.",
     copied: en ? "Enquiry message copied." : "Mesej pertanyaan telah disalin.",
-    copyFailed: en ? "Unable to copy here. Use the WhatsApp link to open your prepared message." : "Mesej tidak dapat disalin di sini. Guna pautan WhatsApp untuk membuka mesej yang disediakan.",
+    copyFailed: en ? "Copy the enquiry message below." : "Salin mesej pertanyaan di bawah.",
     draftSaved: en ? "Draft saved in this tab for up to 2 hours. You can switch language or reload." : "Draf disimpan dalam tab ini sehingga 2 jam. Anda boleh tukar bahasa atau muat semula.",
     draftRestored: en ? "Your draft was restored. Review the details before opening WhatsApp." : "Draf anda dipulihkan. Semak butiran sebelum membuka WhatsApp.",
     draftUnavailable: en ? "This browser could not save the draft. Keep this page open to retain your details." : "Browser ini tidak dapat menyimpan draf. Kekalkan halaman ini untuk mengekalkan butiran anda.",
@@ -248,10 +248,15 @@
   const feedback = document.getElementById("formFeedback");
   const enquiryLink = document.getElementById("enquiryLink");
   const copyMessage = document.getElementById("enquiryCopyMessage");
+  const enquiryCopyFeedback = document.getElementById("enquiryCopyFeedback");
+  const enquiryCopyFallback = document.getElementById("enquiryCopyFallback");
+  const enquiryCopyText = document.getElementById("enquiryCopyText");
   const clearDraft = document.getElementById("clearEnquiryDraft");
   const draftFeedback = document.getElementById("draftFeedback");
   if (!checkin || !checkout || !guests || !rooms || !enquiryLink || !getEnquiryUrl(config.phone, "")) return;
   let preparedMessage = "";
+  let enquiryCopyRevision = 0;
+  let enquiryCopyInFlight = false;
   let submitted = false;
   let packageChosen = false;
   let plannedNights = null;
@@ -368,6 +373,20 @@
       const badge = card.querySelector(".package-selected");
       if (badge) badge.hidden = !selected;
     });
+    const summary = document.getElementById("enquiryPackage");
+    const name = document.getElementById("enquiryPackageName");
+    const meta = document.getElementById("enquiryPackageMeta");
+    const option = rooms.selectedOptions[0];
+    const rate = Number(config.roomRates?.[rooms.value]);
+    if (summary && name && meta) {
+      summary.hidden = !option || !Number.isFinite(rate);
+      if (!summary.hidden) {
+        const title = `${rooms.value} ${en ? "rooms" : "bilik"} · ${money(rate)} / ${en ? "night" : "malam"}`;
+        const details = en ? `${option.dataset.bathrooms} bathrooms · Full-house privacy` : `${option.dataset.bathrooms} bilik air · Privasi satu rumah`;
+        if (name.textContent !== title) name.textContent = title;
+        if (meta.textContent !== details) meta.textContent = details;
+      }
+    }
   }
 
   function updateComparison(validDates, estimate) {
@@ -460,7 +479,14 @@
     updatePackageCards();
     updateComparison(validDates, estimate);
     const valid = estimate && Array.from(form.elements).every((field) => !field.willValidate || field.validity.valid);
-    preparedMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate }) : "";
+    const nextMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate }) : "";
+    if (nextMessage !== preparedMessage) {
+      enquiryCopyRevision++;
+      if (enquiryCopyFeedback) enquiryCopyFeedback.textContent = "";
+      if (enquiryCopyFallback) enquiryCopyFallback.hidden = true;
+      if (enquiryCopyText) enquiryCopyText.value = "";
+    }
+    preparedMessage = nextMessage;
     enquiryLink.hidden = !preparedMessage;
     if (copyMessage) copyMessage.hidden = !preparedMessage;
     if (preparedMessage) enquiryLink.href = getEnquiryUrl(config.phone, preparedMessage);
@@ -509,14 +535,43 @@
   });
   document.querySelectorAll(".package-link[data-rooms]").forEach((link) => {
     link.addEventListener("click", (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const selectedRooms = link.dataset.rooms;
       if (!Array.from(rooms.options).some((option) => option.value === selectedRooms)) return;
       form.hidden = false;
       rooms.value = selectedRooms;
       rooms.dispatchEvent(new Event("change", { bubbles: true }));
-      // The normal anchor scrolls to the enquiry section, including without JavaScript.
+      event.preventDefault();
+      // Preserve the public section URL and native no-JS link, but land at the
+      // actual form instead of the long introduction above it on a phone.
+      if (window.location.hash !== link.hash) window.history.pushState(null, "", link.hash);
+      const title = document.getElementById("enquiryFormTitle");
+      const target = !checkin.validity.valid ? checkin : !checkout.validity.valid ? checkout : title;
+      target?.focus({ preventScroll: true });
+      const headerBottom = Math.max(0, document.querySelector(".site-header")?.getBoundingClientRect().bottom || 0);
+      const top = window.scrollY + (title || form).getBoundingClientRect().top - headerBottom - 20;
+      window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+      // On short/landscape screens the summary and dates may not fit together.
+      // Prioritise the focused input over keeping the summary at the top.
+      if (target && target !== title) {
+        const view = window.visualViewport;
+        const visibleTop = Math.max(view?.offsetTop || 0, headerBottom) + 16;
+        const visibleBottom = (view?.offsetTop || 0) + (view?.height || window.innerHeight) - 16;
+        const rect = target.getBoundingClientRect();
+        if (rect.top < visibleTop || rect.bottom > visibleBottom) {
+          window.scrollBy({ top: rect.top - (visibleTop + (visibleBottom - visibleTop - rect.height) / 2), behavior: "instant" });
+        }
+      }
     });
+  });
+  document.getElementById("changeEnquiryPackage")?.addEventListener("click", event => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const selected = Array.from(document.querySelectorAll(".package-link[data-rooms]")).find(link => link.dataset.rooms === rooms.value);
+    if (!selected) return;
+    event.preventDefault();
+    if (window.location.hash !== "#kadar") window.history.pushState(null, "", "#kadar");
+    selected.focus({ preventScroll: true });
+    selected.scrollIntoView({ block: "center", behavior: "instant" });
   });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -537,12 +592,35 @@
     try { window.open(enquiryLink.href, "_blank", "noopener,noreferrer"); } catch { /* The real link remains available. */ }
   });
   copyMessage?.addEventListener("click", async () => {
-    if (!preparedMessage) return;
+    if (!preparedMessage || enquiryCopyInFlight) return;
+    const text = preparedMessage;
+    const revision = enquiryCopyRevision;
+    const currentMessageVisible = () => revision === enquiryCopyRevision && preparedMessage === text &&
+      !copyMessage.hidden && copyMessage.getClientRects().length > 0;
+    enquiryCopyInFlight = true;
+    copyMessage.setAttribute("aria-busy", "true");
+    if (enquiryCopyFeedback) enquiryCopyFeedback.textContent = "";
+    if (enquiryCopyFallback) enquiryCopyFallback.hidden = true;
     try {
-      await navigator.clipboard.writeText(preparedMessage);
-      if (feedback) feedback.textContent = copy.copied;
+      await navigator.clipboard.writeText(text);
+      if (currentMessageVisible() && enquiryCopyFeedback) enquiryCopyFeedback.textContent = copy.copied;
     } catch {
-      if (feedback) feedback.textContent = copy.copyFailed;
+      // An older clipboard request must not reveal stale personal details or
+      // move focus after the guest changes or clears the enquiry.
+      if (!currentMessageVisible()) return;
+      if (enquiryCopyFeedback) enquiryCopyFeedback.textContent = copy.copyFailed;
+      if (enquiryCopyFallback && enquiryCopyText) {
+        enquiryCopyText.value = text;
+        enquiryCopyFallback.hidden = false;
+        if (document.activeElement === copyMessage) {
+          enquiryCopyText.focus({ preventScroll: true });
+          enquiryCopyText.select();
+          enquiryCopyText.scrollIntoView({ block: "center", behavior: "instant" });
+        }
+      }
+    } finally {
+      enquiryCopyInFlight = false;
+      copyMessage.removeAttribute("aria-busy");
     }
   });
   familyPlanShare?.addEventListener("click", async () => {
