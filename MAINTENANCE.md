@@ -40,6 +40,12 @@ Menu telefon dalam `app.js` menutup apabila fokus atau sentuhan bergerak keluar 
 
 ## Pakej dan borang pertanyaan
 
+Klik biasa pada kad pakej mengekalkan URL `#semak-tarikh` tetapi membawa viewport ke tajuk borang sebenar, di bawah header melekat. Fokus pergi ke check-in/check-out yang belum sah, atau tajuk apabila kedua-duanya sah. Klik dengan modifier dan pautan tanpa JS kekal sebagai pautan biasa. Tukar pakej memulangkan fokus ke kad pakej semasa tanpa menetapkan semula draf.
+
+Ringkasan pakej borang membaca kadar daripada `APP_CONFIG.roomRates` dan bilangan bilik air daripada `data-bathrooms` pada option yang dijana terus daripada `rates`. Semak pemilihan kad, dropdown, pemulihan draf dan reset supaya semuanya selari.
+
+Salin mesej pertanyaan menyediakan textarea baca sahaja apabila clipboard tiada/disekat. Hasil async hanya digunakan untuk mesej semasa; pengeditan/reset membuang teks lama. Uji clipboard gagal, kejayaan, operasi tertunda serta fokus supaya respons lewat tidak mengganggu pengguna yang sudah bergerak ke ruangan lain.
+
 Pilihan 1–3 malam dalam `#stayComparison` mengemas kini semua jumlah pakej; harga semalam masih terlihat. `plannedNights` hanya ditetapkan apabila pengguna memilih tempoh. Selepas check-in sah, check-out mengikuti tempoh tersebut; pengeditan check-out secara langsung membatalkan pilihan tempoh automatik. Tarikh sah menentukan perbandingan termasuk penginapan melebihi tiga malam. Tarikh tidak sah yang sedang dibetulkan tidak ditulis semula ketika memulihkan draf.
 
 `templates/rates.cjs` menjana kad perbandingan pakej; `templates/enquiry.cjs` menjana borang, ralat ruangan, pecahan anggaran dan pratonton mesej. `app.js` menyelaraskan pilihan pakej dan butiran WhatsApp. Jangan menambah kadar berasingan dalam template atau JavaScript; gunakan `rates` dan `business.securityDeposit` dalam config.

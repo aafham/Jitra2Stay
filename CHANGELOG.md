@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-20 — Pilih pakej terus ke pertanyaan
+
+- Bawa pilihan pakej ke borang sebenar di telefon, dengan fokus pada tarikh yang belum lengkap atau tajuk borang apabila kedua-dua tarikh sudah sah.
+- Paparkan pakej semasa, bilik air dan kadar semalam daripada config; pautan Tukar pakej kembali ke kad pilihan sambil mengekalkan semua butiran draf.
+- Tambah unit semalam pada pilihan pakej dalam borang.
+- Sediakan salinan manual mesej apabila clipboard gagal, dengan perlindungan daripada respons lewat selepas mengedit atau mengosongkan borang.
+
 ## 2026-09-20 — Kategori destinasi
 
 - Ganti pintasan nama tempat dengan pilihan Semua dan 10 kategori BM/EN yang meliputi semua 50 destinasi asal.

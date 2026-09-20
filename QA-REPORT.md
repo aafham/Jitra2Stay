@@ -1,4 +1,4 @@
-# Laporan QA — perancangan dan destinasi 20 September 2026
+# Laporan QA — aliran pakej dan pertanyaan 20 September 2026
 
 Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan sekarang berdasarkan output dist dan browser sebenar.
 
@@ -7,9 +7,11 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 | Build | 16 halaman HTML penuh |
 | Static output QA | 617 / 617 lulus |
 | Unit tarikh, draf dan perkongsian | 13 / 13 lulus |
-| Playwright Chromium 153 | 75 / 75 lulus |
+| Playwright Chromium 153 | 84 / 84 lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
+
+Sembilan kes baharu meliputi pilihan pakej terus ke tarikh, ringkasan kadar/bilik air, Tukar pakej dengan fokus kembali ke kad, butiran draf yang kekal, dropdown/reload/reset, klik dengan modifier serta salin mesej manual. Fokus check-out yang terpotong pada skrin pendek ditemui dan dibetulkan, dengan semakan 568×320 dan 320×480. Clipboard tiada/disekat, operasi tertunda, pengeditan/reset dan pengguna yang sudah berpindah fokus turut diuji. Semakan visual BM/EN pada 320/390/768/1440px dalam tema cerah/gelap tidak menunjukkan overflow atau page error. Fakta owner dan data destinasi kekal sama.
 
 Penapis destinasi kini mempunyai 10 kategori BM/EN dan pilihan Semua. Enam ujian destinasi meliputi gabungan kategori dengan carian, teks yang kekal ketika bertukar kategori, pagination dalam kategori, reset, liputan 50 kad unik, label tanpa JavaScript dan fokus pada setiap butang kategori yang perlu dileret. Pemeriksaan visual 320/390/768/1440px menemui dan membetulkan grid yang melebar; ujian Tab semula jadi turut mengesan butang kategori separa tersembunyi dan kini memastikan butang berfokus kelihatan sepenuhnya. Jarak dan pautan Maps sedia ada tidak berubah.
 
