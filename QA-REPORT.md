@@ -1,15 +1,20 @@
-# Laporan QA — aliran pakej dan pertanyaan 20 September 2026
+# Laporan QA — kemasan mobile 21 September 2026
 
 Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan sekarang berdasarkan output dist dan browser sebenar.
 
 | Semakan | Keputusan |
 | --- | --- |
 | Build | 16 halaman HTML penuh |
-| Static output QA | 617 / 617 lulus |
+| Static output QA | 618 / 618 lulus |
 | Unit tarikh, draf dan perkongsian | 13 / 13 lulus |
-| Playwright Chromium 153 | 84 / 84 lulus |
+| Playwright Chromium 153 | 95 kes: 94 lulus awal; kes kontras menu lulus selepas menunggu animasi selesai |
+| Matriks Chromium 153 / WebKit 26.6 | 56 / 56 gabungan halaman, bahasa dan viewport lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
+
+Pusingan mobile 21 September menambah 11 kes regresi untuk pautan kemudahan yang tersalah masuk kolum ikon, gambar/penerangan bilik penuh pada telefon, input dan semua fallback manual minimum 16px, ruang kad destinasi, polisi/footer, serta animasi menu, tap berulang, keyboard dan skrin melintang. Ujian kontras menu menunggu opacity penuh sebelum audit; ujian berasingan mengesahkan animasi masih berjalan ketika membuka/menutup. Semua assertion kontras asal dikekalkan.
+
+Matriks berasingan menggunakan Chromium dan WebKit dengan viewport serta sentuhan emulasi: 320/360/390/430/768px portrait, 568×320 dan 844×390 landscape, BM/EN, serta semua halaman sokongan pada 320px. Pemeriksaan meliputi overflow, saiz input, menu, imej/dialog dan fokus pertanyaan. Ini ujian enjin desktop, bukan Safari/iPhone fizikal; papan kekunci peranti sebenar belum diperiksa. 404 tidak mempunyai footer bersama; harness diperbetul supaya memeriksa kandungan utama, dan kedua-dua enjin lulus.
 
 Sembilan kes baharu meliputi pilihan pakej terus ke tarikh, ringkasan kadar/bilik air, Tukar pakej dengan fokus kembali ke kad, butiran draf yang kekal, dropdown/reload/reset, klik dengan modifier serta salin mesej manual. Fokus check-out yang terpotong pada skrin pendek ditemui dan dibetulkan, dengan semakan 568×320 dan 320×480. Clipboard tiada/disekat, operasi tertunda, pengeditan/reset dan pengguna yang sudah berpindah fokus turut diuji. Semakan visual BM/EN pada 320/390/768/1440px dalam tema cerah/gelap tidak menunjukkan overflow atau page error. Fakta owner dan data destinasi kekal sama.
 

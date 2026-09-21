@@ -1,0 +1,153 @@
+/* Mobile layout, loaded after the component styles. Keep real content readable
+   at narrow widths rather than hiding overflow or shrinking text to fit. */
+@media screen and (max-width:900px){
+  :root{--mobile-gutter:clamp(16px,4.5vw,28px)}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  .wrap{width:auto;margin-left:max(var(--mobile-gutter),env(safe-area-inset-left));margin-right:max(var(--mobile-gutter),env(safe-area-inset-right))}
+  .hero.wrap{margin:0;padding-left:max(var(--mobile-gutter),env(safe-area-inset-left));padding-right:max(var(--mobile-gutter),env(safe-area-inset-right))}
+  .hero-media img{aspect-ratio:16/10;max-height:420px;object-fit:cover}
+  .gallery-grid{align-items:start}
+  .section-heading>div,.hero-copy,.facts-grid>*,.enquiry-layout>*,.form-grid>*,.gallery-tools,.gallery-filters{min-width:0}
+  input,select,textarea,.form-grid select,#familyPlanCopyText,#enquiryCopyText,#shareFallback{min-width:0;max-width:100%;font-size:16px}
+  input[type="date"]{display:block;width:100%;min-inline-size:0}
+  input[type="date"]::-webkit-date-and-time-value{min-height:1.5em;text-align:left}
+  .mobile-action-bar{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  .button,.text-link,.guide-links a,.related-guide-links a{overflow-wrap:anywhere}
+}
+
+@media screen and (max-width:600px){
+  .section{padding-block:42px}
+  h2,#kadar .rates-intro h2,.enquiry-section h2{font-size:clamp(1.85rem,7.7vw,2.4rem);line-height:1.16}
+  .section-heading{margin-bottom:24px}
+  .section-heading>p,.rates-intro>p:not(.eyebrow){font-size:1rem;line-height:1.65}
+  .section-heading>p{margin-top:14px}
+  .section-heading .eyebrow,.eyebrow{margin-bottom:10px;letter-spacing:.09em}
+  .hero{padding-block:26px 30px;gap:22px}
+  .hero-media img{aspect-ratio:16/10}
+  .hero-media figcaption{flex-wrap:wrap;gap:4px 12px;padding:12px 14px;font-size:.75rem}
+  .hero-media figcaption>span:last-child{max-width:none;text-align:left}
+  .hero-description{font-size:.9375rem;line-height:1.65}
+  .hero-note{line-height:1.6}
+  .facts-section{padding-block:24px}
+  .facts-grid{gap:20px 14px}
+  .fact{gap:8px}
+  .fact>.icon{display:block;width:22px;height:22px}
+  .fact strong{font-size:.9375rem}
+  .fact span{font-size:.8125rem;line-height:1.5}
+  .facts-note{font-size:.875rem;margin-top:20px;padding-top:16px}
+  .property-tools{gap:12px;padding-top:12px}
+  .property-profiles{width:100%;gap:4px 18px;font-size:.875rem}
+  .share-button{width:100%;min-height:46px}
+
+  /* Photo labels and full room descriptions have enough width to read. */
+  .gallery-grid{gap:18px}
+  .gallery-card{border-radius:16px}
+  .gallery-card .gallery-trigger{border-radius:15px 15px 0 0}
+  .gallery-card figcaption{padding:14px 16px 16px;font-size:1rem;line-height:1.5}
+  .room-description{margin-top:6px;font-size:.9375rem;line-height:1.6}
+  .gallery-tools{gap:12px;margin-bottom:20px}
+  .gallery-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+  .gallery-filter{padding:10px 12px;font-size:.875rem}
+  .gallery-results{font-size:.8125rem}
+  .gallery-more-control{margin-top:20px}
+  .gallery-more-button{width:100%;font-size:.9375rem}
+  .room-guide{padding:18px;margin-top:22px}
+
+  #kadar .rates-layout{gap:22px}
+  #kadar .package-grid{gap:10px}
+  #kadar .package-card{padding:16px 12px}
+  #kadar .package-heading{gap:6px}
+  #kadar .package-price>span,.package-total-label{font-size:.8125rem}
+  #kadar .rate-note{font-size:.875rem}
+  .stay-comparison{padding:16px;border-radius:12px;gap:12px}
+  .stay-comparison fieldset,.comparison-help{width:100%}
+  .comparison-nights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .comparison-nights button{min-width:0;padding:10px 8px;font-size:.875rem}
+  .comparison-help{font-size:.875rem}
+  #kadar .rates-support{gap:16px}
+  #kadar .stay-summary{padding:18px}
+
+  .amenities-grid{gap:12px}
+  .amenity{grid-template-columns:26px minmax(0,1fr);gap:6px 12px;padding:18px;border-radius:12px}
+  .amenity h3{font-size:1rem;line-height:1.5}
+  .amenity p{font-size:.9375rem;line-height:1.65}
+  .amenity .amenity-photo{grid-column:2;min-width:0;justify-self:start;margin-top:2px;font-size:.875rem}
+
+  /* One clear surface for the finder; do not nest narrow cards inside a card. */
+  .location-layout{gap:26px}
+  .location-address{margin-top:20px}
+  .location-layout address{font-size:1rem}
+  .location-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}
+  .location-actions .button{min-width:0;padding:12px 9px;gap:8px;font-size:.875rem}
+  .location-actions .button>.icon:last-child{display:none}
+  .location-map-card iframe{height:clamp(240px,65vw,330px)}
+  .map-caption{padding:14px 16px}
+  .arrival-times{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+  .destination-finder{padding:24px 0 0;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent;margin-bottom:24px}
+  .destination-finder h3{font-size:1.2rem;line-height:1.45}
+  .destination-finder p.destination-intro{margin-top:10px;font-size:.9375rem;line-height:1.65}
+  .destination-controls{margin-top:18px}
+  .destination-categories{gap:8px}
+  .destination-finder p.destination-category-label{margin-top:16px;margin-bottom:8px}
+  .destination-finder p.destination-filter-hint{margin-top:6px;font-size:.8125rem}
+  .destination-finder p.destination-results{margin-top:14px;margin-bottom:12px}
+  .destinations-list{gap:12px}
+  .destination-card{padding:16px 18px;border-radius:12px;background:var(--card)}
+  .destination-card h4{margin-bottom:8px;font-size:1rem}
+  .destination-finder p.destination-distance{margin-top:0;font-size:.875rem}
+  .destination-finder p.destination-route{margin-top:8px;font-size:.875rem;line-height:1.6}
+  .destination-finder p.destination-source{margin-top:8px;font-size:.8125rem}
+  .destination-card .text-link{align-self:stretch;justify-content:space-between;padding-top:10px;margin-top:6px;font-size:.875rem}
+  .destination-more{width:100%;margin-top:16px;font-size:.9375rem}
+  .location-guides .guide-links{gap:10px}
+  .location-guides .guide-links a{padding:14px 16px;font-size:.9375rem}
+
+  .faq-layout{gap:24px}
+  .faq-layout>div:first-child>p:not(.eyebrow){margin-top:14px}
+  .faq-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .faq-filter{padding:10px;font-size:.875rem}
+  .faq-list summary{gap:16px;padding-block:16px;font-size:.9375rem}
+  .faq-list details>p{font-size:.9375rem;line-height:1.7}
+
+  .enquiry-layout{gap:24px}
+  .enquiry-layout>div:first-child>p:not(.eyebrow){margin-top:16px;font-size:.9375rem}
+  .enquiry-section .button-light{margin-top:20px}
+  .enquiry-phone{margin-top:12px}
+  .enquiry-panel{padding:22px 18px;border-radius:16px}
+  #dateForm h3{font-size:1.2rem;line-height:1.5;margin-bottom:18px}
+  .enquiry-package{padding:14px;margin-bottom:20px;gap:4px 14px}
+  .enquiry-package strong{font-size:1rem}
+  .enquiry-package p{font-size:.8125rem}
+  .enquiry-package a{font-size:.875rem}
+  label,.field-note{font-size:.875rem}
+  input,select,textarea{min-height:48px;padding:11px 12px;border-radius:9px}
+  .form-grid{gap:16px}
+  .form-submit{min-height:52px;font-size:.9375rem}
+  .family-plan summary,.enquiry-preview summary{font-size:.875rem;padding:14px}
+  .family-plan-content pre,.enquiry-preview pre{font-size:.875rem}
+
+  .document-page{padding-block:34px 44px}
+  .document-heading{margin-bottom:26px}
+  .document-heading h1{font-size:clamp(2rem,8vw,2.75rem);line-height:1.16}
+  .document-lead{font-size:1rem;line-height:1.65}
+  .document-content section h2{font-size:1.25rem;line-height:1.4}
+  .document-callout,.guide-aside>div{padding:20px}
+  .policy-layout{gap:24px}
+  .guide-page .related-guides h2{font-size:1.7rem}
+  .site-footer .footer-grid{gap:20px 24px}
+  .site-footer .footer-links a{font-size:.875rem}
+  .site-footer .footer-bottom{gap:10px}
+}
+
+@media screen and (max-width:480px){
+  .gallery-grid{grid-template-columns:minmax(0,1fr)}
+  .gallery-trigger img{aspect-ratio:16/10}
+  .photo-expand{width:34px;height:34px;right:12px;bottom:12px}
+  .form-grid{grid-template-columns:minmax(0,1fr)}
+  .policy-toc ul{grid-template-columns:minmax(0,1fr)}
+  .policy-toc a{font-size:.9375rem}
+  .site-footer .footer-grid{grid-template-columns:minmax(0,1fr)}
+  .site-footer .footer-intro{display:block}
+  .site-footer .footer-intro p{text-align:left;margin-top:4px}
+  .site-footer .footer-contact,.site-footer .footer-stay{padding-top:14px;border-top:1px solid var(--line)}
+}

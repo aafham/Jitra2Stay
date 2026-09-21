@@ -654,8 +654,11 @@ test("English policy page, expanded mobile menu and gallery dialog pass accessib
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
   await page.goto("/en.html");
   await page.locator("#menuToggle").click();
+  // Audit the fully opened menu; animation behavior is verified separately.
+  await expect(page.locator("#mainNav")).toHaveCSS("opacity", "1");
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
   await page.keyboard.press("Escape");
+  await expect(page.locator("#mainNav")).toBeHidden();
   await page.locator(".gallery-trigger").first().click();
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
 });

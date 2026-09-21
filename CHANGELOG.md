@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-21 — Kemasan menyeluruh mobile
+
+- Susun semula galeri, borang, kad destinasi, penapis FAQ, halaman polisi dan footer untuk ruang skrin telefon.
+- Betulkan pautan foto kemudahan yang tersalah masuk kolum ikon 28px serta margin destinasi yang mengatasi jarak komponen.
+- Tetapkan input/select/textarea minimum 16px, gutter fleksibel dan safe-area untuk telefon berlekuk tanpa menyekat zoom pengguna.
+- Menu menjadi panel terapung dengan animasi buka/tutup, ikon hamburger ke ×, pengurusan fokus, klik luar/Escape serta reduced motion. Kedudukan halaman tidak berubah apabila menu dibuka.
+- Selaraskan saiz imej responsif dengan galeri satu kolum dan hadkan ketinggian gambar hero pada tablet.
+
 ## 2026-09-20 — Pilih pakej terus ke pertanyaan
 
 - Bawa pilihan pakej ke borang sebenar di telefon, dengan fokus pada tarikh yang belum lengkap atau tajuk borang apabila kedua-dua tarikh sudah sah.

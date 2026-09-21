@@ -12,6 +12,9 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 
 ## Apa yang berubah
 
+- Paparan telefon dikemas dari hero hingga footer: galeri satu kolum sehingga 480px, borang penuh, teks input minimum 16px, kad destinasi lebih luas serta ruang selamat untuk skrin berlekuk. Gambar hero tablet lebih seimbang.
+- Menu mobile terapung di bawah header, dengan animasi buka/tutup dan ikon ×. Halaman tidak melompat; Escape, klik luar, keyboard, skrin melintang dan tetapan kurangkan gerakan disokong.
+- Pautan foto kemudahan dibetulkan supaya sejajar dengan penerangan, bukan terperangkap dalam kolum ikon. Jarak teks destinasi turut dibetulkan supaya kad tidak memanjang tanpa sebab.
 - Pilihan pakej terus membawa pengguna ke ruangan tarikh yang belum lengkap, dengan ringkasan bilik, bilik air dan kadar semalam di atas borang. Tukar pakej membawa kembali ke kad semasa tanpa memadam tarikh, jumlah tetamu atau nota.
 - Jika salin mesej pertanyaan disekat, mesej lengkap tersedia dalam ruangan salin manual. Pengeditan atau pengosongan borang membuang salinan lama; respons clipboard yang lewat tidak mengembalikan mesej lapuk.
 - Destinasi ditapis mengikut 10 kategori: Pendidikan, Tempat menarik, Dewan, Beli-belah, Kesihatan, Masjid, Hotel, Pengangkutan, Agensi & kem dan Bandar. Carian berfungsi dalam kategori dipilih; Semua memaparkan seluruh katalog dan Set semula mengosongkan kedua-dua penapis. Butang kategori boleh dileret pada telefon serta digunakan dengan keyboard.
@@ -83,6 +86,7 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 | `gallery.js`, `gallery.css` | Penapis, lihat lagi, dialog, leretan dan pemulihan gambar |
 | `navigation.js`, `navigation.css` | Penanda bahagian aktif, pautan bahasa dan tingkah laku bar mobile |
 | `style.css` | Token warna, layout, komponen, responsive dan print |
+| `mobile.css` | Kemasan telefon/tablet yang dimuat selepas komponen: saiz bacaan, grid, borang dan safe area |
 | `images/` | JPG sumber web dan aset responsif yang dikomit |
 | `images/responsive/manifest.json` | Dimensi, saiz, hash dan provenance foto |
 | `tools/build.cjs` | Jana HTML/config/SEO dan salin hanya aset yang diperlukan |
@@ -126,7 +130,7 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 20 September 2026: **617 semakan statik, 13 unit dan 84 browser tests lulus** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 21 September 2026: **618 semakan statik, 13 unit dan 95 kes browser disemak** pada versi implementasi ini. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
 

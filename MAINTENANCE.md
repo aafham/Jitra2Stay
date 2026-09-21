@@ -1,5 +1,13 @@
 # Penyelenggaraan
 
+## Layout mobile
+
+`mobile.css` dimuat selepas semua stylesheet komponen, pada semua halaman. Breakpoint 900px mengurus gutter/safe area dan input 16px; 600px mengemas jarak/kad; 480px menyusun galeri, borang, indeks polisi dan footer satu kolum. CSS ini tidak memotong overflow dokumen untuk menutup masalah susunan. Apabila menukar kolum galeri, kemas kini `sizes` dalam `templates/gallery.cjs` supaya foto tidak kabur pada telefon.
+
+Kad kemudahan mobile menggunakan grid ikon dan kandungan: pastikan `.amenity-photo` kekal dalam kolum 2 bersama penerangan. Margin destinasi mesti menggunakan selector cukup khusus untuk mengatasi `.location-layout p:not(.eyebrow)`; jangan kembalikan margin 16px kepada setiap baris kad.
+
+Panel menu dalam `navigation.css` berada di luar aliran dokumen, tetapi kekal disclosure biasa. `app.js` mengurus `hidden`/`inert`, animasi boleh diterbalikkan ketika tap berulang, fokus dan ruang viewport sebenar. Tanpa JS menu asal tetap tersedia; reduced motion mematikan animasi. Uji skrin melintang, Tab semua pautan, Escape, klik luar serta pertukaran ke desktop apabila mengubah menu.
+
 ## Background dan navigasi peta
 
 Background hero menggunakan foto asal rumah melalui WebP responsif dalam `style.css`. Gambar foreground, galeri dan background ialah penggunaan berbeza; elakkan menambah preload JPG yang tidak dirender.
