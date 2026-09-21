@@ -156,38 +156,93 @@
   const menuToggle = document.getElementById("menuToggle");
   if (nav && menuToggle) {
     const mobile = window.matchMedia("(max-width: 900px)");
-    let menuOpen = false;
-    function updateMenu() {
-      nav.dataset.mobile = String(mobile.matches);
-      nav.hidden = mobile.matches && !menuOpen;
-      nav.inert = mobile.matches && !menuOpen;
-      menuToggle.hidden = !mobile.matches;
-      menuToggle.setAttribute("aria-expanded", String(mobile.matches && menuOpen));
-      menuToggle.setAttribute("aria-label", menuOpen ? copy.closeMenu : copy.openMenu);
-    }
-    menuToggle.addEventListener("click", () => { menuOpen = !menuOpen; updateMenu(); });
-    nav.addEventListener("click", (event) => {
-      if (event.target.closest("a") && mobile.matches) { menuOpen = false; updateMenu(); }
-    });
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const header = menuToggle.closest("header");
+    let menuOpen = false;
+    let closeTimer = 0;
+
+    function sizeMenu() {
+      if (!mobile.matches || !header) return;
+      const viewport = window.visualViewport;
+      const bottom = (viewport?.offsetTop || 0) + (viewport?.height || window.innerHeight);
+      nav.style.setProperty("--menu-space", `${Math.max(0, bottom - header.getBoundingClientRect().bottom - 20)}px`);
+    }
+
+    function finishClosing() {
+      if (mobile.matches && !menuOpen) nav.hidden = true;
+    }
+
+    function updateMenu(open, immediate = false) {
+      window.clearTimeout(closeTimer);
+      menuOpen = mobile.matches && open;
+      nav.dataset.mobile = String(mobile.matches);
+      menuToggle.hidden = !mobile.matches;
+      menuToggle.setAttribute("aria-expanded", String(menuOpen));
+      menuToggle.setAttribute("aria-label", menuOpen ? copy.closeMenu : copy.openMenu);
+
+      if (!mobile.matches) {
+        nav.hidden = false;
+        nav.inert = false;
+        nav.removeAttribute("aria-hidden");
+        delete nav.dataset.state;
+        return;
+      }
+
+      sizeMenu();
+      if (menuOpen) {
+        const wasHidden = nav.hidden;
+        nav.hidden = false;
+        nav.inert = false;
+        nav.removeAttribute("aria-hidden");
+        // Establish the closed frame after display:none. Reversing an active
+        // transition needs no reset, so rapid taps stay smooth and predictable.
+        if (wasHidden) {
+          nav.dataset.state = "closed";
+          void nav.offsetHeight;
+        }
+        nav.dataset.state = "open";
+      } else {
+        // Keep the fading panel out of keyboard navigation immediately.
+        if (nav.contains(document.activeElement)) menuToggle.focus({ preventScroll: true });
+        nav.inert = true;
+        nav.setAttribute("aria-hidden", "true");
+        nav.dataset.state = "closed";
+        if (immediate || reducedMotion.matches || nav.hidden) finishClosing();
+        else closeTimer = window.setTimeout(finishClosing, 240);
+      }
+    }
+
+    menuToggle.addEventListener("click", () => updateMenu(!menuOpen));
+    nav.addEventListener("transitionend", (event) => {
+      if (event.target === nav && event.propertyName === "opacity" && !menuOpen && Number(window.getComputedStyle(nav).opacity) < 0.01) finishClosing();
+    });
+    nav.addEventListener("click", (event) => {
+      if (event.target.closest("a") && mobile.matches) updateMenu(false);
+    });
     function dismissOutsideMenu(event) {
       if (!mobile.matches || !menuOpen || !header || header.contains(event.target)) return;
-      menuOpen = false;
-      updateMenu();
+      updateMenu(false);
     }
     document.addEventListener("focusin", dismissOutsideMenu);
     document.addEventListener("pointerdown", dismissOutsideMenu);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && mobile.matches && menuOpen) {
-        menuOpen = false;
-        updateMenu();
-        menuToggle.focus();
+        updateMenu(false);
+        menuToggle.focus({ preventScroll: true });
       }
     });
-    const onResize = () => { menuOpen = false; updateMenu(); };
+    const onResize = () => {
+      const toggleWasFocused = document.activeElement === menuToggle;
+      updateMenu(false, true);
+      if (!mobile.matches && toggleWasFocused) nav.querySelector("a")?.focus({ preventScroll: true });
+    };
     if (mobile.addEventListener) mobile.addEventListener("change", onResize);
     else mobile.addListener(onResize);
-    updateMenu();
+    window.addEventListener("resize", sizeMenu, { passive: true });
+    window.visualViewport?.addEventListener("resize", sizeMenu, { passive: true });
+    window.visualViewport?.addEventListener("scroll", sizeMenu, { passive: true });
+    if (header && "ResizeObserver" in window) new ResizeObserver(sizeMenu).observe(header);
+    updateMenu(false, true);
   }
 
   const themeToggle = document.getElementById("themeToggle");

@@ -8,3 +8,58 @@
   text-underline-offset: 8px;
   text-decoration-skip-ink: auto;
 }
+
+/* A disclosure below the header leaves the reading position unchanged. The
+ * unenhanced navigation retains its normal document flow without JavaScript. */
+@media (max-width: 900px) {
+  .js .header-inner { position: relative; }
+  .js #mainNav[data-mobile="true"] {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: min(100%, 360px);
+    max-height: calc(var(--menu-space, 100dvh - 100px) - env(safe-area-inset-bottom));
+    margin: 0;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: 0 16px 38px #071e182b, 0 3px 10px #071e1810;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scroll-padding: 8px;
+    transform-origin: top right;
+    transition: opacity 180ms ease, transform 200ms cubic-bezier(.2,.8,.2,1);
+  }
+  .js #mainNav[data-state="closed"] {
+    opacity: 0;
+    transform: translateY(-8px) scale(.985);
+    pointer-events: none;
+  }
+  .js #mainNav[data-state="open"] { opacity: 1; transform: none; }
+  .js #mainNav > a:not(.button) {
+    padding: 11px 14px;
+    min-height: 48px;
+    border: 0;
+    border-radius: 9px;
+    font-size: .95rem;
+  }
+  .js #mainNav > a:not(.button):hover,
+  .js #mainNav > a[aria-current="location"] {
+    background: var(--surface);
+    text-decoration: none;
+  }
+  .js #mainNav > a[aria-current="location"] { box-shadow: inset 3px 0 var(--green); }
+  .js #mainNav .language-links { margin: 12px 6px; }
+  .js #mainNav > .button { margin: 0 6px 6px; align-self: stretch; min-height: 48px; }
+  .js #mainNav a:focus-visible { outline-offset: -3px; }
+  #menuToggle .icon path {
+    transform-origin: 12px 12px;
+    transition: transform 200ms ease, opacity 160ms ease;
+  }
+  #menuToggle[aria-expanded="true"] { background: var(--surface); }
+  #menuToggle[aria-expanded="true"] .icon path:first-child { transform: translateY(6px) rotate(45deg); transform-origin: 12px 6px; }
+  #menuToggle[aria-expanded="true"] .icon path:nth-child(2) { opacity: 0; }
+  #menuToggle[aria-expanded="true"] .icon path:last-child { transform: translateY(-6px) rotate(-45deg); transform-origin: 12px 18px; }
+}
