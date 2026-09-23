@@ -6,12 +6,16 @@ Website homestay statik dalam Bahasa Melayu dan English: lihat rumah, gambar, ha
 
 - [Website production](https://jitra2stay.vercel.app/)
 - [English](https://jitra2stay.vercel.app/en.html)
+- [Audit menyeluruh desktop/mobile — 23 September](WEBSITE-AUDIT-2026-09-23.md)
 - [Pembaikan audit dan pengesahan](IMPLEMENTATION-2026-09-11.md)
 - [Audit baseline sebelum pembaikan](AUDIT-2026-09-11.md)
 - [Semakan UI/UX seluruh website](UI-UX-REVIEW-2026-09-12.md)
 
 ## Apa yang berubah
 
+- Audit seluruh 16 halaman membaiki lompatan halaman ketika menu mula dimuatkan, muat turun gambar galeri tersembunyi, fokus yang ditarik selepas salinan clipboard gagal, serta kandungan terpotong ketika teks dibesarkan 200%.
+- Tema pilihan digunakan sebelum paparan pertama. Jika skrip gagal dimuatkan, menu dan semua foto kembali tersedia selepas HTML siap, tanpa menunggu gambar atau peta.
+- Panduan UUM/Changlun dan sekitar Jitra menggunakan angka, pautan dan tarikh semakan daripada data laluan yang sama dengan carian destinasi; senarai sekitar Jitra lebih mudah diimbas pada telefon.
 - Semua 10 foto kemudahan yang diberi owner pada 23 September 2026 ditambah; galeri kini mempunyai 21 foto dengan kategori baharu Kemudahan dan Bilik air. Foto menegak dipaparkan penuh supaya peralatan tidak terpotong.
 - Sembilan kad kemudahan merangkumi mesin basuh, seterika/papan seterika, peti sejuk, microwave, air fryer, penapis air Coway, TV/WiFi, bilik air dan kotak kunci self check-in. Empat belas pautan foto membuka gambar yang berkaitan terus daripada kad.
 - Maklumat akses pada foto TV/WiFi dan kotak kunci ditutup dalam salinan web. Fail asal baharu disimpan di luar repo; semua varian awam dijana daripada JPG yang sudah disediakan untuk penerbitan.
@@ -82,7 +86,8 @@ Buka [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm run dev` membina dan m
 | `location.js`, `location.css` | Salin alamat dan pilihan salinan manual |
 | `destinations.cjs`, `destination-categories.cjs`, `destination-routes.cjs` | Katalog tempat asal, kategori BM/EN dan snapshot laluan Google Maps yang disahkan |
 | `templates/nearby.cjs`, `nearby.js`, `nearby.css` | Carian destinasi, jarak bertarikh, nota tol dan pautan laluan dari rumah |
-| `templates/pages.cjs` | Polisi, panduan setempat, halaman legacy thank-you dan 404 |
+| `templates/pages.cjs`, `templates/guide-journeys.cjs` | Polisi, panduan setempat dengan laluan bertarikh, halaman legacy thank-you dan 404 |
+| `templates/appearance.cjs` | Tema dan susunan awal menu/galeri sebelum skrip deferred siap, dengan fallback kegagalan skrip |
 | `documents.css` | Indeks polisi, susunan panduan dan footer semua halaman |
 | `app.js` | Menu, tema, pakej, validasi, mesej dan draf pertanyaan dalam sesi tab |
 | `share.js` | Perkongsian URL homepage tanpa butiran borang |
@@ -135,9 +140,11 @@ $env:TEST_BROWSER_CHANNEL = 'chrome'
 npm test
 ```
 
-Pengesahan 23 September 2026: **663 semakan statik, 13 unit dan 99 kes browser lulus**. Kes galeri tambahan meliputi semua foto baharu, kategori kemudahan/bilik air, pautan kad kemudahan, gambar menegak serta kandungan tanpa JavaScript. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
+Pengesahan 23 September 2026: **687 semakan statik, 16 unit dan 110 kes browser lulus**. Kes galeri tambahan meliputi semua foto baharu, kategori kemudahan/bilik air, pautan kad kemudahan, gambar menegak serta kandungan tanpa JavaScript. Browser meliputi saiz 320/390/768/1440 serta melintang 568×320, BM/EN, menu, keyboard/dialog, FAQ mengikut topik, salin alamat, no-JS, form, fallback WhatsApp serta axe pada state/tema utama. Semakan tambahan meliputi perbandingan tempoh, perkongsian keluarga/async, pautan foto kemudahan, FAQ deep link dan carian destinasi, di samping Tab semula jadi, fokus di atas bar mobile, ralat borang pertama, topik polisi merentas bahasa dan penggunaan semula pertanyaan oleh butang WhatsApp umum. Peta Google sebenar dan pembukaan Google Maps/Waze turut diperiksa secara berasingan. Suite automatik menggunakan fixture peta supaya ujian website tidak bergantung pada rangkaian atau UI Google. Angka ujian boleh bertambah apabila suite dikemas.
 
 Tiada mesej WhatsApp atau pembayaran sebenar dihantar oleh tests. Semakan telefon fizikal, mobile data, Safari sebenar dan akaun Search Console kekal berasingan daripada ujian automatik. Axe lulus tidak menggantikan semua penilaian aksesibiliti manusia.
+
+Audit menyeluruh turut menambah regresi muatan awal/skrip gagal, clipboard tertunda dan teks 200%; 11 kes berkaitan lulus pada WebKit menggunakan output sebenar. Lihat [laporan audit September 23](WEBSITE-AUDIT-2026-09-23.md) untuk isu yang direproduksi dan ukuran selepas pembaikan.
 
 ## Deploy
 

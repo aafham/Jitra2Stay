@@ -1,16 +1,27 @@
-# Laporan QA — foto kemudahan 23 September 2026
+# Laporan QA — audit menyeluruh 23 September 2026
 
 Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan sekarang berdasarkan output dist dan browser sebenar.
 
 | Semakan | Keputusan |
 | --- | --- |
 | Build | 16 halaman HTML penuh |
-| Static output QA | 663 / 663 lulus |
-| Unit tarikh, draf dan perkongsian | 13 / 13 lulus |
-| Playwright Chromium 153 | 99 / 99 lulus; tiada retry |
-| Semakan visual foto Chromium / WebKit | 6 / 6 gabungan bahasa, tema dan viewport lulus |
+| Static output QA | 687 / 687 lulus |
+| Unit tarikh, draf, perkongsian dan panduan | 16 / 16 lulus |
+| Playwright Chromium 153 | 110 / 110 lulus; tiada retry |
+| Regresi WebKit pada output sebenar | 11 / 11 lulus: 4 clipboard/kongsi, 2 teks besar, 5 muatan awal/fallback |
+| Audit mobile/tablet tambahan | 104 semakan halaman/viewport/enjin dan 18 interaksi galeri lulus pada saiz biasa |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
+
+Audit menyeluruh memeriksa desktop hingga 1440px, telefon 320/390px, tablet dan landscape, BM/EN, tema cerah/gelap, serta semua halaman sokongan. Pembaikan merangkumi header yang melompat pada muatan awal, galeri memuat foto tersembunyi, clipboard lambat yang merampas fokus, susunan teks 200% serta anggaran panduan yang bercanggah. Lihat [penemuan dan pembaikan](WEBSITE-AUDIT-2026-09-23.md).
+
+Lima ujian baharu menahan skrip untuk membandingkan kedudukan header/main serta tema sebelum dan selepas JS siap, memastikan foto tersembunyi belum dimuat, dan mengesahkan navigasi/foto HTML pulih apabila skrip gagal walaupun gambar masih pending. Empat muatan terukur pada 390/1440px merekodkan CLS 0.000 selepas pembaikan, berbanding 0.428 pada kes mobile baseline; foto galeri desktop dimuat berkurang daripada 18 kepada enam dalam keadaan yang diperiksa. Ini bukan jaminan skor semua rangkaian.
+
+Teks 200% diuji pada 320/390/600px dalam kedua-dua enjin. Harga/label pakej, fakta, galeri/FAQ, pilihan malam dan tajuk halaman susulan kekal terbaca tanpa overflow. Susunan biasa dua kad mobile dan empat kad desktop turut diperiksa. Kedua-dua panduan yang diubah mempunyai pautan laluan bertarikh; senarai sekitar Jitra diuji pada 320/610/901/1440px.
+
+Ujian async meliputi lima tindakan: kongsi homestay, salin alamat, salin pautan FAQ, kongsi pelan keluarga dan salin pertanyaan. Penolakan lambat selepas pengguna beralih ke nota tidak menukar fokus/kedudukan ruangan; fallback segera tetap memilih teks penuh. FAQ tertutup/ditapis mengabaikan respons lama dan pembatalan native share tidak memulakan clipboard.
+
+## Pengesahan foto pada awal 23 September
 
 Pusingan 23 September mengesahkan 10 foto baharu dan kesemua 11 foto asal, penapis Kemudahan/Bilik air, 14 pautan foto pada sembilan kad kemudahan, navigasi dalam kategori, fokus kembali ke pembuka dan pautan imej tanpa JavaScript. Foto menegak diuji tanpa crop pada 320/390/1440px dan dialog melintang 568×320. Hash, saiz bait, dimensi, nisbah imej dan ketiadaan EXIF/XMP disemak terhadap manifest untuk semua imej terbitan; hanya foto yang digunakan disalin ke `dist/`.
 

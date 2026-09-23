@@ -2,11 +2,15 @@
 
 ## Layout mobile
 
+Grid pakej menggunakan minimum `rem` dalam `rates.css`; fakta, penapis galeri/FAQ dan pilihan malam turut mengecilkan jumlah kolum apabila teks dibesarkan. Kekalkan dua kolum pakej pada telefon biasa dan empat pada desktop yang cukup lebar, tetapi uji juga root font 200% pada 320/390px. Jangan paksa harga pecah baris atau sembunyikan overflow untuk menutup masalah.
+
 `mobile.css` dimuat selepas semua stylesheet komponen, pada semua halaman. Breakpoint 900px mengurus gutter/safe area dan input 16px; 600px mengemas jarak/kad; 480px menyusun galeri, borang, indeks polisi dan footer satu kolum. CSS ini tidak memotong overflow dokumen untuk menutup masalah susunan. Apabila menukar kolum galeri, kemas kini `sizes` dalam `templates/gallery.cjs` supaya foto tidak kabur pada telefon.
 
 Kad kemudahan mobile menggunakan grid ikon dan kandungan: pastikan `.amenity-photo` kekal dalam kolum 2 bersama penerangan. Margin destinasi mesti menggunakan selector cukup khusus untuk mengatasi `.location-layout p:not(.eyebrow)`; jangan kembalikan margin 16px kepada setiap baris kad.
 
 Panel menu dalam `navigation.css` berada di luar aliran dokumen, tetapi kekal disclosure biasa. `app.js` mengurus `hidden`/`inert`, animasi boleh diterbalikkan ketika tap berulang, fokus dan ruang viewport sebenar. Tanpa JS menu asal tetap tersedia; reduced motion mematikan animasi. Uji skrin melintang, Tab semua pautan, Escape, klik luar serta pertukaran ke desktop apabila mengubah menu.
+
+`templates/appearance.cjs` dimasukkan sebelum stylesheet untuk menetapkan tema serta kelas sementara `nav-pending`/`gallery-pending`. `app.js` dan `gallery.js` masing-masing membuang kelas selepas siap. `DOMContentLoaded` memulihkan kandungan asal jika skrip gagal; jangan tukar fallback ini kepada `load`, kerana gambar/peta perlahan boleh menyekat navigasi. `tests/initial-render.spec.cjs` menahan skrip/gambar untuk menguji sempadan ini.
 
 ## Background dan navigasi peta
 
@@ -19,6 +23,12 @@ Bahagian lokasi dijana dalam `templates/location.cjs`. `business.mapUrl` membuka
 FAQ dijana oleh `templates/faq.cjs`. Tetapkan `topic` setiap item `faq` kepada key dalam `faqTopics`; labels topik mempunyai BM/EN. `faq.js` hanya menapis paparan, tanpa membuang soalan atau menukar jawapan. Tanpa JavaScript, semua soalan tersedia melalui `details` biasa.
 
 Salin alamat dalam `location.js` menggunakan alamat owner yang dijana oleh template, tanpa menyimpan butiran tetamu. Uji kedua-dua keadaan clipboard dibenarkan dan disekat; pilihan salinan manual mesti kekal boleh dipilih. `location.css` mengurus layout kawalan ini.
+
+Semua tindakan salin/kongsi menetapkan fokus pada butang ketika diaktifkan, termasuk WebKit yang tidak berbuat demikian secara automatik. Selepas operasi async, pilih ruangan manual hanya jika fokus masih pada butang itu. Jangan tarik pengguna kembali daripada borang yang sudah mereka fokus. Kekalkan kawalan pending dengan `aria-busy` dan guard permintaan berganda; keputusan FAQ yang tidak lagi terlihat diabaikan.
+
+Anggaran dalam panduan dijana oleh `templates/guide-journeys.cjs` daripada `destination-routes.cjs`. Token `{{route:ID}}` digunakan dalam ayat ringkas, manakala `journeyStops` menyenaraikan destinasi dalam panduan sekitar Jitra. Ubah snapshot laluan sekali sahaja; minit, km, pautan dan tarikh panduan akan dikemas ketika build.
+
+`nearby[]` mengekalkan enam kumpulan kawasan dan penerangan asal. Elemen pertama BM/EN kini label kawasan/jenis, bukan anggaran masa; jangan masukkan semula julat lama yang boleh bercanggah dengan kad laluan khusus.
 
 `site.config.cjs` ialah sumber semasa. Fakta owner yang tersedia dalam repo `18a274d` telah dipulihkan, termasuk parking 3–4 kereta, privasi rumah, self check-in, TV, bayaran manual dan polisi pembatalan 7 hari. Rujuk `RESTORED-CONTENT.md` sebelum mengganti maklumat ini dengan ayat umum meminta pengesahan; pemulihan sumber bukan pemeriksaan fizikal baharu.
 

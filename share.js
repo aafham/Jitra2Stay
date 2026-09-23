@@ -32,8 +32,16 @@
     if (!fallback.hasAttribute("aria-label")) fallback.setAttribute("aria-label", copy.label);
   }
 
+  let sharing = false;
   button.addEventListener("click", async () => {
-    button.disabled = true;
+    if (sharing) return;
+    sharing = true;
+    button.setAttribute("aria-busy", "true");
+    // WebKit does not focus buttons on pointer activation. Establish a focus
+    // origin so a delayed result can tell whether the guest has moved on.
+    button.focus({ preventScroll: true });
+    if (feedback) feedback.textContent = "";
+    if (fallback) fallback.hidden = true;
     try {
       if (typeof navigator.share === "function") {
         try {
@@ -54,11 +62,19 @@
         if (feedback) feedback.textContent = fallback ? copy.manual : `${copy.manual} ${publicUrl}`;
         if (fallback) {
           fallback.hidden = false;
-          fallback.focus();
-          fallback.select();
+          // A permission prompt can finish after the guest has moved on.
+          // Keep the manual link available without pulling them back here.
+          if (document.activeElement === button) {
+            fallback.focus({ preventScroll: true });
+            fallback.select();
+            fallback.scrollIntoView({ block: "center", behavior: "instant" });
+          }
         }
       }
-    } finally { button.disabled = false; }
+    } finally {
+      sharing = false;
+      button.removeAttribute("aria-busy");
+    }
   });
   button.hidden = false;
 })();

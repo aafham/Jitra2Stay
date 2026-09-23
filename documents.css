@@ -1,4 +1,5 @@
 /* Reading and recovery pages, plus shared footer navigation. */
+.recovery-page h1{overflow-wrap:anywhere}
 .policy-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:64px;align-items:start}
 .policy-toc{position:sticky;top:calc(var(--header-height) + 24px);max-height:calc(100dvh - var(--header-height) - 48px);overflow:auto;padding:20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);scrollbar-gutter:stable}
 .policy-toc h2{font-family:inherit;font-size:1rem;font-weight:650;letter-spacing:0;line-height:1.4;margin-bottom:12px}
@@ -84,4 +85,11 @@
  .site-footer .footer-links .footer-secondary-phone{display:flex}
  .site-footer .footer-links a{font-size:.875rem}
 }
+.guide-journeys{list-style:none;margin:18px 0;padding:0}
+.guide-journeys li{border-bottom:1px solid var(--line)}
+.guide-journeys a{display:flex;align-items:baseline;justify-content:space-between;gap:8px 20px;min-height:48px;padding:12px 0;line-height:1.5;text-decoration:none}
+.guide-journeys a>span:first-child{font-weight:600;min-width:0}
+.guide-journeys-estimate{flex-shrink:0;font-size:.9rem;text-decoration:underline;text-underline-offset:4px}
+.guide-journeys a:hover>span:first-child{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:600px){.guide-journeys a{flex-direction:column;gap:4px}}
 @media print{.policy-toc,.related-guides,.guide-directions{display:none}.policy-layout{display:block}.guide-page .guide-layout{display:block}.guide-page .guide-aside{margin-top:24px;break-inside:avoid}.guide-page .guide-aside img{max-height:180px}.policy-page .document-content>section{outline:none}}

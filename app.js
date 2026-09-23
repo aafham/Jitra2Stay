@@ -276,6 +276,7 @@
     else preferredTheme.addListener(onPreference);
     applyTheme();
   }
+  root.classList.remove("nav-pending");
 
   const form = document.getElementById("dateForm");
   if (!form) return;
@@ -654,6 +655,9 @@
       !copyMessage.hidden && copyMessage.getClientRects().length > 0;
     enquiryCopyInFlight = true;
     copyMessage.setAttribute("aria-busy", "true");
+    // Pointer activation does not focus buttons in every browser. Keep a
+    // reliable origin for the delayed manual-copy focus guard below.
+    copyMessage.focus({ preventScroll: true });
     if (enquiryCopyFeedback) enquiryCopyFeedback.textContent = "";
     if (enquiryCopyFallback) enquiryCopyFallback.hidden = true;
     try {
@@ -688,6 +692,7 @@
       familyPlan.open && !familyPlan.hidden && familyPlanShare.getClientRects().length > 0;
     familyShareInFlight = true;
     familyPlanShare.setAttribute("aria-busy", "true");
+    familyPlanShare.focus({ preventScroll: true });
     if (familyPlanFeedback) familyPlanFeedback.textContent = "";
     if (familyPlanFallback) familyPlanFallback.hidden = true;
     try {
@@ -710,9 +715,11 @@
         if (familyPlanFallback && familyPlanCopyText) {
           familyPlanCopyText.value = text;
           familyPlanFallback.hidden = false;
-          familyPlanCopyText.focus({ preventScroll: true });
-          familyPlanCopyText.select();
-          familyPlanCopyText.scrollIntoView({ block: "center", behavior: "instant" });
+          if (document.activeElement === familyPlanShare) {
+            familyPlanCopyText.focus({ preventScroll: true });
+            familyPlanCopyText.select();
+            familyPlanCopyText.scrollIntoView({ block: "center", behavior: "instant" });
+          }
         }
       }
     } finally {
