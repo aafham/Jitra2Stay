@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-23 — Foto dan kemudahan rumah
+
+- Tambah semua 10 foto yang dihantar owner, menjadikan 21 foto galeri. Kekalkan foto rumah/bilik asal dan tambah kategori Kemudahan serta Bilik air.
+- Paparkan foto peralatan menegak dengan bingkai penuh; kapsyen serta alt BM/EN menerangkan subjek tanpa menyimpulkan tingkat atau jumlah peralatan.
+- Kemas kini sembilan kad kemudahan dengan mesin basuh, seterika/papan seterika, peti sejuk, microwave, air fryer, penapis air Coway, TV/WiFi, bilik air dan kotak kunci self check-in. Empat belas pautan foto dijana daripada `facilities[].photos`.
+- Tutup maklumat akses pada foto TV/WiFi dan dail kotak kunci sebelum menjana semua salinan web. Fail asal baharu kekal di luar repo; hash dan jejak sumber direkodkan berasingan daripada output website.
+- Selaraskan FAQ dapur dan dokumentasi. Foto bilik air kini tersedia; set ini tidak mendokumenkan ketiga-tiga bilik air secara berasingan.
+
 ## 2026-09-21 — Kemasan menyeluruh mobile
 
 - Susun semula galeri, borang, kad destinasi, penapis FAQ, halaman polisi dan footer untuk ruang skrin telefon.
@@ -135,6 +143,6 @@ Ringkasan perubahan penting website Jitra2Stay.
 
 ## Bahan tambahan yang belum ada dalam sumber
 
-- Foto bilik air, tingkat setiap bilik dan ukuran/jenis katil terperinci.
+- Foto berasingan bagi setiap satu daripada tiga bilik air, tingkat setiap bilik dan ukuran/jenis katil terperinci. Foto satu bilik air serta pancuran/water heater diterima pada 23 September 2026 dan telah ditambah.
 - Petikan ulasan tetamu beserta atribusi/izin penggunaan; `reviews` kekal kosong.
 - Perincian ini tidak direka dan tidak menghalang website paparan yang menggunakan fakta owner sedia ada.

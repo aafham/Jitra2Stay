@@ -7,6 +7,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const sharp = require('sharp');
+const ownerPhotoSources = require('./owner-photo-sources.json');
 
 const root = path.resolve(__dirname, '..');
 const imageDir = path.join(root, 'images');
@@ -75,6 +76,7 @@ async function main() {
     const item = {
       source: `images/${name}`,
       ...(rawOriginals[basename] ? { originalCameraFile: `source-images/latest-raw/${rawOriginals[basename]}` } : {}),
+      ...(ownerPhotoSources[basename] ? { ownerUpload: ownerPhotoSources[basename] } : {}),
       width,
       height,
       bytes: input.length,

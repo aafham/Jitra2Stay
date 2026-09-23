@@ -127,7 +127,7 @@ test("without JavaScript all questions, photos and the address remain available 
     await expect(page.locator("#faqList details:visible")).toHaveCount(15);
     await page.locator("#faqList summary").last().click();
     await expect(page.locator("#faqList details").last().locator("p")).toBeVisible();
-    await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(11);
+    await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(config.gallery.length);
     await expect(page.locator("#copyAddress")).toBeHidden();
     await expect(page.locator("#lokasi address")).toContainText(config.business.address.street);
   }

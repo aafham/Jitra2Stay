@@ -6,6 +6,8 @@ const categories = [
   { key: "all", ms: "Semua", en: "All photos" },
   { key: "bedrooms", ms: "Bilik tidur", en: "Bedrooms" },
   { key: "shared", ms: "Ruang bersama", en: "Shared spaces" },
+  { key: "amenities", ms: "Kemudahan", en: "Amenities" },
+  { key: "bathrooms", ms: "Bilik air", en: "Bathrooms" },
   { key: "outside", ms: "Luar rumah", en: "Outside" }
 ];
 
@@ -13,12 +15,12 @@ function galleryCard(photo, lang) {
   const info = imageInfo(photo.image);
   const full = info.variants.at(-1).src;
   const room=config.rooms.find(item=>item.image===photo.image);
-  return `<figure class="gallery-card" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-gallery-photo="${e(photo.image)}" data-full="${e(full)}" data-original="${e(info.source)}" data-thumbnail="${e(info.variants[0].src)}" data-caption="${e(photo[lang])}"${room?` data-description="${e(room[lang][1])}"`:''} aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo[lang], {sizes:'(max-width: 480px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 64px) / 2), (max-width: 1280px) calc((100vw - 124px) / 3), 384px'})}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
+  return `<figure class="gallery-card${photo.portrait?' gallery-card--portrait':''}" data-gallery-category="${e(photo.category)}"><a class="gallery-trigger" href="${e(full)}" data-gallery-photo="${e(photo.image)}" data-full="${e(full)}" data-original="${e(info.source)}" data-thumbnail="${e(info.variants[0].src)}" data-caption="${e(photo[lang])}"${room?` data-description="${e(room[lang][1])}"`:''} aria-label="${e(t(lang, `Buka gambar: ${photo.ms}`, `Open photo: ${photo.en}`))}">${picture(photo.image, photo.alt?.[lang] || photo[lang], {sizes:'(max-width: 480px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 64px) / 2), (max-width: 1280px) calc((100vw - 124px) / 3), 384px'})}<span class="photo-expand" aria-hidden="true">↗</span></a><figcaption>${e(room?room[lang][0]:photo[lang])}${room?`<p class="room-description">${e(room[lang][1])}</p>`:''}</figcaption></figure>`;
 }
 
 function renderGallery(lang) {
   return `<section class="section wrap" id="galeri" aria-labelledby="galleryTitle">
-  <div class="section-heading"><div><p class="eyebrow">${t(lang, "KENALI RUANGNYA", "GET TO KNOW THE SPACE")}</p><h2 id="galleryTitle">${t(lang, "Lihat sebelum menginap.", "A look inside your stay.")}</h2></div><p>${t(lang, "Gambar sebenar rumah, bilik dan ruang bersama. Buka gambar untuk lihat dengan lebih dekat.", "Real photos of the house, bedrooms and shared spaces. Open a photo for a closer look.")}</p></div>
+  <div class="section-heading"><div><p class="eyebrow">${t(lang, "KENALI RUANGNYA", "GET TO KNOW THE SPACE")}</p><h2 id="galleryTitle">${t(lang, "Lihat sebelum menginap.", "A look inside your stay.")}</h2></div><p>${t(lang, "Gambar sebenar rumah, bilik air dan kemudahan. Pilih kategori atau buka gambar untuk lihat dengan lebih dekat.", "Real photos of the house, bathrooms and amenities. Choose a category or open a photo for a closer look.")}</p></div>
   <div class="gallery-tools" id="galleryControls" hidden><div class="gallery-filters" role="group" aria-label="${t(lang, "Tapis gambar mengikut ruang", "Filter photos by space")}">${categories.map(category => `<button class="gallery-filter" type="button" data-gallery-filter="${category.key}" aria-pressed="${category.key === "all"}" aria-controls="galleryGrid">${e(category[lang])}</button>`).join("")}</div><p class="gallery-results" id="galleryResults" role="status" aria-live="polite" aria-atomic="true"></p></div>
   <div class="gallery-grid" id="galleryGrid">${config.gallery.map(photo => galleryCard(photo, lang)).join("")}</div>
   <div class="gallery-more-control"><button class="gallery-more-button" id="galleryMore" type="button" aria-controls="galleryGrid" aria-expanded="false" hidden>${t(lang, "Lihat lebih banyak gambar", "Show more photos")}</button></div>

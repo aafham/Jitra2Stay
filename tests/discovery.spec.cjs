@@ -25,8 +25,9 @@ for(const lang of ['ms','en']) {
   test(`${lang} amenity photos open their real category without changing the gallery filter and restore focus`,async({page,context})=>{
     await page.goto(home);
     await page.locator('[data-gallery-filter="outside"]').click();
-    await expect(page.locator('.amenity-photo')).toHaveCount(4);
-    for(const image of ['bilik-tidur','dapur','parking','ruang-tamu']) {
+    const facilityPhotos=config.facilities.flatMap(facility=>facility.photos||[]);
+    await expect(page.locator('.amenity-photo')).toHaveCount(facilityPhotos.length);
+    for(const image of facilityPhotos) {
       const photo=config.gallery.find(item=>item.image===image);
       const link=page.locator(`.amenity-photo[data-gallery-photo="${image}"]`);
       const card=page.locator(`.gallery-trigger[data-gallery-photo="${image}"]`);
@@ -36,11 +37,18 @@ for(const lang of ['ms','en']) {
       await expect(page.locator('#galleryCaption')).toHaveText(photo[lang]);
       await expect(page.locator('#galleryImageStage')).toHaveAttribute('data-state','ready');
       await expect(page.locator('#galleryImage')).toHaveAttribute('src',new URL(await card.getAttribute('href'),page.url()).href);
-      await expect(page.locator('#galleryThumbnails button')).toHaveCount(config.gallery.filter(item=>item.category===photo.category).length);
+      const categoryPhotos=config.gallery.filter(item=>item.category===photo.category);
+      await expect(page.locator('#galleryThumbnails button')).toHaveCount(categoryPhotos.length);
+      const nextPhoto=categoryPhotos[(categoryPhotos.findIndex(item=>item.image===image)+1)%categoryPhotos.length];
+      await page.keyboard.press('ArrowRight');
+      await expect(page.locator('#galleryCaption')).toHaveText(nextPhoto[lang]);
+      await expect(page.locator('#galleryImageStage')).toHaveAttribute('data-state','ready');
+      await page.keyboard.press('ArrowLeft');
+      await expect(page.locator('#galleryCaption')).toHaveText(photo[lang]);
       await page.keyboard.press('Escape');
       await expect(link).toBeFocused();
       await expect(page.locator('[data-gallery-filter="outside"]')).toHaveAttribute('aria-pressed','true');
-      await expect(page.locator('#galleryGrid .gallery-card:visible')).toHaveCount(3);
+      await expect(page.locator('#galleryGrid .gallery-card:visible')).toHaveCount(config.gallery.filter(item=>item.category==='outside').length);
     }
     const photoLink=page.locator('.amenity-photo[data-gallery-photo="dapur"]');
     const imageUrl=new URL(await photoLink.getAttribute('href'),page.url()).href;
@@ -152,7 +160,7 @@ test('without JavaScript contextual photos and every FAQ answer retain real link
     const path=lang==='en'?'/en.html':'/';
     const publicHome=`${config.business.siteUrl.replace(/\/$/,'')}/${lang==='en'?'en.html':''}`;
     await page.goto(test.info().project.use.baseURL+path);
-    await expect(page.locator('.amenity-photo')).toHaveCount(4);
+    await expect(page.locator('.amenity-photo')).toHaveCount(config.facilities.flatMap(facility=>facility.photos||[]).length);
     await page.locator('.amenity-photo[data-gallery-photo="dapur"]').click();
     await expect(page).toHaveURL(/\/images\/responsive\/dapur-\d+\.webp$/);
     await page.goto(test.info().project.use.baseURL+path+'#faq-deposit');

@@ -20,7 +20,7 @@ test("phone facility photo links remain aligned with their descriptions and usab
     await page.setViewportSize({ width, height: 844 });
     await page.goto(path);
     const links = page.locator(".amenity .amenity-photo");
-    await expect(links).toHaveCount(4);
+    await expect(links).toHaveCount(config.facilities.flatMap(facility => facility.photos || []).length);
     const measurements = await links.evaluateAll(elements => elements.map(link => {
       const description = link.parentElement.querySelector("p").getBoundingClientRect();
       const rect = link.getBoundingClientRect();

@@ -11,6 +11,42 @@
   "maxWidth": 1600,
   "images": [
     {
+      "source": "images/bilik-air.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 10.jpg",
+        "uploadSha256": "6a7cff8459ca05b9b39735c0751fe9b33c53ffddb72741c44fc9de40c02d50b1",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 153565,
+      "sha256": "26eb2c72b27ce16b65c07939cff2e0038ee3d48c21d1ad1f4eec38bbcddcf1d5",
+      "variants": [
+        {
+          "src": "images/responsive/bilik-air-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 24696,
+          "sha256": "7deb0365a1046c3a16c6347dee5a620ffb39e4d49d24fc3e94de9146c357f3d5"
+        },
+        {
+          "src": "images/responsive/bilik-air-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 51196,
+          "sha256": "4e7220914ade7f585d14da25330646e468f3ba24f7e3fcb4c1de1c1f857803fe"
+        },
+        {
+          "src": "images/responsive/bilik-air-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 88462,
+          "sha256": "f9636a6fb734a1bdfac0f16edb78d935965a7954edccdafac782c5553b2ea7cb"
+        }
+      ]
+    },
+    {
       "source": "images/bilik-besar.jpg",
       "originalCameraFile": "source-images/latest-raw/IMG_7968.JPG",
       "width": 1600,
@@ -277,6 +313,44 @@
       ]
     },
     {
+      "source": "images/kotak-kunci.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 9.jpg",
+        "uploadSha256": "70d25859ac4220707eef9664e5c884991cf3a6cbc34740a14d3bc1bbe0b9cd5e",
+        "privacyEdits": [
+          "Lockbox number wheels covered"
+        ]
+      },
+      "width": 1086,
+      "height": 1448,
+      "bytes": 151742,
+      "sha256": "99923f286fcc2826e03957cbb4cb9c9cbbd908709861981c548229873ce8df25",
+      "variants": [
+        {
+          "src": "images/responsive/kotak-kunci-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 35850,
+          "sha256": "0d21b756892f3402ca1ea7cbc4e714d9fd9f6c7f54b84c86fe2be9ff34aa019a"
+        },
+        {
+          "src": "images/responsive/kotak-kunci-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 67014,
+          "sha256": "1060328d433320bbab7b4f863b46caaa8bad74c8ceade45a69b510aea34e332d"
+        },
+        {
+          "src": "images/responsive/kotak-kunci-1086.webp",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 97094,
+          "sha256": "7bbb85c69400cf337e851eea44c5ac8006dff491c45640eefe2d074ae78030d4"
+        }
+      ]
+    },
+    {
       "source": "images/luar-rumah.jpg",
       "originalCameraFile": "source-images/latest-raw/IMG_8008.JPG",
       "width": 1600,
@@ -315,6 +389,42 @@
       ]
     },
     {
+      "source": "images/mesin-basuh.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 1.jpg",
+        "uploadSha256": "0e05774116178c30539c289c3361ec714b906e76dfdb770defbf0d9f0873de59",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 168613,
+      "sha256": "3a345815b8eed7ce29281987f05c070b4af288e090f1375aa9bb2921d71a55bb",
+      "variants": [
+        {
+          "src": "images/responsive/mesin-basuh-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 27974,
+          "sha256": "70b1a00ddd52726189b729a2fb91f5060581257ddb8f6b5e024ff1bbbc321ffb"
+        },
+        {
+          "src": "images/responsive/mesin-basuh-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 61012,
+          "sha256": "63a1a70ab96c9bfe025ae7a81733034bf1ff8f77e3a68f88ebdc1da6c5f55ae7"
+        },
+        {
+          "src": "images/responsive/mesin-basuh-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 104794,
+          "sha256": "378ac462f5f198f17fcd6bbc3a945acd12c7fe147155b3bb237caeae6d9b7cf0"
+        }
+      ]
+    },
+    {
       "source": "images/parking.jpg",
       "originalCameraFile": "source-images/latest-raw/IMG_8015.JPG",
       "width": 1600,
@@ -349,6 +459,114 @@
           "height": 1200,
           "bytes": 217452,
           "sha256": "84e30970a55d4907067e71b48b184e33d07482c3b415681c7cc603ca25fb5eaa"
+        }
+      ]
+    },
+    {
+      "source": "images/pemanas-air.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 8.jpg",
+        "uploadSha256": "3032099909498e549a3d19045069d047a232ff461298c92d265f1b705d3b3e2b",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 136558,
+      "sha256": "9e84fbd3c412b3c726bc3e8ed160c540800f5e2d197bb3d3a98678d81857d88a",
+      "variants": [
+        {
+          "src": "images/responsive/pemanas-air-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 14472,
+          "sha256": "4b5c47e92f0301b4ffec2099c5488a4307a3b3e0df8620d7c913d8948675023f"
+        },
+        {
+          "src": "images/responsive/pemanas-air-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 36316,
+          "sha256": "52b14d1dade97857f7a16b9474c331c0622226cb85b086f1179e1ab3eec972bb"
+        },
+        {
+          "src": "images/responsive/pemanas-air-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 77018,
+          "sha256": "0b3cc681455878ab14f07de87650784e762d90411a76a8783818225ac3a8ac7b"
+        }
+      ]
+    },
+    {
+      "source": "images/penapis-air-air-fryer.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 2.jpg",
+        "uploadSha256": "fa694bead839134066e440b131707155a94b2a89d3081ff34bc58d8bed3c74ee",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 169172,
+      "sha256": "9d89539a0826d13989bab299d65da53efd3609dbabf0755a707c2655095e976d",
+      "variants": [
+        {
+          "src": "images/responsive/penapis-air-air-fryer-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 25740,
+          "sha256": "d0837ce4ba44675a2990c19fff0eee423d8f40ac638169b62f19fdf01bf4c7ce"
+        },
+        {
+          "src": "images/responsive/penapis-air-air-fryer-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 56890,
+          "sha256": "1ef92ad10020877e46e2447d6080e0cd3a2f3360e39db29915eff83b53cd9eda"
+        },
+        {
+          "src": "images/responsive/penapis-air-air-fryer-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 100606,
+          "sha256": "10098506c6adc34a06b4f7aeea6b6ea8a87c6bc0a15736374b5d0684db75bbef"
+        }
+      ]
+    },
+    {
+      "source": "images/peti-sejuk-microwave.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 3.jpg",
+        "uploadSha256": "842ebdb3d78e41690e2174ee85005abbb2e791c450e94614b64c4fc037e287ca",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 185352,
+      "sha256": "8af802b421f942fcad166a63e4c76569d04a8c2aa8aab6c25e4c95b9a4821c25",
+      "variants": [
+        {
+          "src": "images/responsive/peti-sejuk-microwave-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 27668,
+          "sha256": "117cbc5db7092deb521099b6fbf3109ad3ef5cd933c458e001e42d92b99b5afe"
+        },
+        {
+          "src": "images/responsive/peti-sejuk-microwave-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 63890,
+          "sha256": "a6e96e8dc0c473f251f70f0975ba707ea966975538a49de59b2f0d74ac06013b"
+        },
+        {
+          "src": "images/responsive/peti-sejuk-microwave-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 114684,
+          "sha256": "43792057d9450171ec1bf52d0cc85b3d236e42eaddbbef42b9b8b403d786e3cf"
         }
       ]
     },
@@ -467,6 +685,78 @@
       ]
     },
     {
+      "source": "images/seterika-papan.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 5.jpg",
+        "uploadSha256": "33537aa81d5881b5e38d47e3a9c4a8602bc9fba59abcc4f21d45490e10671c05",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 145770,
+      "sha256": "760cdbd769e6caa22d6fdc60bd114518db4bd33a6fbb0aad935ed9ad57971fb3",
+      "variants": [
+        {
+          "src": "images/responsive/seterika-papan-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 22728,
+          "sha256": "2510ab16454fbeaac4f475379d9a704b4d60d74b1b4adcbb6299c06696f224e6"
+        },
+        {
+          "src": "images/responsive/seterika-papan-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 48458,
+          "sha256": "2396b64bbda92e990f2663aaf217aa9cb26fd05edf2625076b0b35ed10e4dbec"
+        },
+        {
+          "src": "images/responsive/seterika-papan-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 90852,
+          "sha256": "66cec3c7a6f46d7f5c8385e90f9d996655f33f498f56bb52a74c2d3f6a8fe1ee"
+        }
+      ]
+    },
+    {
+      "source": "images/sudut-seterika.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 7.jpg",
+        "uploadSha256": "419edbb357f261f4f690842f865d5b895d1b4194de1cf2bd2e37559123823b5a",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 204188,
+      "sha256": "1f05b3b3f07bc103918896473158e6e682a7b792c66d1306c0118d6531a1a056",
+      "variants": [
+        {
+          "src": "images/responsive/sudut-seterika-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 36528,
+          "sha256": "0fc7aa606f98b3e35be9a39ede9e7a985630c0cf6abec260ddf12d9bc64cee18"
+        },
+        {
+          "src": "images/responsive/sudut-seterika-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 78830,
+          "sha256": "cc42bb9749bf9c8abbe43565a44850680473ee9e3165c0caf90843c878945781"
+        },
+        {
+          "src": "images/responsive/sudut-seterika-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 136564,
+          "sha256": "a967e0fc787d93c15881481993f78f368e7b8804bf4b26a3c4bf14673a884ce3"
+        }
+      ]
+    },
+    {
       "source": "images/tangga-ruang-makan.jpg",
       "originalCameraFile": "source-images/latest-raw/IMG_7992.JPG",
       "width": 1600,
@@ -501,6 +791,81 @@
           "height": 1200,
           "bytes": 105722,
           "sha256": "7a4b284501ee86fe1ebde3d25742a9524eaa5911f211d31fef33600c6688882c"
+        }
+      ]
+    },
+    {
+      "source": "images/tv-peti-sejuk.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 6.jpg",
+        "uploadSha256": "58d56324797a792330955d92ab612cdfe355eb836dad34d1899ee57c1097266f",
+        "privacyEdits": []
+      },
+      "width": 1200,
+      "height": 1600,
+      "bytes": 182608,
+      "sha256": "f559e8aafb4dbb7ccfe4c7f2594d3d79c73cd811c69f3f25e031bd1df62a2165",
+      "variants": [
+        {
+          "src": "images/responsive/tv-peti-sejuk-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 24672,
+          "sha256": "53603c84b814713517bf5b99adb4f063f53e9068a30b280c5cbd6803bfe38d4c"
+        },
+        {
+          "src": "images/responsive/tv-peti-sejuk-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 58332,
+          "sha256": "b15467fd40e83bdc70aa4867fc107d0f26723507e43a46a60748cbebd2111ec5"
+        },
+        {
+          "src": "images/responsive/tv-peti-sejuk-1200.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 122874,
+          "sha256": "c31a3a0b50538791a3f8fa4a608d51bd0f9c1418576a90d2bfbc67a1bc114fa6"
+        }
+      ]
+    },
+    {
+      "source": "images/tv-wifi.jpg",
+      "ownerUpload": {
+        "suppliedOn": "2026-09-23",
+        "upload": "Photo 4.jpg",
+        "uploadSha256": "000825c12517ed572b415e161982db9dc78a34ae4f412c0d7bf217634f875f9c",
+        "privacyEdits": [
+          "WiFi notice covered",
+          "Router QR sticker covered"
+        ]
+      },
+      "width": 1086,
+      "height": 1448,
+      "bytes": 119719,
+      "sha256": "ff8167ef37a2ed83a0f0c588496467296463f8004ef9ee172a9d758b85947201",
+      "variants": [
+        {
+          "src": "images/responsive/tv-wifi-480.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 21330,
+          "sha256": "343e36568983b3022e1a0c257ae1e06263de72dd5899d74d68ef109de50c16d1"
+        },
+        {
+          "src": "images/responsive/tv-wifi-800.webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 44644,
+          "sha256": "4fd573e3ffbd938581d704fdf7d3d6753c5c8e9d8a8a8ac89a591176ce9a113c"
+        },
+        {
+          "src": "images/responsive/tv-wifi-1086.webp",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 67682,
+          "sha256": "a8295d988e7732492db786d552b9e548da74d00f7f4a050c528237ed44c7db82"
         }
       ]
     }

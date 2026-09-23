@@ -28,7 +28,7 @@ Jalankan npm run build, npm run qa, npm run test:unit dan npm test. Jangan edit 
 
 ## Galeri dan navigasi
 
-Pautan foto kemudahan dalam `templates/home.cjs` menggunakan `data-gallery-photo` dengan href gambar sebenar sebagai fallback. `gallery.js` membuka kategori foto yang dirujuk tanpa menukar penapis grid, lalu memulangkan fokus kepada pautan asal. Jangan padankan kemudahan dengan foto ruang lain; bilik air tidak diberi pautan foto kerana tiada sumber fotonya.
+Pautan foto kemudahan dalam `templates/home.cjs` dijana daripada `facilities[].photos`, menggunakan nama `image` yang wujud dalam `gallery`. Setiap pautan mempunyai `data-gallery-photo` dan href gambar sebenar sebagai fallback. `gallery.js` membuka kategori foto yang dirujuk tanpa menukar penapis grid, lalu memulangkan fokus kepada pautan asal. Satu kemudahan boleh mempunyai beberapa pautan, contohnya pantry, peti sejuk/microwave dan penapis air/air fryer. Foto bilik air dan water heater daripada owner kini turut dipautkan. Jangan padankan kemudahan dengan foto ruang lain.
 
 FAQ mempunyai ID stabil `faq-{key}` daripada config. `faq.js` membuka jawapan untuk hash sah, menjadikannya terlihat walaupun topik berbeza, dan menyediakan pautan awam bersih tanpa query atau butiran borang. `navigation.js` mengekalkan jawapan sah apabila bertukar bahasa. Jangan ubah key FAQ tanpa menyediakan pengalihan pautan lama.
 
@@ -36,7 +36,7 @@ FAQ mempunyai ID stabil `faq-{key}` daripada config. `faq.js` membuka jawapan un
 
 Thumbnail dialog dijana hanya apabila dialog dibuka, menggunakan foto kecil sedia ada dan subset kategori aktif. Pilihan semasa dikemas apabila menggunakan thumbnail, anak panah atau leretan. Penerangan bilik bersumber daripada rekod `rooms` yang sama dengan galeri; kekalkan hubungan `image` apabila menukar rekod.
 
-Setiap item `gallery` dalam `site.config.cjs` mesti mempunyai `category`: `bedrooms`, `shared` atau `outside`. Gunakan kategori berdasarkan ruang dalam foto. Kekalkan kapsyen BM/EN dan pautan JPG web apabila menukar gambar; pautan ini menjadi pilihan alternatif jika versi dialog gagal dimuatkan. Semak butang cuba lagi, penutupan Escape dan fokus kembali ke gambar asal selepas perubahan galeri.
+Setiap item `gallery` dalam `site.config.cjs` mesti mempunyai `category`: `bedrooms`, `shared`, `amenities`, `bathrooms` atau `outside`. Gunakan kategori berdasarkan ruang atau peralatan dalam foto. `portrait: true` menggunakan bingkai 3:4 dan `object-fit: contain` supaya foto peralatan menegak tidak terpotong. Kapsyen `ms`/`en` mengenal pasti subjek, manakala `alt.ms`/`alt.en` boleh memberi penerangan visual yang lebih khusus. Kekalkan pautan JPG web apabila menukar gambar; pautan ini menjadi pilihan alternatif jika versi dialog gagal dimuatkan. Semak butang cuba lagi, penutupan Escape, gambar menegak serta fokus kembali ke gambar asal selepas perubahan galeri.
 
 `navigation.js` dan `navigation.css` menandakan bahagian homepage aktif serta menambah bahagian semasa pada pautan bahasa. Bar mobile Harga/WhatsApp menyorok ketika input borang difokus atau kawalan pertanyaan sudah kelihatan. Kekalkan ID bahagian serta pautan HTML biasa supaya navigasi tanpa JavaScript terus berfungsi. Draf borang dipulihkan secara berasingan melalui `app.js`.
 
@@ -98,7 +98,13 @@ Tanpa JavaScript semua kad/pautan dan label kategori tersedia. Dengan JavaScript
 
 ## Gambar
 
-Tambah JPG web yang sudah dipilih dalam images, bukan foto kamera besar dalam output public. Daftar kategori dan kapsyen BM/EN yang benar dalam config. Jalankan npm run optimize:images; commit versi responsive dan manifest. Saiz asal kecil tidak di-upscale. Build memilih hanya foto digunakan dan mengecualikan manifest serta raw. Foto bilik air mesti datang daripada owner; jangan menjana imej yang menggambarkan bilik air sebenar.
+Tambah JPG web yang sudah dipilih dalam `images/`, bukan foto kamera besar dalam output public. Daftar kategori, kapsyen dan alt BM/EN yang benar dalam config. Jalankan `npm run optimize:images`; commit JPG web, versi responsif dan manifest. Saiz asal kecil tidak di-upscale. Build memilih hanya foto digunakan dan mengecualikan manifest serta raw.
+
+Set 23 September 2026 menambah 10 foto owner. Salinan asal baharu disimpan di folder workspace `work/owner-photo-originals-2026-09-23`, di luar repo; `tools/owner-photo-sources.json` merekod label asal, tarikh, hash dan suntingan privasi. Arkib kamera terdahulu dalam `source-images/latest-raw/` masih sebahagian repo, tetapi tidak termasuk output website. Jangan kelirukan pengecualian daripada deploy dengan pengecualian daripada Git.
+
+`tv-wifi.jpg` dan `kotak-kunci.jpg` ialah salinan yang sudah menutup notis/QR WiFi dan paparan dail kunci. Varian WebP mesti dijana daripada JPG yang sudah ditutup maklumat aksesnya, termasuk fallback JPG dan gambar dialog. Jangan menggantikannya dengan fail asal chat. Lapan foto baharu yang lain hanya diorientasi, dikecilkan secara berkadar dan dibuang metadata. Tiada kelengkapan atau keadaan rumah baharu direka.
+
+Foto bilik air dan pancuran kini tersedia daripada owner. Jangan menjana imej yang mendakwa menggambarkan bilik air sebenar atau menyimpulkan tingkat/jumlah peralatan daripada sudut foto. Rujuk [IMAGE-AUDIT.md](IMAGE-AUDIT.md) bagi pemetaan semua fail baharu dan rekod pemprosesan.
 
 ## Domain
 

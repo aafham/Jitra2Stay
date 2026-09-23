@@ -1,0 +1,67 @@
+{
+  "mesin-basuh": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 1.jpg",
+    "uploadSha256": "0e05774116178c30539c289c3361ec714b906e76dfdb770defbf0d9f0873de59",
+    "privacyEdits": []
+  },
+  "penapis-air-air-fryer": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 2.jpg",
+    "uploadSha256": "fa694bead839134066e440b131707155a94b2a89d3081ff34bc58d8bed3c74ee",
+    "privacyEdits": []
+  },
+  "peti-sejuk-microwave": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 3.jpg",
+    "uploadSha256": "842ebdb3d78e41690e2174ee85005abbb2e791c450e94614b64c4fc037e287ca",
+    "privacyEdits": []
+  },
+  "tv-wifi": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 4.jpg",
+    "uploadSha256": "000825c12517ed572b415e161982db9dc78a34ae4f412c0d7bf217634f875f9c",
+    "privacyEdits": [
+      "WiFi notice covered",
+      "Router QR sticker covered"
+    ]
+  },
+  "seterika-papan": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 5.jpg",
+    "uploadSha256": "33537aa81d5881b5e38d47e3a9c4a8602bc9fba59abcc4f21d45490e10671c05",
+    "privacyEdits": []
+  },
+  "tv-peti-sejuk": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 6.jpg",
+    "uploadSha256": "58d56324797a792330955d92ab612cdfe355eb836dad34d1899ee57c1097266f",
+    "privacyEdits": []
+  },
+  "sudut-seterika": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 7.jpg",
+    "uploadSha256": "419edbb357f261f4f690842f865d5b895d1b4194de1cf2bd2e37559123823b5a",
+    "privacyEdits": []
+  },
+  "pemanas-air": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 8.jpg",
+    "uploadSha256": "3032099909498e549a3d19045069d047a232ff461298c92d265f1b705d3b3e2b",
+    "privacyEdits": []
+  },
+  "kotak-kunci": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 9.jpg",
+    "uploadSha256": "70d25859ac4220707eef9664e5c884991cf3a6cbc34740a14d3bc1bbe0b9cd5e",
+    "privacyEdits": [
+      "Lockbox number wheels covered"
+    ]
+  },
+  "bilik-air": {
+    "suppliedOn": "2026-09-23",
+    "upload": "Photo 10.jpg",
+    "uploadSha256": "6a7cff8459ca05b9b39735c0751fe9b33c53ffddb72741c44fc9de40c02d50b1",
+    "privacyEdits": []
+  }
+}

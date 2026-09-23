@@ -122,7 +122,7 @@ for (const language of ["ms", "en"]) {
     await expect(page.locator(".stay-summary")).toContainText("DuitNow");
     await page.locator('[data-gallery-filter="bedrooms"]').click();
     await expect(page.locator(".room-description:visible")).toHaveCount(5);
-    await expect(page.locator("#galleryGrid .gallery-card")).toHaveCount(11);
+    await expect(page.locator("#galleryGrid .gallery-card")).toHaveCount(config.gallery.length);
     await page.locator(".nearby-original > summary").click();
     const institutions = page.locator(".nearby-grid details").filter({ hasText: "POLIMAS" });
     await institutions.locator("summary").click();
@@ -419,16 +419,22 @@ test("gallery expansion and filters keep counts, visible photos and modal naviga
   await expect(more).toHaveAttribute("aria-expanded", "true");
   await more.click();
   await expect(visibleCards).toHaveCount(6);
-  for (const category of ["bedrooms", "shared", "outside"]) {
+  for (const category of [...new Set(config.gallery.map(photo => photo.category))]) {
     const count = config.gallery.filter(photo => photo.category === category).length;
     const button = page.locator(`[data-gallery-filter="${category}"]`);
     await button.click();
     await expect(button).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator('#galleryControls [aria-pressed="true"]')).toHaveCount(1);
-    await expect(visibleCards).toHaveCount(count);
+    await expect(visibleCards).toHaveCount(Math.min(6, count));
     await expect(page.locator(`#galleryGrid .gallery-card:visible:not([data-gallery-category="${category}"])`)).toHaveCount(0);
-    await expect(page.locator("#galleryResults")).toContainText(`${count} daripada ${count}`);
-    await expect(more).toBeHidden();
+    await expect(page.locator("#galleryResults")).toContainText(`${Math.min(6, count)} daripada ${count}`);
+    if (count > 6) {
+      await expect(more).toBeVisible();
+      await more.click();
+      await expect(visibleCards).toHaveCount(count);
+      await expect(page.locator("#galleryResults")).toContainText(`${count} daripada ${count}`);
+      await expect(more).toHaveAttribute("aria-expanded", "true");
+    } else await expect(more).toBeHidden();
   }
   const triggers = visibleCards.locator(".gallery-trigger");
   const captions = await triggers.evaluateAll(anchors => anchors.map(anchor => anchor.dataset.caption));
