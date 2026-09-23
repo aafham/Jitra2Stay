@@ -1,5 +1,5 @@
 // Owner-provided property facts and policy copy shared by every generated page.
-// Restored from the original repository at 18a274d; see RESTORED-CONTENT.md.
+// Restored from the original repository at 18a274d; see docs/RESTORED-CONTENT.md.
 module.exports = {
   business: {
     name: 'Jitra2Stay',

@@ -1,6 +1,6 @@
 'use strict';
 
-// Dated Google Maps driving snapshots; see NEARBY-ROUTES-2026-09-20.md.
+// Dated Google Maps driving snapshots; see docs/NEARBY-ROUTES-2026-09-20.md.
 // Recheck routes after changing a pin. No live traffic/availability is implied.
 module.exports = {
   "hospital-jitra": {

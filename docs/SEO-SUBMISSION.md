@@ -1,6 +1,6 @@
 # SEO dan pengesahan selepas release
 
-Domain production dalam site.config.cjs ialah https://jitra2stay.vercel.app. Domain .com lama tidak resolve semasa audit. Build menjana canonical, metadata OG/Twitter, schema, sitemap dan robots daripada sumber sama.
+Domain production dalam `src/data/site.config.cjs` ialah https://jitra2stay.vercel.app. Domain .com lama tidak resolve semasa audit. Build menjana canonical, metadata OG/Twitter, schema, sitemap dan robots daripada sumber sama.
 
 Halaman BM/EN sebenar mempunyai URL berasingan serta hreflang dua hala. Root / ialah BM, /en.html ialah EN; /ms.html menjadi alias BM dengan canonical root. Empat panduan dan polisi mempunyai pasangan -en.html. Thank-you dan 404 ialah noindex; sitemap mengandungi 12 URL yang dimaksudkan untuk diindeks.
 

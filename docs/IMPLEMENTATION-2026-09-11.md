@@ -1,5 +1,7 @@
 # Pelaksanaan audit — 11 September 2026
 
+> Rekod bertarikh: penemuan, angka ujian dan path di bawah merujuk keadaan ketika audit. Source kini disusun dalam `src/`; lihat [struktur semasa](../README.md#struktur-repo) dan [indeks dokumentasi](README.md).
+
 Skop: semua pembaikan kod, UI/UX dan operasi yang boleh dilaksanakan daripada audit baseline `18a274d`. Produk kekal laman paparan homestay dan pertanyaan WhatsApp.
 
 ## Penutupan penemuan

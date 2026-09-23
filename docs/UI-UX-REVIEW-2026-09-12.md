@@ -1,5 +1,7 @@
 # Semakan UI/UX seluruh website — 12 September 2026
 
+> Rekod bertarikh: penemuan, angka ujian dan path di bawah merujuk keadaan ketika audit. Source kini disusun dalam `src/`; lihat [struktur semasa](../README.md#struktur-repo) dan [indeks dokumentasi](README.md).
+
 Pusingan ini menyemak perjalanan tetamu dari header hingga footer, kemudian polisi, panduan setempat dan halaman pemulihan. Tujuannya memudahkan orang melihat rumah, membandingkan pakej, mencari arah dan menyediakan pertanyaan. Website kekal statik untuk paparan dan pertanyaan WhatsApp.
 
 ## Keputusan mengikut bahagian

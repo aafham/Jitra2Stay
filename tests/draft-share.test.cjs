@@ -2,9 +2,9 @@
 
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { parseEnquiryDraft, DRAFT_TTL_MS } = require("../app.js");
-const { getPublicShareUrl } = require("../share.js");
-const { rates, business } = require("../site.config.cjs");
+const { parseEnquiryDraft, DRAFT_TTL_MS } = require("../src/scripts/app.js");
+const { getPublicShareUrl } = require("../src/scripts/share.js");
+const { rates, business } = require("../src/data/site.config.cjs");
 
 const now = Date.UTC(2026, 8, 12, 3);
 const roomValues = rates.map(rate => String(rate.rooms));

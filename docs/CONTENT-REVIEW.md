@@ -1,6 +1,6 @@
 # Semakan kandungan semasa
 
-`site.config.cjs` menggunakan semula maklumat owner daripada repo asal `18a274d`. Jejaknya direkodkan dalam [RESTORED-CONTENT.md](RESTORED-CONTENT.md). Nota audit terdahulu yang menandakan parking, TV, privasi rumah atau polisi pembatalan sebagai belum disahkan telah digantikan oleh keputusan pemulihan ini. Dokumen audit sejarah tidak diubah; ini bukan dakwaan pemeriksaan fizikal baharu.
+`src/data/site.config.cjs` menggunakan semula maklumat owner daripada repo asal `18a274d`. Jejaknya direkodkan dalam [RESTORED-CONTENT.md](RESTORED-CONTENT.md). Nota audit terdahulu yang menandakan parking, TV, privasi rumah atau polisi pembatalan sebagai belum disahkan telah digantikan oleh keputusan pemulihan ini. Dokumen audit sejarah tidak diubah; ini bukan dakwaan pemeriksaan fizikal baharu.
 
 ## Fakta dan maksud yang dikekalkan
 
@@ -8,8 +8,8 @@
 - Parking biasanya 3–4 kereta, WiFi/TV, aircond/kipas, water heater dan kelengkapan tidur tambahan dinyatakan terus, bukan digantikan dengan permintaan pengesahan semula.
 - Deposit keselamatan RM100 dibezakan daripada bayaran booking. Bank transfer, DuitNow QR dan tunai ialah kaedah manual sedia ada.
 - Pembatalan kurang 7 hari sebelum check-in menyebabkan deposit booking tidak dipulangkan; pembatalan lebih awal membolehkan pertukaran tarikh tertakluk kepada ketersediaan. Caj tetamu tambahan RM10 dinyatakan tanpa mencipta formula caj dalam anggaran sewaan.
-- Foto/penerangan lima bilik menggunakan sumber dan imej sebenar. Tingkat setiap bilik, ukuran katil dan foto bilik air yang tiada tidak direka.
-- Senarai tempat berdekatan dan julat perjalanan berasal daripada repo owner. Julat itu kekal anggaran; Google Maps/Waze menyediakan laluan semasa.
+- Foto/penerangan lima bilik menggunakan sumber dan imej sebenar. Foto bilik air serta pancuran diterima pada 23 September 2026 dan telah ditambah; tingkat setiap bilik, ukuran katil dan foto berasingan untuk ketiga-tiga bilik air tidak direka.
+- Senarai tempat berdekatan berasal daripada repo owner. Enam kumpulan kawasan asal dikekalkan dengan label kawasan/jenis; masa dan jarak khusus menggunakan 46 laluan Maps yang disemak pada 19–20 September. Empat lokasi belum pasti kekal tanpa angka jarak. Google Maps/Waze menyediakan laluan semasa.
 - Pautan Google Maps dan album Facebook asal tersedia tanpa mencipta petikan ulasan, nama tetamu atau rating. `reviews` kekal kosong.
 
 ## Tingkah laku dan privasi

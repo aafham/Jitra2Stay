@@ -1,9 +1,9 @@
 'use strict';
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const {renderLocation}=require('../templates/location.cjs');
-const config=require('../site.config.cjs');
-const {e}=require('../templates/shared.cjs');
+const {renderLocation}=require('../src/templates/location.cjs');
+const config=require('../src/data/site.config.cjs');
+const {e}=require('../src/templates/shared.cjs');
 
 test('area groups keep all owner descriptions without competing unverified travel ranges',()=>{
   assert.equal(config.nearby.length,6);

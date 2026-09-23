@@ -1,9 +1,9 @@
 'use strict';
 
 const {config,e,t,icon}=require('./shared.cjs');
-const destinations=require('../destinations.cjs');
-const categories=require('../destination-categories.cjs');
-const routes=require('../destination-routes.cjs');
+const destinations=require('../data/destinations.cjs');
+const categories=require('../data/destination-categories.cjs');
+const routes=require('../data/destination-routes.cjs');
 
 function directionsUrl(destination) {
   const route=routes[destination.id];

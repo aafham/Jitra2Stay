@@ -10,7 +10,7 @@ const sharp = require('sharp');
 const ownerPhotoSources = require('./owner-photo-sources.json');
 
 const root = path.resolve(__dirname, '..');
-const imageDir = path.join(root, 'images');
+const imageDir = path.join(root, 'src', 'images');
 const outputDir = path.join(imageDir, 'responsive');
 const cardWidths = [480, 800, 1200];
 const maxWidth = 1600;
@@ -51,7 +51,7 @@ async function main() {
   const sourceNames = (await fs.readdir(imageDir))
     .filter((name) => /\.jpe?g$/i.test(name))
     .sort();
-  if (!sourceNames.length) throw new Error('No JPG originals found in images/.');
+  if (!sourceNames.length) throw new Error('No JPG originals found in src/images/.');
 
   const manifest = {
     version: 1,

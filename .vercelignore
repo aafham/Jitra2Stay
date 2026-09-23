@@ -1,5 +1,7 @@
 node_modules
 source-images
+docs
+artifacts
 .git
 .github
 .env*
@@ -8,7 +10,6 @@ dist
 tests
 test-results
 playwright-report
-playwright.config.cjs
 *.md
 work
 outputs

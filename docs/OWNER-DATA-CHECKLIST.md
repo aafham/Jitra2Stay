@@ -16,7 +16,7 @@ Maklumat owner dalam repo asal `18a274d` digunakan semula sebagai sumber berauto
 - [x] Pembatalan kurang 7 hari sebelum check-in: deposit booking tidak dipulangkan. Pembatalan lebih awal: pertukaran tarikh tertakluk kepada ketersediaan.
 - [x] House rules, izin acara, arahan checkout serta senarai destinasi berdekatan dengan julat perjalanan asal.
 
-Pemulihan ini berdasarkan bahan owner sedia ada, bukan lawatan atau pemeriksaan fizikal baharu. Anggaran perjalanan tidak dijadikan jaminan masa trafik semasa. Contoh pembahagian harga pakej bukan had penghunian atau formula caj tetamu tambahan.
+Pemulihan ini berdasarkan bahan owner sedia ada, bukan lawatan atau pemeriksaan fizikal baharu. Label julat perjalanan asal kini diganti dengan label kawasan/jenis; kad destinasi menggunakan [laluan Maps bertarikh](NEARBY-ROUTES-2026-09-20.md). Anggaran perjalanan tidak dijadikan jaminan masa trafik semasa. Contoh pembahagian harga pakej bukan had penghunian atau formula caj tetamu tambahan.
 
 ## Foto tambahan owner — 23 September 2026
 
