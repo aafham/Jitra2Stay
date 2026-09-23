@@ -2,7 +2,7 @@
 
 const {test,expect}=require('@playwright/test');
 const AxeBuilder=require('@axe-core/playwright').default;
-const config=require('../site.config.cjs');
+const config=require('../src/data/site.config.cjs');
 
 async function isolateExternalServices(context) {
   await context.route(url=>url.origin==='https://www.google.com'&&url.pathname==='/maps/embed',async route=>{
@@ -108,6 +108,36 @@ for(const lang of ['ms','en']) {
     await expect(page.locator('#faq-payment')).toHaveAttribute('open','');
     await expect(page.locator('#faq-payment summary')).toBeFocused();
     expect(await page.locator('#faq-payment').evaluate(question=>question.getBoundingClientRect().top>=document.querySelector('.site-header').getBoundingClientRect().bottom+12)).toBe(true);
+  });
+
+  test(`${lang} FAQ focus survives a delayed final script on arrival and language switching`,async({page})=>{
+    let release;
+    let gate;
+    const pauseLastScript=()=>{gate=new Promise(resolve=>{release=resolve;});};
+    pauseLastScript();
+    await page.route('**/nearby.js',async route=>{await gate;await route.continue();});
+    const finishNavigation=async()=>{
+      await expect(page.locator('#faqControls')).toBeVisible();
+      // Let FAQ's initial rendering run while the final defer script still
+      // prevents DOMContentLoaded and the browser's initial fragment handling.
+      await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+      expect(await page.evaluate(()=>performance.getEntriesByType('navigation')[0].domContentLoadedEventStart)).toBe(0);
+      release();
+      await page.waitForLoadState('load');
+      await expect(page.locator('#faq-payment')).toHaveAttribute('open','');
+      await expect(page.locator('#faq-payment summary')).toBeFocused();
+      expect(await page.locator('#faq-payment').evaluate(question=>question.getBoundingClientRect().top>=document.querySelector('.site-header').getBoundingClientRect().bottom+12)).toBe(true);
+    };
+    try {
+      await page.goto(`${home}#faq-payment`,{waitUntil:'commit'});
+      await finishNavigation();
+      pauseLastScript();
+      await page.locator('#menuToggle').click();
+      const other=lang==='en'?'ms':'en';
+      await page.locator(`.language-links a[hreflang="${other}"]`).click();
+      await expect(page).toHaveURL(new RegExp(`${other==='en'?'/en\\.html':'/'}#faq-payment$`));
+      await finishNavigation();
+    } finally { release(); }
   });
 
   test(`${lang} answer links copy only the public FAQ URL and provide an accessible manual fallback`,async({page})=>{

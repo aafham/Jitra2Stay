@@ -2,7 +2,7 @@
 
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
-const config = require("../site.config.cjs");
+const config = require("../src/data/site.config.cjs");
 const address = `${config.business.address.street}, ${config.business.address.postalCode} ${config.business.address.city}, ${config.business.address.region}`;
 
 async function isolateExternalServices(context) {

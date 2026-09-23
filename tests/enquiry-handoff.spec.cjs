@@ -1,6 +1,6 @@
 "use strict";
 const { test, expect } = require("@playwright/test");
-const { rates } = require("../site.config.cjs");
+const { rates } = require("../src/data/site.config.cjs");
 const AxeBuilder = require("@axe-core/playwright").default;
 
 test.beforeEach(async ({ context, page }) => {

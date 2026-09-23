@@ -1,6 +1,27 @@
-# Laporan QA — audit menyeluruh 23 September 2026
+# Laporan QA
 
-Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan sekarang berdasarkan output dist dan browser sebenar.
+## Penyusunan repo — 23 September 2026
+
+Fail root berkurang daripada 46 kepada tujuh. Source dipindahkan ke `src/`, dokumentasi ke `docs/`, dan config Playwright ke `tests/`. Laporan sementara dikumpulkan dalam `artifacts/` yang diabaikan Git. Build memetakan path source baharu kepada URL awam yang sama.
+
+| Semakan | Keputusan |
+| --- | --- |
+| Perbandingan build selepas penyusunan folder | Semua 132 path dan SHA-256 fail output sama |
+| Perbandingan akhir selepas pembaikan FAQ | 131 fail sama; hanya `faq.js` berubah untuk membetulkan fokus |
+| Pemprosesan gambar | 82 varian WebP daripada 23 JPG; 118 fail imej/manifest dipindahkan tanpa perubahan kandungan |
+| Static output QA | 696 / 696 lulus, termasuk sembilan path dalaman baharu yang mesti memulangkan 404 |
+| Unit tarikh, draf, perkongsian dan panduan | 16 / 16 lulus |
+| Browser Chromium selepas pembaikan FAQ | 112 / 112 lulus; tiada retry |
+| Regresi fokus FAQ WebKit | 4 / 4 lulus: pautan terus dan pertukaran bahasa BM/EN, termasuk skrip tertunda |
+| Path dan sintaks | 48 fail JS/CJS sah; semua import relatif serta pautan dokumentasi sah |
+
+Semua 17 dokumen terdahulu dikekalkan dan disenaraikan dalam [indeks docs](README.md). Arkib 51 foto kamera lama tidak berubah. Tiada folder source, dokumen, laporan ujian atau foto mentah dimasukkan ke output website.
+
+Ujian penuh pertama menemui kegagalan fokus FAQ sedia ada semasa tukar bahasa (109 lulus, satu gagal). Trace dan rekod fokus mengesahkan browser memadam fokus summary ketika memproses fragment awal selepas callback skrip berjalan terlalu awal. Pembaikan menunggu `DOMContentLoaded` sebelum mendedahkan jawapan awal. Dua regresi menahan skrip defer terakhir untuk menghasilkan keadaan ini: kedua-duanya gagal sebelum pembaikan dan lulus selepasnya, bersama dua ujian pautan FAQ sedia ada. Assertion fokus dan kedudukan asal dikekalkan.
+
+## Audit menyeluruh — 23 September 2026
+
+Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan berdasarkan output dist dan browser sebenar. Angka di bawah ialah snapshot audit 23 September sebelum penyusunan repo; path source kini di bawah `src/`, config Playwright di `tests/playwright.config.cjs`, dan laporan ujian dijana dalam `artifacts/`.
 
 | Semakan | Keputusan |
 | --- | --- |
@@ -55,4 +76,4 @@ Semakan seluruh halaman mendapati bar mobile menutup kawalan semasa Tab, validas
 
 Selepas pembaikan background dan peta: Google iframe sebenar menunjukkan pin Jitra2Stay pada desktop/mobile dan halaman English. Butang Google Maps membuka place sedia ada dan Waze membuka destinasi `6.2805462,100.4151952`. Kedua-dua pautan membuka tab/aplikasi navigasi tanpa mengubah borang. Dalam suite automatik, kandungan iframe Google menggunakan fixture bagi mengelakkan kebergantungan pada rangkaian pihak ketiga; semakan peta sebenar dibuat berasingan.
 
-Ulang semakan menggunakan arahan dalam README. Angka ini ialah snapshot suite semasa, bukan jaminan kualiti mutlak atau keputusan semua browser.
+Ulang semakan menggunakan arahan dalam [README](../README.md#ujian). Angka ini ialah snapshot suite ketika audit, bukan jaminan kualiti mutlak atau keputusan semua browser.

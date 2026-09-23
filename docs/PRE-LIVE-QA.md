@@ -7,7 +7,7 @@
 - npm run test:unit
 - npm test
 
-CI menjalankan semakan sama. Suite browser memintas pembukaan WhatsApp; ia tidak menghantar mesej sebenar. Keputusan implementasi 11 September 2026: 427 statik, 5 unit, 24 browser lulus.
+CI menjalankan semakan sama. `npm test` menggunakan `tests/playwright.config.cjs`; laporan dijana dalam `artifacts/`. Suite browser memintas pembukaan WhatsApp; ia tidak menghantar mesej sebenar. Lihat [laporan QA](QA-REPORT.md) untuk keputusan bertarikh dan [README](../README.md#ujian) untuk pemasangan browser.
 
 ## Selepas deploy
 

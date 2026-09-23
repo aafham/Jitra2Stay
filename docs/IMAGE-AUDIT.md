@@ -27,11 +27,13 @@ Semua 10 fail asal baharu disimpan di folder workspace `work/owner-photo-origina
 
 ## Varian dan penerbitan
 
+JPG web dan varian responsif disimpan dalam `src/images/`. Build menyalin foto yang digunakan ke `dist/images/`; URL awam `/images/…` kekal sama.
+
 Repo mempunyai **23 JPG web dan 82 WebP responsif**. Build menerbitkan hanya **21 JPG galeri yang digunakan serta 74 variannya**. `luar-rumah.jpg` dan `tangga-ruang-makan.jpg` beserta varian tidak digunakan tidak termasuk output.
 
 - Foto terdahulu mempunyai varian 480, 800, 1200 dan saiz penuh, tanpa upscaling.
 - Setiap foto baharu mempunyai tiga varian: 480, 800 dan lebar penuh JPG web (1200 atau 1086px).
-- Dimensi, saiz, hash dan provenance berada dalam `images/responsive/manifest.json`; manifest bukan output website.
+- Dimensi, saiz, hash dan provenance berada dalam `src/images/responsive/manifest.json`; manifest bukan output website.
 - Hero asal kekal: calon 480px ialah 30,970 bait dan 800px ialah 89,434 bait. Pelayar memilih foto melalui `picture`/`srcset`/`sizes`.
 - Sembilan kad kemudahan menggunakan `facilities[].photos` untuk menjana 14 pautan kepada foto sebenar. Galeri awal tetap enam foto; kategori, lihat lagi, dialog dan kandungan tanpa JavaScript memberi akses kepada seluruh set.
 

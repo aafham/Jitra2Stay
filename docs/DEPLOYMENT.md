@@ -1,6 +1,6 @@
 # Deployment Jitra2Stay
 
-Semua host mesti menerbitkan **dist/**, bukan root repository. Source HTML sekarang dijana daripada templates dan site.config.cjs.
+Semua host mesti menerbitkan **dist/**, bukan root repository. HTML dijana daripada `src/templates/` dan `src/data/site.config.cjs`. Arahan dijalankan dari root repo; lihat [README](../README.md).
 
 ## Build
 
@@ -11,6 +11,8 @@ npm run qa
 ```
 
 Build membersihkan hanya folder dist yang dimiliki projek. Aset foto kamera asal dan sejarah Git kekal. Output mengandungi 16 HTML, style.css, app.js, public app.config.js, robots, sitemap, favicon dan JPG/WebP yang digunakan. Raw, tools, tests, docs dan manifest provenance tidak disalin.
+
+`src/scripts/` dan `src/styles/` dipetakan terus ke root output; gambar daripada `src/images/` diterbitkan sebagai `dist/images/`. Oleh itu URL awam seperti `/app.js` dan `/images/…` kekal sama selepas susunan repo berubah. `artifacts/` hanya menyimpan laporan ujian tempatan dan tidak diterbitkan.
 
 ## Vercel
 
@@ -34,7 +36,7 @@ Jalankan build local dan upload semua kandungan dist, termasuk halaman English, 
 
 - Homepage BM/EN, polisi, panduan dan gambar memberi 200.
 - URL tidak wujud memberi 404 sebenar.
-- /source-images/latest-raw/IMG_8012.JPG, /tools/qa-check.js dan /OWNER-DATA-CHECKLIST.md tidak boleh dicapai.
+- `/src/data/site.config.cjs`, `/src/images/responsive/manifest.json`, `/docs/OWNER-DATA-CHECKLIST.md`, `/tools/qa-check.js` dan `/source-images/latest-raw/IMG_8012.JPG` tidak boleh dicapai. URL dokumen lama `/OWNER-DATA-CHECKLIST.md` juga mesti kekal 404.
 - Canonical, hreflang, OG dan sitemap menggunakan business.siteUrl yang aktif.
 - WhatsApp membuka nombor yang betul; pautan fallback mengekalkan input.
 - Test pada telefon sebenar sebelum menganggap phone flow selesai.

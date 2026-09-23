@@ -1,7 +1,7 @@
 "use strict";
 
 const { test, expect } = require("@playwright/test");
-const config = require("../site.config.cjs");
+const config = require("../src/data/site.config.cjs");
 
 test.beforeEach(async ({ context, page }) => {
   await context.route("https://www.google.com/maps/embed**", route => route.fulfill({

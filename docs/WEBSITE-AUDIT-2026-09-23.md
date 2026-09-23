@@ -1,5 +1,7 @@
 # Audit menyeluruh website — 23 September 2026
 
+> Rekod bertarikh: penemuan, angka ujian dan path di bawah merujuk keadaan ketika audit. Source kini disusun dalam `src/`; lihat [struktur semasa](../README.md#struktur-repo) dan [indeks dokumentasi](README.md).
+
 Skop: homepage dari header hingga footer, BM/EN, semua 16 halaman output, desktop, tablet, telefon dan keadaan fungsi yang gagal atau lambat. Audit bermula daripada `7878a04`. Semua fakta rumah, kadar, background, 21 foto, sembilan kad kemudahan dan 50 destinasi dikekalkan.
 
 ## Penemuan dan pembaikan

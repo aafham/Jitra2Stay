@@ -1,7 +1,7 @@
 "use strict";
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { buildFamilyPlanMessage, parseEnquiryDraft } = require("../app.js");
+const { buildFamilyPlanMessage, parseEnquiryDraft } = require("../src/scripts/app.js");
 
 test("family planning text includes a separate deposit and public URL without private enquiry fields", () => {
   const plan = { language: "ms", checkin: "2027-12-31", checkout: "2028-01-03", rooms: "4", roomRates: { 4: 280 }, securityDeposit: 100, publicUrl: "https://jitra2stay.vercel.app/?notes=private#semak-tarikh", guests: "19", notes: "PRIVATE FAMILY NOTE" };

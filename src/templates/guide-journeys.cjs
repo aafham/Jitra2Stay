@@ -1,5 +1,5 @@
 const {e,t}=require('./shared.cjs');
-const routes=require('../destination-routes.cjs');
+const routes=require('../data/destination-routes.cjs');
 
 // Guide travel estimates use the same dated driving snapshots as the finder.
 // Other owner copy is escaped as text; only verified route tokens become links.

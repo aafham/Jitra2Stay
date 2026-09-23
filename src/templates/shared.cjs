@@ -1,4 +1,4 @@
-const config = require('../site.config.cjs');
+const config = require('../data/site.config.cjs');
 const { appearanceScript } = require('./appearance.cjs');
 const manifest = require('../images/responsive/manifest.json');
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-23 — Susunan repo
+
+- Kumpulkan data, template, JavaScript, CSS dan gambar dalam `src/`; root tinggal fail pengenalan serta konfigurasi projek/hosting.
+- Pindahkan semua panduan dan laporan ke `docs/`, tambah indeks dokumentasi dan ringkaskan README.
+- Letakkan config Playwright bersama tests serta laporan ujian dalam `artifacts/` yang diabaikan Git.
+- Selaraskan build, QA, tests dan CI dengan path baharu. Kandungan website dan URL awam kekal sama; output deploy tetap `dist/`.
+- Betulkan fokus jawapan FAQ yang kadangkala hilang selepas membuka pautan terus atau bertukar bahasa ketika skrip lambat dimuat. Dua ujian BM/EN menghasilkan semula keadaan tersebut sebelum mengesahkan pembaikan.
+- Rekod lama di bawah dikekalkan sebagai sejarah; path dan angka lama merujuk keadaan pada tarikh catatan.
+
 ## 2026-09-23 — Audit seluruh website, desktop dan mobile
 
 - Stabilkan header pada paparan pertama dan gunakan tema pilihan sebelum stylesheet dilukis. Jika skrip enhancement gagal, navigasi dan foto HTML penuh tersedia pada `DOMContentLoaded`.

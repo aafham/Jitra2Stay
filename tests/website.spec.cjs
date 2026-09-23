@@ -2,7 +2,7 @@
 
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
-const config = require("../site.config.cjs");
+const config = require("../src/data/site.config.cjs");
 const englishPages = ["en.html", "policies-en.html", "thank-you-en.html", ...config.guides.map(guide => `${guide.slug}-en.html`)];
 
 async function stubGoogleMap(context) {
@@ -670,7 +670,7 @@ test("English policy page, expanded mobile menu and gallery dialog pass accessib
 });
 
 test("published server excludes repository files and returns real 404s", async ({ request }) => {
-  for (const route of ["/missing-page", "/site.config.cjs", "/README.md", "/tools/qa-check.js", "/OWNER-DATA-CHECKLIST.md"]) {
+  for (const route of ["/missing-page", "/site.config.cjs", "/README.md", "/tools/qa-check.js", "/OWNER-DATA-CHECKLIST.md", "/src/data/site.config.cjs", "/src/scripts/app.js", "/src/templates/shared.cjs", "/src/images/responsive/manifest.json", "/docs/QA-REPORT.md", "/tests/playwright.config.cjs", "/artifacts/playwright-report/index.html"]) {
     const response = await request.get(route);
     expect(response.status()).toBe(404);
     expect(response.headers()["content-type"]).toContain("text/html");

@@ -4,10 +4,10 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const output=path.join(root,'dist');
-const config=require('../site.config.cjs');
-const {renderHome}=require('../templates/home.cjs');
-const {renderPolicies,renderGuide,renderThanks,render404}=require('../templates/pages.cjs');
-const manifest=require('../images/responsive/manifest.json');
+const config=require('../src/data/site.config.cjs');
+const {renderHome}=require('../src/templates/home.cjs');
+const {renderPolicies,renderGuide,renderThanks,render404}=require('../src/templates/pages.cjs');
+const manifest=require('../src/images/responsive/manifest.json');
 const origin=new URL(config.business.siteUrl);
 if(origin.protocol!=='https:' || origin.pathname!=='/' || origin.search || origin.hash || origin.username || origin.password) throw new Error('business.siteUrl must be a public HTTPS origin');
 if(!/^\d{8,15}$/.test(config.business.phone)) throw new Error('Use international phone digits, without punctuation');
@@ -28,18 +28,21 @@ for(const lang of ['ms','en']) {
 pages.set('ms.html',renderHome('ms'));
 pages.set('404.html',render404());
 for(const [name,html] of pages) fs.writeFileSync(path.join(output,name),html+'\n');
-const copy=relative=>{
-  const source=path.resolve(root,relative),target=path.resolve(output,relative);
+// Repository folders are independent of the existing public asset URLs.
+const copy=(sourceRelative,publicRelative)=>{
+  const source=path.resolve(root,sourceRelative),target=path.resolve(output,publicRelative);
   if(!source.startsWith(root+path.sep)||!target.startsWith(output+path.sep)) throw new Error('Asset outside project');
   fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(source,target);
 };
-for(const asset of ['app.js','style.css','gallery.js','gallery.css','navigation.js','navigation.css','share.js','faq.js','faq.css','location.js','location.css','rates.css','planning.css','documents.css','nearby.js','nearby.css','mobile.css','images/favicon.svg']) copy(asset);
+for(const asset of ['app.js','gallery.js','navigation.js','share.js','faq.js','location.js','nearby.js']) copy(`src/scripts/${asset}`,asset);
+for(const asset of ['style.css','gallery.css','navigation.css','faq.css','location.css','rates.css','planning.css','documents.css','nearby.css','mobile.css']) copy(`src/styles/${asset}`,asset);
+copy('src/images/favicon.svg','images/favicon.svg');
 const usedImages=new Set(['halaman','ruang-tamu',...config.gallery.map(p=>p.image)]);
 for(const name of usedImages){
   const info=manifest.images.find(i=>i.source===`images/${name}.jpg`);
   if(!info)throw new Error(`Missing image: ${name}`);
-  copy(info.source);
-  for(const variant of info.variants) copy(variant.src);
+  copy(`src/${info.source}`,info.source);
+  for(const variant of info.variants) copy(`src/${variant.src}`,variant.src);
 }
 const publicConfig={phone:config.business.phone,roomRates:Object.fromEntries(config.rates.map(r=>[r.rooms,r.price])),maxGuests:config.business.maxGuests,securityDeposit:config.business.securityDeposit,checkInTime:config.business.checkInTime,checkOutTime:config.business.checkOutTime};
 fs.writeFileSync(path.join(output,'app.config.js'),`window.APP_CONFIG = ${JSON.stringify(publicConfig,null,2)};\n`);

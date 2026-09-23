@@ -97,5 +97,8 @@
     copyButton.hidden = false;
   });
   window.addEventListener('hashchange', revealHashQuestion);
-  revealHashQuestion();
+  // This deferred script can paint before the remaining scripts finish.
+  // Wait for document readiness so native initial-fragment handling cannot
+  // clear the summary focus after our animation-frame callback.
+  document.addEventListener('DOMContentLoaded', revealHashQuestion, { once: true });
 })();

@@ -1,8 +1,8 @@
 'use strict';
 const {test,expect}=require('@playwright/test');
-const destinations=require('../destinations.cjs');
-const routes=require('../destination-routes.cjs');
-const {business}=require('../site.config.cjs');
+const destinations=require('../src/data/destinations.cjs');
+const routes=require('../src/data/destination-routes.cjs');
+const {business}=require('../src/data/site.config.cjs');
 const AxeBuilder=require('@axe-core/playwright').default;
 
 test.beforeEach(async({context,page})=>{

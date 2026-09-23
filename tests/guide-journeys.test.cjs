@@ -1,9 +1,9 @@
 'use strict';
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const config=require('../site.config.cjs');
-const routes=require('../destination-routes.cjs');
-const {renderGuide}=require('../templates/pages.cjs');
+const config=require('../src/data/site.config.cjs');
+const routes=require('../src/data/destination-routes.cjs');
+const {renderGuide}=require('../src/templates/pages.cjs');
 
 test('UUM and Changlun guide estimates stay distinct and use the dated finder routes in both languages',()=>{
   const guide=config.guides.find(item=>item.slug==='homestay-konvokesyen-uum-jitra');

@@ -1,7 +1,7 @@
 "use strict";
 
 const { test, expect } = require("@playwright/test");
-const config = require("../site.config.cjs");
+const config = require("../src/data/site.config.cjs");
 
 // These are the owner's September upload, rather than a count that could pass
 // after one supplied photo silently replaces another.

@@ -1,7 +1,7 @@
 "use strict";
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, getEnquiryUrl } = require("../app.js");
+const { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, getEnquiryUrl } = require("../src/scripts/app.js");
 
 test("calendar dates reject impossible dates instead of silently rolling into another month", () => {
   for (const value of ["", "2026-02-29", "2026-04-31", "2026-13-01", "2026-00-01", "2026-01-00", "2026-1-02", "2026-01-02T00:00:00Z", null, undefined]) {
