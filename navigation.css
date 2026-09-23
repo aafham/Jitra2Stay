@@ -1,3 +1,11 @@
+/* Reserve the enhanced header before deferred JavaScript finishes loading. */
+html.nav-pending .site-header { position: sticky; }
+html.nav-pending .header-controls { min-width: 44px; min-height: 44px; }
+@media (max-width: 900px) {
+  html.nav-pending .header-controls { min-width: 96px; }
+  html.nav-pending #mainNav { display: none; }
+}
+
 /* Underline and colour identify the reading section without moving the links.
  * Shared tokens retain contrast in both light and dark themes.
  */

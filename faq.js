@@ -70,16 +70,25 @@
       if (copying) return;
       copying = true;
       copyButton.setAttribute('aria-busy', 'true');
+      copyButton.focus({ preventScroll: true });
+      feedback.textContent = '';
+      fallback.hidden = true;
+      const answerVisible = () => question.open && !question.hidden && copyButton.getClientRects().length > 0;
       try {
         // Share only this public answer URL; enquiry data and query strings are excluded.
         await navigator.clipboard.writeText(publicUrl.href);
+        if (!answerVisible()) return;
         fallback.hidden = true;
         feedback.textContent = en ? 'Answer link copied.' : 'Pautan jawapan disalin.';
       } catch {
+        if (!answerVisible()) return;
         feedback.textContent = en ? 'Copy the selected answer link below.' : 'Salin pautan jawapan yang dipilih di bawah.';
         fallback.hidden = false;
-        fallback.focus();
-        fallback.select();
+        if (document.activeElement === copyButton) {
+          fallback.focus({ preventScroll: true });
+          fallback.select();
+          fallback.scrollIntoView({ block: 'center', behavior: 'instant' });
+        }
       } finally {
         copying = false;
         copyButton.removeAttribute('aria-busy');

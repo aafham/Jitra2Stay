@@ -44,6 +44,7 @@
   more.addEventListener("click", () => { expanded = !expanded; renderGrid(); });
   renderGrid();
   controls.hidden = false;
+  document.documentElement.classList.remove("gallery-pending");
 
   const dialog = document.getElementById("galleryDialog");
   const image = document.getElementById("galleryImage");
