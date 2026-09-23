@@ -43,6 +43,11 @@
   const current = dateValue(today);
   const initialMonth = current.getUTCFullYear() * 12 + current.getUTCMonth();
   let selectedMonth = initialMonth;
+  let selectedStay = null;
+  const selection = document.getElementById('calendarSelection');
+  const monthOf = date => {const value=dateValue(date);return value.getUTCFullYear()*12+value.getUTCMonth();};
+  const firstMonth = () => Math.min(initialMonth-12,selectedStay ? monthOf(selectedStay.check_in) : initialMonth);
+  const lastMonth = () => Math.max(initialMonth+12,selectedStay ? monthOf(iso(new Date(+dateValue(selectedStay.check_out)-dayMs))) : initialMonth);
   let controller;
   let sequence = 0;
   let started = false;
@@ -69,13 +74,17 @@
         const item = dateValue(date);
         const inMonth = item.getUTCFullYear()*12+item.getUTCMonth() === selectedMonth;
         const busy = occupied.has(date);
+        const selected = selectedStay && date >= selectedStay.check_in && date < selectedStay.check_out;
         td.dataset.calendarDay = date;
         td.dataset.state = known ? busy ? 'occupied' : 'unrecorded' : 'unknown';
         td.className = [inMonth ? '' : 'is-other-month', busy ? 'is-occupied' : '', known ? '' : 'is-unknown', date===today ? 'is-today' : ''].filter(Boolean).join(' ');
+        if (selected) td.classList.add('is-selected-stay');
+        if (selected && date===selectedStay.check_in) td.classList.add('is-stay-start');
         const number = document.createElement('span'); number.textContent = String(item.getUTCDate()); number.setAttribute('aria-hidden','true'); td.append(number);
         if (busy) {const mark=document.createElement('span');mark.className='calendar-occupied-mark';mark.textContent='●';mark.setAttribute('aria-hidden','true');td.append(mark);}
         const accessible = document.createElement('span'); accessible.className='sr-only';
         accessible.textContent = `${format(date,{day:'numeric',month:'long',year:'numeric'})}${date===today?say(', hari ini',', today'):''}: ${!known?say('status belum disemak','status not checked'):busy?say('ada tetamu menginap','occupied overnight'):say('masih tersedia','available')}`;
+        if (selected) accessible.textContent += say(', penginapan dipilih',', selected stay');
         td.append(accessible); tr.append(td);
       }
       body.append(tr);
@@ -90,8 +99,8 @@
     const dates = monthGrid(Math.floor(selectedMonth / 12), selectedMonth % 12);
     const monthDate = iso(new Date(Date.UTC(Math.floor(selectedMonth/12), selectedMonth%12,1)));
     heading.textContent = format(monthDate, {month:'long',year:'numeric'});
-    previous.disabled = selectedMonth <= initialMonth - 12;
-    next.disabled = selectedMonth >= initialMonth + 12;
+    previous.disabled = selectedMonth <= firstMonth();
+    next.disabled = selectedMonth >= lastMonth();
     grid.setAttribute('aria-busy','true');
     render(dates,new Set(),false); retry.hidden=true;
     status.textContent = say('Memuatkan rekod penginapan…','Loading stay records…');
@@ -118,9 +127,22 @@
       if (thisRequest === sequence) grid.setAttribute('aria-busy','false');
     }
   }
-  previous.addEventListener('click',()=>{if(selectedMonth>initialMonth-12){selectedMonth--;load();}});
-  next.addEventListener('click',()=>{if(selectedMonth<initialMonth+12){selectedMonth++;load();}});
-  calendar.querySelector('[data-calendar-today]').addEventListener('click',()=>{selectedMonth=initialMonth;load();});
+  function showStay(guest) {
+    selectedStay = guest;
+    selectedMonth = monthOf(guest.check_in);
+    const name = document.createElement('strong'); name.textContent = guest.guest_name;
+    const dates = document.createElement('span');
+    dates.textContent = `Check-in: ${format(guest.check_in,{day:'numeric',month:'short',year:'numeric'})} · Check-out: ${format(guest.check_out,{day:'numeric',month:'short',year:'numeric'})}`;
+    const hint = document.createElement('span');hint.className='calendar-selection-hint';
+    hint.textContent=say('Bingkai menandakan malam penginapan dipilih.','Outlined dates mark the selected stay’s nights.');
+    selection.replaceChildren(name,dates,hint); selection.hidden=false;
+    load();
+    heading.focus({preventScroll:true});
+    calendar.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  }
+  previous.addEventListener('click',()=>{if(selectedMonth>firstMonth()){selectedMonth--;load();}});
+  next.addEventListener('click',()=>{if(selectedMonth<lastMonth()){selectedMonth++;load();}});
+  calendar.querySelector('[data-calendar-today]').addEventListener('click',()=>{selectedStay=null;selection.hidden=true;selection.replaceChildren();selectedMonth=initialMonth;load();});
   calendar.querySelector('[data-calendar-refresh]').addEventListener('click',()=>{load();loadUpcoming();});
   retry.addEventListener('click',load);
   window.addEventListener('pageshow',event=>{if(event.persisted&&started){load();loadUpcoming();}});
@@ -150,6 +172,12 @@
       if(guest.check_in<=today) {
         const staying=document.createElement('p');staying.className='public-guest-current';staying.textContent=say('Sedang menginap','Currently staying');card.append(staying);
       }
+      const jump=document.createElement('button');jump.type='button';jump.className='public-guest-jump';
+      jump.textContent=say('Lihat di kalendar ↑','View in calendar ↑');
+      jump.setAttribute('aria-label',`${say('Lihat di kalendar','View in calendar')}: ${guest.guest_name}, ${dates.textContent}`);
+      jump.setAttribute('aria-controls','calendarGrid');
+      jump.addEventListener('click',()=>showStay(guest));
+      card.append(jump);
       publicList.append(card);
     });
     publicStatus.textContent=publicGuests.length?`${publicGuests.length} ${say('penginapan direkodkan','recorded stays')}`:say('Belum ada tetamu akan datang direkodkan.','No upcoming guests have been recorded yet.');

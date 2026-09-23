@@ -34,6 +34,8 @@ Contohnya, tetamu masuk **10 Oktober** dan keluar **12 Oktober**: malam 10 dan 1
 
 Gunakan anak panah untuk tukar bulan, **Bulan ini** untuk kembali ke bulan semasa, atau **Muat semula** untuk mengambil rekod terkini. Semua orang boleh melihat kalendar serta nama, tarikh dan jumlah tetamu. PIN hanya diperlukan untuk mengubah rekod.
 
+Tekan nama atau kad dalam **Tetamu akan datang** untuk terus membuka bulan check-in tetamu itu. Kalendar memaparkan nama dan tarikh masuk/keluar serta bingkai pada malam penginapan dipilih. Jika penginapan merentasi bulan, gunakan anak panah untuk melihat sambungannya. **Bulan ini** memadam pilihan dan kembali ke bulan semasa.
+
 ## Ubah atau batalkan
 
 1. Buka **Urus tetamu** dan masukkan PIN jika diminta.
