@@ -18,10 +18,20 @@ Maklumat owner dalam repo asal `18a274d` digunakan semula sebagai sumber berauto
 
 Pemulihan ini berdasarkan bahan owner sedia ada, bukan lawatan atau pemeriksaan fizikal baharu. Anggaran perjalanan tidak dijadikan jaminan masa trafik semasa. Contoh pembahagian harga pakej bukan had penghunian atau formula caj tetamu tambahan.
 
+## Foto tambahan owner — 23 September 2026
+
+- [x] Semua 10 foto baharu ditambah kepada 11 foto asal; galeri kini mempunyai 21 foto dengan kategori Kemudahan dan Bilik air.
+- [x] Mesin basuh, seterika/papan seterika, peti sejuk, microwave, air fryer dan penapis air Coway diperlihatkan dalam foto dan dimasukkan dalam penerangan kemudahan BM/EN.
+- [x] Foto TV/WiFi dan kotak kunci self check-in tersedia. Maklumat akses pada dua foto ini ditutup dalam JPG web dan semua variannya; fail asal baharu disimpan di luar repo.
+- [x] Foto bilik air serta pancuran/water heater tersedia. Set ini menunjukkan satu bilik air dan tidak mengesahkan setiap satu daripada tiga bilik air secara berasingan.
+- [x] Sembilan kad kemudahan mempunyai 14 pautan kepada foto sebenar yang berkaitan. Kedudukan tingkat dan jumlah setiap jenis peralatan tidak disimpulkan daripada foto.
+
+Sumber tambahan ialah foto yang dihantar sendiri oleh owner dalam chat. Pemetaan fail, pemprosesan dan provenance direkodkan dalam [IMAGE-AUDIT.md](IMAGE-AUDIT.md) serta `tools/owner-photo-sources.json`; kemas kini ini bukan pemeriksaan fizikal.
+
 ## Bahan yang belum terdapat dalam sumber
 
 - [ ] Tingkat/lokasi setiap bilik dan ukuran atau jenis katil terperinci; label deskriptif dan perkara yang terlihat dalam foto tetap digunakan.
-- [ ] Foto tiga bilik air. Semakan arkib 51 raw JPG terdahulu tidak menemui foto bilik air.
+- [ ] Dokumentasi foto berasingan untuk setiap satu daripada tiga bilik air. Foto bilik air dan pancuran daripada set baharu sudah diterbitkan; galeri tidak melabel nombor bilik air atau tingkat yang belum dinyatakan.
 - [ ] Petikan ulasan tetamu dengan atribusi dan izin penggunaan. `reviews` kekal kosong; pautan Google/Facebook tidak dianggap testimoni.
 
 Bahan tambahan ini tidak direka dan tidak menghalang website paparan yang sudah berfungsi. Tiada pertanyaan baharu kepada owner diperlukan untuk menggunakan fakta yang telah tersedia. Tarikh booking dan data pelanggan kekal di luar public repository.

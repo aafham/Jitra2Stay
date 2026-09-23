@@ -3,8 +3,11 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const http = require("node:http");
+const crypto = require("node:crypto");
+const sharp = require("sharp");
 const { createServer, publishDir } = require("./serve.cjs");
 const config = require("../site.config.cjs");
+const imageManifest = require("../images/responsive/manifest.json");
 const siteOrigin = new URL(config.business.siteUrl).origin;
 const pages = ["index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html",
   ...config.guides.flatMap(guide => [`${guide.slug}.html`, `${guide.slug}-en.html`])];
@@ -89,6 +92,36 @@ const requestPath = (port, route) => new Promise((resolve, reject) => {
   req.setTimeout(5000, () => req.destroy(new Error(`Timeout: ${route}`)));
 });
 
+async function inspectPublishedImages(files) {
+  const usedNames = new Set(["halaman", "ruang-tamu", ...config.gallery.map(photo => photo.image)]);
+  const allowedImages = new Set();
+  for (const name of usedNames) {
+    const entries = imageManifest.images.filter(image => image.source === `images/${name}.jpg`);
+    check(entries.length === 1, `${name}: one responsive image manifest entry`);
+    if (entries.length !== 1) continue;
+    const image = entries[0];
+    const candidates = [image, ...image.variants];
+    const failures = [];
+    if (!image.variants.length) failures.push("no responsive candidates");
+    for (const candidate of candidates) {
+      const asset = candidate.src || candidate.source;
+      allowedImages.add(asset);
+      if (!exists(asset)) { failures.push(`${asset}: missing`); continue; }
+      const bytes = fs.readFileSync(path.join(publishDir, asset));
+      const hash = crypto.createHash("sha256").update(bytes).digest("hex");
+      const metadata = await sharp(bytes).metadata();
+      if (bytes.length !== candidate.bytes || hash !== candidate.sha256) failures.push(`${asset}: stale bytes or hash`);
+      if (metadata.width !== candidate.width || metadata.height !== candidate.height) failures.push(`${asset}: wrong dimensions`);
+      if (metadata.exif || metadata.xmp) failures.push(`${asset}: camera metadata retained`);
+      if (candidate.width > image.width || candidate.height > image.height) failures.push(`${asset}: enlarged beyond source`);
+      if (Math.abs(candidate.height - candidate.width * image.height / image.width) > 1) failures.push(`${asset}: aspect ratio changed`);
+    }
+    check(failures.length === 0, `${name}: published images match manifest hashes, dimensions and uncropped source ratio without camera metadata`, failures.join(", "));
+  }
+  const unexpected = files.filter(file => /\.(avif|webp|jpe?g|png)$/i.test(file) && !allowedImages.has(file));
+  check(unexpected.length === 0, "published raster images are only the configured public photos and their responsive variants", unexpected.join(", "));
+}
+
 async function inspectServer() {
   const server = createServer();
   await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
@@ -97,7 +130,7 @@ async function inspectServer() {
     const publicRoutes = ["/", ...pages.map(file => `/${file}`), "/app.js", "/style.css", "/sitemap.xml", "/robots.txt"];
     const responses = await Promise.all(publicRoutes.map(async route => ({ route, ...await requestPath(port, route) })));
     check(responses.every(response => response.status === 200), "publish server returns public pages and assets", responses.filter(response => response.status !== 200).map(response => response.route).join(", "));
-    const blocked = ["/missing-page", "/tools/qa-check.js", "/site.config.cjs", "/package.json", "/README.md", "/OWNER-DATA-CHECKLIST.md", "/AUDIT-2026-09-11.md", "/.git/config", "/images/raw/hero.jpg", "/../site.config.cjs", "/%2e%2e%2fsite.config.cjs", "/images%5c..%5c..%5csite.config.cjs"];
+    const blocked = ["/missing-page", "/tools/qa-check.js", "/site.config.cjs", "/package.json", "/README.md", "/OWNER-DATA-CHECKLIST.md", "/AUDIT-2026-09-11.md", "/.git/config", "/images/raw/hero.jpg", "/source-images/latest-raw/IMG_8001.JPG", "/images/responsive/manifest.json", "/../site.config.cjs", "/%2e%2e%2fsite.config.cjs", "/images%5c..%5c..%5csite.config.cjs"];
     for (const route of blocked) {
       const response = await requestPath(port, route);
       check(response.status === 404 && response.body === read("404.html"), `publish server returns genuine custom 404: ${route}`);
@@ -111,7 +144,7 @@ async function main() {
   for (const file of publicFiles) check(exists(file), `required publish file: ${file}`);
   const unexpected = files.filter(file => !publicFiles.has(file) && !/^images\/(?!raw\/)[a-z0-9_./-]+\.(avif|webp|jpe?g|png|svg|ico)$/i.test(file));
   check(unexpected.length === 0, "publish allowlist excludes source, raw images, docs and build tools", unexpected.join(", "));
-  check(!files.some(file => /(^|\/)(?:node_modules|\.git|raw|tests|tools)\//.test(file)), "publish output contains no private/source directories");
+  check(!files.some(file => /(^|\/)(?:node_modules|\.git|raw|source-images|tests|tools)\//.test(file)), "publish output contains no private/source directories");
   for (const file of pages.filter(exists)) inspectPage(file);
   const sitemap = read("sitemap.xml");
   const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => decode(match[1]));
@@ -121,6 +154,7 @@ async function main() {
   const images = files.filter(file => /\.(avif|webp|jpe?g|png)$/i.test(file));
   const oversized = images.filter(file => fs.statSync(path.join(publishDir, file)).size > 350 * 1024);
   check(images.length > 0 && oversized.length === 0, "published raster images fit 350 KiB budget", oversized.join(", "));
+  await inspectPublishedImages(files);
   for (const home of ["index.html", "en.html", "ms.html"]) {
     const html = read(home);
     const priorityImages = tags(html, "img").filter(img => img.fetchpriority === "high");

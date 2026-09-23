@@ -1,16 +1,22 @@
-# Laporan QA — kemasan mobile 21 September 2026
+# Laporan QA — foto kemudahan 23 September 2026
 
 Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. Selepas implementasi, semakan sekarang berdasarkan output dist dan browser sebenar.
 
 | Semakan | Keputusan |
 | --- | --- |
 | Build | 16 halaman HTML penuh |
-| Static output QA | 618 / 618 lulus |
+| Static output QA | 663 / 663 lulus |
 | Unit tarikh, draf dan perkongsian | 13 / 13 lulus |
-| Playwright Chromium 153 | 95 kes: 94 lulus awal; kes kontras menu lulus selepas menunggu animasi selesai |
-| Matriks Chromium 153 / WebKit 26.6 | 56 / 56 gabungan halaman, bahasa dan viewport lulus |
+| Playwright Chromium 153 | 99 / 99 lulus; tiada retry |
+| Semakan visual foto Chromium / WebKit | 6 / 6 gabungan bahasa, tema dan viewport lulus |
 | Axe pada homepage light/dark, polisi EN, menu dan dialog | Tiada pelanggaran dalam rules/state yang diuji |
 | JavaScript runtime | Tiada uncaught page error dalam aliran diuji |
+
+Pusingan 23 September mengesahkan 10 foto baharu dan kesemua 11 foto asal, penapis Kemudahan/Bilik air, 14 pautan foto pada sembilan kad kemudahan, navigasi dalam kategori, fokus kembali ke pembuka dan pautan imej tanpa JavaScript. Foto menegak diuji tanpa crop pada 320/390/1440px dan dialog melintang 568×320. Hash, saiz bait, dimensi, nisbah imej dan ketiadaan EXIF/XMP disemak terhadap manifest untuk semua imej terbitan; hanya foto yang digunakan disalin ke `dist/`.
+
+Semakan visual tambahan meliputi Chromium 320px BM cerah, 390px EN gelap, 768px BM cerah, 1440px EN cerah, WebKit 390px BM cerah dan 568×320 EN gelap. Semua enam konteks memuatkan foto kategori baharu, mengekalkan 21 foto dan 14 pautan kemudahan, tanpa overflow atau ralat halaman/aset. Kawasan nombor peti kunci serta nota WiFi/QR dalam dua salinan awam ditutup dan diperiksa secara visual. Ujian ini menggunakan emulasi enjin desktop, bukan peranti fizikal.
+
+## Pengesahan pusingan terdahulu
 
 Pusingan mobile 21 September menambah 11 kes regresi untuk pautan kemudahan yang tersalah masuk kolum ikon, gambar/penerangan bilik penuh pada telefon, input dan semua fallback manual minimum 16px, ruang kad destinasi, polisi/footer, serta animasi menu, tap berulang, keyboard dan skrin melintang. Ujian kontras menu menunggu opacity penuh sebelum audit; ujian berasingan mengesahkan animasi masih berjalan ketika membuka/menutup. Semua assertion kontras asal dikekalkan.
 
