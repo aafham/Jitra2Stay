@@ -14,7 +14,7 @@ test("room packages and mobile controls remain readable with enlarged text on ph
     await page.goto(url);
     // Simulate a guest's larger default font, keeping the phone viewport fixed.
     await page.addStyleTag({ content: ":root { font-size: 200% !important; }" });
-    await expect(page.locator(".package-total-value").first()).toHaveText("RM180");
+    await expect(page.locator(".package-total-value").first()).toHaveText("RM170");
     const measurements = await page.locator(".package-card").evaluateAll(cards => cards.map(card => {
       const bounds = card.getBoundingClientRect();
       const price = card.querySelector(".package-total-value");

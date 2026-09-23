@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-09-23 — Harga dan deposit
+
+- Tukar pakej 2 bilik kepada RM170 semalam; pakej 3/4/5 bilik kekal RM230/RM280/RM330.
+- Bezakan deposit RM100 untuk kumpulan kecil/biasa daripada RM200 untuk kumpulan besar atau acara besar seperti kenduri, dengan kategori disahkan owner dan tanpa menetapkan ambang bilangan orang.
+- Paparkan sewaan, deposit dan jumlah bayaran awal bersama. Contoh 2 bilik satu malam dengan deposit biasa: RM170 + RM100 = RM270.
+- Jelaskan pemulangan deposit selepas pemeriksaan rumah memuaskan serta deposit hangus jika berlaku kerosakan atau perkara tidak diingini mengikut polisi owner.
+
+## 2026-09-23 — Kalendar dan pengurusan tetamu
+
+- Tambah kalendar bulanan dan senarai upcoming yang boleh dilihat semua pengunjung. Nama, tarikh masuk/keluar dan jumlah tetamu dipaparkan mengikut pilihan owner; tujuan kekal sebagai nota pengurusan.
+- Tambah halaman Urus tetamu BM/EN dengan empat kotak PIN yang disahkan automatik, penanda merah apabila salah, borang tambah/ubah/batal serta pautan pulang ke homepage. Simpanan berjaya terus kembali ke kalendar; tujuan tidak wajib.
+- Hubungkan rekod kepada projek Supabase khusus melalui Edge Function. PIN dihash berasingan daripada source, sesi rawak tamat selepas 8 jam, dan database menghadkan cubaan PIN salah.
+- Halang pertindihan malam secara atomik, benarkan checkout/check-in hari sama, elakkan create berganda ketika retry dan lindungi edit daripada menimpa versi baharu. Simpan sejarah rekod yang dibatalkan.
+- Bezakan kalendar sedang dimuat/gagal daripada tarikh tersedia, sediakan cuba lagi, pemulihan draf dalam tab selepas sesi tamat, dan paparan rekod 90 hari lepas untuk pengurusan.
+- Tambah ujian handler/API, database dan UI, serta [panduan harian urus tetamu](GUEST-GUIDE.md). Keputusan pengesahan release direkodkan berasingan dalam laporan QA.
+- Frontend kekal statik dan diterbitkan daripada `dist/`; backend dideploy berasingan. Pengesahan tempahan/bayaran masih manual, dan tempahan saluran luar perlu dimasukkan sendiri.
+
 ## 2026-09-23 — Susunan repo
 
 - Kumpulkan data, template, JavaScript, CSS dan gambar dalam `src/`; root tinggal fail pengenalan serta konfigurasi projek/hosting.

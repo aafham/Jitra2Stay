@@ -9,9 +9,9 @@ const { createServer, publishDir } = require("./serve.cjs");
 const config = require("../src/data/site.config.cjs");
 const imageManifest = require("../src/images/responsive/manifest.json");
 const siteOrigin = new URL(config.business.siteUrl).origin;
-const pages = ["index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html",
+const pages = ["index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html", "guest-admin.html", "guest-admin-en.html",
   ...config.guides.flatMap(guide => [`${guide.slug}.html`, `${guide.slug}-en.html`])];
-const publicFiles = new Set([...pages, "style.css", "app.js", "gallery.js", "gallery.css", "navigation.js", "navigation.css", "share.js", "faq.js", "faq.css", "location.js", "location.css", "rates.css", "planning.css", "documents.css", "nearby.js", "nearby.css", "mobile.css", "app.config.js", "robots.txt", "sitemap.xml"]);
+const publicFiles = new Set([...pages, "style.css", "app.js", "gallery.js", "gallery.css", "navigation.js", "navigation.css", "share.js", "faq.js", "faq.css", "location.js", "location.css", "rates.css", "planning.css", "documents.css", "nearby.js", "nearby.css", "mobile.css", "app.config.js", "guest.config.js", "guest-calendar.js", "guest-calendar.css", "guest-admin.js", "guest-admin.css", "robots.txt", "sitemap.xml"]);
 const results = [];
 const check = (condition, name, detail = "") => results.push({ ok: Boolean(condition), name, detail: condition ? "" : detail });
 const read = file => fs.readFileSync(path.join(publishDir, file), "utf8");
@@ -45,10 +45,10 @@ function inspectPage(file) {
   check(metas.some(item => item.name === "viewport"), `${file}: mobile viewport`);
   check(metas.some(item => item.name === "description" && item.content?.length >= 40), `${file}: description`);
   check(links.some(item => item.rel === "canonical" && item.href === meta.canonical), `${file}: canonical matches configured origin`, meta.canonical);
-  if (file !== "404.html" && !file.startsWith("thank-you")) {
+  if (file !== "404.html" && !file.startsWith("thank-you") && !file.startsWith("guest-admin")) {
     for (const language of ["ms", "en"]) check(links.some(item => item.rel === "alternate" && item.hreflang === language && item.href === meta[language]), `${file}: ${language} language alternate`);
   }
-  if (file === "404.html" || file.startsWith("thank-you")) check(metas.some(item => item.name === "robots" && item.content.includes("noindex")), `${file}: utility page excluded from indexing`);
+  if (file === "404.html" || file.startsWith("thank-you") || file.startsWith("guest-admin")) check(metas.some(item => item.name === "robots" && item.content.includes("noindex")), `${file}: utility page excluded from indexing`);
   check(!/jitra2stay\.com/i.test(html), `${file}: no obsolete domain`);
   check(!/http-equiv\s*=\s*["']refresh/i.test(html), `${file}: no automatic meta refresh`);
   check(!/<(?:html|body)[^>]*\b(?:hidden|style=["'][^"']*display:\s*none)/i.test(html), `${file}: static content visible by default`);
@@ -131,7 +131,7 @@ async function inspectServer() {
     const responses = await Promise.all(publicRoutes.map(async route => ({ route, ...await requestPath(port, route) })));
     check(responses.every(response => response.status === 200), "publish server returns public pages and assets", responses.filter(response => response.status !== 200).map(response => response.route).join(", "));
     const blocked = ["/missing-page", "/tools/qa-check.js", "/site.config.cjs", "/package.json", "/README.md", "/OWNER-DATA-CHECKLIST.md", "/AUDIT-2026-09-11.md", "/.git/config", "/images/raw/hero.jpg", "/source-images/latest-raw/IMG_8001.JPG", "/images/responsive/manifest.json", "/../site.config.cjs", "/%2e%2e%2fsite.config.cjs", "/images%5c..%5c..%5csite.config.cjs"];
-    blocked.push("/src/data/site.config.cjs", "/src/scripts/app.js", "/src/styles/style.css", "/src/templates/shared.cjs", "/src/images/responsive/manifest.json", "/docs/README.md", "/docs/QA-REPORT.md", "/tests/playwright.config.cjs", "/artifacts/playwright-report/index.html");
+    blocked.push("/src/data/site.config.cjs", "/src/scripts/app.js", "/src/styles/style.css", "/src/templates/shared.cjs", "/src/images/responsive/manifest.json", "/docs/README.md", "/docs/QA-REPORT.md", "/tests/playwright.config.cjs", "/artifacts/playwright-report/index.html", "/supabase/config.toml", "/supabase/functions/guest-calendar/handler.mjs");
     for (const route of blocked) {
       const response = await requestPath(port, route);
       check(response.status === 404 && response.body === read("404.html"), `publish server returns genuine custom 404: ${route}`);
@@ -145,11 +145,11 @@ async function main() {
   for (const file of publicFiles) check(exists(file), `required publish file: ${file}`);
   const unexpected = files.filter(file => !publicFiles.has(file) && !/^images\/(?!raw\/)[a-z0-9_./-]+\.(avif|webp|jpe?g|png|svg|ico)$/i.test(file));
   check(unexpected.length === 0, "publish allowlist excludes source, raw images, docs and build tools", unexpected.join(", "));
-  check(!files.some(file => /(^|\/)(?:node_modules|\.git|raw|source-images|src|docs|artifacts|tests|tools)\//.test(file)), "publish output contains no private/source directories");
+  check(!files.some(file => /(^|\/)(?:node_modules|\.git|raw|source-images|src|docs|artifacts|supabase|tests|tools)\//.test(file)), "publish output contains no private/source directories");
   for (const file of pages.filter(exists)) inspectPage(file);
   const sitemap = read("sitemap.xml");
   const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => decode(match[1]));
-  const indexable = pages.filter(file => !["ms.html", "404.html", "thank-you.html", "thank-you-en.html"].includes(file)).map(file => pageMetadata(file).canonical);
+  const indexable = pages.filter(file => !["ms.html", "404.html", "thank-you.html", "thank-you-en.html", "guest-admin.html", "guest-admin-en.html"].includes(file)).map(file => pageMetadata(file).canonical);
   check(sitemapUrls.length === indexable.length && new Set(sitemapUrls).size === indexable.length && indexable.every(url => sitemapUrls.includes(url)), "sitemap includes each indexable canonical page exactly once");
   check(read("robots.txt").includes(`Sitemap: ${siteOrigin}/sitemap.xml`), "robots uses configured production origin");
   const images = files.filter(file => /\.(avif|webp|jpe?g|png)$/i.test(file));

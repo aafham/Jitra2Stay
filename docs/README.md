@@ -6,12 +6,14 @@ Folder ini mengumpulkan semua panduan dan laporan supaya root repo ringkas. Path
 
 ## Operasi dan penyelenggaraan
 
+- [Panduan urus tetamu](GUEST-GUIDE.md) — cara mudah untuk masuk PIN, tambah, ubah dan batalkan penginapan.
 - [Handover](HANDOVER.md) — titik mula untuk meneruskan kerja.
 - [Penyelenggaraan](MAINTENANCE.md) — data, UI, galeri, borang, peta dan perkara yang perlu diuji.
 - [Deployment](DEPLOYMENT.md) — Vercel, GitHub Pages, Netlify dan cPanel.
 - [QA release dan peranti sebenar](PRE-LIVE-QA.md) — checklist selepas deploy.
 - [SEO dan pengesahan](SEO-SUBMISSION.md) — metadata, Search Console dan preview perkongsian.
 - [Templat WhatsApp](WHATSAPP-TEMPLATES.md) — balasan manual untuk owner.
+- [Backend Supabase](../supabase/README.md) — database, kawalan akses, deployment function dan ujian SQL.
 
 ## Kandungan dan sumber owner
 
