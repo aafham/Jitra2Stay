@@ -15,7 +15,7 @@ Website homestay dalam Bahasa Melayu dan English untuk melihat rumah, gambar, ha
 - Galeri 21 foto sebenar dengan kategori, dialog dan pautan gambar daripada sembilan kad kemudahan.
 - Perbandingan pakej, anggaran mengikut tarikh, draf pertanyaan dan pratonton mesej WhatsApp.
 - Peta Google interaktif, butang Google Maps/Waze dan carian 50 destinasi mengikut kategori.
-- Kalendar merah bagi malam berpenghuni dan senarai upcoming awam; borang PIN 4 kotak untuk tambah, ubah atau batalkan rekod. Hanya tarikh masuk, tarikh keluar dan nama wajib; bilangan/tujuan boleh dikosongkan. [Panduan urus tetamu](docs/GUEST-GUIDE.md).
+- Kalendar merah bagi malam berpenghuni dan senarai upcoming awam. Tekan nama/kad tetamu untuk membuka bulan check-in dan melihat malam penginapannya. Borang PIN 4 kotak untuk tambah, ubah atau batalkan rekod; hanya tarikh masuk, tarikh keluar dan nama wajib. Bilangan/tujuan boleh dikosongkan. [Panduan urus tetamu](docs/GUEST-GUIDE.md).
 - Mobile: homepage ringkas dan lima tab bawah — Utama, Gambar, Harga, Kalendar, Lagi. Rumah, kemudahan, lokasi, FAQ dan pertanyaan mempunyai halaman sendiri dalam BM/EN; desktop mengekalkan homepage penuh.
 - Tema cerah/gelap dan navigasi halaman asas berfungsi tanpa JavaScript. Pautan lama ke bahagian homepage membuka halaman berkaitan pada mobile.
 

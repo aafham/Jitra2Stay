@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-23 — Tekan tetamu untuk buka tarikh kalendar
+
+- Jadikan seluruh kad upcoming boleh ditekan dengan butang keyboard yang jelas dalam BM/EN. Pilihan membuka bulan check-in, menatal ke kalendar dan memfokuskan tajuk bulan pada desktop serta mobile.
+- Paparkan nama dan tarikh masuk/keluar di atas kalendar serta bingkai pada malam penginapan dipilih. Hari check-out tidak termasuk; warna/status tetap datang daripada rekod kalendar terkini, termasuk apabila muatan gagal.
+- Kekalkan sorotan ketika menukar bulan untuk penginapan yang merentasi bulan; butang Bulan ini mengosongkan pilihan.
+
 ## 2026-09-23 — Halaman mobile dan borang tetamu ringkas
 
 - Gantikan menu mobile dengan lima tab bawah: Utama, Gambar, Harga, Kalendar dan Lagi. Sembilan halaman khusus dalam BM/EN mengasingkan rumah, gambar, harga, kalendar, kemudahan, lokasi, FAQ, pertanyaan dan direktori maklumat.
