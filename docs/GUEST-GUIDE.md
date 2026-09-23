@@ -4,7 +4,7 @@
 
 ## Masuk ke borang
 
-1. Di laman utama, pergi ke **Kalendar & tetamu akan datang**.
+1. Pada telefon, tekan tab bawah **Kalendar**. Pada desktop, pergi ke **Kalendar & tetamu akan datang** di laman utama.
 2. Tekan **Urus tetamu**.
 3. Masukkan PIN dalam **empat kotak**. Selepas digit terakhir, borang terbuka sendiri jika betul. Tiada butang masuk yang perlu ditekan.
 
@@ -12,18 +12,17 @@ Jika PIN salah, kotak menjadi merah. Masukkan semula dengan teliti. Selepas lima
 
 ## Tambah tetamu
 
-Isi empat maklumat berikut:
+Isi tiga maklumat wajib berikut:
 
 | Ruangan | Apa yang perlu diisi |
 | --- | --- |
 | **Tarikh masuk** | Hari tetamu mula menginap |
 | **Tarikh keluar** | Hari tetamu keluar; mesti selepas tarikh masuk |
 | **Nama tetamu** | Nama wakil tempahan yang sesuai untuk dipaparkan di website |
-| **Bilangan orang** | Jumlah semua tetamu termasuk kanak-kanak, 1 hingga 20 orang |
 
-**Tujuan tidak wajib.** Boleh kosongkan dan terus simpan. Jika diisi, tujuan hanya untuk rujukan pengurusan.
+**Bilangan orang dan tujuan tidak wajib.** Boleh terus simpan tanpa kedua-duanya. Untuk mengisi, buka **Maklumat tambahan (tak wajib)**. Jika bilangan diisi, gunakan jumlah 1 hingga 20 termasuk kanak-kanak. Tujuan hanya untuk rujukan pengurusan.
 
-Semak maklumat, kemudian tekan **Simpan & kembali ke utama** sekali. Tunggu sehingga simpanan berjaya; website akan terus kembali ke kalendar di laman utama. Nama, tarikh dan jumlah orang akan muncul dalam senarai tetamu. Untuk keluar tanpa menyimpan, tekan **Kembali ke laman utama**.
+Semak maklumat, kemudian tekan **Simpan & kembali ke utama** sekali. Selepas berjaya, website kembali ke kalendar: halaman Kalendar pada telefon, atau bahagian kalendar homepage pada desktop. Nama dan tarikh akan muncul dalam senarai tetamu; bilangan hanya ditunjukkan jika diisi. Untuk keluar tanpa menyimpan, tekan **Kembali ke laman utama**.
 
 ## Cara membaca kalendar
 

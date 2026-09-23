@@ -1,4 +1,4 @@
-const {config,t,wa,money,icon,picture}=require('./shared.cjs');
+const {config,t,wa,money,icon,picture,pageHref}=require('./shared.cjs');
 
 function renderHero(lang) {
   const b=config.business;
@@ -7,7 +7,7 @@ function renderHero(lang) {
       <h1 id="heroTitle">${t(lang,'Homestay keluarga.<br>Di Jitra.','Family stays.<br>Here in Jitra.')}</h1>
       <p class="hero-details"><span>${icon('bed')}${b.bedrooms} ${t(lang,'bilik tidur','bedrooms')}</span><span>${icon('bath')}${b.bathrooms} ${t(lang,'bilik air','bathrooms')}</span></p>
       <p class="hero-rate">${t(lang,'Dari','From')} <strong>${money(config.rates[0].price)}</strong><span> / ${t(lang,'malam','night')}</span></p>
-      <div class="hero-actions"><a class="button" id="heroPrimaryCta" href="${wa(lang)}" target="_blank" rel="noopener">${t(lang,'Tanya tarikh di WhatsApp','Ask about dates')} ${icon('arrow')}</a><a class="text-link" href="#galeri">${t(lang,'Lihat gambar rumah','Explore the photos')}</a></div>
+      <div class="hero-actions"><a class="button" id="heroPrimaryCta" href="${wa(lang)}" target="_blank" rel="noopener">${t(lang,'Tanya tarikh di WhatsApp','Ask about dates')} ${icon('arrow')}</a><a class="text-link hero-photo-desktop" href="#galeri">${t(lang,'Lihat gambar rumah','Explore the photos')}</a><a class="text-link hero-photo-mobile" href="${pageHref('gambar',lang)}">${t(lang,'Lihat gambar rumah','Explore the photos')}</a></div>
       <p class="hero-description">${t(lang,'Rumah Semi-D dua tingkat untuk keluarga dan rombongan. Pakej 2–5 bilik, WiFi percuma dan parking di rumah.','A two-storey semi-detached home for families and groups. Choose 2–5 bedrooms, with free WiFi and on-site parking.')}</p>
       <p class="hero-note">${t(lang,'Tarikh dan harga akhir disahkan melalui WhatsApp.','Confirm dates and the final price on WhatsApp.')}</p>
     </div>

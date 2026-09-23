@@ -4,13 +4,17 @@ Semua path source di bawah relatif kepada root repo. Data, template, skrip, gaya
 
 ## Layout mobile
 
+Pada lebar sehingga 900px, homepage memaparkan hero ringkas dan pautan penting. Lima tab bawah membuka halaman HTML sebenar: `gambar`, `harga`, `kalendar` dan `maklumat`, dengan `rumah`, `kemudahan`, `lokasi`, `faq` serta `hubungi` dalam direktori. Setiap halaman mempunyai pasangan `-en.html`. Desktop homepage mengekalkan semua seksyen.
+
+Pemetaan berada dalam `src/data/mobile-routes.cjs`; template halaman dalam `src/templates/mobile-pages.cjs`. `mobile-pages.css` dimuat selepas `mobile.css`. `mobile-pages.js` menjaga pautan lama, konteks bahasa dan fokus; jangan ubah semua pautan desktop menjadi halaman mobile. Pautan asas dan lima tab mestilah boleh digunakan tanpa JavaScript. Apabila menambah halaman, selaraskan build, QA, sitemap dan ujian pautan.
+
 Grid pakej menggunakan minimum `rem` dalam `src/styles/rates.css`; fakta, penapis galeri/FAQ dan pilihan malam turut mengecilkan jumlah kolum apabila teks dibesarkan. Kekalkan dua kolum pakej pada telefon biasa dan empat pada desktop yang cukup lebar, tetapi uji juga root font 200% pada 320/390px. Jangan paksa harga pecah baris atau sembunyikan overflow untuk menutup masalah.
 
 `src/styles/mobile.css` dimuat selepas stylesheet komponen halaman awam. Halaman pengurusan memuat `guest-admin.css` selepasnya untuk borang dan empat kotak PIN. Breakpoint 900px mengurus gutter/safe area dan input 16px; 600px mengemas jarak/kad; 480px menyusun galeri, borang, indeks polisi dan footer satu kolum. CSS ini tidak memotong overflow dokumen untuk menutup masalah susunan. Apabila menukar kolum galeri, kemas kini `sizes` dalam `src/templates/gallery.cjs` supaya foto tidak kabur pada telefon.
 
 Kad kemudahan mobile menggunakan grid ikon dan kandungan: pastikan `.amenity-photo` kekal dalam kolum 2 bersama penerangan. Margin destinasi mesti menggunakan selector cukup khusus untuk mengatasi `.location-layout p:not(.eyebrow)`; jangan kembalikan margin 16px kepada setiap baris kad.
 
-Panel menu dalam `src/styles/navigation.css` berada di luar aliran dokumen, tetapi kekal disclosure biasa. `src/scripts/app.js` mengurus `hidden`/`inert`, animasi boleh diterbalikkan ketika tap berulang, fokus dan ruang viewport sebenar. Tanpa JS menu asal tetap tersedia; reduced motion mematikan animasi. Uji skrin melintang, Tab semua pautan, Escape, klik luar serta pertukaran ke desktop apabila mengubah menu.
+Navigasi desktop dikekalkan. Mobile menggunakan `.mobile-bottom-nav` dengan lima pautan asli dan `.mobile-language`; menu lama disembunyikan pada breakpoint mobile. Bar bawah memberi ruang apabila input aktif atau akan menutupi kawalan yang sedang difokus. Kekalkan pengukuran tinggi sebenar bar untuk teks besar dan safe area; uji tap selepas input, Tab, skrin melintang dan pertukaran ke desktop.
 
 `src/templates/appearance.cjs` dimasukkan sebelum stylesheet untuk menetapkan tema serta kelas sementara `nav-pending`/`gallery-pending`. `src/scripts/app.js` dan `src/scripts/gallery.js` masing-masing membuang kelas selepas siap. `DOMContentLoaded` memulihkan kandungan asal jika skrip gagal; jangan tukar fallback ini kepada `load`, kerana gambar/peta perlahan boleh menyekat navigasi. `tests/initial-render.spec.cjs` menahan skrip/gambar untuk menguji sempadan ini.
 
@@ -69,6 +73,8 @@ Salin mesej pertanyaan menyediakan textarea baca sahaja apabila clipboard tiada/
 Pilihan 1–3 malam dalam `#stayComparison` mengemas kini semua jumlah pakej; harga semalam masih terlihat. `plannedNights` hanya ditetapkan apabila pengguna memilih tempoh. Selepas check-in sah, check-out mengikuti tempoh tersebut; pengeditan check-out secara langsung membatalkan pilihan tempoh automatik. Tarikh sah menentukan perbandingan termasuk penginapan melebihi tiga malam. Tarikh tidak sah yang sedang dibetulkan tidak ditulis semula ketika memulihkan draf.
 
 `src/templates/rates.cjs` menjana kad perbandingan pakej; `src/templates/enquiry.cjs` menjana borang, ralat ruangan, pecahan anggaran dan pratonton mesej. `src/scripts/app.js` menyelaraskan pilihan pakej dan butiran WhatsApp. Jangan menambah kadar berasingan dalam template atau JavaScript; gunakan `rates`, `business.securityDeposit` dan `business.largeGroupSecurityDeposit` dalam config. Build menyalin kedua-dua kadar deposit kepada `APP_CONFIG` untuk pengiraan browser.
+
+Halaman `harga.html` memaparkan kadar semalam secara ringkas. Pautan pakej membawa `?rooms=2` dan seumpamanya ke `hubungi.html`; hanya pilihan sah diterima selepas draf dipulihkan. Parameter dibuang selepas digunakan supaya refresh tidak menimpa pilihan terbaharu. Draf tarikh, nota dan kategori deposit kekal ketika menukar pakej/bahasa. Anggaran mengikut tarikh dibuat dalam borang; perbandingan malam desktop kekal pada homepage.
 
 `src/styles/rates.css` mengurus empat kolum pakej pada desktop dan dua kolum di bawah 1100px. Kad, contoh pembahagian harga, deposit, caj tambahan dan ringkasan masih dijana daripada config. Semak 320px dan English selepas mengubah label.
 

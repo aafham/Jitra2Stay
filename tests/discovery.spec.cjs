@@ -20,9 +20,11 @@ test.beforeEach(async({context,page})=>{
 
 for(const lang of ['ms','en']) {
   const home=lang==='en'?'/en.html':'/';
-  const publicHome=`${config.business.siteUrl.replace(/\/$/,'')}/${lang==='en'?'en.html':''}`;
+  const faqPage=lang==='en'?'/faq-en.html':'/faq.html';
+  const publicFaq=`${config.business.siteUrl.replace(/\/$/,'')}${faqPage}`;
 
-  test(`${lang} amenity photos open their real category without changing the gallery filter and restore focus`,async({page,context})=>{
+  test(`${lang} desktop amenity photos open their real category without changing the gallery filter and restore focus`,async({page,context})=>{
+    await page.setViewportSize({width:1440,height:900});
     await page.goto(home);
     await page.locator('[data-gallery-filter="outside"]').click();
     const facilityPhotos=config.facilities.flatMap(facility=>facility.photos||[]);
@@ -101,16 +103,16 @@ for(const lang of ['ms','en']) {
     await expect(page.locator('#faq-payment')).toHaveAttribute('open','');
     await expect(page.locator('#faq-payment summary')).toBeFocused();
     await expect(page.locator('[data-faq-topic="booking"]')).toHaveAttribute('aria-pressed','true');
-    await page.locator('#menuToggle').click();
     const other=lang==='en'?'ms':'en';
-    await page.locator(`.language-links a[hreflang="${other}"]`).click();
-    await expect(page).toHaveURL(new RegExp(`${other==='en'?'/en\\.html':'/'}#faq-payment$`));
+    await page.locator(`.mobile-language a[hreflang="${other}"]`).click();
+    await expect(page).toHaveURL(new RegExp(`${other==='en'?'/faq-en\\.html':'/faq\\.html'}#faq-payment$`));
     await expect(page.locator('#faq-payment')).toHaveAttribute('open','');
     await expect(page.locator('#faq-payment summary')).toBeFocused();
     expect(await page.locator('#faq-payment').evaluate(question=>question.getBoundingClientRect().top>=document.querySelector('.site-header').getBoundingClientRect().bottom+12)).toBe(true);
   });
 
-  test(`${lang} FAQ focus survives a delayed final script on arrival and language switching`,async({page})=>{
+  test(`${lang} desktop FAQ focus survives a delayed final script on arrival and language switching`,async({page})=>{
+    await page.setViewportSize({width:1440,height:900});
     let release;
     let gate;
     const pauseLastScript=()=>{gate=new Promise(resolve=>{release=resolve;});};
@@ -132,7 +134,6 @@ for(const lang of ['ms','en']) {
       await page.goto(`${home}#faq-payment`,{waitUntil:'commit'});
       await finishNavigation();
       pauseLastScript();
-      await page.locator('#menuToggle').click();
       const other=lang==='en'?'ms':'en';
       await page.locator(`.language-links a[hreflang="${other}"]`).click();
       await expect(page).toHaveURL(new RegExp(`${other==='en'?'/en\\.html':'/'}#faq-payment$`));
@@ -145,10 +146,10 @@ for(const lang of ['ms','en']) {
       window.__faqCopies=[];
       Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>window.__faqCopies.push(text)}});
     });
-    await page.goto(`${home}?notes=private&guests=8#faq-deposit`);
+    await page.goto(`${faqPage}?notes=private&guests=8#faq-deposit`);
     const originalUrl=page.url();
     const question=page.locator('#faq-deposit');
-    const expected=`${publicHome}#faq-deposit`;
+    const expected=`${publicFaq}#faq-deposit`;
     await expect(question.locator('.faq-answer-link')).toHaveAttribute('href',expected);
     await question.locator('.faq-copy-link').click();
     expect(await page.evaluate(()=>window.__faqCopies)).toEqual([expected]);
@@ -173,10 +174,9 @@ for(const lang of ['ms','en']) {
 
 test('unknown and malformed FAQ fragments do not open answers or propagate as language state',async({page})=>{
   for(const hash of ['faq-not-an-answer','faq-%E0%A4%A']) {
-    await page.goto(`/#${hash}`);
+    await page.goto(`/faq.html#${hash}`);
     await expect(page.locator('#faqList details[open]')).toHaveCount(0);
-    await page.locator('#menuToggle').click();
-    await page.locator('.language-links a[hreflang="en"]').click();
+    await page.locator('.mobile-language a[hreflang="en"]').click();
     expect(new URL(page.url()).hash).not.toContain('faq-');
     await expect(page.locator('#faqList details[open]')).toHaveCount(0);
   }
@@ -187,18 +187,20 @@ test('without JavaScript contextual photos and every FAQ answer retain real link
   await isolateExternalServices(context);
   const page=await context.newPage();
   for(const lang of ['ms','en']) {
-    const path=lang==='en'?'/en.html':'/';
-    const publicHome=`${config.business.siteUrl.replace(/\/$/,'')}/${lang==='en'?'en.html':''}`;
-    await page.goto(test.info().project.use.baseURL+path);
+    const suffix=lang==='en'?'-en':'';
+    const publicFaq=`${config.business.siteUrl.replace(/\/$/,'')}/faq${suffix}.html`;
+    await page.goto(`${test.info().project.use.baseURL}/kemudahan${suffix}.html`);
     await expect(page.locator('.amenity-photo')).toHaveCount(config.facilities.flatMap(facility=>facility.photos||[]).length);
     await page.locator('.amenity-photo[data-gallery-photo="dapur"]').click();
+    await expect(page).toHaveURL(new RegExp(`/gambar${suffix}\\.html\\?photo=dapur$`));
+    await page.locator('.gallery-trigger[data-gallery-photo="dapur"]').click();
     await expect(page).toHaveURL(/\/images\/responsive\/dapur-\d+\.webp$/);
-    await page.goto(test.info().project.use.baseURL+path+'#faq-deposit');
+    await page.goto(`${test.info().project.use.baseURL}/faq${suffix}.html#faq-deposit`);
     await expect(page.locator('#faqList details')).toHaveCount(config.faq.length);
     await page.locator('#faq-deposit summary').click();
     await expect(page.locator('#faq-deposit > p')).toBeVisible();
     await expect(page.locator('#faq-deposit .faq-copy-link')).toBeHidden();
-    await expect(page.locator('#faq-deposit .faq-answer-link')).toHaveAttribute('href',`${publicHome}#faq-deposit`);
+    await expect(page.locator('#faq-deposit .faq-answer-link')).toHaveAttribute('href',`${publicFaq}#faq-deposit`);
   }
   await context.close();
 });

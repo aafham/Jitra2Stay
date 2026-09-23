@@ -17,7 +17,7 @@ const categoryButton=(page,id)=>page.locator('[data-destination-category="'+id+'
 
 for(const lang of ['ms','en']) test(`${lang} categories retain search terms, filter their intersection and reset both filters`,async({page})=>{
   await page.setViewportSize({width:390,height:844});
-  await page.goto(lang==='en'?'/en.html':'/');
+  await page.goto(lang==='en'?'/lokasi-en.html':'/lokasi.html');
   const input=page.locator('#destinationSearch');
   const clear=page.locator('#destinationClear');
   const more=page.locator('#destinationsMore');
@@ -153,7 +153,7 @@ test('every category chip stays fully visible during keyboard browsing on narrow
   await page.emulateMedia({colorScheme:'dark'});
   for(const [width,height,lang] of [[320,568,'en'],[390,844,'ms']]){
     await page.setViewportSize({width,height});
-    await page.goto(lang==='en'?'/en.html':'/');
+    await page.goto(lang==='en'?'/lokasi-en.html':'/lokasi.html');
     const group=page.locator('.destination-categories');
     expect(await group.evaluate(el=>el.scrollWidth>el.clientWidth)).toBe(true);
     async function expectChipVisible(id){
@@ -205,7 +205,7 @@ test('all destinations and ordinary driving links remain available without JavaS
   const context=await browser.newContext({javaScriptEnabled:false,reducedMotion:'reduce',viewport:{width:390,height:844}});
   await context.route('https://www.google.com/maps/embed**',route=>route.fulfill({contentType:'text/html',body:'<main>Map fixture</main>'}));
   const page=await context.newPage();
-  for(const route of ['/','/en.html']){
+  for(const route of ['/lokasi.html','/lokasi-en.html']){
     await page.goto(test.info().project.use.baseURL+route);
     await expect(page.locator('#destinationControls')).toBeHidden();
     await expect(page.locator('#destinationsList .destination-card:visible')).toHaveCount(50);

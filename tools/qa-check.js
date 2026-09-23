@@ -9,9 +9,9 @@ const { createServer, publishDir } = require("./serve.cjs");
 const config = require("../src/data/site.config.cjs");
 const imageManifest = require("../src/images/responsive/manifest.json");
 const siteOrigin = new URL(config.business.siteUrl).origin;
-const pages = ["index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html", "guest-admin.html", "guest-admin-en.html",
+const pages = [...Object.keys(require("../src/data/mobile-routes.cjs").routes).flatMap(key=>[`${key}.html`,`${key}-en.html`]),"index.html", "ms.html", "en.html", "policies.html", "policies-en.html", "thank-you.html", "thank-you-en.html", "404.html", "guest-admin.html", "guest-admin-en.html",
   ...config.guides.flatMap(guide => [`${guide.slug}.html`, `${guide.slug}-en.html`])];
-const publicFiles = new Set([...pages, "style.css", "app.js", "gallery.js", "gallery.css", "navigation.js", "navigation.css", "share.js", "faq.js", "faq.css", "location.js", "location.css", "rates.css", "planning.css", "documents.css", "nearby.js", "nearby.css", "mobile.css", "app.config.js", "guest.config.js", "guest-calendar.js", "guest-calendar.css", "guest-admin.js", "guest-admin.css", "robots.txt", "sitemap.xml"]);
+const publicFiles = new Set([...pages, "mobile-pages.css", "mobile-pages.js", "style.css", "app.js", "gallery.js", "gallery.css", "navigation.js", "navigation.css", "share.js", "faq.js", "faq.css", "location.js", "location.css", "rates.css", "planning.css", "documents.css", "nearby.js", "nearby.css", "mobile.css", "app.config.js", "guest.config.js", "guest-calendar.js", "guest-calendar.css", "guest-admin.js", "guest-admin.css", "robots.txt", "sitemap.xml"]);
 const results = [];
 const check = (condition, name, detail = "") => results.push({ ok: Boolean(condition), name, detail: condition ? "" : detail });
 const read = file => fs.readFileSync(path.join(publishDir, file), "utf8");

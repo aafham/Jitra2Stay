@@ -1,0 +1,130 @@
+/* Focused static pages share the desktop components; only the homepage's
+   mobile presentation changes. Every detail stays reachable through a link. */
+.mobile-home,.mobile-bottom-nav,.mobile-language,.hero-photo-mobile{display:none}
+body:not([data-view="home"]):not([data-view="document"]) main h2{font-family:"Segoe UI",Arial,sans-serif;font-size:1.15rem;font-weight:650;line-height:1.4;letter-spacing:0}
+#enquiryFormTitle{scroll-margin-top:calc(var(--header-height) + 20px)}
+.browse-back{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:18px;font-size:.875rem}
+.browse-back a{display:inline-flex;align-items:center;gap:8px;min-height:44px}
+.browse-back .icon{width:18px;height:18px}
+.browse-heading{padding-block:18px 28px}
+.browse-lead{margin-top:14px;color:var(--muted)}
+.browse-next{display:flex;flex-wrap:wrap;gap:16px;padding-block:28px 40px}
+.browse-directory{max-width:760px;padding-top:16px}
+.browse-links{display:grid;gap:12px;margin-top:28px}
+.browse-links>a{display:flex;align-items:center;gap:16px;min-height:84px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-decoration:none}
+.browse-links>a:hover{background:var(--surface)}
+.browse-links>a>span{flex:1;min-width:0}
+.browse-links strong,.browse-links small{display:block}
+.browse-links small{margin-top:4px;color:var(--muted);font-size:.875rem}
+.browse-owner{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.875rem;color:var(--muted)}
+.browse-details{border-block:1px solid var(--line);padding-block:8px}
+.browse-details>summary{padding:12px 4px;min-height:48px;cursor:pointer;font-weight:650;color:var(--ink)}
+.browse-details[open]>summary{margin-bottom:16px}
+.browse-contacts{margin-top:24px}
+.browse-contacts>a{display:flex;align-items:center;min-height:44px;overflow-wrap:anywhere}
+[data-view="harga"] #kadar .rates-more{grid-area:support}
+[data-view="harga"] #kadar .rates-support{border:0}
+[data-view="harga"] #kadar .stay-summary{margin-top:16px}
+
+@media(max-width:900px){
+  :root{--header-height:68px;--mobile-nav-height:70px}
+  body:not(:has(.guest-site-header)){padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom) + 20px)}
+  #mainContent,main section[id]{scroll-margin-top:84px}
+  .header-inner{min-height:68px;flex-wrap:nowrap;gap:12px}
+  .header-controls{margin-left:auto;gap:10px}
+  .brand{font-size:1.2rem;gap:8px}
+  .brand>.icon{width:27px;height:27px}
+  .brand-place{font-size:.55rem;letter-spacing:.15em;margin-top:5px}
+  #menuToggle,#mainNav,.mobile-action-bar,.site-footer{display:none!important}
+  .mobile-language{display:block}
+  .mobile-language a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:50%;font-size:.8rem;font-weight:650;text-decoration:none}
+  .header-controls .icon-button{width:44px;height:44px}
+  .mobile-bottom-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;inset:auto 0 0;z-index:60;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -4px 20px #0000000a;padding:6px max(6px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:3px}
+  .mobile-bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:56px;padding:6px 2px;border-radius:12px;text-decoration:none;color:var(--muted);font-size:.7rem;line-height:1.3;font-weight:600;overflow-wrap:anywhere}
+  .mobile-bottom-nav .icon{width:23px;height:23px}
+  .mobile-bottom-nav a[aria-current="page"]{background:var(--surface);color:var(--ink);font-weight:750;box-shadow:inset 0 -3px 0 var(--green)}
+  .mobile-keyboard .mobile-bottom-nav{display:none}
+  /* The existing desktop hero remains the single page heading. */
+  [data-view="home"] #mainContent>section:not(#home):not(.mobile-home){display:none}
+  [data-view="home"] .hero{display:block;padding-block:28px 30px;min-height:0}
+  [data-view="home"] .hero-copy{padding:0}
+  [data-view="home"] .hero h1{font-size:clamp(2.25rem,9vw,3rem);max-width:540px;line-height:1.08}
+  [data-view="home"] .hero .eyebrow{font-size:.68rem;margin-bottom:14px}
+  [data-view="home"] .hero-details{gap:16px;margin-top:18px;font-size:.82rem}
+  [data-view="home"] .hero-details .icon{width:19px;height:19px}
+  [data-view="home"] .hero-rate{margin-top:16px}
+  [data-view="home"] .hero-rate strong{font-size:2rem}
+  [data-view="home"] .hero-actions{margin-top:18px;gap:8px 18px;flex-direction:row;align-items:center;flex-wrap:wrap}
+  [data-view="home"] .hero-actions .button{font-size:.9rem;padding:12px 16px;min-height:46px;flex:1}
+  [data-view="home"] .hero-actions .text-link{font-size:.85rem;min-height:44px}
+  [data-view="home"] .hero-actions .hero-photo-desktop{display:none}
+  [data-view="home"] .hero-actions .hero-photo-mobile{display:inline-flex}
+  [data-view="home"] .hero-media,[data-view="home"] .hero-description,[data-view="home"] .hero-note{display:none}
+  .mobile-home{display:block;padding-block:24px 8px}
+  .mobile-home h2{font:650 1.1rem/1.4 "Segoe UI",Arial,sans-serif;letter-spacing:0}
+  .mobile-quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(8rem,calc((100% - 10px)/2))),1fr));gap:10px;margin-top:16px}
+  .mobile-quick-links a{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-height:90px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-decoration:none;font-size:.875rem;font-weight:600}
+  .mobile-quick-links a>span{flex-basis:100%;order:2}
+  .mobile-quick-links a>.icon:last-child{margin-left:auto;width:17px;height:17px}
+  .mobile-house-link{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;margin-top:12px;font-size:.85rem}
+  .browse-back{padding-block:4px;font-size:.8rem}
+  body:not([data-view="home"]) .section{padding-block:20px 28px}
+  body:not([data-view="home"]) main h1{font-size:2rem;line-height:1.15}
+  body:not([data-view="home"]) .section-heading{display:block;margin-bottom:20px}
+  body:not([data-view="home"]) .section-heading .eyebrow{display:none}
+  body:not([data-view="home"]) .section-heading>p{font-size:.875rem;line-height:1.55;margin-top:10px}
+  .browse-heading{padding-block:12px 24px}
+  .browse-directory{padding-top:12px}
+  .browse-directory>.eyebrow{display:none}
+  .browse-links{margin-top:20px;gap:10px}
+  .browse-links>a{min-height:76px;padding:14px;gap:12px}
+  .browse-links small{font-size:.8rem}
+  [data-view="gambar"] .gallery-filters{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:4px 4px 10px;scrollbar-width:thin}
+  [data-view="gambar"] .gallery-filter{flex:0 0 auto;min-height:44px;white-space:nowrap}
+  [data-view="gambar"] .room-guide{font-size:.875rem}
+  [data-view="harga"] .rates-intro>.eyebrow,[data-view="harga"] .package-hint{display:none}
+  [data-view="harga"] .rates-intro>p:not(.eyebrow){font-size:.875rem;margin-top:10px}
+  [data-view="harga"] #kadar .package-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,max(8rem,calc((100% - 10px)/2))),1fr));gap:10px}
+  [data-view="harga"] #kadar .package-card{padding:16px 12px}
+  [data-view="harga"] #kadar .package-heading h3{font-size:1.1rem}
+  [data-view="harga"] #kadar .package-heading>.icon{width:19px;height:19px}
+  [data-view="harga"] #kadar .package-price{margin:16px 0}
+  [data-view="harga"] #kadar .package-price strong{font-size:1.75rem}
+  [data-view="harga"] #kadar .package-bathrooms{margin-top:10px;font-size:.8rem}
+  [data-view="harga"] #kadar .package-meta{display:block;margin-top:20px}
+  [data-view="harga"] #kadar .payment-example{margin-top:14px;padding:16px;font-size:.875rem}
+  [data-view="harga"] #kadar .rate-examples{margin-top:14px}
+  [data-view="harga"] #kadar .rates-support{display:grid;grid-template-columns:1fr;gap:18px}
+  [data-view="harga"] #kadar .stay-summary dl{grid-template-columns:1fr}
+  [data-view="kemudahan"] .amenities-grid{grid-template-columns:1fr}
+  [data-view="kemudahan"] .amenity{padding:16px}
+  [data-view="kemudahan"] .amenity p{font-size:.875rem}
+  [data-view="lokasi"] .location-copy>.eyebrow{display:none}
+  [data-view="lokasi"] .location-address{margin-top:16px}
+  [data-view="lokasi"] .location-copy>p:not(.eyebrow){font-size:.875rem}
+  [data-view="lokasi"] .location-map-card iframe{height:250px}
+  [data-view="faq"] .faq-layout{gap:20px}
+  [data-view="faq"] .faq-layout>div:first-child>.eyebrow{display:none}
+  [data-view="kalendar"] .guest-calendar-layout{gap:20px}
+  [data-view="kalendar"] .calendar-grid td{height:44px}
+  [data-view="kalendar"] .calendar-legend{margin:0 0 10px;padding:4px 0;border:0;gap:6px 14px;font-size:.8rem}
+  [data-view="kalendar"] .calendar-help{padding:20px}
+  [data-view="hubungi"] .enquiry-layout{gap:20px}
+  [data-view="hubungi"] .enquiry-layout>div:first-child{padding-top:0}
+  [data-view="hubungi"] #enquiryTitle{color:#fff}
+  [data-view="hubungi"] .enquiry-layout>div:first-child>.eyebrow{display:none}
+  [data-view="hubungi"] .enquiry-layout>div:first-child>p:not(.eyebrow){font-size:.875rem;line-height:1.6;margin-top:12px}
+  [data-view="hubungi"] .enquiry-layout>div:first-child>.button{margin-top:16px;min-height:44px;font-size:.875rem}
+  [data-view="hubungi"] .enquiry-phone{display:inline-flex;margin:12px 0 0 12px;font-size:.875rem}
+  [data-view="hubungi"] .enquiry-panel{padding:20px 16px;border-radius:16px}
+  [data-view="hubungi"] .enquiry-panel h3{font-size:1.1rem}
+  [data-view="hubungi"] .enquiry-note{max-width:36rem}
+}
+@media(max-width:350px){
+  .header-controls{gap:6px}
+  .header-inner{gap:6px}
+  [data-view="home"] .hero-actions .button{flex-basis:100%}
+}
+@media(max-width:900px) and (min-resolution:2dppx){
+  .mobile-bottom-nav{border-top-width:.5px}
+}

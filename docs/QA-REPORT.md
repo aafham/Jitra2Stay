@@ -1,5 +1,26 @@
 # Laporan QA
 
+## Halaman mobile dan borang tiga maklumat wajib — 23 September 2026
+
+Mobile menggunakan homepage ringkas, lima tab bawah dan sembilan halaman khusus BM/EN. Desktop mengekalkan homepage lengkap. Semua maklumat rumah dan foto dikekalkan; nombor kedua/e-mel boleh dibuka daripada Lagi. Borang pengurusan mewajibkan tarikh masuk, tarikh keluar dan nama sahaja.
+
+| Semakan | Keputusan |
+| --- | --- |
+| Build dan sempadan penerbitan | 36 halaman; 1,253 / 1,253 semakan statik lulus |
+| Unit tarikh, draf, bayaran dan API | 45 / 45 lulus |
+| Suite Chromium penuh | 153 / 153 lulus, tanpa retry atau skip |
+| WebKit | 24 kes navigasi/borang/kalendar serta 2 regresi akhir FAQ/pemetaan pautan lulus |
+| Paparan | 320–1440px, portrait/landscape, BM/EN, cerah/gelap, teks 200%, keyboard dan tanpa JavaScript |
+| Aksesibiliti | Axe dalam keadaan diuji lulus; merah kalendar mempunyai kontras teks putih 5.76:1 cerah / 4.95:1 gelap |
+| Database sebenar | Migration tambahan nullable count dan transaksi rollback lulus; nilai lama dikekalkan |
+| Edge Function sebenar | Simpan tanpa count/purpose, retry idempotent, edit kepada nombor dan kosong semula, baca awam/peribadi, batal serta logout lulus |
+| Pembersihan ujian | Hanya rekod sintetik yang dikenal pasti dipadam; rekod dan sesi sebenar tidak diubah |
+| Advisor Supabase | Tiada amaran/error keselamatan atau nasihat prestasi; tiga INFO RLS tanpa polisi dijangka untuk akses service-only |
+
+Pembaikan regresi merangkumi draf antara halaman, parameter pakej yang digunakan sekali sahaja, fokus borang selepas memilih pakej, tab bawah yang menutupi klik selepas menaip, chip galeri ketika Tab, heading halaman, kad harga dengan teks besar, serta fragment tidak dikenali. FAQ khusus mempunyai URL sendiri supaya pautan asas tetap menuju kandungan yang kelihatan tanpa JavaScript. Pautan lama homepage kekal berfungsi pada desktop dan dihantar ke halaman berkaitan pada mobile.
+
+Ujian browser menggunakan emulasi viewport/enjin; telefon fizikal tidak diuji. Semua semakan API sebenar menggunakan rekod ujian sementara dan tidak menghantar mesej WhatsApp.
+
 ## Kalendar tetamu dan pecahan bayaran — 23 September 2026
 
 Kalendar awam dan senarai nama/tarikh/bilangan tetamu disambungkan kepada Supabase. PIN empat kotak membuka pengurusan; tujuan kekal pilihan dan hanya untuk pengurusan. Pakej dua bilik kini RM170, dengan deposit RM100 biasa atau RM200 rombongan/majlis besar. Kalkulator, ringkasan keluarga dan mesej WhatsApp menunjukkan sewaan + deposit = jumlah bayaran awal.

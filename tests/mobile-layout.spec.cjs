@@ -16,7 +16,7 @@ async function noPageOverflow(page, label) {
 }
 
 test("phone facility photo links remain aligned with their descriptions and usable as touch targets", async ({ page }) => {
-  for (const width of [320, 390]) for (const path of ["/", "/en.html"]) {
+  for (const width of [320, 390]) for (const path of ["/kemudahan.html", "/kemudahan-en.html"]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto(path);
     const links = page.locator(".amenity .amenity-photo");
@@ -41,7 +41,7 @@ test("phone facility photo links remain aligned with their descriptions and usab
 test("narrow-phone gallery gives photos readable full-width cards and retains every supplied photo and room description", async ({ page }) => {
   for (const width of [320, 390, 430, 480]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto("/en.html");
+    await page.goto("/gambar-en.html");
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(6);
     await page.locator("#galleryMore").click();
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(config.gallery.length);
@@ -81,15 +81,30 @@ test("phone enquiry and real manual-copy fallbacks keep input text readable with
   });
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto(width === 320 ? "/" : "/en.html");
+    const suffix = width === 320 ? "" : "-en";
+    const fields = [];
+    const collectFields = async () => {
+      fields.push(...await page.locator("input:visible,select:visible,textarea:visible").evaluateAll(elements => elements.map(field => ({
+        id: field.id || field.className, fontSize: parseFloat(getComputedStyle(field).fontSize),
+        width: field.getBoundingClientRect().width, parentWidth: field.parentElement.getBoundingClientRect().width
+      }))));
+      await noPageOverflow(page, `${width}px ${new URL(page.url()).pathname} manual copy fields`);
+    };
+    await page.goto(`/rumah${suffix}.html`);
     await page.locator("#shareStay").click();
     await expect(page.locator("#shareFallback")).toBeVisible();
+    await collectFields();
+    await page.goto(`/lokasi${suffix}.html`);
     await page.locator("#copyAddress").click();
     await expect(page.locator("#addressCopyText")).toBeVisible();
+    await collectFields();
+    await page.goto(`/faq${suffix}.html`);
     const answer = page.locator("#faqList details").first();
     await answer.locator("summary").click();
     await answer.locator(".faq-copy-link").click();
     await expect(answer.locator(".faq-copy-fallback")).toBeVisible();
+    await collectFields();
+    await page.goto(`/hubungi${suffix}.html`);
     await page.locator("#checkin").fill("2027-12-31");
     await page.locator("#checkout").fill("2028-01-03");
     await page.locator("#rooms").selectOption("5");
@@ -98,10 +113,7 @@ test("phone enquiry and real manual-copy fallbacks keep input text readable with
     await expect(page.locator("#familyPlanCopyText")).toBeVisible();
     await page.locator("#enquiryCopyMessage").click();
     await expect(page.locator("#enquiryCopyText")).toBeVisible();
-    const fields = await page.locator("input:visible,select:visible,textarea:visible").evaluateAll(elements => elements.map(field => ({
-      id: field.id || field.className, fontSize: parseFloat(getComputedStyle(field).fontSize),
-      width: field.getBoundingClientRect().width, parentWidth: field.parentElement.getBoundingClientRect().width
-    })));
+    await collectFields();
     expect(fields.length).toBeGreaterThanOrEqual(11);
     for (const field of fields) {
       expect(field.fontSize, `${width}px ${field.id}`).toBeGreaterThanOrEqual(16);
@@ -119,7 +131,7 @@ test("phone enquiry and real manual-copy fallbacks keep input text readable with
 test("phone destination results use the available width and group route evidence without excessive empty gaps", async ({ page }) => {
   for (const width of [320, 390, 430]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto("/en.html");
+    await page.goto("/lokasi-en.html");
     await page.locator("#destinationSearch").fill("Hospital Jitra");
     const card = page.locator(".destination-card:visible");
     await expect(card).toHaveCount(1);
@@ -142,20 +154,24 @@ test("phone destination results use the available width and group route evidence
   }
 });
 
-test("home and supporting pages stay within phone and tablet widths with readable policy and footer links", async ({ page }) => {
+test("home and supporting pages stay within phone and tablet widths with readable policy and contact links", async ({ page }) => {
   test.setTimeout(45000);
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
-  const paths = ["/", "/en.html", "/policies-en.html", "/homestay-dekat-hospital-jitra-en.html"];
+  const paths = ["/", "/en.html", "/policies-en.html", "/homestay-dekat-hospital-jitra-en.html", "/maklumat-en.html", "/hubungi-en.html"];
   for (const width of [320, 390, 430, 768]) for (const path of paths) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto(path);
-    await expect(page.locator("#menuToggle")).toBeVisible();
+    await expect(page.locator("#menuToggle")).toBeHidden();
+    await expect(page.locator(".site-footer")).toBeHidden();
+    await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
+    await expect(page.locator(".mobile-bottom-nav a")).toHaveCount(5);
     await noPageOverflow(page, `${width}px ${path}`);
-    const links = await page.locator(".policy-toc a,.site-footer .footer-links a").evaluateAll(elements => elements.map(link => ({
+    const links = await page.locator(".policy-toc a:visible,.browse-links a:visible,.enquiry-phone:visible,.enquiry-section .button-light:visible").evaluateAll(elements => elements.map(link => ({
       label: link.textContent.trim(), fontSize: parseFloat(getComputedStyle(link).fontSize),
       height: link.getBoundingClientRect().height
     })));
+    if (["/policies-en.html", "/maklumat-en.html", "/hubungi-en.html"].includes(path)) expect(links.length).toBeGreaterThan(0);
     for (const link of links) {
       expect(link.fontSize, `${width}px ${path} ${link.label}`).toBeGreaterThanOrEqual(14);
       expect(link.height, `${width}px ${path} ${link.label}`).toBeGreaterThanOrEqual(44);

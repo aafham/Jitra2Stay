@@ -21,7 +21,7 @@ test.beforeEach(async ({ context, page }) => {
 for (const language of ["ms", "en"]) {
   test(`${language} FAQ topics preserve every answer and an opened question when switching topics`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(language === "en" ? "/en.html" : "/");
+    await page.goto(language === "en" ? "/faq-en.html" : "/faq.html");
     const allAnswers = await page.locator("#faqList details > p").allTextContents();
     expect(allAnswers).toHaveLength(15);
     const booking = page.locator('[data-faq-topic="booking"]');
@@ -51,6 +51,7 @@ for (const language of ["ms", "en"]) {
       Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async text => window.__addressCopies.push(text) } });
     });
     await page.goto(language === "en" ? "/en.html?notes=private#lokasi" : "/?notes=private#lokasi");
+    await expect(page).toHaveURL(language === "en" ? /\/lokasi-en\.html\?notes=private#lokasi$/ : /\/lokasi\.html\?notes=private#lokasi$/);
     const initialUrl = page.url();
     await page.locator("#copyAddress").click();
     expect(await page.evaluate(() => window.__addressCopies)).toEqual([address]);
@@ -71,7 +72,7 @@ for (const language of ["ms", "en"]) {
 
 test("gallery thumbnails select the filtered photo and its room description without losing focus", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
-  await page.goto("/");
+  await page.goto("/gambar.html");
   await expect(page.locator("#galleryThumbnails button")).toHaveCount(0);
   await page.locator('[data-gallery-filter="bedrooms"]').click();
   const cards = page.locator('#galleryGrid .gallery-card:visible');
@@ -121,53 +122,59 @@ test("without JavaScript all questions, photos and the address remain available 
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   await isolateExternalServices(context);
   const page = await context.newPage();
-  for (const route of ["/", "/en.html"]) {
-    await page.goto(test.info().project.use.baseURL + route);
+  for (const suffix of ["", "-en"]) {
+    await page.goto(`${test.info().project.use.baseURL}/faq${suffix}.html`);
     await expect(page.locator("#faqControls")).toBeHidden();
     await expect(page.locator("#faqList details:visible")).toHaveCount(15);
     await page.locator("#faqList summary").last().click();
     await expect(page.locator("#faqList details").last().locator("p")).toBeVisible();
+    await page.locator(`.mobile-bottom-nav a[href="gambar${suffix}.html"]`).click();
+    await expect(page).toHaveURL(new RegExp(`/gambar${suffix}\\.html$`));
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(config.gallery.length);
+    await page.locator(`.mobile-bottom-nav a[href="maklumat${suffix}.html"]`).click();
+    await page.locator(`.browse-links a[href="lokasi${suffix}.html"]`).click();
+    await expect(page).toHaveURL(new RegExp(`/lokasi${suffix}\\.html$`));
     await expect(page.locator("#copyAddress")).toBeHidden();
     await expect(page.locator("#lokasi address")).toContainText(config.business.address.street);
   }
   await context.close();
 });
 
-test("mobile menu dismisses outside taps and keyboard exit so focused page controls stay uncovered", async ({ page }) => {
+test("mobile page controls remain uncovered when keyboard focus leaves the fixed navigation", async ({ page }) => {
   for (const viewport of [{ width: 390, height: 844 }, { width: 568, height: 320 }]) {
     await page.setViewportSize(viewport);
-    await page.goto("/");
-    const toggle = page.locator("#menuToggle");
-    await toggle.click();
-    await page.locator("#mainNav > .button").focus();
-    await page.keyboard.press("Tab");
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await expect(page.locator("#heroPrimaryCta")).toBeFocused();
-    expect(await page.locator("#heroPrimaryCta").evaluate(link => {
+    await page.goto("/lokasi.html");
+    await expect(page.locator("#menuToggle")).toBeHidden();
+    await expect(page.locator("#mainNav")).toBeHidden();
+    const firstTab = page.locator(".mobile-bottom-nav a").first();
+    await firstTab.focus();
+    await page.keyboard.press("Shift+Tab");
+    const focused = page.locator(":focus");
+    await expect(focused).not.toHaveClass(/mobile-bottom-nav/);
+    expect(await focused.evaluate(link => {
       const rect = link.getBoundingClientRect();
       const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
-      return hit === link || link.contains(hit);
+      return !link.closest('.mobile-bottom-nav') && rect.top >= 0 && rect.bottom <= innerHeight && (hit === link || link.contains(hit));
     })).toBe(true);
-    await toggle.click();
-    const beforeDismiss = page.url();
-    const headerBottom = await page.locator(".site-header").evaluate(header => header.getBoundingClientRect().bottom);
-    await page.mouse.click(viewport.width - 2, Math.min(headerBottom + 10, viewport.height - 3));
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(page.url()).toBe(beforeDismiss);
+    await page.keyboard.press("Tab");
+    await expect(firstTab).toBeFocused();
+    await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
   }
 });
 
 test("filtered FAQ, manual address fallback and gallery thumbnails pass accessibility checks", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async () => { throw new Error("Clipboard unavailable"); } } }));
-  await page.goto("/en.html");
+  await page.goto("/faq-en.html");
   await page.locator('[data-faq-topic="arrival"]').click();
   await page.locator("#faqList details:visible summary").first().click();
+  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze()).violations).toEqual([]);
+  await page.goto("/lokasi-en.html");
   await page.locator("#copyAddress").click();
   await expect(page.locator("#addressCopyText")).toBeVisible();
   const pageResult = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
   expect(pageResult.violations).toEqual([]);
+  await page.goto("/gambar-en.html");
   await page.locator('[data-gallery-filter="bedrooms"]').click();
   await page.locator('#galleryGrid .gallery-card:visible .gallery-trigger').first().click();
   await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");

@@ -30,7 +30,7 @@ test.beforeEach(async ({ context, page }) => {
 for (const lang of ["ms", "en"]) {
   test(`${lang} all ten supplied amenities photos are discoverable while the eleven existing photos remain`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(lang === "en" ? "/en.html" : "/");
+    await page.goto(lang === "en" ? "/gambar-en.html" : "/gambar.html");
     const actualNames = await page.locator(".gallery-trigger").evaluateAll(links => links.map(link => link.dataset.galleryPhoto));
     expect(actualNames.slice(0, existingPhotos.length)).toEqual(existingPhotos);
     expect(actualNames.slice(existingPhotos.length).sort()).toEqual([...suppliedPhotos].sort());
@@ -53,7 +53,6 @@ for (const lang of ["ms", "en"]) {
         const opener = page.locator(`.gallery-trigger[data-gallery-photo="${photo.image}"]`);
         await expect(opener).toBeVisible();
         await expect(opener.locator("img")).toHaveAttribute("alt", photo.alt[lang]);
-        await expect(page.locator(`.amenity-photo[data-gallery-photo="${photo.image}"]`)).toHaveCount(1);
       }
       const opener = page.locator(`.gallery-trigger[data-gallery-photo="${photos[0].image}"]`);
       await opener.click();
@@ -70,13 +69,25 @@ for (const lang of ["ms", "en"]) {
       await page.keyboard.press("Escape");
       await expect(opener).toBeFocused();
     }
+    await page.goto(lang === "en" ? "/kemudahan-en.html" : "/kemudahan.html");
+    for (const name of suppliedPhotos) {
+      const shortcut = page.locator(`.amenity-photo[data-gallery-photo="${name}"]`);
+      await expect(shortcut).toHaveCount(1);
+      await expect(shortcut).toHaveAccessibleName(/.+/);
+      const target = new URL(await shortcut.getAttribute("href"), page.url());
+      expect(target.pathname).toBe(lang === "en" ? "/gambar-en.html" : "/gambar.html");
+      expect(target.searchParams.get("photo")).toBe(name);
+    }
+    await page.locator('.amenity-photo[data-gallery-photo="bilik-air"]').click();
+    await expect(page.locator("#galleryCaption")).toHaveText(config.gallery.find(photo => photo.image === "bilik-air")[lang]);
+    await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
   });
 }
 
 test("portrait amenity photos stay uncropped on phones and desktop, including the short-screen viewer", async ({ page }) => {
   for (const viewport of [{ width: 320, height: 740 }, { width: 390, height: 844 }, { width: 1440, height: 1000 }]) {
     await page.setViewportSize(viewport);
-    await page.goto("/en.html");
+    await page.goto(viewport.width <= 900 ? "/gambar-en.html" : "/en.html");
     await page.locator("#galleryMore").click();
     for (const name of suppliedPhotos) {
       const picture = page.locator(`.gallery-trigger[data-gallery-photo="${name}"] img`);
@@ -90,6 +101,7 @@ test("portrait amenity photos stay uncropped on phones and desktop, including th
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   }
   await page.setViewportSize({ width: 568, height: 320 });
+  await page.goto("/kemudahan-en.html");
   await page.locator('.amenity-photo[data-gallery-photo="bilik-air"]').click();
   await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
   const viewer = await page.locator("#galleryImage").evaluate(image => {
@@ -102,7 +114,7 @@ test("portrait amenity photos stay uncropped on phones and desktop, including th
   expect(viewer.left).toBeGreaterThanOrEqual(0);
   expect(viewer.right).toBeLessThanOrEqual(568);
   await page.keyboard.press("Escape");
-  await expect(page.locator('.amenity-photo[data-gallery-photo="bilik-air"]')).toBeFocused();
+  await expect(page.locator('.gallery-trigger[data-gallery-photo="bilik-air"]')).toBeFocused();
 });
 
 test("without JavaScript every supplied photo remains visible with a working bathroom image link in both languages", async ({ browser }) => {
@@ -110,19 +122,20 @@ test("without JavaScript every supplied photo remains visible with a working bat
   await isolateExternalServices(context);
   const page = await context.newPage();
   for (const lang of ["ms", "en"]) {
-    await page.goto(test.info().project.use.baseURL + (lang === "en" ? "/en.html" : "/"));
+    await page.goto(test.info().project.use.baseURL + (lang === "en" ? "/gambar-en.html" : "/gambar.html"));
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(existingPhotos.length + suppliedPhotos.length);
     await expect(page.locator("#galleryControls")).toBeHidden();
     for (const name of suppliedPhotos) {
       const photo = config.gallery.find(item => item.image === name);
       const gallery = page.locator(`.gallery-trigger[data-gallery-photo="${name}"]`);
-      const facility = page.locator(`.amenity-photo[data-gallery-photo="${name}"]`);
       await expect(gallery).toBeVisible();
       await expect(gallery.locator("img")).toHaveAttribute("alt", photo.alt[lang]);
-      await expect(facility).toHaveAttribute("href", await gallery.getAttribute("href"));
-      await expect(facility).toHaveAccessibleName(/.+/);
     }
+    await page.goto(test.info().project.use.baseURL + (lang === "en" ? "/kemudahan-en.html" : "/kemudahan.html"));
+    for (const name of suppliedPhotos) await expect(page.locator(`.amenity-photo[data-gallery-photo="${name}"]`)).toHaveAccessibleName(/.+/);
     await page.locator('.amenity-photo[data-gallery-photo="bilik-air"]').click();
+    await expect(page).toHaveURL(lang === "en" ? /\/gambar-en\.html\?photo=bilik-air$/ : /\/gambar\.html\?photo=bilik-air$/);
+    await page.locator('.gallery-trigger[data-gallery-photo="bilik-air"]').click();
     await expect(page).toHaveURL(/\/images\/responsive\/bilik-air-\d+\.webp$/);
     await page.locator("img").evaluate(image => image.decode());
     expect(await page.locator("img").evaluate(image => image.naturalHeight > image.naturalWidth)).toBe(true);

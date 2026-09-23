@@ -5,6 +5,8 @@ const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const output=path.join(root,'dist');
 const config=require('../src/data/site.config.cjs');
+const {renderMobilePage}=require('../src/templates/mobile-pages.cjs');
+const {routes}=require('../src/data/mobile-routes.cjs');
 const {renderHome}=require('../src/templates/home.cjs');
 const {renderPolicies,renderGuide,renderThanks,render404}=require('../src/templates/pages.cjs');
 const manifest=require('../src/images/responsive/manifest.json');
@@ -21,6 +23,7 @@ fs.mkdirSync(output,{recursive:true});
 const pages=new Map();
 for(const lang of ['ms','en']) {
   const suffix=lang==='en'?'-en':'';
+  for(const key of Object.keys(routes)) pages.set(`${key}${suffix}.html`,renderMobilePage(key,lang));
   pages.set(lang==='en'?'en.html':'index.html',renderHome(lang));
   pages.set(`policies${suffix}.html`,renderPolicies(lang));
   pages.set(`thank-you${suffix}.html`,renderThanks(lang));
@@ -37,8 +40,8 @@ const copy=(sourceRelative,publicRelative)=>{
   if(!source.startsWith(root+path.sep)||!target.startsWith(output+path.sep)) throw new Error('Asset outside project');
   fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(source,target);
 };
-for(const asset of ['app.js','gallery.js','navigation.js','share.js','faq.js','location.js','nearby.js','guest-calendar.js','guest-admin.js']) copy(`src/scripts/${asset}`,asset);
-for(const asset of ['style.css','gallery.css','navigation.css','faq.css','location.css','rates.css','planning.css','documents.css','nearby.css','mobile.css','guest-calendar.css','guest-admin.css']) copy(`src/styles/${asset}`,asset);
+for(const asset of ['mobile-pages.js','app.js','gallery.js','navigation.js','share.js','faq.js','location.js','nearby.js','guest-calendar.js','guest-admin.js']) copy(`src/scripts/${asset}`,asset);
+for(const asset of ['mobile-pages.css','style.css','gallery.css','navigation.css','faq.css','location.css','rates.css','planning.css','documents.css','nearby.css','mobile.css','guest-calendar.css','guest-admin.css']) copy(`src/styles/${asset}`,asset);
 copy('src/images/favicon.svg','images/favicon.svg');
 const usedImages=new Set(['halaman','ruang-tamu',...config.gallery.map(p=>p.image)]);
 for(const name of usedImages){

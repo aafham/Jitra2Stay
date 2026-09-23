@@ -216,16 +216,16 @@ test("clipboard completion leaves edited or closed family previews and their foc
   await expect(summary).toBeFocused();
 });
 
-test("without JavaScript, all nightly packages and their enquiry links remain available", async ({ browser }) => {
+test("without JavaScript, the mobile prices page keeps all nightly packages and native enquiry links", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 844 } });
   const page = await context.newPage();
-  await page.goto("/");
+  await page.goto("/harga.html");
   await expect(page.locator("#stayComparison")).toBeHidden();
   await expect(page.locator("#familyPlan")).toBeHidden();
   for (const rate of rates) {
     const card = page.locator(`.package-card[data-package="${rate.rooms}"]`);
     await expect(card.locator(".package-price strong")).toHaveText(`RM${rate.price}`);
-    await expect(card.locator(".package-link")).toHaveAttribute("href", "#semak-tarikh");
+    await expect(card.locator(".package-link")).toHaveAttribute("href", `hubungi.html?rooms=${rate.rooms}`);
     await expect(card.locator(".package-total")).toBeHidden();
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

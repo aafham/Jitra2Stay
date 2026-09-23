@@ -23,7 +23,8 @@
     if (typeof value.guest_name !== 'string' || !value.guest_name.trim()) errors.guest_name = 'name';
     else if (value.guest_name.trim().length > 120) errors.guest_name = 'nameLong';
     const count = Number(value.guest_count);
-    if (!Number.isInteger(count) || count < 1 || count > 20) errors.guest_count = 'count';
+    const hasCount = value.guest_count != null && String(value.guest_count).trim() !== '';
+    if (hasCount && (!Number.isInteger(count) || count < 1 || count > 20)) errors.guest_count = 'count';
     if (value.purpose != null && (typeof value.purpose !== 'string' || value.purpose.trim().length > 500)) errors.purpose = 'purpose';
     return errors;
   }
@@ -37,6 +38,7 @@
   const pins = [1, 2, 3, 4].map(i => byId(`guestPin${i}`));
   const workspace = byId('guestWorkspace'), form = byId('guestDetailsForm'), formError = byId('guestFormError');
   const saveButton = byId('guestSave'), formTitle = byId('guestFormTitle'), cancelEdit = byId('guestCancelEdit');
+  const optionalDetails = byId('guestOptionalDetails');
   const logoutButton = byId('guestLogout');
   const list = byId('guestList'), listStatus = byId('guestListStatus'), refresh = byId('guestRefresh'), showHistory = byId('guestShowHistory');
   const retrySession = byId('guestSessionRetry'), storageNotice = byId('guestStorageNotice');
@@ -55,6 +57,8 @@
   } catch { /* The page explains missing configuration without exposing a broken form. */ }
 
   function focus(element) {
+    const disclosure = element.closest('details');
+    if (disclosure) disclosure.open = true;
     element.focus({ preventScroll: true });
     element.scrollIntoView({ block: 'center', behavior: 'instant' });
   }
@@ -101,6 +105,7 @@
   function resetForm() {
     editing = null;
     form.reset();
+    optionalDetails.open = false;
     clearFieldErrors();
     cancelEdit.hidden = true;
     formTitle.textContent = text('Tambah tetamu', 'Add a guest');
@@ -108,7 +113,7 @@
     updateDateHints();
   }
   function captureDraft() {
-    return hasDraft() ? { value: readForm(), editing, lastRequest: { ...lastRequest } } : null;
+    return hasDraft() ? { value: readForm(), editing, lastRequest: { ...lastRequest }, optionalOpen: optionalDetails.open } : null;
   }
   function clearPrivateContent(preserveDraft = false) {
     if (preserveDraft) pendingDraft = captureDraft();
@@ -184,7 +189,7 @@
     if (error.status === 409 && /stale|version|changed/i.test(error.code)) return text('Rekod ini sudah berubah. Semak senarai terkini dan tekan Ubah pada rekod itu sebelum menyimpan semula.', 'This record has changed. Review the refreshed list and choose Edit on that record before saving again.');
     if (error.status === 409 && error.code === 'request_conflict') return text('Cubaan simpan ini sudah digunakan dengan maklumat berbeza. Muat semula senarai dan semak rekod sebelum mencuba lagi.', 'This save attempt was already used with different details. Refresh the list and review the record before trying again.');
     if (error.status === 409) return text('Tarikh ini bertindih dengan penginapan lain. Semak senarai tetamu atau pilih tarikh lain. Maklumat anda belum disimpan.', 'These dates overlap another stay. Check the guest list or choose other dates. Your details have not been saved.');
-    if (error.status === 400 || error.status === 422) return text('Semak semula tarikh, nama dan bilangan orang. Tujuan boleh dikosongkan.', 'Please check the dates, name and number of guests. The purpose can be left empty.');
+    if (error.status === 400 || error.status === 422) return text('Semak tarikh dan nama. Jika bilangan orang diisi, gunakan 1 hingga 20. Bilangan orang dan tujuan boleh dikosongkan.', 'Please check the dates and name. If a guest count is entered, use 1 to 20. Guest count and purpose can be left blank.');
     if (error.status === 404) return text('Rekod ini tidak lagi ditemui. Muat semula senarai untuk melihat maklumat terkini.', 'This record can no longer be found. Refresh the list to see the latest details.');
     if (error.code === 'timeout') return text('Sambungan mengambil masa terlalu lama. Status simpanan belum dapat dipastikan. Cuba simpan semula; rekod yang sama tidak akan digandakan.', 'The connection took too long. The save status could not be confirmed. Try saving again; the same record will not be duplicated.');
     if (error.status === 0) return text('Tidak dapat menghubungi pelayan. Semak internet dan cuba lagi. Maklumat borang masih ada.', 'Could not reach the server. Check your internet connection and try again. Your form details are still here.');
@@ -221,6 +226,7 @@
       editing = draft.editing;
       lastRequest = draft.lastRequest || { fingerprint: '', id: '' };
       Object.entries(draft.value).forEach(([key, value]) => { fields[key].value = value; });
+      optionalDetails.open = Boolean(draft.optionalOpen || fields.guest_count.value || fields.purpose.value);
       cancelEdit.hidden = !editing;
       formTitle.textContent = editing ? text('Ubah rekod tetamu', 'Edit guest record') : text('Tambah tetamu', 'Add a guest');
     }
@@ -353,7 +359,11 @@
     clearFieldErrors();
     const raw = readForm();
     const errors = validateStay(raw, editing);
+    // Number inputs can display incomplete text (for example "e") while their
+    // DOM value is empty. An invalid entry is different from leaving it blank.
+    if (fields.guest_count.validity.badInput) errors.guest_count = 'count';
     if (Object.keys(errors).length) {
+      if (errors.guest_count || errors.purpose) optionalDetails.open = true;
       Object.entries(errors).forEach(([key, code]) => {
         fields[key].setAttribute('aria-invalid', 'true');
         const error = byId(`${fields[key].id}Error`);
@@ -363,7 +373,7 @@
       focus(fields[Object.keys(errors)[0]]);
       return;
     }
-    const data = { ...raw, guest_name: raw.guest_name.trim(), guest_count: Number(raw.guest_count), purpose: raw.purpose.trim() };
+    const data = { ...raw, guest_name: raw.guest_name.trim(), guest_count: raw.guest_count.trim() === '' ? null : Number(raw.guest_count), purpose: raw.purpose.trim() };
     if (editing) { data.id = editing.id; data.version = editing.version; }
     const fingerprint = JSON.stringify(data);
     if (lastRequest.fingerprint !== fingerprint) lastRequest = { fingerprint, id: uuid() };
@@ -401,6 +411,7 @@
     editing = record;
     clearFieldErrors();
     Object.entries(fields).forEach(([key, input]) => { input.value = record[key] ?? ''; });
+    optionalDetails.open = true;
     lastRequest = { fingerprint: '', id: '' };
     formTitle.textContent = text('Ubah rekod tetamu', 'Edit guest record');
     cancelEdit.hidden = false;
@@ -452,7 +463,8 @@
       const card = node('article', `guest-record${past || cancelled ? ' is-past' : ''}`);
       const heading = node('div', 'guest-record-heading');
       heading.append(node('h3', '', record.guest_name), node('span', 'guest-record-tag', cancelled ? text('Dibatalkan', 'Cancelled') : past ? text('Selesai', 'Past stay') : record.check_in <= today ? text('Sedang menginap', 'Staying now') : text('Akan datang', 'Upcoming')));
-      card.append(heading, node('p', 'guest-record-dates', `${formatDate(record.check_in)} → ${formatDate(record.check_out)}`), node('p', 'guest-record-count', text(`${record.guest_count} orang`, `${record.guest_count} guest${record.guest_count === 1 ? '' : 's'}`)));
+      card.append(heading, node('p', 'guest-record-dates', `${formatDate(record.check_in)} → ${formatDate(record.check_out)}`));
+      if (Number.isInteger(record.guest_count) && record.guest_count >= 1 && record.guest_count <= 20) card.append(node('p', 'guest-record-count', text(`${record.guest_count} orang`, `${record.guest_count} guest${record.guest_count === 1 ? '' : 's'}`)));
       if (record.purpose) card.append(node('p', 'guest-record-purpose', record.purpose));
       if (!cancelled) {
         const actions = node('div', 'guest-record-actions');

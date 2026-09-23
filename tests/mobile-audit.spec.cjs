@@ -9,15 +9,16 @@ test("room packages and mobile controls remain readable with enlarged text on ph
   await context.route("https://wa.me/**", route => route.abort());
   await page.emulateMedia({ reducedMotion: "reduce" });
 
-  for (const width of [320, 390]) for (const url of ["/", "/en.html"]) {
+  for (const width of [320, 390]) for (const suffix of ["", "-en"]) {
+    const url = `/harga${suffix}.html`;
     await page.setViewportSize({ width, height: 844 });
     await page.goto(url);
     // Simulate a guest's larger default font, keeping the phone viewport fixed.
     await page.addStyleTag({ content: ":root { font-size: 200% !important; }" });
-    await expect(page.locator(".package-total-value").first()).toHaveText("RM170");
+    await expect(page.locator(".package-price strong").first()).toHaveText("RM170");
     const measurements = await page.locator(".package-card").evaluateAll(cards => cards.map(card => {
       const bounds = card.getBoundingClientRect();
-      const price = card.querySelector(".package-total-value");
+      const price = card.querySelector(".package-price strong");
       const range = document.createRange();
       range.selectNodeContents(price);
       const lines = Array.from(range.getClientRects()).filter(rect => rect.width > 0);
@@ -38,13 +39,21 @@ test("room packages and mobile controls remain readable with enlarged text on ph
       expect(item.cardLeft, label).toBeGreaterThanOrEqual(0);
       expect(item.cardRight, label).toBeLessThanOrEqual(width);
     }
-    const controls = await page.locator(".gallery-filter,.faq-filter,.comparison-nights button").evaluateAll(elements => elements.map(element => ({
-      text: element.textContent, width: element.clientWidth, scrollWidth: element.scrollWidth
-    })));
-    for (const control of controls) {
-      expect(control.scrollWidth, `${width}px ${url}: ${control.text}`).toBeLessThanOrEqual(control.width + 1);
+    for (const [slug, selector] of [["harga", ".package-link"], ["gambar", ".gallery-filter"], ["faq", ".faq-filter"]]) {
+      const route = `/${slug}${suffix}.html`;
+      if (slug !== "harga") {
+        await page.goto(route);
+        await page.addStyleTag({ content: ":root { font-size: 200% !important; }" });
+      }
+      const controls = await page.locator(selector).evaluateAll(elements => elements.map(element => ({
+        text: element.textContent, width: element.clientWidth, scrollWidth: element.scrollWidth
+      })));
+      expect(controls.length, `${width}px ${route}: controls are present`).toBeGreaterThan(0);
+      for (const control of controls) {
+        expect(control.scrollWidth, `${width}px ${route}: ${control.text}`).toBeLessThanOrEqual(control.width + 1);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), `${width}px ${route}`).toBeLessThanOrEqual(width);
     }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth), `${width}px ${url}`).toBeLessThanOrEqual(width);
   }
 });
 
