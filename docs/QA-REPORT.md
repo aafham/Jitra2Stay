@@ -1,5 +1,25 @@
 # Laporan QA
 
+## Kalendar tetamu dan pecahan bayaran — 23 September 2026
+
+Kalendar awam dan senarai nama/tarikh/bilangan tetamu disambungkan kepada Supabase. PIN empat kotak membuka pengurusan; tujuan kekal pilihan dan hanya untuk pengurusan. Pakej dua bilik kini RM170, dengan deposit RM100 biasa atau RM200 rombongan/majlis besar. Kalkulator, ringkasan keluarga dan mesej WhatsApp menunjukkan sewaan + deposit = jumlah bayaran awal.
+
+| Semakan | Keputusan |
+| --- | --- |
+| Build dan sempadan penerbitan | 18 halaman; 735 / 735 static checks lulus |
+| Unit backend, tarikh, draf dan bayaran | 42 / 42 lulus |
+| Suite browser Chromium penuh | 137 / 137 lulus; tiada retry |
+| WebKit: guest UI dan bayaran | 25 / 25 lulus; tiada retry |
+| Paparan baharu | 320px cerah, 390px gelap dan 1280px EN; Axe tiada pelanggaran dalam keadaan diuji, tiada overflow mendatar |
+| Database sebenar | Migration, transaksi ujian rollback, RLS/grants, konflik tarikh, idempotency, versi edit, expiry dan had PIN disahkan |
+| Edge Function sebenar | PIN betul/salah, sesi, save tanpa tujuan, baca awam/peribadi, edit, batal, logout dan CORS dua domain production lulus |
+| Aliran UI dengan database sebenar | PIN → tambah rekod tanpa tujuan → kembali ke homepage → dua malam merah dan nama muncul; rekod percubaan dipadam semula |
+| Advisor Supabase | Tiada amaran/error keselamatan; tiga INFO RLS tanpa polisi dijangka untuk jadual service-only; tiada nasihat prestasi |
+
+Regression baharu meliputi navigasi kalendar sebelum observer berjalan, logout yang gagal dan dicuba semula, serta pemulihan browser cache ketika semakan sesi belum selesai. Ujian keyboard lama kini mengikut jumlah kawalan halaman, dengan semua assertion fokus/kedudukan asal dikekalkan. Kalendar memaparkan status belum diketahui semasa ralat, bukan menganggap tarikh kosong.
+
+Semakan bayaran mengesahkan RM170 + RM100 = RM270, RM170 + RM200 = RM370 dan dua malam RM340 + RM100 = RM440. Kategori deposit tidak diteka daripada bilangan tetamu; owner mengesahkan kategori. PIN sebenar dan credential server tidak dimasukkan ke source atau output website. Semua ujian browser ini menggunakan enjin desktop/emulasi viewport; semakan telefon fizikal kekal berasingan.
+
 ## Penyusunan repo — 23 September 2026
 
 Fail root berkurang daripada 46 kepada tujuh. Source dipindahkan ke `src/`, dokumentasi ke `docs/`, dan config Playwright ke `tests/`. Laporan sementara dikumpulkan dalam `artifacts/` yang diabaikan Git. Build memetakan path source baharu kepada URL awam yang sama.

@@ -56,7 +56,7 @@ for (const [width, lang, theme] of [[320, "ms", "light"], [390, "en", "dark"], [
     await expect(page.locator("#estimateTotal")).toHaveText("RM560");
     expect((await new AxeBuilder({page}).include(".enquiry-panel").analyze()).violations).toEqual([]);
     await page.locator("#clearEnquiryDraft").click();
-    await expect(page.locator("#enquiryPackageName")).toContainText("RM180");
+    await expect(page.locator("#enquiryPackageName")).toContainText("RM170");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }

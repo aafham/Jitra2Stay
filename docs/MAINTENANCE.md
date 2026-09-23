@@ -6,7 +6,7 @@ Semua path source di bawah relatif kepada root repo. Data, template, skrip, gaya
 
 Grid pakej menggunakan minimum `rem` dalam `src/styles/rates.css`; fakta, penapis galeri/FAQ dan pilihan malam turut mengecilkan jumlah kolum apabila teks dibesarkan. Kekalkan dua kolum pakej pada telefon biasa dan empat pada desktop yang cukup lebar, tetapi uji juga root font 200% pada 320/390px. Jangan paksa harga pecah baris atau sembunyikan overflow untuk menutup masalah.
 
-`src/styles/mobile.css` dimuat selepas semua stylesheet komponen, pada semua halaman. Breakpoint 900px mengurus gutter/safe area dan input 16px; 600px mengemas jarak/kad; 480px menyusun galeri, borang, indeks polisi dan footer satu kolum. CSS ini tidak memotong overflow dokumen untuk menutup masalah susunan. Apabila menukar kolum galeri, kemas kini `sizes` dalam `src/templates/gallery.cjs` supaya foto tidak kabur pada telefon.
+`src/styles/mobile.css` dimuat selepas stylesheet komponen halaman awam. Halaman pengurusan memuat `guest-admin.css` selepasnya untuk borang dan empat kotak PIN. Breakpoint 900px mengurus gutter/safe area dan input 16px; 600px mengemas jarak/kad; 480px menyusun galeri, borang, indeks polisi dan footer satu kolum. CSS ini tidak memotong overflow dokumen untuk menutup masalah susunan. Apabila menukar kolum galeri, kemas kini `sizes` dalam `src/templates/gallery.cjs` supaya foto tidak kabur pada telefon.
 
 Kad kemudahan mobile menggunakan grid ikon dan kandungan: pastikan `.amenity-photo` kekal dalam kolum 2 bersama penerangan. Margin destinasi mesti menggunakan selector cukup khusus untuk mengatasi `.location-layout p:not(.eyebrow)`; jangan kembalikan margin 16px kepada setiap baris kad.
 
@@ -34,7 +34,7 @@ Anggaran dalam panduan dijana oleh `src/templates/guide-journeys.cjs` daripada `
 
 `src/data/site.config.cjs` ialah sumber semasa. Fakta owner yang tersedia dalam repo `18a274d` telah dipulihkan, termasuk parking 3–4 kereta, privasi rumah, self check-in, TV, bayaran manual dan polisi pembatalan 7 hari. Rujuk `RESTORED-CONTENT.md` sebelum mengganti maklumat ini dengan ayat umum meminta pengesahan; pemulihan sumber bukan pemeriksaan fizikal baharu.
 
-Edit `business` untuk nombor/domain/fakta, `rates` untuk kadar, `policies` untuk copy BM/EN, dan `rooms`, `staySummary`, `facilities`, `gallery`, `nearby`, `guides` untuk kandungan. Harga dan metadata dijana bersama. Gunakan token seperti `{{securityDeposit}}`, `{{maxGuests}}`, `{{earlyLateFee}}`, `{{extraGuestFee}}` dan `{{cancellationNoticeDays}}`; jangan salin nombor ke beberapa template.
+Edit `business` untuk nombor/domain/fakta, `rates` untuk kadar, `policies` untuk copy BM/EN, dan `rooms`, `staySummary`, `facilities`, `gallery`, `nearby`, `guides` untuk kandungan. Harga dan metadata dijana bersama. Gunakan token seperti `{{securityDeposit}}`, `{{largeGroupSecurityDeposit}}`, `{{maxGuests}}`, `{{earlyLateFee}}`, `{{extraGuestFee}}` dan `{{cancellationNoticeDays}}`; jangan salin nombor ke beberapa template.
 
 Jalankan npm run build, npm run qa, npm run test:unit dan npm test. Jangan edit dist kerana build akan menggantikannya. npm run dev bukan hot reload; build semula selepas perubahan.
 
@@ -68,11 +68,13 @@ Salin mesej pertanyaan menyediakan textarea baca sahaja apabila clipboard tiada/
 
 Pilihan 1–3 malam dalam `#stayComparison` mengemas kini semua jumlah pakej; harga semalam masih terlihat. `plannedNights` hanya ditetapkan apabila pengguna memilih tempoh. Selepas check-in sah, check-out mengikuti tempoh tersebut; pengeditan check-out secara langsung membatalkan pilihan tempoh automatik. Tarikh sah menentukan perbandingan termasuk penginapan melebihi tiga malam. Tarikh tidak sah yang sedang dibetulkan tidak ditulis semula ketika memulihkan draf.
 
-`src/templates/rates.cjs` menjana kad perbandingan pakej; `src/templates/enquiry.cjs` menjana borang, ralat ruangan, pecahan anggaran dan pratonton mesej. `src/scripts/app.js` menyelaraskan pilihan pakej dan butiran WhatsApp. Jangan menambah kadar berasingan dalam template atau JavaScript; gunakan `rates` dan `business.securityDeposit` dalam config.
+`src/templates/rates.cjs` menjana kad perbandingan pakej; `src/templates/enquiry.cjs` menjana borang, ralat ruangan, pecahan anggaran dan pratonton mesej. `src/scripts/app.js` menyelaraskan pilihan pakej dan butiran WhatsApp. Jangan menambah kadar berasingan dalam template atau JavaScript; gunakan `rates`, `business.securityDeposit` dan `business.largeGroupSecurityDeposit` dalam config. Build menyalin kedua-dua kadar deposit kepada `APP_CONFIG` untuk pengiraan browser.
 
 `src/styles/rates.css` mengurus empat kolum pakej pada desktop dan dua kolum di bawah 1100px. Kad, contoh pembahagian harga, deposit, caj tambahan dan ringkasan masih dijana daripada config. Semak 320px dan English selepas mengubah label.
 
-Pintasan 1–3 malam mengisi check-out berdasarkan check-in yang sah. Anggaran sewaan ialah kadar semalam × bilangan malam; deposit dipaparkan berasingan dan caj tambahan tidak dianggarkan. Caj tambahan RM10 seorang kekal dinyatakan dalam polisi; contoh pembahagian harga dalam `rates.exampleGuests` bukan had pakej atau formula menentukan siapa dikenakan caj. Anggaran tidak menyemak kekosongan atau menggantikan pengesahan owner melalui WhatsApp.
+Pintasan 1–3 malam mengisi check-out berdasarkan check-in yang sah. Anggaran sewaan ialah kadar semalam × bilangan malam, dan jumlah bayaran awal ialah sewaan + deposit kategori dipilih. Deposit RM100 untuk kumpulan kecil/biasa atau RM200 untuk kumpulan besar/acara besar seperti kenduri; tiada ambang bilangan orang direka, dan owner mengesahkan kategori. Caj tambahan RM10 seorang kekal dinyatakan dalam polisi tetapi tidak dianggarkan; contoh pembahagian harga dalam `rates.exampleGuests` bukan had pakej atau formula menentukan siapa dikenakan caj. Anggaran tidak menyemak kekosongan atau menggantikan pengesahan owner melalui WhatsApp.
+
+Kadar semasa 2/3/4/5 bilik ialah RM170/RM230/RM280/RM330 semalam. Untuk 2 bilik satu malam dengan deposit biasa, bayaran awal ialah RM270 (RM170 + RM100). Deposit dipulangkan selepas pemeriksaan rumah memuaskan; deposit hangus jika berlaku kerosakan atau perkara tidak diingini mengikut polisi owner. Semak pilihan kategori deposit, jumlah awal dan maksud polisi bersama dalam BM/EN, mesej WhatsApp serta ringkasan perkongsian.
 
 Selepas perubahan, semak ralat BM/EN, tarikh akhir bulan/tahun, pilihan kad dan dropdown, serta kesamaan mesej pratonton dengan pautan WhatsApp. Membuka WhatsApp mesti mengekalkan borang, draf dan pautan alternatif.
 
@@ -88,11 +90,11 @@ Panduan menyusun kandungan, alamat/Google Maps/Waze, kemudian panduan berkaitan 
 
 Envelope draf versi 1 menerima medan pilihan `plannedNights` bernilai 1, 2 atau 3. Draf lama tanpa medan itu kekal sah; field asing dan nilai tidak sah ditolak. Tempoh luput 2 jam/key sedia ada tidak berubah. Reset juga membuang pilihan malam.
 
-Perkongsian keluarga dalam `src/scripts/app.js` ialah tindakan berasingan daripada `src/scripts/share.js`. Pengguna membuka pratonton kemudian menekan kongsi; hanya pakej, tarikh, bilangan malam, anggaran sewaan, deposit dan pautan awam dimasukkan. Jangan menambah nota peribadi/jumlah tetamu secara senyap. Uji pembatalan menu native, clipboard ditolak, perubahan tarikh semasa proses kongsi dan pemulihan fokus. Perkongsian tidak menghantar mesej automatik kepada owner atau keluarga.
+Perkongsian keluarga dalam `src/scripts/app.js` ialah tindakan berasingan daripada `src/scripts/share.js`. Pengguna membuka pratonton kemudian menekan kongsi; hanya pakej, tarikh, bilangan malam, anggaran sewaan, kategori/nilai deposit, jumlah bayaran awal dan pautan awam dimasukkan. Jangan menambah nota peribadi/jumlah tetamu secara senyap. Uji pembatalan menu native, clipboard ditolak, perubahan tarikh/kategori deposit semasa proses kongsi dan pemulihan fokus. Perkongsian tidak menghantar mesej automatik kepada owner atau keluarga.
 
-`src/scripts/app.js` menyimpan check-in, check-out, jumlah tetamu, pakej, nota dan status pilihan pakej dalam `sessionStorage` dengan key `jitra2stay.enquiry-draft.v1`. Draf terhad kepada sesi tab dan sah sehingga 2 jam sejak simpanan terakhir. Input/perubahan dan klik bahasa menyimpan draf; pemulihan sahaja tidak melanjutkan tempohnya. Draf rosak atau tamat tempoh tidak dipulihkan. Ralat yang boleh dibetulkan, seperti check-out lebih awal atau tetamu melebihi had, dikekalkan untuk pembetulan.
+`src/scripts/app.js` menyimpan check-in, check-out, jumlah tetamu, pakej, kategori deposit, nota dan status pilihan pakej dalam `sessionStorage` dengan key `jitra2stay.enquiry-draft.v1`. Draf terhad kepada sesi tab dan sah sehingga 2 jam sejak simpanan terakhir. Input/perubahan dan klik bahasa menyimpan draf; pemulihan sahaja tidak melanjutkan tempohnya. Draf rosak atau tamat tempoh tidak dipulihkan. Ralat yang boleh dibetulkan, seperti check-out lebih awal atau tetamu melebihi had, dikekalkan untuk pembetulan. Draf lama tanpa pilihan kategori menggunakan deposit biasa; uji reset dan tukar bahasa supaya pilihan deposit tidak berubah tanpa sebab.
 
-Butang kosongkan draf membuang rekod itu dan menetapkan semula borang. Menghantar pertanyaan tidak memadamkannya. Jika simpanan tamat ketika halaman masih terbuka, rekod simpanan dibuang sementara butiran yang sedang dilihat kekal. Jika browser menyekat storage, borang masih berfungsi dan memaklumkan bahawa draf tidak dapat disimpan. Pilihan tema menggunakan `localStorage`; butiran tetamu tidak dimasukkan ke URL atau dihantar ke server website.
+Butang kosongkan draf membuang rekod itu dan menetapkan semula borang. Menghantar pertanyaan tidak memadamkannya. Jika simpanan tamat ketika halaman masih terbuka, rekod simpanan dibuang sementara butiran yang sedang dilihat kekal. Jika browser menyekat storage, borang masih berfungsi dan memaklumkan bahawa draf tidak dapat disimpan. Pilihan tema menggunakan `localStorage`; butiran draf pertanyaan tidak dimasukkan ke URL website atau dihantar ke Supabase. Borang pengurusan tetamu ialah aliran berasingan yang menyimpan rekod ke Supabase selepas pengesahan PIN.
 
 `src/scripts/share.js` menggunakan URL homepage awam daripada markup, tanpa query/hash atau butiran borang. Menu perkongsian peranti digunakan dahulu; jika tidak tersedia, pautan disalin atau dipaparkan untuk salinan manual. Pembatalan menu kongsi tidak dianggap ralat. Kekalkan pautan Google Maps dan album Facebook berdasarkan `business.mapUrl` serta `business.facebookUrl`; pautan tersebut bukan bukti rating atau petikan ulasan.
 
@@ -126,6 +128,25 @@ Aktifkan domain/SSL di host dahulu. Tukar business.siteUrl dan build. QA menggun
 
 `npm test` membaca config `tests/playwright.config.cjs`. Laporan HTML berada dalam `artifacts/playwright-report/` dan hasil/debug dalam `artifacts/test-results/`. Folder `artifacts/`, `dist/` dan `node_modules/` ialah hasil tempatan yang diabaikan Git.
 
-Owner mengurus pertanyaan, tarikh, kadar akhir, bayaran dan rekod booking sendiri melalui aliran manual sedia ada. Website tiada kalendar yang perlu di-sync. Jangan menambah tarikh booking atau data pelanggan ke public config.
+Owner mengurus pertanyaan, kadar akhir, bayaran dan pengesahan booking melalui aliran manual sedia ada. Selepas booking disahkan, masukkan tarikh/nama/bilangan orang melalui **Urus tetamu**; kemas kini juga perubahan atau pembatalan daripada WhatsApp dan saluran lain. Kalendar memaparkan rekod Supabase, bukan inventori booking yang diselaraskan automatik dengan platform luar. Jangan masukkan rekod pelanggan ke public config atau Git.
 
 Selepas setiap perubahan harga/polisi, pastikan BM dan EN membawa maksud sama. Selepas perubahan CSS/JS, semak menu, keyboard, dialog dan no-JS pada mobile. Rekod semakan telefon sebenar dalam `PRE-LIVE-QA.md`; status bahan sumber berada dalam `OWNER-DATA-CHECKLIST.md`.
+
+## Kalendar dan rekod tetamu
+
+[Panduan urus tetamu](GUEST-GUIDE.md) menerangkan penggunaan harian. Nama, tarikh masuk/keluar dan bilangan orang ditunjukkan dalam senarai upcoming awam mengikut pilihan owner. Tujuan ialah nota pilihan yang hanya dikembalikan kepada pengurusan selepas PIN disahkan. Semua pengunjung boleh membaca kalendar tanpa PIN; tambah, ubah dan batal memerlukan sesi server yang sah.
+
+| Bahagian | Source |
+| --- | --- |
+| Endpoint awam | `src/data/guest.config.cjs`, dijana sebagai `guest.config.js` |
+| Kalendar dan senarai upcoming | `src/templates/guest-calendar.cjs`, `src/scripts/guest-calendar.js`, `src/styles/guest-calendar.css` |
+| Halaman pengurusan BM/EN | `src/templates/guest-admin.cjs`, `src/scripts/guest-admin.js`, `src/styles/guest-admin.css` |
+| Database dan server | `supabase/migrations/`, `supabase/functions/guest-calendar/` |
+
+PIN diperiksa oleh Edge Function; jangan pindahkan pengesahan PIN ke JavaScript awam. Sesi rawak sah sehingga 8 jam, hash token disimpan di database, dan token browser hanya dalam sesi tab. Draf borang pengurusan tidak ditulis ke storage; apabila sesi tamat dalam tab yang masih terbuka, draf disimpan sementara dalam memori untuk dipulihkan selepas PIN dimasukkan semula. Reload atau meninggalkan halaman boleh menghilangkan draf belum disimpan.
+
+Tarikh menggunakan hari Malaysia. Tarikh keluar mesti selepas tarikh masuk; malam check-out tidak ditanda berpenghuni untuk membolehkan ketibaan berikutnya selepas 3 petang. Database menolak tempahan bertindih dan edit berdasarkan versi lama. Kekalkan UUID `request_id` yang sama untuk cubaan semula create apabila respons rangkaian tidak pasti. Selepas save berjaya, halaman kembali ke kalendar; jangan redirect pada kegagalan.
+
+Semasa muatan atau ralat API, kalendar mesti menyatakan status belum diketahui, bukannya menunjukkan semua tarikh kosong. Butang cuba lagi, muat semula, rekod kosong, tarikh bertindih, sesi tamat, PIN salah dan lockout perlu kekal boleh difahami dalam BM/EN. Ujian handler berada dalam `tests/guest-api.test.cjs`; ujian UI dalam `tests/guest-ui.spec.cjs`. SQL di `supabase/tests/` hanya untuk database baharu atau ujian seperti diterangkan dalam [panduan backend](../supabase/README.md).
+
+Deployment frontend tidak mengemas kini Edge Function atau migration. Ikut [Deployment](DEPLOYMENT.md) untuk kedua-dua bahagian, dan jalankan security advisors selepas perubahan database. Tiga jadual service-only sengaja menggunakan RLS tanpa polisi awam; jangan tambah akses `anon` untuk menghilangkan notis INFO.

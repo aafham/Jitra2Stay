@@ -39,7 +39,13 @@
       : null;
   }
 
-  function buildEnquiryMessage({ language, checkin, checkout, guests, rooms, notes = "", estimate }) {
+  function estimatePayment(estimate, securityDeposit) {
+    return estimate && Number.isFinite(estimate.total) && estimate.total >= 0 && Number.isFinite(securityDeposit) && securityDeposit >= 0
+      ? { accommodation: estimate.total, securityDeposit, totalPayable: estimate.total + securityDeposit }
+      : null;
+  }
+
+  function buildEnquiryMessage({ language, checkin, checkout, guests, rooms, notes = "", estimate, securityDeposit, depositCategory = "standard" }) {
     const en = language === "en";
     const lines = en
       ? ["Hi Jitra2Stay, I would like to ask about a stay.", `Check-in: ${checkin}`, `Check-out: ${checkout}`, `Guests: ${guests}`, `Room package: ${rooms} rooms`]
@@ -48,6 +54,13 @@
       lines.push(en
         ? `Stay estimate: RM${estimate.total} (${estimate.nights} night(s) × RM${estimate.nightlyRate}). Deposit and extra charges excluded.`
         : `Anggaran penginapan: RM${estimate.total} (${estimate.nights} malam × RM${estimate.nightlyRate}). Tidak termasuk deposit dan caj tambahan.`);
+    }
+    const payment = estimatePayment(estimate, securityDeposit);
+    if (payment) {
+      const category = depositCategory === "large" ? en ? "large group / major event" : "rombongan / majlis besar" : en ? "regular stay / small group" : "biasa / kumpulan kecil";
+      lines.push(`${en ? "Security deposit" : "Deposit keselamatan"}: RM${payment.securityDeposit} (${category})`);
+      lines.push(en ? `Initial payment estimate: RM${payment.totalPayable} (RM${payment.accommodation} accommodation + RM${payment.securityDeposit} deposit). Extra charges excluded.` : `Anggaran bayaran awal: RM${payment.totalPayable} (RM${payment.accommodation} sewaan + RM${payment.securityDeposit} deposit). Caj tambahan tidak termasuk.`);
+      lines.push(en ? "Deposit refunded after a satisfactory house inspection; forfeited if damage or unwanted incidents occur. Please confirm the deposit category." : "Deposit dipulangkan selepas pemeriksaan rumah memuaskan; hangus jika berlaku kerosakan atau perkara tidak diingini. Mohon sahkan kategori deposit.");
     }
     if (String(notes).trim()) lines.push(`${en ? "Notes" : "Catatan"}: ${String(notes).trim()}`);
     lines.push(en
@@ -63,7 +76,7 @@
 
   // The family summary deliberately accepts only the public planning fields.
   // Guest counts and private enquiry notes cannot enter the shared text.
-  function buildFamilyPlanMessage({ language, checkin, checkout, rooms, roomRates, securityDeposit, publicUrl }) {
+  function buildFamilyPlanMessage({ language, checkin, checkout, rooms, roomRates, securityDeposit, depositCategory = "standard", publicUrl }) {
     const estimate = estimateStay(checkin, checkout, rooms, roomRates);
     if (!estimate || !Number.isFinite(securityDeposit) || securityDeposit < 0) return null;
     let url;
@@ -80,9 +93,11 @@
       `Check-out: ${checkout}`,
       `${en ? "Stay length" : "Tempoh"}: ${estimate.nights} ${en ? estimate.nights === 1 ? "night" : "nights" : "malam"}`,
       `${en ? "Accommodation estimate" : "Anggaran sewaan"}: ${money(estimate.total)} (${money(estimate.nightlyRate)} / ${en ? "night" : "malam"})`,
-      `${en ? "Separate security deposit" : "Deposit keselamatan berasingan"}: ${money(securityDeposit)}`,
-      en ? "Extra charges are excluded. Dates and the final price need the owner's confirmation. This is a plan, not a confirmed booking."
-        : "Caj tambahan tidak termasuk. Tarikh dan harga akhir perlu disahkan oleh owner. Ini rancangan, belum merupakan tempahan yang disahkan.",
+      `${en ? "Separate security deposit" : "Deposit keselamatan berasingan"}: ${money(securityDeposit)} (${depositCategory === "large" ? en ? "large group / major event" : "rombongan / majlis besar" : en ? "regular stay / small group" : "biasa / kumpulan kecil"})`,
+      `${en ? "Initial payment estimate" : "Anggaran bayaran awal"}: ${money(estimatePayment(estimate, securityDeposit).totalPayable)} (${money(estimate.total)} + ${money(securityDeposit)})`,
+      en ? "Deposit refunded after a satisfactory house inspection; forfeited if damage or unwanted incidents occur." : "Deposit dipulangkan selepas pemeriksaan rumah memuaskan; hangus jika berlaku kerosakan atau perkara tidak diingini.",
+      en ? "Extra charges are excluded. The owner confirms the deposit category, dates and final price. This is a plan, not a confirmed booking."
+        : "Caj tambahan tidak termasuk. Owner mengesahkan kategori deposit, tarikh dan harga akhir. Ini rancangan, belum merupakan tempahan yang disahkan.",
       url.href
     ].join("\n");
   }
@@ -94,8 +109,9 @@
     let draft;
     try { draft = JSON.parse(serialized); } catch { return null; }
     if (!draft || typeof draft !== "object" || Array.isArray(draft) || draft.version !== 1 || typeof draft.packageChosen !== "boolean") return null;
-    if (Object.keys(draft).some(key => !["version", "savedAt", "fields", "packageChosen", "plannedNights"].includes(key))) return null;
+    if (Object.keys(draft).some(key => !["version", "savedAt", "fields", "packageChosen", "plannedNights", "depositCategory"].includes(key))) return null;
     if (Object.prototype.hasOwnProperty.call(draft, "plannedNights") && ![1, 2, 3].includes(draft.plannedNights)) return null;
+    if (Object.prototype.hasOwnProperty.call(draft, "depositCategory") && !["standard", "large"].includes(draft.depositCategory)) return null;
     if (!Number.isSafeInteger(draft.savedAt) || draft.savedAt < 0 || draft.savedAt > now || now - draft.savedAt >= DRAFT_TTL_MS) return null;
     const fields = draft.fields;
     const names = ["checkin", "checkout", "guests", "rooms", "notes"];
@@ -105,11 +121,11 @@
     if (fields.guests.length > 20 || fields.guests !== "" && (!/^-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(fields.guests) || !Number.isFinite(Number(fields.guests)))) return null;
     if (fields.rooms !== "" && !roomValues.includes(fields.rooms)) return null;
     if (fields.notes.length > 1000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(fields.notes)) return null;
-    return { version: 1, savedAt: draft.savedAt, packageChosen: draft.packageChosen, fields: Object.fromEntries(names.map(name => [name, fields[name]])), ...(draft.plannedNights ? { plannedNights: draft.plannedNights } : {}) };
+    return { version: 1, savedAt: draft.savedAt, packageChosen: draft.packageChosen, fields: Object.fromEntries(names.map(name => [name, fields[name]])), ...(draft.plannedNights ? { plannedNights: draft.plannedNights } : {}), ...(draft.depositCategory ? { depositCategory: draft.depositCategory } : {}) };
   }
 
   if (typeof module === "object" && module.exports) {
-    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, buildEnquiryMessage, buildFamilyPlanMessage, getEnquiryUrl, parseEnquiryDraft, DRAFT_KEY, DRAFT_TTL_MS };
+    module.exports = { parseDateOnly, addDays, nightsBetween, estimateStay, estimatePayment, buildEnquiryMessage, buildFamilyPlanMessage, getEnquiryUrl, parseEnquiryDraft, DRAFT_KEY, DRAFT_TTL_MS };
   }
   if (typeof window === "undefined" || typeof document === "undefined") return;
 
@@ -284,10 +300,14 @@
   const checkout = form.elements.namedItem("checkout");
   const guests = form.elements.namedItem("guests");
   const rooms = form.elements.namedItem("rooms");
+  const depositCategory = form.elements.namedItem("depositCategory");
   const notes = form.elements.namedItem("notes");
   const estimatePrompt = document.getElementById("estimatePrompt");
   const estimateBreakdown = document.getElementById("estimateBreakdown");
   const estimateTotal = document.getElementById("estimateTotal");
+  const estimateDeposit = document.getElementById("estimateDeposit");
+  const estimatePayable = document.getElementById("estimatePayable");
+  const estimateEquation = document.getElementById("estimateEquation");
   const estimateStayText = document.getElementById("estimateStay");
   const estimateRate = document.getElementById("estimateRate");
   const stayShortcuts = document.getElementById("stayShortcuts");
@@ -322,6 +342,7 @@
   const touched = new Set();
   const enquiryShortcuts = Array.from(document.querySelectorAll('#heroPrimaryCta, #mainNav > .button, .enquiry-section .button-light, .mobile-whatsapp')).map(link => ({link, href:link.href, label:link.getAttribute('aria-label')}));
   const money = value => `RM${Number(value).toLocaleString(en ? "en-MY" : "ms-MY")}`;
+  const selectedDeposit = () => Number(depositCategory?.value === "large" ? config.largeGroupSecurityDeposit : config.securityDeposit);
   [checkin, checkout, guests, rooms].forEach((field) => { field.required = true; });
   // Keep native validity checks, but use the inline errors and a visible focus
   // target instead of a browser popup underneath the sticky header.
@@ -363,6 +384,7 @@
     const candidate = {
       version: 1, savedAt: Date.now(), packageChosen,
       fields: Object.fromEntries(Object.entries(draftFields).map(([name, field]) => [name, field?.value || ""])),
+      depositCategory: depositCategory?.value || "standard",
       ...(plannedNights !== null ? { plannedNights } : {})
     };
     const serialized = JSON.stringify(candidate);
@@ -389,6 +411,7 @@
       if (value && name !== "notes") touched.add(name);
     });
     packageChosen = draft.packageChosen;
+    if (depositCategory) depositCategory.value = draft.depositCategory || "standard";
     plannedNights = draft.plannedNights || null;
     draftChanged = true;
     scheduleDraftExpiry(draft.savedAt);
@@ -457,7 +480,7 @@
       const label = card.querySelector(".package-total-label");
       const nightlyRate = Number(config.roomRates?.[card.dataset.package]);
       if (!total || !value || !label || !Number.isFinite(nightlyRate)) return;
-      label.textContent = en ? `Estimate · ${nights} ${nights === 1 ? "night" : "nights"}` : `Anggaran · ${nights} malam`;
+      label.textContent = en ? `Accommodation · ${nights} ${nights === 1 ? "night" : "nights"}` : `Sewaan · ${nights} malam`;
       value.textContent = money(nightlyRate * nights);
       total.hidden = false;
     });
@@ -474,7 +497,7 @@
   }
 
   function updateFamilyPlan(valid) {
-    const message = (valid ? buildFamilyPlanMessage({ language, checkin: checkin.value, checkout: checkout.value, rooms: rooms.value, roomRates: config.roomRates, securityDeposit: config.securityDeposit, publicUrl: familyPlan?.dataset.shareUrl }) : "") || "";
+    const message = (valid ? buildFamilyPlanMessage({ language, checkin: checkin.value, checkout: checkout.value, rooms: rooms.value, roomRates: config.roomRates, securityDeposit: selectedDeposit(), depositCategory: depositCategory?.value || "standard", publicUrl: familyPlan?.dataset.shareUrl }) : "") || "";
     if (message !== familyMessage) {
       familyPlanRevision++;
       if (familyPlanFeedback) familyPlanFeedback.textContent = "";
@@ -522,9 +545,15 @@
       estimatePrompt.hidden = validDates;
       estimateBreakdown.hidden = !validDates;
       if (validDates) {
+        const payment = estimatePayment(estimate, selectedDeposit());
         estimateTotal.textContent = money(estimate.total);
         estimateStayText.textContent = `${rooms.value} ${en ? "rooms" : "bilik"} · ${estimate.nights} ${en ? (estimate.nights === 1 ? "night" : "nights") : "malam"}`;
         estimateRate.textContent = `${money(estimate.nightlyRate)} / ${en ? "night" : "malam"}`;
+        if (payment) {
+          if (estimateDeposit) estimateDeposit.textContent = money(payment.securityDeposit);
+          if (estimatePayable) estimatePayable.textContent = money(payment.totalPayable);
+          if (estimateEquation) estimateEquation.textContent = `${money(payment.accommodation)} + ${money(payment.securityDeposit)} = ${money(payment.totalPayable)}`;
+        }
       }
     }
     if (stayShortcuts) {
@@ -535,7 +564,7 @@
     updatePackageCards();
     updateComparison(validDates, estimate);
     const valid = estimate && Array.from(form.elements).every((field) => !field.willValidate || field.validity.valid);
-    const nextMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate }) : "";
+    const nextMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate, securityDeposit: selectedDeposit(), depositCategory: depositCategory?.value || "standard" }) : "";
     if (nextMessage !== preparedMessage) {
       enquiryCopyRevision++;
       if (enquiryCopyFeedback) enquiryCopyFeedback.textContent = "";
@@ -556,7 +585,7 @@
       else link.removeAttribute('aria-label');
     });
     updateFamilyPlan(valid);
-    if (clearDraft) clearDraft.hidden = !packageChosen && plannedNights === null && Object.entries(draftFields).every(([name,field]) => (field?.value || '') === draftDefaults[name]);
+    if (clearDraft) clearDraft.hidden = !packageChosen && plannedNights === null && (!depositCategory || depositCategory.value === "standard") && Object.entries(draftFields).every(([name,field]) => (field?.value || '') === draftDefaults[name]);
     return Boolean(preparedMessage);
   }
 

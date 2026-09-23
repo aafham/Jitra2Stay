@@ -8,6 +8,11 @@ test.beforeEach(async ({ context, page }) => {
     await route.fulfill({ contentType: "text/html", body: '<!doctype html><html lang="en"><title>Map fixture</title><main>Map verified separately.</main></html>' });
   });
   await context.route("https://wa.me/**", route => route.abort());
+  await context.route("**/functions/v1/guest-calendar**", route => {
+    const action = new URL(route.request().url()).searchParams.get("action");
+    if (!["calendar", "upcoming"].includes(action)) return route.abort();
+    return route.fulfill({ contentType: "application/json", body: JSON.stringify(action === "calendar" ? { stays: [] } : { guests: [] }) });
+  });
   await page.addInitScript(() => { window.__openedEnquiries = []; window.open = url => { window.__openedEnquiries.push(url); return null; }; });
   await page.emulateMedia({ reducedMotion: "reduce" });
 });
@@ -30,7 +35,10 @@ for (const width of [390, 768]) {
     await page.goto("/");
     let checked = 0;
     let reachedEnquiry = false;
-    for (let step = 0; step < 100; step++) {
+    // Bound a complete keyboard pass by the page's controls, rather than a
+    // fixed count that stops early when a new section adds focusable buttons.
+    const maxSteps = await page.locator('a[href],button,input,select,textarea,summary,iframe,[tabindex]').count() + 1;
+    for (let step = 0; step < maxSteps; step++) {
       await page.keyboard.press("Tab");
       await settleLayout(page);
       const focused = await page.evaluate(() => {

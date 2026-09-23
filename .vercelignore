@@ -1,5 +1,6 @@
 node_modules
 source-images
+supabase
 docs
 artifacts
 .git

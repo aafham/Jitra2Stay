@@ -1,0 +1,21 @@
+# Local configuration; the remote project is selected when linking/deploying.
+project_id = "jitra2stay"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = false
+
+[functions.guest-calendar]
+# Public dates + own opaque-session authentication, not Supabase Auth JWTs.
+verify_jwt = false

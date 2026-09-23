@@ -18,7 +18,7 @@
   const panel = main.querySelector('.enquiry-panel');
   const form = document.getElementById('dateForm');
   const navIds = new Set(['tentang', 'galeri', 'kadar', 'kemudahan', 'lokasi']);
-  const sectionIds = new Set(['home', ...navIds, 'faq', 'semak-tarikh']);
+  const sectionIds = new Set(['home', ...navIds, 'kalendar', 'faq', 'semak-tarikh']);
   const sections = Array.from(main.children).filter((element) =>
     element.tagName === 'SECTION' && sectionIds.has(element.id));
   const links = (isHome ? Array.from(nav.children) : []).filter((element) =>
