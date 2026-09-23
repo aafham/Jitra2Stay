@@ -7,6 +7,7 @@
 - Betulkan salin alamat, pautan homestay, FAQ, pelan keluarga dan pertanyaan supaya penolakan clipboard yang lewat tidak merampas fokus atau menatal kembali. FAQ yang ditutup/ditapis mengabaikan keputusan lama; perkongsian yang dibatalkan kekal senyap.
 - Benarkan kad harga, fakta, penapis dan pilihan malam mengurangkan kolum apabila teks dibesarkan. Harga tidak pecah dan tajuk halaman susulan kekal di dalam viewport.
 - Selaraskan masa/jarak panduan dengan snapshot Google Maps sedia ada, termasuk tarikh semakan; susun destinasi panduan sekitar Jitra sebagai senarai.
+- Ganti julat masa lama dalam panel panduan kawasan dengan label kawasan/jenis tempat. Enam kumpulan dan semua penerangan asal kekal; anggaran khusus dirujuk pada kad laluan bertarikh.
 - Tambah regresi browser bagi muatan perlahan, kegagalan skrip, teks 200% dan clipboard tertunda, serta unit test konsistensi laluan panduan.
 
 ## 2026-09-23 — Foto dan kemudahan rumah

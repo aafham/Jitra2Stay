@@ -14,6 +14,7 @@ Skop: homepage dari header hingga footer, BM/EN, semua 16 halaman output, deskto
 | Teks 200% pada telefon memecahkan nilai harga dan melimpahkan label pakej, fakta, penapis, pilihan malam serta unit harga hero | Gunakan minimum kolum berdasarkan saiz teks dan benarkan susunan/wrapping menyesuaikan ruang. Harga asas kekal satu nombor yang lengkap. |
 | Tajuk halaman susulan BM/EN terkeluar viewport apabila teks dibesarkan | Benarkan perkataan panjang dibalut dalam lebar halaman. |
 | Panduan mengandungi julat perjalanan lama yang bercanggah dengan snapshot laluan sedia ada | Jana minit/km/pautan/tarikh daripada sumber yang sama. Sepuluh destinasi panduan sekitar Jitra disusun sebagai senarai. |
+| Panel kawasan homepage juga mengumpulkan tempat di bawah julat lama, contohnya Changlun dalam 30+ minit sedangkan kad laluannya 20 minit | Ganti label julat dengan label kawasan/jenis tempat; kekalkan enam kumpulan dan semua penerangan/nama asal, lalu rujuk masa pada kad laluan bertarikh. |
 
 ## Liputan pemeriksaan
 

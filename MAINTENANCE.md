@@ -28,6 +28,8 @@ Semua tindakan salin/kongsi menetapkan fokus pada butang ketika diaktifkan, term
 
 Anggaran dalam panduan dijana oleh `templates/guide-journeys.cjs` daripada `destination-routes.cjs`. Token `{{route:ID}}` digunakan dalam ayat ringkas, manakala `journeyStops` menyenaraikan destinasi dalam panduan sekitar Jitra. Ubah snapshot laluan sekali sahaja; minit, km, pautan dan tarikh panduan akan dikemas ketika build.
 
+`nearby[]` mengekalkan enam kumpulan kawasan dan penerangan asal. Elemen pertama BM/EN kini label kawasan/jenis, bukan anggaran masa; jangan masukkan semula julat lama yang boleh bercanggah dengan kad laluan khusus.
+
 `site.config.cjs` ialah sumber semasa. Fakta owner yang tersedia dalam repo `18a274d` telah dipulihkan, termasuk parking 3–4 kereta, privasi rumah, self check-in, TV, bayaran manual dan polisi pembatalan 7 hari. Rujuk `RESTORED-CONTENT.md` sebelum mengganti maklumat ini dengan ayat umum meminta pengesahan; pemulihan sumber bukan pemeriksaan fizikal baharu.
 
 Edit `business` untuk nombor/domain/fakta, `rates` untuk kadar, `policies` untuk copy BM/EN, dan `rooms`, `staySummary`, `facilities`, `gallery`, `nearby`, `guides` untuk kandungan. Harga dan metadata dijana bersama. Gunakan token seperti `{{securityDeposit}}`, `{{maxGuests}}`, `{{earlyLateFee}}`, `{{extraGuestFee}}` dan `{{cancellationNoticeDays}}`; jangan salin nombor ke beberapa template.

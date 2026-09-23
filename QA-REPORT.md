@@ -6,7 +6,7 @@ Baseline audit asal lulus 76 pemeriksaan statik tetapi mempunyai bug pengguna. S
 | --- | --- |
 | Build | 16 halaman HTML penuh |
 | Static output QA | 687 / 687 lulus |
-| Unit tarikh, draf, perkongsian dan panduan | 15 / 15 lulus |
+| Unit tarikh, draf, perkongsian dan panduan | 16 / 16 lulus |
 | Playwright Chromium 153 | 110 / 110 lulus; tiada retry |
 | Regresi WebKit pada output sebenar | 11 / 11 lulus: 4 clipboard/kongsi, 2 teks besar, 5 muatan awal/fallback |
 | Audit mobile/tablet tambahan | 104 semakan halaman/viewport/enjin dan 18 interaksi galeri lulus pada saiz biasa |
