@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-23 — Latar bahagian pertanyaan
+
+- Gunakan foto ruang tamu sebenar sebagai latar bahagian WhatsApp/pertanyaan, dengan lapisan hijau gelap dan pudar ke warna hijau di bawah.
+- Kekalkan panel borang legap dan fokus pautan jelas; gunakan varian gambar lebih kecil serta framing stabil pada telefon walaupun borang memanjang.
+- Build, 735 semakan statik dan 10 ujian browser berkaitan borang/mobile lulus; paparan desktop serta telefon cerah/gelap diperiksa.
+
 ## 2026-09-23 — Harga dan deposit
 
 - Tukar pakej 2 bilik kepada RM170 semalam; pakej 3/4/5 bilik kekal RM230/RM280/RM330.
