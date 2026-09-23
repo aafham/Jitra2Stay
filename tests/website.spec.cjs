@@ -46,25 +46,17 @@ async function fillEnquiry(page, language = "ms") {
 }
 
 for (const width of [320, 390, 768]) {
-  test(`mobile menu exposes all controls and restores keyboard focus at ${width}px`, async ({ page }) => {
+  test(`mobile bottom navigation exposes five native controls at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 568 });
     await page.goto("/");
-    const toggle = page.locator("#menuToggle");
-    // The tablet breakpoint may display ordinary navigation directly.
-    if (!await toggle.isVisible()) {
-      expect(width).toBeGreaterThanOrEqual(768);
-      await expect(page.locator('a[href="en.html"], a[href="/en.html"]').first()).toBeVisible();
-      return;
-    }
-    await toggle.focus();
-    await page.keyboard.press("Enter");
-    await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    const nav = page.locator(`#${await toggle.getAttribute("aria-controls")}`);
+    await expect(page.locator("#menuToggle")).toBeHidden();
+    const nav = page.locator(".mobile-bottom-nav");
     await expect(nav).toBeVisible();
-    const controls = nav.locator("a, button");
-    expect(await controls.count()).toBeGreaterThan(1);
+    const controls = nav.locator("a");
+    await expect(controls).toHaveCount(5);
     for (const control of await controls.all()) {
-      await control.scrollIntoViewIfNeeded();
+      await control.focus();
+      await expect(control).toBeFocused();
       await expect(control).toBeVisible();
       const rect = await control.boundingBox();
       expect(rect.x).toBeGreaterThanOrEqual(0);
@@ -72,20 +64,28 @@ for (const width of [320, 390, 768]) {
       expect(rect.y).toBeGreaterThanOrEqual(0);
       expect(rect.y + rect.height).toBeLessThanOrEqual(569);
     }
-    await page.keyboard.press("Escape");
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await expect(toggle).toBeFocused();
+    await controls.nth(1).focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/gambar\.html$/);
+    await expect(page.locator("#galeri")).toBeVisible();
+    await expect(page.locator('.mobile-bottom-nav a[aria-current="page"]')).toHaveAttribute("href", "gambar.html");
+    await page.locator('.mobile-language a[hreflang="en"]').click();
+    await expect(page).toHaveURL(/\/gambar-en\.html$/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }
 
 for (const language of ["ms", "en"]) {
-  test(`${language} home remains complete and usable without JavaScript`, async ({ browser }) => {
+  test(`${language} mobile pages remain complete and usable without JavaScript`, async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
     await stubGoogleMap(context);
     const page = await context.newPage();
     await page.goto(test.info().project.use.baseURL + (language === "en" ? "/en.html" : "/"));
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator(".mobile-home")).toBeVisible();
+    await expect(page.locator("#menuToggle")).toBeHidden();
+    await expect(page.locator("#heroPrimaryCta")).toBeVisible();
+    await page.locator(".mobile-bottom-nav a").nth(1).click();
     const gallery = page.locator(".gallery-trigger");
     await expect(gallery).toHaveCount(config.gallery.length);
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(config.gallery.length);
@@ -95,10 +95,12 @@ for (const language of ["ms", "en"]) {
     await expect(page.locator("#shareStay")).toBeHidden();
     await expect(page.locator("#clearEnquiryDraft")).toBeHidden();
     await expect(gallery.first()).toBeVisible();
+    await page.locator(".mobile-bottom-nav a").nth(2).click();
     for (const rate of config.rates) await expect(page.getByText(`RM${rate.price}`, { exact: false }).first()).toBeVisible();
+    await page.locator('.package-link[data-rooms="2"]').click();
     await expect(page.locator("#dateForm")).toBeHidden();
-    await expect(page.locator("#menuToggle")).toBeHidden();
-    await expect(page.locator('a[href^="https://wa.me/"]').first()).toBeVisible();
+    await expect(page.locator('.enquiry-section a[href^="https://wa.me/"]').first()).toBeVisible();
+    await page.goto(language === "en" ? "/faq-en.html" : "/faq.html");
     await expect(page.locator("details").first()).toBeVisible();
     await page.locator("details summary").first().click();
     await expect(page.locator("details").first()).toHaveAttribute("open", "");
@@ -481,7 +483,7 @@ test("a failed gallery photo offers its original JPEG and can be retried without
 test.describe("touch gallery", () => {
   test.use({ hasTouch: true, viewport: { width: 390, height: 844 } });
   test("horizontal swipes move to the next filtered photo while vertical movement preserves it", async ({ page, context }) => {
-    await page.goto("/");
+    await page.goto("/gambar.html");
     await page.locator('[data-gallery-filter="bedrooms"]').click();
     const visiblePhotos = page.locator('#galleryGrid .gallery-card:visible .gallery-trigger');
     const captions = await visiblePhotos.evaluateAll(anchors => anchors.map(anchor => anchor.dataset.caption));
@@ -564,39 +566,31 @@ test("reading-section navigation survives gallery expansion and preserves the se
   await expect(page.locator("html")).toHaveAttribute("lang", "ms");
 });
 
-test("opening the mobile menu near a section boundary preserves reading context for language links", async ({ page }) => {
+test("mobile language links retain the focused page and bottom tabs change pages", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  // Read the final part of the gallery: expanding the sticky menu must not
-  // incorrectly replace this context with the Rates section underneath it.
-  await page.locator("#galeri").evaluate(section => {
-    const header = document.querySelector(".site-header");
-    scrollTo(0, section.getBoundingClientRect().bottom + scrollY - header.getBoundingClientRect().bottom - 54);
-  });
-  await expect(page.locator('#mainNav > a[href="#galeri"]')).toHaveAttribute("aria-current", "location");
-  await page.locator("#menuToggle").click();
-  await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator('#mainNav > a[href="#galeri"]')).toHaveAttribute("aria-current", "location");
-  await page.locator('nav a[hreflang="en"]').click();
-  await expect(page).toHaveURL(/\/en\.html#galeri$/);
-  await page.locator("#menuToggle").click();
-  await page.locator('#mainNav > a[href="#kadar"]').click();
-  await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "false");
-  await expect(page.locator('#mainNav > a[href="#kadar"]')).toHaveAttribute("aria-current", "location");
-  await page.locator("#menuToggle").click();
-  await page.locator('nav a[hreflang="ms"]').click();
-  await expect(page).toHaveURL(/\/#kadar$/);
+  await page.goto("/gambar.html");
+  await page.locator("#galleryMore").click();
+  await expect(page.locator('.mobile-bottom-nav a[aria-current="page"]')).toHaveAttribute("href", "gambar.html");
+  await page.locator('.mobile-language a[hreflang="en"]').click();
+  await expect(page).toHaveURL(/\/gambar-en\.html$/);
+  await expect(page.locator("#galeri")).toBeVisible();
+  await page.locator('.mobile-bottom-nav a[href="harga-en.html"]').click();
+  await expect(page).toHaveURL(/\/harga-en\.html$/);
+  await expect(page.locator('.mobile-bottom-nav a[aria-current="page"]')).toHaveAttribute("href", "harga-en.html");
+  await page.locator('.mobile-language a[hreflang="ms"]').click();
+  await expect(page).toHaveURL(/\/harga\.html$/);
+  await expect(page.locator("#kadar")).toBeVisible();
 });
 
-test("mobile actions stay reachable when focused and hide while the enquiry is being edited", async ({ page }) => {
+test("mobile tabs stay reachable when focused and hide while the enquiry is being edited", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  const bar = page.locator(".mobile-action-bar");
-  const rateShortcut = bar.locator(".rate-shortcut");
+  await page.goto("/hubungi.html");
+  const bar = page.locator(".mobile-bottom-nav");
+  const rateShortcut = bar.locator('a[href="harga.html"]');
   await expect(bar).toBeVisible();
-  await expect(bar.locator("a")).toHaveCount(2);
+  await expect(bar.locator("a")).toHaveCount(5);
   await rateShortcut.focus();
   await page.locator('#dateForm [type="submit"]').scrollIntoViewIfNeeded();
   await expect(rateShortcut).toBeFocused();
@@ -604,9 +598,10 @@ test("mobile actions stay reachable when focused and hide while the enquiry is b
   await page.locator('#dateForm [name="checkin"]').focus();
   await expect(bar).toBeHidden();
   await page.locator('#dateForm [type="submit"]').focus();
-  await expect(bar).toBeHidden();
-  await page.locator("#galeri").scrollIntoViewIfNeeded();
   await expect(bar).toBeVisible();
+  await rateShortcut.click();
+  await expect(page).toHaveURL(/\/harga\.html$/);
+  await expect(page.locator("#kadar")).toBeVisible();
 });
 
 for (const width of [390, 1440]) {
@@ -654,17 +649,14 @@ for (const colorScheme of ["light", "dark"]) {
   }
 }
 
-test("English policy page, expanded mobile menu and gallery dialog pass accessibility checks", async ({ page }) => {
+test("English policy, mobile directory and gallery dialog pass accessibility checks", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/policies-en.html");
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
-  await page.goto("/en.html");
-  await page.locator("#menuToggle").click();
-  // Audit the fully opened menu; animation behavior is verified separately.
-  await expect(page.locator("#mainNav")).toHaveCSS("opacity", "1");
+  await page.goto("/maklumat-en.html");
+  await expect(page.locator('.mobile-bottom-nav a[aria-current="page"]')).toHaveAttribute("href", "maklumat-en.html");
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
-  await page.keyboard.press("Escape");
-  await expect(page.locator("#mainNav")).toBeHidden();
+  await page.locator('.mobile-bottom-nav a[href="gambar-en.html"]').click();
   await page.locator(".gallery-trigger").first().click();
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
 });

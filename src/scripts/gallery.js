@@ -256,4 +256,16 @@
     if (duration <= 1000 && Math.abs(dx) >= 60 && Math.abs(dx) > Math.abs(dy) * 1.5) showImage(selected + (dx < 0 ? 1 : -1));
   }, { passive: true });
   stage.addEventListener("touchcancel", () => { touchStart = null; }, { passive: true });
+  // A facility on a separate page can link directly to a known gallery photo.
+  // Match existing data only, and reveal its card so closing restores real focus.
+  if (document.body.dataset.view === "gambar") {
+    const photo = new URL(location.href).searchParams.get("photo");
+    const item = items.find(entry => entry.anchor.dataset.galleryPhoto === photo);
+    if (item) {
+      activeCategory = item.category;
+      expanded = true;
+      renderGrid();
+      item.anchor.click();
+    }
+  }
 })();

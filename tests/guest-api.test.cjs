@@ -46,6 +46,15 @@ test('public upcoming projects only the four owner-authorized fields', async () 
   assert.deepEqual(await result.json(), { guests: [guest] });
 });
 
+test('public upcoming preserves unknown guest count as null without exposing private fields', async () => {
+  const { createHandler } = await api;
+  const guest = { check_in: '2026-09-24', check_out: '2026-09-26', guest_name: 'Tetamu belum pasti jumlah', guest_count: null };
+  const handler = createHandler({ rpc: async () => ({ guests: [{ ...guest, purpose: 'Private', id: randomUUID(), version: 1 }] }) });
+  const response = await handler(request('upcoming', undefined, { auth: false }));
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { guests: [guest] });
+});
+
 test('real date and range validation rejects impossible days and excessive ranges', async () => {
   const { createHandler, isoDate, malaysiaToday } = await api;
   assert.equal(isoDate('2025-02-29'), null);
@@ -139,6 +148,40 @@ test('purpose can be omitted and whitespace is normalized on save', async () => 
   assert.equal((await handler(request('save', input))).status, 200);
 });
 
+test('create accepts omitted or null count and purpose; an edit can clear count explicitly', async () => {
+  const { createHandler } = await api;
+  const calls = [];
+  const handler = createHandler({ now, rpc: async (name, params) => {
+    assert.equal(name, 'j2s_guest_save');
+    assert.equal(params.p_guest_count, null);
+    assert.equal(params.p_purpose, null);
+    calls.push(params);
+    return { guest: { id: params.p_id || randomUUID(), guest_count: null, purpose: null, version: params.p_version ? params.p_version + 1 : 1 } };
+  } });
+  for (const input of [save({ guest_count: undefined }), save({ guest_count: null, purpose: null }), save({ id: randomUUID(), version: 2, guest_count: null })]) {
+    const response = await handler(request('save', input));
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).guest.guest_count, null);
+  }
+  assert.equal(calls.length, 3);
+  assert.equal(calls[2].p_version, 2);
+});
+
+test('supplied boundary counts remain numeric and preserved on save', async () => {
+  const { createHandler } = await api;
+  const counts = [];
+  const handler = createHandler({ now, rpc: async (name, params) => {
+    counts.push(params.p_guest_count);
+    return { guest: { id: randomUUID(), guest_count: params.p_guest_count, version: 1 } };
+  } });
+  for (const guest_count of [1, 4, 20]) {
+    const response = await handler(request('save', save({ guest_count })));
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).guest.guest_count, guest_count);
+  }
+  assert.deepEqual(counts, [1, 4, 20]);
+});
+
 test('save validates required fields, count bounds, real dates, duration and Malaysia arrival dates', async () => {
   const { createHandler } = await api;
   let calls = 0;
@@ -146,6 +189,7 @@ test('save validates required fields, count bounds, real dates, duration and Mal
   const invalid = [
     { guest_name: '' }, { guest_name: 'x'.repeat(121) }, { guest_name: 'bad\nname' },
     { guest_count: 0 }, { guest_count: 21 }, { guest_count: 1.5 }, { guest_count: '4' },
+    { guest_count: '' }, { guest_count: ' ' }, { guest_count: false }, { guest_count: [] }, { guest_count: {} },
     { check_in: '2026-09-22' }, { check_in: '2028-01-01', check_out: '2028-01-02' },
     { check_out: '2026-09-24' }, { check_out: '2026-09-23' }, { check_out: '2026-02-30' },
     { check_out: '2027-09-26' }, { purpose: 'x'.repeat(501) }, { purpose: {} },

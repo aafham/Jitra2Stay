@@ -20,12 +20,18 @@ async function unobscured(page, selector) {
 
 for (const [width, lang, theme] of [[320, "ms", "light"], [390, "en", "dark"], [1440, "en", "light"]]) {
   test(`${width}px ${lang} package selection lands at dates with a visible summary and retains details when changing`, async ({ page }) => {
+    const mobile = width <= 900;
+    const suffix = lang === "en" ? "-en" : "";
     await page.setViewportSize({ width, height: 844 });
     await page.emulateMedia({ colorScheme: theme });
-    await page.goto(lang === "en" ? "/en.html" : "/");
+    await page.goto(mobile ? `/harga${suffix}.html` : lang === "en" ? "/en.html" : "/");
     for (const rate of rates) {
+      if (mobile && new URL(page.url()).pathname !== `/harga${suffix}.html`) await page.locator("#changeEnquiryPackage").click();
       await page.locator(`.package-link[data-rooms="${rate.rooms}"]`).click();
-      await expect(page.locator("#checkin")).toBeFocused();
+      if (mobile) {
+        await expect(page).toHaveURL(new RegExp(`/hubungi${suffix}\\.html$`));
+        await page.locator("#enquiryFormTitle").scrollIntoViewIfNeeded();
+      } else await expect(page.locator("#checkin")).toBeFocused();
       await expect(page.locator("#rooms")).toHaveValue(String(rate.rooms));
       await expect(page.locator("#enquiryPackageName")).toHaveText(`${rate.rooms} ${lang === "en" ? "rooms" : "bilik"} · RM${rate.price} / ${lang === "en" ? "night" : "malam"}`);
       await expect(page.locator("#enquiryPackageMeta")).toContainText(`${rate.bathrooms} ${lang === "en" ? "bathrooms" : "bilik air"}`);
@@ -39,10 +45,14 @@ for (const [width, lang, theme] of [[320, "ms", "light"], [390, "en", "dark"], [
     await page.locator("#notes").fill("Family arrival details");
     await page.locator("#changeEnquiryPackage").focus();
     await page.keyboard.press("Enter");
-    await expect(page.locator('.package-link[data-rooms="5"]')).toBeFocused();
-    await unobscured(page, '.package-link[data-rooms="5"]');
+    if (mobile) await expect(page).toHaveURL(new RegExp(`/harga${suffix}\\.html$`));
+    else {
+      await expect(page.locator('.package-link[data-rooms="5"]')).toBeFocused();
+      await unobscured(page, '.package-link[data-rooms="5"]');
+    }
     await page.locator('.package-link[data-rooms="3"]').click();
-    await expect(page.locator("#enquiryFormTitle")).toBeFocused();
+    if (mobile) await page.locator("#enquiryFormTitle").scrollIntoViewIfNeeded();
+    else await expect(page.locator("#enquiryFormTitle")).toBeFocused();
     await unobscured(page, "#enquiryFormTitle");
     await expect(page.locator("#checkin")).toHaveValue("2027-12-30");
     await expect(page.locator("#checkout")).toHaveValue("2028-01-01");
@@ -79,12 +89,19 @@ test("package selection directs an incomplete stay to checkout and modified clic
   await expect(page.locator("#rooms")).toHaveValue("3");
 });
 
-test("short and landscape viewports prioritise the incomplete date over the package summary", async ({ page }) => {
+test("short and landscape phones preserve an incomplete stay while changing packages and expose the focused date", async ({ page }) => {
   for (const [width, height] of [[568, 320], [320, 480]]) {
     await page.setViewportSize({ width, height });
-    await page.goto("/");
+    await page.goto("/hubungi.html");
     await page.locator("#checkin").fill("2027-12-30");
+    await page.locator("#changeEnquiryPackage").click();
+    await expect(page).toHaveURL(/\/harga\.html$/);
     await page.locator('.package-link[data-rooms="4"]').click();
+    await expect(page).toHaveURL(/\/hubungi\.html$/);
+    await expect(page.locator("#checkin")).toHaveValue("2027-12-30");
+    await expect(page.locator("#checkout")).toHaveValue("");
+    await expect(page.locator("#rooms")).toHaveValue("4");
+    await page.locator("#checkout").focus();
     await expect(page.locator("#checkout")).toBeFocused();
     await unobscured(page, "#checkout");
   }

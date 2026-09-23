@@ -30,50 +30,55 @@ async function centerIsUncovered(locator) {
 }
 
 for (const width of [390, 768]) {
-  test(`natural keyboard browsing keeps page controls clear of the bottom action bar at ${width}px`, async ({ page }) => {
+  test(`natural keyboard browsing keeps focused-page controls clear of bottom navigation at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto("/");
     let checked = 0;
     let reachedEnquiry = false;
-    // Bound a complete keyboard pass by the page's controls, rather than a
-    // fixed count that stops early when a new section adds focusable buttons.
-    const maxSteps = await page.locator('a[href],button,input,select,textarea,summary,iframe,[tabindex]').count() + 1;
-    for (let step = 0; step < maxSteps; step++) {
-      await page.keyboard.press("Tab");
-      await settleLayout(page);
-      const focused = await page.evaluate(() => {
-        const element = document.activeElement;
-        return { id: element.id, tag: element.tagName, inMain: Boolean(element.closest("main")), name: element.textContent.trim().slice(0,80) };
-      });
-      if (focused.id === "checkin") { reachedEnquiry = true; break; }
-      if (!focused.inMain || focused.tag === "IFRAME") continue;
-      expect(await centerIsUncovered(page.locator(":focus")), focused.name).toBe(true);
-      checked++;
+    for (const route of ["/", "/gambar.html", "/kemudahan.html", "/hubungi.html"]) {
+      await page.goto(route);
+      await expect(page.locator('.mobile-bottom-nav')).toBeVisible();
+      // Each focused page gets a complete keyboard pass. Stop at the first
+      // repeated control rather than tabbing through hidden desktop sections.
+      const visited = new Set();
+      const maxSteps = await page.locator('a[href],button,input,select,textarea,summary,iframe,[tabindex]').count() + 1;
+      for (let step = 0; step < maxSteps; step++) {
+        await page.keyboard.press("Tab");
+        await settleLayout(page);
+        const focused = await page.evaluate(() => {
+          const element = document.activeElement;
+          return { index: Array.from(document.querySelectorAll('a[href],button,input,select,textarea,summary,iframe,[tabindex]')).indexOf(element), id: element.id, tag: element.tagName, inMain: Boolean(element.closest("main")), name: element.textContent.trim().slice(0,80) };
+        });
+        if (focused.index >= 0 && visited.has(focused.index)) break;
+        if (focused.index >= 0) visited.add(focused.index);
+        if (!focused.inMain || focused.tag === "IFRAME") continue;
+        expect(await centerIsUncovered(page.locator(":focus")), `${route}: ${focused.name || focused.id}`).toBe(true);
+        checked++;
+        if (focused.id === "checkin") reachedEnquiry = true;
+      }
     }
     expect(checked).toBeGreaterThan(20);
     expect(reachedEnquiry).toBe(true);
   });
 }
 
-test("supporting-page footer focus remains visible and the focused mobile shortcut never disappears", async ({ page }) => {
+test("contact links and bottom navigation remain keyboard-accessible while input focus makes room for typing", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/homestay-dekat-hospital-jitra-en.html");
-  const phone = page.locator('footer a[href^="tel:"]').first();
+  await page.goto("/hubungi-en.html");
+  const phone = page.locator('.enquiry-phone');
   await phone.focus();
-  const rect = await phone.boundingBox();
-  await page.mouse.move(10, 200);
-  await page.mouse.wheel(0, rect.y - (844 - rect.height - 5));
   await settleLayout(page);
   await expect(phone).toBeFocused();
-  await expect(page.locator(".mobile-action-bar")).toBeHidden();
+  await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
   expect(await centerIsUncovered(phone)).toBe(true);
-  await page.keyboard.press("Tab");
+  await page.locator('#checkin').focus();
   await settleLayout(page);
+  await expect(page.locator(".mobile-bottom-nav")).toBeHidden();
   expect(await centerIsUncovered(page.locator(":focus"))).toBe(true);
-  await page.locator("#mainContent").focus();
-  await expect(page.locator(".mobile-action-bar")).toBeVisible();
-  const shortcut = page.locator(".mobile-action-bar .rate-shortcut");
+  await phone.focus();
+  await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
+  const shortcut = page.locator(".mobile-bottom-nav a").first();
   await shortcut.focus();
+  await page.mouse.move(10, 200);
   await page.mouse.wheel(0, 500);
   await settleLayout(page);
   await expect(shortcut).toBeFocused();
@@ -83,22 +88,19 @@ test("supporting-page footer focus remains visible and the focused mobile shortc
 test("policy language switching preserves a valid section while discarding unknown fragments", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/policies.html#cancellation");
-  await page.locator("#menuToggle").click();
-  await page.locator('nav a[hreflang="en"]').click();
+  await page.locator('.mobile-language a[hreflang="en"]').click();
   await expect(page).toHaveURL(/\/policies-en\.html#cancellation$/);
   await expect(page.locator("#cancellation")).toBeInViewport();
-  await page.locator("#menuToggle").click();
-  await page.locator('nav a[hreflang="ms"]').click();
+  await page.locator('.mobile-language a[hreflang="ms"]').click();
   await expect(page).toHaveURL(/\/policies\.html#cancellation$/);
   await page.goto("/policies.html#not-a-section");
-  await page.locator("#menuToggle").click();
-  await page.locator('nav a[hreflang="en"]').click();
+  await page.locator('.mobile-language a[hreflang="en"]').click();
   await expect(page).toHaveURL(/\/policies-en\.html$/);
 });
 
 test("an invalid enquiry brings its first error and input into view for keyboard correction", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/hubungi.html");
   await page.locator('#dateForm [type="submit"]').click();
   const first = page.locator('#dateForm [name="checkin"]');
   await expect(first).toBeFocused();

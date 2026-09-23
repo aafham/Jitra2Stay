@@ -26,7 +26,7 @@ for (const language of ["ms", "en"]) {
         writeText: async () => { throw new DOMException("Denied", "NotAllowedError"); }
       } });
     }, language);
-    await page.goto(language === "en" ? "/en.html" : "/");
+    await page.goto(language === "en" ? "/hubungi-en.html" : "/hubungi.html");
     await prepareEnquiry(page);
     const copyButton = page.locator("#enquiryCopyMessage");
     const fallback = page.locator("#enquiryCopyFallback");

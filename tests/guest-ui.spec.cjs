@@ -72,7 +72,9 @@ async function login(page,path='/guest-admin.html') {
 
 async function fillGuest(page,values={}) {
   const guest={check_in:'2026-09-25',check_out:'2026-09-28',guest_name:'Tetamu Borang',guest_count:8,purpose:'',...values};
-  for(const [selector,key] of [['#guestCheckIn','check_in'],['#guestCheckOut','check_out'],['#guestName','guest_name'],['#guestCount','guest_count'],['#guestPurpose','purpose']]) await page.locator(selector).fill(String(guest[key]));
+  for(const [selector,key] of [['#guestCheckIn','check_in'],['#guestCheckOut','check_out'],['#guestName','guest_name']]) await page.locator(selector).fill(String(guest[key]));
+  if(!await page.locator('#guestOptionalDetails').evaluate(details=>details.open)) await page.locator('#guestOptionalDetails summary').click();
+  for(const [selector,key] of [['#guestCount','guest_count'],['#guestPurpose','purpose']]) await page.locator(selector).fill(String(guest[key]??''));
   return guest;
 }
 
@@ -245,7 +247,7 @@ test('required guest fields validate before saving; purpose is optional and succ
   const guest=await fillGuest(page);
   await expect(page.locator('#guestNights')).toContainText('3');
   await page.locator('#guestSave').click();
-  await expect(page).toHaveURL(/\/#kalendar$/);
+  await expect(page).toHaveURL(/\/kalendar\.html#kalendar$/);
   await expect(page.locator('#guestSaveNotice')).toBeVisible();
   const request=fixture.requests.find(request=>request.action==='save');
   expect(request.body).toMatchObject({...guest,guest_count:8});
@@ -254,6 +256,43 @@ test('required guest fields validate before saving; purpose is optional and succ
   await expect(page.locator('[data-calendar-day="2026-09-27"]')).toHaveAttribute('data-state','occupied');
   await expect(page.locator('[data-calendar-day="2026-09-28"]')).toHaveAttribute('data-state','unrecorded');
   await assertNoGuestStorage(page,[guest.guest_name]);
+});
+
+test('only dates and name are required; blank optional details save a null count and stay omitted from the public list',async({page,context})=>{
+  const fixture=await mockGuests(context);
+  await login(page);
+  await expect(page.locator('#guestDetailsForm [required]')).toHaveCount(3);
+  await expect(page.locator('#guestOptionalDetails')).not.toHaveAttribute('open','');
+  await expect(page.locator('#guestCount')).toBeHidden();
+  await page.locator('#guestCheckIn').fill('2026-09-25');
+  await page.locator('#guestCheckOut').fill('2026-09-28');
+  await page.locator('#guestName').fill('Tetamu tanpa jumlah');
+  await page.locator('#guestSave').click();
+  await expect(page).toHaveURL(/\/kalendar\.html#kalendar$/);
+  expect(fixture.requests.find(request=>request.action==='save').body).toMatchObject({guest_name:'Tetamu tanpa jumlah',guest_count:null,purpose:''});
+  const card=page.locator('.public-guest-card').filter({has:page.getByRole('heading',{name:'Tetamu tanpa jumlah'})});
+  await expect(card).toBeVisible();
+  await expect(card.locator('.public-guest-count')).toHaveCount(0);
+  await expect(card).not.toContainText(/null|0 orang|undefined/);
+  await expect(page.locator('#calendarGrid [data-state="occupied"]')).toHaveCount(3);
+});
+
+test('editing can clear a known guest count without inventing a replacement count',async({page,context})=>{
+  const fixture=await mockGuests(context,[sampleGuest]);
+  await login(page);
+  await page.locator(`[data-guest-edit="${sampleGuest.id}"]`).click();
+  await expect(page.locator('#guestOptionalDetails')).toHaveAttribute('open','');
+  await expect(page.locator('#guestCount')).toHaveValue('6');
+  await page.locator('#guestCount').fill('');
+  await page.locator('#guestSave').click();
+  await expect(page).toHaveURL(/\/kalendar\.html#kalendar$/);
+  expect(fixture.requests.find(request=>request.action==='save').body).toMatchObject({id:sampleGuest.id,version:1,guest_count:null,purpose:sampleGuest.purpose});
+  await expect(page.locator('.public-guest-count')).toHaveCount(0);
+  await page.goto('/guest-admin.html');
+  await expect(page.locator('#guestWorkspace')).toBeVisible();
+  await expect(page.locator('.guest-record-count')).toHaveCount(0);
+  await page.locator(`[data-guest-edit="${sampleGuest.id}"]`).click();
+  await expect(page.locator('#guestCount')).toHaveValue('');
 });
 
 test('invalid date order and guest counts never send a save request',async({page,context})=>{
@@ -268,8 +307,12 @@ test('invalid date order and guest counts never send a save request',async({page
   await page.locator('#guestCheckOut').fill('2026-09-28');
   for(const count of ['0','21','2.5']) {
     await page.locator('#guestCount').fill(count);
+    await page.locator('#guestOptionalDetails summary').click();
+    await expect(page.locator('#guestCount')).toBeHidden();
     await page.locator('#guestSave').click();
     await expect(page.locator('#guestCount')).toHaveAttribute('aria-invalid','true');
+    await expect(page.locator('#guestCountError')).toBeVisible();
+    await expect(page.locator('#guestCount')).toBeFocused();
   }
   expect(fixture.requests.filter(request=>request.action==='save')).toHaveLength(0);
   await expect(page.locator('#guestName')).toHaveValue('Tetamu Borang');
@@ -294,7 +337,7 @@ test('a failed save preserves the form and request identity; a pending retry can
     const saves=fixture.requests.filter(request=>request.action==='save');
     expect(saves[1].body.request_id).toBe(saves[0].body.request_id);
   } finally {gate.resolve();}
-  await expect(page).toHaveURL(/\/#kalendar$/);
+  await expect(page).toHaveURL(/\/kalendar\.html#kalendar$/);
 });
 
 test('editing sends the original version and English saving returns to the English home',async({page,context})=>{
@@ -305,7 +348,7 @@ test('editing sends the original version and English saving returns to the Engli
   await expect(page.locator('#guestPurpose')).toHaveValue(sampleGuest.purpose);
   await page.locator('#guestName').fill('Updated fixture guest');
   await page.locator('#guestSave').click();
-  await expect(page).toHaveURL(/\/en\.html#kalendar$/);
+  await expect(page).toHaveURL(/\/kalendar-en\.html#kalendar$/);
   expect(fixture.requests.find(request=>request.action==='save').body).toMatchObject({id:sampleGuest.id,version:1,guest_name:'Updated fixture guest'});
   await expect(page.locator('#guestSaveNotice')).toContainText('saved');
 });
@@ -335,7 +378,7 @@ test('cancelling requires confirmation and releases its nights after returning h
   await expect(page.locator('.guest-cancel-confirm')).toHaveCount(0);
   await page.locator(`[data-guest-cancel="${sampleGuest.id}"]`).click();
   await page.locator(`[data-guest-cancel-confirm="${sampleGuest.id}"]`).click();
-  await expect(page).toHaveURL(/\/#kalendar$/);
+  await expect(page).toHaveURL(/\/kalendar\.html#kalendar$/);
   expect(fixture.requests.find(request=>request.action==='cancel').body).toMatchObject({id:sampleGuest.id,version:1});
   await expect(page.locator('#guestSaveNotice')).toContainText('dibatalkan');
   await expect(page.locator('#calendarGrid [data-state="unknown"]')).toHaveCount(0);
@@ -441,7 +484,7 @@ test('using calendar controls before its visibility callback still starts the up
       }
     };
   });
-  await page.goto('/');
+  await page.goto('/#kalendar');
   await page.locator('[data-calendar-next]').click();
   await expect(page.locator('#calendarMonth')).toContainText('Oktober');
   await expect(page.locator('#calendarGrid')).toHaveAttribute('aria-busy','false');
@@ -469,12 +512,15 @@ for(const {width,dark,english} of [{width:320,dark:false,english:false},{width:3
     await expect(page.locator('#guestWorkspace')).toBeVisible();
     await expect(page.locator('#guestList .guest-record')).toHaveCount(1);
     await verify('[data-guest-admin]');
+    await page.locator('#guestOptionalDetails summary').click();
+    await verify('[data-guest-admin]');
     for(const control of ['#guestCheckIn','#guestCheckOut','#guestName','#guestCount','#guestPurpose','#guestSave']) {
       expect(await page.locator(control).evaluate(element=>element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
     }
     await page.locator('.guest-home').click();
-    await expect(page).toHaveURL(english?/\/en\.html#kalendar$/:/\/#kalendar$/);
+    await expect(page).toHaveURL(width<=900?(english?/\/kalendar-en\.html$/:/\/kalendar\.html$/):(english?/\/en\.html#kalendar$/:/\/#kalendar$/));
     await expect(page.locator('#calendarGrid [data-state="occupied"]')).toHaveCount(3);
+    await expect(page.locator(`.public-guest-card ${width<=900?'h3':'h4'}`)).toHaveText(sampleGuest.guest_name);
     await verify('#kalendar');
   });
 }

@@ -13,9 +13,14 @@ for (const [path, language] of [['/', 'ms'], ['/en.html', 'en']]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(path);
     await expect(page.locator('.hero-rate')).toContainText('RM170');
-    await expect(page.locator('.payment-example')).toContainText('RM270');
     const graph = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent())['@graph'];
     expect(graph.find(item => item['@type'] === 'LodgingBusiness').priceRange).toBe('RM170–RM330');
+    const suffix = language === 'en' ? '-en' : '';
+    await page.locator(`.mobile-bottom-nav a[href="harga${suffix}.html"]`).click();
+    await expect(page.locator('.payment-example')).toContainText('RM270');
+    await page.locator('.package-link[data-rooms="2"]').click();
+    await expect(page).toHaveURL(new RegExp(`/hubungi${suffix}\\.html$`));
+    await expect(page.locator('#rooms')).toHaveValue('2');
     await page.locator('#checkin').fill('2027-01-01');
     await page.locator('#checkout').fill('2027-01-02');
     await page.locator('#rooms').selectOption('2');

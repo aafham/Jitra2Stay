@@ -80,11 +80,13 @@ function validateSave(body, today) {
   if (!UUID.test(body.request_id || '') || (editing && (!UUID.test(body.id) || !Number.isSafeInteger(body.version) || body.version < 1))) return null;
   if (checkIn === null || checkOut === null || checkOut <= checkIn || checkOut - checkIn > 366 * DAY) return null;
   if (!editing && (body.check_in < today || checkIn > isoDate(today) + 365 * DAY)) return null;
-  if (typeof body.guest_name !== 'string' || typeof body.guest_count !== 'number' || !Number.isInteger(body.guest_count)) return null;
+  if (typeof body.guest_name !== 'string') return null;
+  const guestCount = body.guest_count ?? null;
+  if (guestCount !== null && (!Number.isInteger(guestCount) || guestCount < 1 || guestCount > 20)) return null;
   if (body.purpose !== undefined && body.purpose !== null && typeof body.purpose !== 'string') return null;
   const name = body.guest_name.trim();
   const purpose = (body.purpose || '').trim();
-  if (!name || name.length > 120 || /[\u0000-\u001f\u007f]/.test(name) || purpose.length > 500 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(purpose) || body.guest_count < 1 || body.guest_count > 20) return null;
+  if (!name || name.length > 120 || /[\u0000-\u001f\u007f]/.test(name) || purpose.length > 500 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(purpose)) return null;
   return {
     p_id: editing ? body.id : null,
     p_version: editing ? body.version : null,
@@ -92,7 +94,7 @@ function validateSave(body, today) {
     p_check_in: body.check_in,
     p_check_out: body.check_out,
     p_guest_name: name,
-    p_guest_count: body.guest_count,
+    p_guest_count: guestCount,
     p_purpose: purpose || null,
   };
 }

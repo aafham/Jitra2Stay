@@ -160,7 +160,8 @@
   // Preserve links used by the previous single-page language switcher.
   const url = new URL(window.location.href);
   if (url.searchParams.get("lang") === "en" && !en) {
-    const destination = new URL("en.html", url);
+    const paired = document.querySelector('.mobile-language a[hreflang="en"]');
+    const destination = new URL(paired?.getAttribute("href") || "en.html", url);
     destination.hash = url.hash;
     url.searchParams.delete("lang");
     destination.search = url.search;
@@ -756,7 +757,7 @@
       familyPlanShare.removeAttribute("aria-busy");
     }
   });
-  document.querySelectorAll(".language-links a[hreflang]").forEach(link => {
+  document.querySelectorAll(".language-links a[hreflang], .mobile-language a[hreflang]").forEach(link => {
     const snapshotLanguageDraft = () => {
       if (packageChosen || Object.entries(draftFields).some(([name, field]) => (field?.value || "") !== draftDefaults[name])) draftChanged = true;
       saveDraft();
@@ -770,8 +771,26 @@
     announceDraft(removed ? copy.draftCleared : copy.draftClearFailed);
   });
   restoreDraft();
+  let packageFromPage = false;
+  if (document.body.dataset.view === "hubungi" && url.searchParams.has("rooms")) {
+    const requested = url.searchParams.get("rooms");
+    if (Array.from(rooms.options).some(option => option.value === requested)) {
+      rooms.value = requested;
+      packageChosen = true;
+      draftChanged = true;
+      saveDraft();
+      packageFromPage = true;
+    }
+    url.searchParams.delete("rooms");
+    history.replaceState(null, "", url.href);
+  }
   updateEnquiry();
   form.hidden = false;
+  if (packageFromPage) {
+    const title = document.getElementById("enquiryFormTitle");
+    title?.focus({ preventScroll: true });
+    title?.scrollIntoView({ block: "start", behavior: "instant" });
+  }
   window.addEventListener("pageshow", event => {
     if (event.persisted) {
       const restored = restoreDraft();

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-23 — Halaman mobile dan borang tetamu ringkas
+
+- Gantikan menu mobile dengan lima tab bawah: Utama, Gambar, Harga, Kalendar dan Lagi. Sembilan halaman khusus dalam BM/EN mengasingkan rumah, gambar, harga, kalendar, kemudahan, lokasi, FAQ, pertanyaan dan direktori maklumat.
+- Ringkaskan homepage telefon kepada foto latar, fakta utama, harga mula dan pautan penting. Homepage desktop kekal penuh; pautan fragment lama pada telefon membawa ke halaman berkaitan.
+- Kekalkan draf pertanyaan ketika menukar pakej atau bahasa. Pilihan pakej membuka borang pada tempat yang sesuai, dan butang bawah memberi ruang semasa menaip serta menggunakan keyboard.
+- Gunakan merah jelas dengan nombor putih dan titik untuk malam berpenghuni. Legenda kalendar berada sebelum tarikh pada halaman khusus.
+- Borang pengurusan hanya mewajibkan tarikh masuk, tarikh keluar dan nama. Bilangan serta tujuan diletakkan dalam bahagian pilihan; database menerima bilangan kosong sebagai `null` dan mengekalkan semua rekod lama.
+- Tambah ujian navigasi antara halaman, pautan lama, tanpa JavaScript, pemulihan draf, teks besar, fokus, serta simpan/ubah bilangan kosong.
+
 ## 2026-09-23 — Latar bahagian pertanyaan
 
 - Gunakan foto ruang tamu sebenar sebagai latar bahagian WhatsApp/pertanyaan, dengan lapisan hijau gelap dan pudar ke warna hijau di bawah.

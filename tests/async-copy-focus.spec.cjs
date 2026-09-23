@@ -18,27 +18,40 @@ test.beforeEach(async ({ context, page }) => {
 for (const [width, language] of [[390, "ms"], [1440, "en"]]) {
   test(`${width}px ${language} delayed share and copy fallbacks preserve the guest's current field and scroll`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto(language === "en" ? "/en.html" : "/");
-    await page.locator("#checkin").fill("2027-12-31");
-    await page.locator("#checkout").fill("2028-01-03");
-    await page.locator("#faq-deposit summary").click();
-    await page.locator("#familyPlan summary").click();
-    for (const [button, fallback] of [
-      ["#shareStay", "#shareFallback"],
-      ["#copyAddress", "#addressCopyText"],
-      ["#faq-deposit .faq-copy-link", "#faq-deposit .faq-copy-fallback"],
-      ["#familyPlanShare", "#familyPlanCopyText"],
-      ["#enquiryCopyMessage", "#enquiryCopyText"]
+    const mobile = width <= 900;
+    if (!mobile) {
+      await page.goto("/en.html");
+      await page.locator("#checkin").fill("2027-12-31");
+      await page.locator("#checkout").fill("2028-01-03");
+      await page.locator("#faq-deposit summary").click();
+      await page.locator("#familyPlan summary").click();
+    }
+    for (const [button, fallback, mobilePage, mobileFocus] of [
+      ["#shareStay", "#shareFallback", "/rumah.html", ".property-profiles a:first-child"],
+      ["#copyAddress", "#addressCopyText", "/lokasi.html", "#destinationSearch"],
+      ["#faq-deposit .faq-copy-link", "#faq-deposit .faq-copy-fallback", "/faq.html#faq-deposit", "#faq-cancellation summary"],
+      ["#familyPlanShare", "#familyPlanCopyText", "/hubungi.html", "#notes"],
+      ["#enquiryCopyMessage", "#enquiryCopyText", "/hubungi.html", "#notes"]
     ]) {
+      if (mobile) {
+        await page.goto(mobilePage);
+        if (mobilePage === "/hubungi.html") {
+          await page.locator("#checkin").fill("2027-12-31");
+          await page.locator("#checkout").fill("2028-01-03");
+          await page.locator("#familyPlan summary").click();
+        }
+      }
+      const currentField = page.locator(mobile ? mobileFocus : "#notes");
       await page.locator(button).click();
-      await page.locator("#notes").click();
-      const fieldTopBefore = await page.locator("#notes").evaluate(field => field.getBoundingClientRect().top);
+      await currentField.focus();
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      const fieldTopBefore = await currentField.evaluate(field => field.getBoundingClientRect().top);
       await page.evaluate(() => window.__rejectPendingCopy());
       await expect(page.locator(fallback)).toBeVisible();
-      await expect(page.locator("#notes")).toBeFocused();
+      await expect(currentField).toBeFocused();
       // Browser scroll anchoring may adjust scrollY when a fallback is inserted
       // above the field. Its position on the screen must remain unchanged.
-      expect(Math.abs(await page.locator("#notes").evaluate(field => field.getBoundingClientRect().top) - fieldTopBefore)).toBeLessThanOrEqual(1);
+      expect(Math.abs(await currentField.evaluate(field => field.getBoundingClientRect().top) - fieldTopBefore)).toBeLessThanOrEqual(1);
       expect(await page.locator(fallback).inputValue()).not.toBe("");
 
       // If the guest stays on the action, the fallback still selects the full

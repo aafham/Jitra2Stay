@@ -82,12 +82,19 @@
         feedback.textContent = en ? 'Answer link copied.' : 'Pautan jawapan disalin.';
       } catch {
         if (!answerVisible()) return;
+        const reading = document.activeElement;
+        const readingTop = reading && reading !== copyButton && reading !== document.body
+          ? reading.getBoundingClientRect().top : null;
         feedback.textContent = en ? 'Copy the selected answer link below.' : 'Salin pautan jawapan yang dipilih di bawah.';
         fallback.hidden = false;
         if (document.activeElement === copyButton) {
           fallback.focus({ preventScroll: true });
           fallback.select();
           fallback.scrollIntoView({ block: 'center', behavior: 'instant' });
+        } else if (readingTop !== null && reading.isConnected) {
+          // An asynchronous fallback can expand above the next question. Keep
+          // the guest's current reading position without moving their focus.
+          window.scrollBy({ top: reading.getBoundingClientRect().top - readingTop, behavior: 'instant' });
         }
       } finally {
         copying = false;

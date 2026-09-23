@@ -15,8 +15,9 @@ Website homestay dalam Bahasa Melayu dan English untuk melihat rumah, gambar, ha
 - Galeri 21 foto sebenar dengan kategori, dialog dan pautan gambar daripada sembilan kad kemudahan.
 - Perbandingan pakej, anggaran mengikut tarikh, draf pertanyaan dan pratonton mesej WhatsApp.
 - Peta Google interaktif, butang Google Maps/Waze dan carian 50 destinasi mengikut kategori.
-- Kalendar malam berpenghuni dan senarai upcoming awam; borang PIN 4 kotak untuk tambah, ubah atau batalkan rekod. [Panduan urus tetamu](docs/GUEST-GUIDE.md).
-- Homepage, polisi dan panduan BM/EN; tema cerah/gelap, menu mobile serta kandungan asas tanpa JavaScript.
+- Kalendar merah bagi malam berpenghuni dan senarai upcoming awam; borang PIN 4 kotak untuk tambah, ubah atau batalkan rekod. Hanya tarikh masuk, tarikh keluar dan nama wajib; bilangan/tujuan boleh dikosongkan. [Panduan urus tetamu](docs/GUEST-GUIDE.md).
+- Mobile: homepage ringkas dan lima tab bawah — Utama, Gambar, Harga, Kalendar, Lagi. Rumah, kemudahan, lokasi, FAQ dan pertanyaan mempunyai halaman sendiri dalam BM/EN; desktop mengekalkan homepage penuh.
+- Tema cerah/gelap dan navigasi halaman asas berfungsi tanpa JavaScript. Pautan lama ke bahagian homepage membuka halaman berkaitan pada mobile.
 
 Fakta sedia ada berpandukan bahan owner. [Rekod kandungan](docs/RESTORED-CONTENT.md) dan [rekod foto](docs/IMAGE-AUDIT.md) menerangkan sumbernya. Anggaran perjalanan ialah snapshot bertarikh, bukan trafik masa nyata.
 
@@ -63,8 +64,9 @@ Root menyimpan README, manifest npm dan konfigurasi hosting/Git sahaja. `source-
 | Nama tempat, kategori dan snapshot laluan | `src/data/destinations.cjs`, `src/data/destination-categories.cjs`, `src/data/destination-routes.cjs` |
 | Sambungan kalendar / borang tetamu | `src/data/guest.config.cjs` (URL awam sahaja); backend dalam `supabase/` |
 | Susunan homepage, header/footer dan halaman lain | `src/templates/` |
+| Halaman mobile, kategori dan navigasi bawah | `src/data/mobile-routes.cjs`, `src/templates/mobile-pages.cjs`, `src/templates/mobile-navigation.cjs` |
 | Menu, borang, galeri, carian dan perkongsian | `src/scripts/` |
-| Warna, layout dan paparan telefon | `src/styles/`; `mobile.css` untuk halaman awam, `guest-admin.css` untuk borang pengurusan |
+| Warna, layout dan paparan telefon | `src/styles/`; `mobile-pages.css` untuk navigasi/halaman mobile, `mobile.css` untuk komponen umum, `guest-admin.css` untuk borang pengurusan |
 | Gambar website | `src/images/`; daftar gambar dalam config, kemudian `npm run optimize:images` |
 
 Fail source berada dalam `src/`, tetapi URL website kekal seperti `/app.js`, `/style.css` dan `/images/…`. Build memetakan source kepada output awam. Maklumat akses pada foto WiFi/kotak kunci sudah ditutup; jangan gantikan salinan web dengan upload asal.

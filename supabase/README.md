@@ -7,7 +7,7 @@ is required in the browser bundle. There are no runtime package dependencies.
 
 ## Data and access
 
-- `j2s_guest_bookings`: stay dates, guest name, party size, optional private purpose,
+- `j2s_guest_bookings`: stay dates, guest name, optional party size and private purpose,
   cancellation status, optimistic version, and create-request ID.
 - `j2s_guest_access`: one salted bcrypt PIN hash and the persistent login limit.
 - `j2s_guest_sessions`: SHA-256 hashes of random 256-bit session tokens; 8-hour expiry.
@@ -20,13 +20,16 @@ Logout deletes the server session immediately.
 
 The owner explicitly chose to show upcoming guest names, party sizes and dates
 on the public homepage. Public calendar responses contain dates only. Public
-upcoming responses contain exactly those four chosen fields. Purpose, record IDs,
+upcoming responses contain exactly those four chosen fields; unknown party size
+is returned as `guest_count: null` and is not shown as zero people. Purpose, record IDs,
 request IDs, versions, access settings and sessions remain private. Both the SQL
 RPC and the Edge response project public fields explicitly.
 
 ## Initial setup
 
-1. Apply the CLI-created migration in `migrations/` to the selected project.
+1. Apply the CLI-created migrations in `migrations/` in timestamp order to the
+   selected project. The initial schema is followed by the optional-count change;
+   never rewrite an already-applied migration.
 2. On a **new or disposable test database**, execute `tests/guest-calendar.sql`.
    It tests synthetic records inside a transaction and rolls back everything.
    It temporarily replaces rows in that transaction, so do not use it against
@@ -57,6 +60,25 @@ RPC and the Edge response project public fields explicitly.
 Before changing the PIN, delete all `j2s_guest_sessions` in the same administrative
 transaction so existing sessions cannot continue using the old access grant.
 
+## Updating an existing installation
+
+`migrations/20260923104824_optional_guest_count.sql` makes the count column nullable
+and updates the save RPC. It preserves all existing bookings/counts, the 1–20 CHECK,
+date-overlap constraint, version checks, RLS and service-only privileges. Null-aware
+comparison keeps a retry with an unknown count distinct from one with a supplied count.
+
+Apply this new migration, verify `tests/optional-guest-count.sql`, then deploy the
+updated Edge Function before enabling the simplified frontend. The focused SQL test
+creates synthetic records/session inside a rolled-back transaction, finds an unused
+date, and does not replace existing bookings, PIN settings or sessions. It requires
+one free night in the next year; it fails clearly if none is available. The larger
+`tests/guest-calendar.sql` suite still belongs on a new or disposable test database.
+
+The browser API accepts a missing `guest_count` or JSON `null` and sends SQL NULL.
+An empty string is not a valid count; the form converts a cleared field to `null`.
+When editing, a submitted numeric count keeps that value, while `null` or omission
+clears it. Existing clients that send numeric counts remain compatible.
+
 ## Login limit and recovery
 
 Five incorrect PIN attempts in a 15-minute window temporarily block further login
@@ -85,7 +107,7 @@ All responses use `Cache-Control: no-store`. Errors are non-2xx JSON containing
 | `GET ?action=session` | Bearer token | `{expires_at}` |
 | `GET ?action=guests` | Bearer token | Active upcoming / ongoing records |
 | `GET ?action=guests&past=1` | Bearer token | Above plus previous 90 days |
-| `POST {action:"save",request_id,check_in,check_out,guest_name,guest_count,purpose?}` | Bearer token | `{guest}` |
+| `POST {action:"save",request_id,check_in,check_out,guest_name,guest_count?,purpose?}` | Bearer token | `{guest}` |
 | Same save request with `id` and `version` | Bearer token | Updated `{guest}` |
 | `POST {action:"cancel",id,version}` | Bearer token | `{ok:true}`; retains cancelled history |
 | `POST {action:"logout"}` | Bearer token | `{ok:true}` |
@@ -98,8 +120,10 @@ with distinct `overlap`, `stale`, or `request_conflict` codes.
 
 New arrivals must be between today in Malaysia and the next 365 days. A stay is
 at most 366 nights. An existing record may retain its original past check-in when
-edited, but cannot move to a different past check-in. Party size is 1–20, guest
-name is 1–120 characters, and optional purpose is at most 500 characters.
+edited, but cannot move to a different past check-in. Only the stay dates and guest
+name are required form fields. The name is 1–120 characters. Party size is optional;
+if supplied it must be an integer from 1–20. Purpose is optional and at most 500
+characters. Responses retain the `guest_count` key with JSON `null` when unspecified.
 
 Exact CORS origins are the two production hosts and localhost / 127.0.0.1 on port
 4173. CORS is a browser policy, not an authentication boundary.
@@ -111,6 +135,9 @@ Exact CORS origins are the two production hosts and localhost / 127.0.0.1 on por
   validation, session hashing, error handling, validation, CORS and payload limits.
 - `supabase/tests/guest-calendar.sql` checks real database constraints, idempotency,
   optimistic updates, cancellations, PIN cooldown, sessions, RLS and grants.
+- `supabase/tests/optional-guest-count.sql` verifies null-count create/read/edit,
+  retries, null-versus-number conflicts, retained overlap/version/auth protection,
+  and numeric bounds after applying the optional-count migration.
 - Check Supabase security advisors after applying the migration. RLS without
   policies is intentional for these service-only tables; do not add public
   policies to silence that informational notice. The

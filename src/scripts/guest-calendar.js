@@ -138,12 +138,19 @@
     publicList.replaceChildren();
     records.forEach(guest=>{
       const card=document.createElement('article');card.className='public-guest-card';
-      const title=document.createElement('h4');title.textContent=guest.guest_name;
+      const title=document.createElement(document.getElementById('calendarHelpTitle')?.tagName==='H2'?'h3':'h4');title.textContent=guest.guest_name;
       const dates=document.createElement('p');dates.className='public-guest-dates';
       dates.textContent=`${format(guest.check_in,{day:'numeric',month:'short',year:'numeric'})} – ${format(guest.check_out,{day:'numeric',month:'short',year:'numeric'})}`;
-      const count=document.createElement('p');count.className='public-guest-count';
-      count.textContent=`${guest.guest_count} ${say('orang','guests')}${guest.check_in<=today?say(' · Sedang menginap',' · Currently staying'):''}`;
-      card.append(title,dates,count);publicList.append(card);
+      card.append(title,dates);
+      if(Number.isInteger(guest.guest_count)) {
+        const count=document.createElement('p');count.className='public-guest-count';
+        count.textContent=`${guest.guest_count} ${say('orang',guest.guest_count===1?'guest':'guests')}`;
+        card.append(count);
+      }
+      if(guest.check_in<=today) {
+        const staying=document.createElement('p');staying.className='public-guest-current';staying.textContent=say('Sedang menginap','Currently staying');card.append(staying);
+      }
+      publicList.append(card);
     });
     publicStatus.textContent=publicGuests.length?`${publicGuests.length} ${say('penginapan direkodkan','recorded stays')}`:say('Belum ada tetamu akan datang direkodkan.','No upcoming guests have been recorded yet.');
     more.hidden=publicGuests.length<=6;
@@ -163,7 +170,7 @@
       const response=await fetch(url,{signal:active.signal,cache:'no-store',credentials:'omit'});
       if(!response.ok)throw new Error('Unavailable');
       const payload=await response.json();
-      if(!Array.isArray(payload.guests)||payload.guests.length>1000||payload.guests.some(guest=>!guest||typeof guest.guest_name!=='string'||!guest.guest_name.trim()||guest.guest_name.length>120||!Number.isInteger(guest.guest_count)||guest.guest_count<1||guest.guest_count>20||!dateValue(guest.check_in)||!dateValue(guest.check_out)||guest.check_out<=guest.check_in))throw new Error('Invalid upcoming records');
+      if(!Array.isArray(payload.guests)||payload.guests.length>1000||payload.guests.some(guest=>!guest||typeof guest.guest_name!=='string'||!guest.guest_name.trim()||guest.guest_name.length>120||(guest.guest_count!=null&&(!Number.isInteger(guest.guest_count)||guest.guest_count<1||guest.guest_count>20))||!dateValue(guest.check_in)||!dateValue(guest.check_out)||guest.check_out<=guest.check_in))throw new Error('Invalid upcoming records');
       if(request!==publicSequence)return;
       publicGuests=payload.guests.filter(guest=>guest.check_out>today).sort((a,b)=>a.check_in.localeCompare(b.check_in));renderUpcoming();
     } catch {

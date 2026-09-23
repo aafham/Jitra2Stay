@@ -37,6 +37,11 @@ for (const item of [
     }));
     const before = await measure();
     expect(before.theme).toBe(item.theme);
+    if (item.width < 901) {
+      await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
+      await expect(page.locator(".mobile-bottom-nav a")).toHaveCount(5);
+      await expect(page.locator("#menuToggle")).toBeHidden();
+    }
     release();
     await page.waitForLoadState("load");
     await expect(page.locator("html")).not.toHaveClass(/nav-pending/);
@@ -46,7 +51,11 @@ for (const item of [
     expect(Math.abs(after.mainTop - before.mainTop)).toBeLessThan(1);
     expect(Math.abs(after.brandTop - before.brandTop)).toBeLessThan(1);
     if (item.width < 901) {
-      await page.locator("#menuToggle").click();
+      await expect(page.locator("#menuToggle")).toBeHidden();
+      await expect(page.locator("#mainNav")).toBeHidden();
+      await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
+      await expect(page.locator(".mobile-home")).toBeVisible();
+    } else {
       await expect(page.locator("#mainNav")).toBeVisible();
     }
   } finally { release(); }
@@ -87,12 +96,20 @@ test("failed scripts restore navigation and every photo before slow images finis
   const gate = new Promise(resolve => { release = resolve; });
   await page.route("**/images/**", async route => { await gate; await route.continue(); });
   try {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    expect(await page.evaluate(() => document.readyState)).toBe("interactive");
+    await page.goto("/gambar.html", { waitUntil: "domcontentloaded" });
     await expect(page.locator("html")).not.toHaveClass(/pending/);
-    await expect(page.locator("#mainNav")).toBeVisible();
+    await expect(page.locator("#mainNav")).toBeHidden();
+    await expect(page.locator("#menuToggle")).toBeHidden();
+    await expect(page.locator(".mobile-bottom-nav")).toBeVisible();
+    await expect(page.locator(".mobile-bottom-nav a")).toHaveCount(5);
     await expect(page.locator("#galleryGrid .gallery-card:visible")).toHaveCount(21);
+    // Every focused-gallery image is lazy, so it need not delay window.load.
+    // Hold their responses and verify the usable fallback before a photo loads.
+    const firstPhoto = page.locator("#galleryGrid .gallery-card img").first();
+    await firstPhoto.scrollIntoViewIfNeeded();
+    await expect(firstPhoto).toHaveJSProperty("complete", false);
     await expect(page.locator("#galleryControls")).toBeHidden();
-    await expect(page.locator("#mainNav a[href='#galeri']")).toBeVisible();
+    await expect(page.locator('.mobile-bottom-nav a[href="gambar.html"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('.mobile-bottom-nav a[href="harga.html"]')).toBeVisible();
   } finally { release(); await page.waitForLoadState("load"); }
 });
