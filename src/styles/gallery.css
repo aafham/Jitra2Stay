@@ -4,6 +4,7 @@ html.gallery-pending #galleryGrid .gallery-card:nth-child(n+7){display:none}
 .amenity .amenity-photo+.amenity-photo{margin-top:2px}
 .amenity .amenity-photo .icon{flex-shrink:0;width:18px;height:18px}
 .gallery-grid{align-items:start}
+.gallery-card .gallery-trigger img{aspect-ratio:4/3}
 .gallery-card figcaption{padding:16px 18px 18px}
 /* A large exterior image leads the complete desktop collection. Keeping
    DOM order and normal flow for the remaining cards preserves keyboard order. */
@@ -14,8 +15,9 @@ html.gallery-pending #galleryGrid .gallery-card:nth-child(n+7){display:none}
  .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature img{height:100%;aspect-ratio:auto;object-fit:cover}
  .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature figcaption{padding:20px 22px;font-size:1.05rem}
 }
-/* Equipment photos keep their full portrait frame instead of a landscape crop. */
-.gallery-card--portrait .gallery-trigger img{aspect-ratio:3/4;object-fit:contain;background:var(--surface)}
+/* One thumbnail frame keeps mixed rows compact; portrait equipment remains
+   completely visible inside it. The lightbox still uses the original photo. */
+.gallery-card--portrait .gallery-trigger img{object-fit:contain;background:var(--surface)}
 .gallery-card--portrait .gallery-trigger:hover img{transform:none}
 .gallery-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;margin-bottom:26px}
 .gallery-filters{display:flex;flex-wrap:wrap;gap:9px}

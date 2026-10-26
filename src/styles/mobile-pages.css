@@ -100,7 +100,7 @@ body:not([data-view="home"]):not([data-view="document"]) main h2{font-family:"Se
   [data-view="harga"] #kadar .payment-example{margin-top:14px;padding:16px;font-size:.875rem}
   [data-view="harga"] #kadar .rate-examples{margin-top:14px}
   [data-view="harga"] #kadar .rates-support{display:grid;grid-template-columns:1fr;gap:18px}
-  [data-view="harga"] #kadar .stay-summary dl{grid-template-columns:1fr}
+
   [data-view="kemudahan"] .amenities-grid{grid-template-columns:1fr}
   [data-view="kemudahan"] .amenity{padding:16px}
   [data-view="kemudahan"] .amenity p{font-size:.875rem}

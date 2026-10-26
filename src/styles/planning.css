@@ -9,11 +9,29 @@
 #enquiryFormTitle:focus-visible{outline-offset:6px}
 .enquiry-section #enquiryTitle{color:#fff}
 .enquiry-panel #enquiryFormTitle{color:var(--ink);margin-bottom:24px}
+.enquiry-layout>.enquiry-intro{padding-top:8px}
+.enquiry-panel .form-grid{gap:16px}
+.enquiry-panel .guest-fields{margin-top:16px}
+.enquiry-panel label{margin-bottom:6px}
+.enquiry-panel #guestHint{margin:8px 0 0;line-height:1.55}
+.enquiry-panel .deposit-choice{margin:16px 0}
+.enquiry-panel .deposit-choice .field-note{margin:8px 0 0;line-height:1.55}
+.enquiry-panel .stay-shortcuts{margin-top:12px}
+@media(min-width:901px){
+ .enquiry-section .enquiry-layout{grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:clamp(32px,4vw,64px)}
+ .enquiry-layout>.enquiry-intro>p:not(.eyebrow){max-width:36ch;margin-top:18px}
+ .enquiry-intro>.button-light{margin-top:24px}
+ .enquiry-intro>.enquiry-phone{margin-top:14px}
+ .enquiry-layout>.enquiry-panel{padding:28px}
+}
+@media(min-width:901px) and (min-height:720px){
+ .enquiry-layout>.enquiry-intro{position:sticky;top:calc(var(--header-height,88px) + 24px)}
+}
 /* Three readable sections keep every part of the enquiry on the same page. */
-.enquiry-step{min-inline-size:0;margin:0;padding:0 0 24px;border:0;border-bottom:1px solid var(--line)}
-.enquiry-step+.enquiry-step{margin-top:24px}
+.enquiry-step{min-inline-size:0;margin:0;padding:0 0 20px;border:0;border-bottom:1px solid var(--line)}
+.enquiry-step+.enquiry-step{margin-top:20px}
 .enquiry-step:last-of-type{padding-bottom:0;border-bottom:0}
-.enquiry-step legend{display:flex;align-items:center;gap:10px;max-width:100%;padding:0;margin-bottom:18px;color:var(--ink);font-size:1rem;font-weight:650;line-height:1.4}
+.enquiry-step legend{display:flex;align-items:center;gap:10px;max-width:100%;padding:0;margin-bottom:14px;color:var(--ink);font-size:1rem;font-weight:650;line-height:1.4}
 .enquiry-step-number{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--green);font-size:.875rem;font-weight:750;font-variant-numeric:tabular-nums}
 .enquiry-step>.price-estimate,.enquiry-step>.enquiry-preview{margin-top:0}
 .enquiry-step>.form-submit{margin-top:0}
@@ -47,9 +65,9 @@
 #familyPlanFallback{margin-top:16px}
 #familyPlanCopyText{width:100%;margin-top:8px;resize:vertical;font-size:.875rem;line-height:1.65}
 @media(max-width:600px){
- .enquiry-step{padding-bottom:20px}
- .enquiry-step+.enquiry-step{margin-top:20px}
- .enquiry-step legend{gap:9px;margin-bottom:16px;font-size:.95rem}
+ .enquiry-step{padding-bottom:18px}
+ .enquiry-step+.enquiry-step{margin-top:18px}
+ .enquiry-step legend{gap:9px;margin-bottom:14px;font-size:.95rem}
  .stay-comparison{padding:18px;gap:14px}
  .stay-comparison legend{font-size:.9rem}
  .comparison-nights{gap:6px}

@@ -32,6 +32,6 @@ Sumber tambahan ialah foto yang dihantar sendiri oleh owner dalam chat. Pemetaan
 
 - [ ] Tingkat/lokasi setiap bilik dan ukuran atau jenis katil terperinci; label deskriptif dan perkara yang terlihat dalam foto tetap digunakan.
 - [ ] Dokumentasi foto berasingan untuk setiap satu daripada tiga bilik air. Foto bilik air dan pancuran daripada set baharu sudah diterbitkan; galeri tidak melabel nombor bilik air atau tingkat yang belum dinyatakan.
-- [ ] Petikan ulasan tetamu dengan atribusi dan izin penggunaan. `reviews` kekal kosong; pautan Google/Facebook tidak dianggap testimoni.
+- [x] Dua ringkasan ulasan Google dengan atribusi dan pautan sumber telah disemak pada 26 Oktober 2026; lihat [REVIEW-SOURCES.md](REVIEW-SOURCES.md). Tiada rating atau petikan rekaan.
 
 Bahan tambahan ini tidak direka dan tidak menghalang website paparan yang sudah berfungsi. Tiada pertanyaan baharu kepada owner diperlukan untuk menggunakan fakta yang telah tersedia. Tarikh booking dan data pelanggan kekal di luar public repository.

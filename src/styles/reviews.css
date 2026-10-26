@@ -1,0 +1,13 @@
+.section.reviews-section{padding-block:28px 36px}
+.reviews-section h2{margin:0 0 18px;font-family:var(--font-body);font-size:clamp(1.2rem,2vw,1.5rem);font-weight:650;line-height:1.4;letter-spacing:0}
+.review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.review-card{min-width:0;padding:20px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+.review-name{font-size:.9375rem;font-weight:650;color:var(--ink)}
+.review-summary{margin-top:8px;font-size:.9375rem;line-height:1.65;color:var(--muted)}
+.review-source{margin-top:8px;min-height:44px;font-size:.8125rem;color:var(--green)}
+.review-source .icon{width:16px;height:16px}
+@media(max-width:600px){
+  .review-grid{grid-template-columns:1fr;gap:12px}
+  .review-card{padding:16px 18px}
+  .review-summary{font-size:.875rem}
+}

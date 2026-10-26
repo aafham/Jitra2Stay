@@ -68,7 +68,7 @@
   .comparison-nights button{min-width:0;padding:10px 8px;font-size:.875rem}
   .comparison-help{font-size:.875rem}
   #kadar .rates-support{gap:16px}
-  #kadar .stay-summary{padding:18px}
+  #kadar .stay-summary{padding:0}
 
   .amenities-grid{gap:12px}
   .amenity{grid-template-columns:26px minmax(0,1fr);gap:6px 12px;padding:18px;border-radius:12px}

@@ -1,3 +1,18 @@
+/* A shared introduction leaves the full width available for questions. */
+.faq-layout{grid-template-columns:minmax(0,1fr);gap:28px}
+.faq-layout>.faq-intro>p:not(.eyebrow){max-width:640px;margin-top:14px}
+.faq-layout>.faq-intro>.text-link{margin-top:8px}
+.faq-content .faq-list{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:10px;border:0}
+.faq-content .faq-list details{min-width:0;padding-inline:18px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.faq-content .faq-list summary{min-height:60px;padding-block:16px;gap:18px;font-size:.95rem}
+.faq-content .faq-list details>p{padding:0 0 16px;line-height:1.65}
+.faq-content .faq-list details[open]{border-color:var(--green)}
+@media(min-width:901px){
+ .faq-layout>.faq-intro{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:32px;align-items:end}
+ .faq-intro>.eyebrow,.faq-intro>#faqTitle,.faq-intro>p:not(.eyebrow){grid-column:1}
+ .faq-layout>.faq-intro>.text-link{grid-column:2;grid-row:2/4;margin:0;align-self:end}
+ .faq-content .faq-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px}
+}
 .faq-tools{margin-bottom:20px}
 .faq-filters{display:flex;flex-wrap:wrap;gap:8px}
 .faq-filter{min-height:44px;padding:10px 15px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;line-height:1.45}
@@ -14,5 +29,5 @@
 .faq-copy-link:hover{background:var(--surface)}
 .faq-copy-feedback:not(:empty){flex-basis:100%;color:var(--muted);font-size:.8rem;line-height:1.5}
 .faq-copy-fallback{width:100%;min-width:0;flex-basis:100%;font-size:1rem}
-@media(max-width:600px){.faq-filter{padding-inline:12px;font-size:.8rem}.faq-filters{gap:7px}}
-@media print{.faq-tools,.faq-answer-actions{display:none}.faq-list details[hidden]{display:block!important}}
+@media(max-width:600px){.faq-content .faq-list details{padding-inline:14px}.faq-filter{padding-inline:12px;font-size:.8rem}.faq-filters{gap:7px}}
+@media print{.faq-layout>.faq-intro,.faq-content .faq-list{display:block}.faq-content .faq-list details{break-inside:avoid;margin-top:10px}.faq-tools,.faq-answer-actions{display:none}.faq-list details[hidden]{display:block!important}}

@@ -1,5 +1,15 @@
 # Laporan QA
 
+## Kemasan seluruh paparan dan admin — 26 Oktober 2026
+
+- Build: 36 halaman; 1,268/1,268 semakan statik dan 45/45 unit lulus.
+- Chromium: 170/170 ujian lulus. Dua ujian diperkukuh untuk pengaktifan keyboard dan simulasi font gagal dalam konteks baharu; kedua-duanya lulus semula.
+- WebKit: 17 kes sasaran galeri, font/fallback, pertanyaan, borang admin dan senarai tetamu lulus, termasuk semakan semula kedua-dua ujian tersebut.
+- Semakan visual: desktop 1440/1024px, tablet 768px dan telefon 390/320px; BM/EN, cerah/gelap, polisi/FAQ terbuka, anggaran berisi, foto potret dan kad admin. Tiada overflow mendatar dalam keadaan diuji.
+- Ujian sedia ada meliputi teks besar, fokus keyboard, tanpa JavaScript, draf, PIN salah, simpan/ubah/batal, sesi tamat, tarikh bertindih dan kegagalan rangkaian.
+
+Borang admin diuji dengan API tiruan dan rekod sintetik; release ini tidak mengubah database atau rekod sebenar. Browser menggunakan emulasi, bukan telefon fizikal. Foto asal, kadar, deposit dan polisi owner dikekalkan.
+
 ## Halaman mobile dan borang tiga maklumat wajib — 23 September 2026
 
 Mobile menggunakan homepage ringkas, lima tab bawah dan sembilan halaman khusus BM/EN. Desktop mengekalkan homepage lengkap. Semua maklumat rumah dan foto dikekalkan; nombor kedua/e-mel boleh dibuka daripada Lagi. Borang pengurusan mewajibkan tarikh masuk, tarikh keluar dan nama sahaja.

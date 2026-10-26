@@ -10,7 +10,7 @@
 - Pembatalan kurang 7 hari sebelum check-in menyebabkan deposit booking tidak dipulangkan; pembatalan lebih awal membolehkan pertukaran tarikh tertakluk kepada ketersediaan. Caj tetamu tambahan RM10 dinyatakan tanpa mencipta formula caj dalam anggaran sewaan.
 - Foto/penerangan lima bilik menggunakan sumber dan imej sebenar. Foto bilik air serta pancuran diterima pada 23 September 2026 dan telah ditambah; tingkat setiap bilik, ukuran katil dan foto berasingan untuk ketiga-tiga bilik air tidak direka.
 - Senarai tempat berdekatan berasal daripada repo owner. Enam kumpulan kawasan asal dikekalkan dengan label kawasan/jenis; masa dan jarak khusus menggunakan 46 laluan Maps yang disemak pada 19–20 September. Empat lokasi belum pasti kekal tanpa angka jarak. Google Maps/Waze menyediakan laluan semasa.
-- Pautan Google Maps dan album Facebook asal tersedia tanpa mencipta petikan ulasan, nama tetamu atau rating. `reviews` kekal kosong.
+- Dua ringkasan ulasan Google yang disemak pada 26 Oktober 2026 dipaparkan dengan nama awam dan pautan sumber, tanpa rating atau petikan rekaan. Lihat [REVIEW-SOURCES.md](REVIEW-SOURCES.md).
 
 ## Tingkah laku dan privasi
 

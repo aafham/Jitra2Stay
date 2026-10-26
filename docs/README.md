@@ -20,6 +20,7 @@ Folder ini mengumpulkan semua panduan dan laporan supaya root repo ringkas. Path
 - [Status data owner](OWNER-DATA-CHECKLIST.md) — fakta tersedia dan bahan tambahan yang belum ada.
 - [Semakan kandungan](CONTENT-REVIEW.md) — konsistensi fakta, polisi, bahasa dan privasi.
 - [Jejak pemulihan kandungan](RESTORED-CONTENT.md) — sumber asal owner dan rujukan commit.
+- [Sumber ringkasan ulasan](REVIEW-SOURCES.md) — atribusi Google dan rujukan reka bentuk.
 - [Rekod gambar](IMAGE-AUDIT.md) — 21 foto, varian responsif dan suntingan maklumat akses.
 - [Semakan laluan Maps, 19–20 September](NEARBY-ROUTES-2026-09-20.md) — 46 laluan disahkan dan empat lokasi belum pasti.
 

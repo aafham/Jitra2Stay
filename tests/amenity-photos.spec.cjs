@@ -96,7 +96,8 @@ test("portrait amenity photos stay uncropped on phones and desktop, including th
         return { width: box.width, height: box.height, fit: getComputedStyle(image).objectFit };
       });
       expect(rendered.fit, `${viewport.width}px ${name}`).toBe("contain");
-      expect(rendered.width / rendered.height, `${viewport.width}px ${name}`).toBeCloseTo(3 / 4, 2);
+      // Portrait content stays whole inside the same compact frame as landscape photos.
+      expect(rendered.width / rendered.height, `${viewport.width}px ${name}`).toBeCloseTo(4 / 3, 2);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   }

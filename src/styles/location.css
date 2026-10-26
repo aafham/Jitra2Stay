@@ -8,4 +8,16 @@
 .address-copy-fallback{width:100%;max-width:460px;margin-top:14px}
 .address-copy-fallback label{font-size:.875rem}
 .address-copy-fallback textarea{min-height:96px;resize:vertical;overflow-wrap:break-word}
+.arrival-preview{padding:20px 22px 22px;border-top:1px solid var(--line)}
+.arrival-preview h3,.arrival-preview h2{font-family:var(--font-body,"Segoe UI",Arial,sans-serif);font-size:1.05rem;font-weight:650;line-height:1.45;letter-spacing:0}
+.location-layout .arrival-preview>p{max-width:none;margin-top:6px;font-size:.875rem;line-height:1.6}
+.arrival-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.arrival-photo{display:block;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-control,10px);background:var(--surface);color:var(--ink);text-decoration:none}
+.arrival-photo picture{display:block;background:var(--card)}
+.arrival-photo img{width:100%;aspect-ratio:4/3;object-fit:contain}
+.arrival-photo>span{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:10px 12px;font-size:.85rem;font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+.arrival-photo .icon{width:17px;height:17px}
+.arrival-photo:hover{border-color:var(--green)}
+.arrival-photo:hover>span{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:600px){.arrival-preview{padding:18px 16px}.arrival-photo-grid{gap:10px}.arrival-photo>span{padding:10px;font-size:.8rem}}
 @media(max-width:600px){.location-address{gap:10px}.location-layout .location-address address{flex-basis:100%}.copy-address-button{font-size:.85rem}.location-layout .copy-address-feedback{font-size:.8rem}}

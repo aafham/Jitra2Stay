@@ -4,7 +4,7 @@
 
 ## Masuk ke borang
 
-1. Pada telefon, tekan tab bawah **Kalendar**. Pada desktop, pergi ke **Kalendar & tetamu akan datang** di laman utama.
+1. Pada telefon, tekan tab bawah **Kalendar**. Pada desktop, pergi ke **Kalendar penginapan** di laman utama.
 2. Tekan **Urus tetamu**.
 3. Masukkan PIN dalam **empat kotak**. Selepas digit terakhir, borang terbuka sendiri jika betul. Tiada butang masuk yang perlu ditekan.
 
@@ -21,6 +21,8 @@ Isi tiga maklumat wajib berikut:
 | **Nama tetamu** | Nama wakil tempahan yang sesuai untuk dipaparkan di website |
 
 **Bilangan orang dan tujuan tidak wajib.** Boleh terus simpan tanpa kedua-duanya. Untuk mengisi, buka **Maklumat tambahan (tak wajib)**. Jika bilangan diisi, gunakan jumlah 1 hingga 20 termasuk kanak-kanak. Tujuan hanya untuk rujukan pengurusan.
+
+Selepas memilih tarikh, ringkasan menunjukkan tarikh masuk/keluar dan jumlah malam untuk disemak.
 
 Semak maklumat, kemudian tekan **Simpan & kembali ke utama** sekali. Selepas berjaya, website kembali ke kalendar: halaman Kalendar pada telefon, atau bahagian kalendar homepage pada desktop. Nama dan tarikh akan muncul dalam senarai tetamu; bilangan hanya ditunjukkan jika diisi. Untuk keluar tanpa menyimpan, tekan **Kembali ke laman utama**.
 
@@ -39,7 +41,7 @@ Tekan nama atau kad dalam **Tetamu akan datang** untuk terus membuka bulan check
 ## Ubah atau batalkan
 
 1. Buka **Urus tetamu** dan masukkan PIN jika diminta.
-2. Dalam senarai penginapan, cari rekod yang betul.
+2. Dalam senarai penginapan, semak nama, status, tarikh **Masuk/Keluar** dan jumlah malam.
 3. Untuk pembetulan, tekan **Ubah**, betulkan ruangan dan tekan **Simpan & kembali ke utama**. **Batal ubah** hanya menutup mod edit; ia tidak membatalkan tempahan.
 4. Jika penginapan dibatalkan, tekan **Batalkan**, semak rekod dan tekan **Ya, batalkan**. Tarikh dibuka semula dan website kembali ke laman utama. Jika tersalah tekan, pilih **Kekalkan rekod**.
 

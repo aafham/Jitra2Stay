@@ -1,0 +1,35 @@
+/* Stationary press feedback: retain selected colors, elevation and focus rings.
+   No transforms or animation, including when reduced motion is requested. */
+:root{--press-shade:rgba(0,0,0,.08)}
+:root[data-theme="dark"]{--press-shade:rgba(255,255,255,.08)}
+
+:is(
+  button:enabled:not(.public-guest-jump,.gallery-thumbnail),
+  a.button[href],
+  a.guest-button[href],
+  a.text-link[href],
+  a.amenity-photo[href]:not([data-amenity-preview]),
+  .mobile-quick-links a[href],
+  .mobile-bottom-nav a[href],
+  .mobile-action-bar a[href],
+  .mobile-language a[href],
+  .language-links a[href],
+  .browse-links>a[href],
+  .guide-links a[href],
+  .related-guide-links a[href]
+):not([aria-disabled="true"]):active,
+#kadar a.package-link[href]:not([aria-disabled="true"]):active{
+  background-image:linear-gradient(var(--press-shade),var(--press-shade))
+}
+
+/* Photo overlays stay within their links and never intercept pointer gestures. */
+a.amenity-photo[data-amenity-preview],a.arrival-photo{position:relative}
+:is(a.gallery-trigger[href],a.amenity-photo[data-amenity-preview][href],a.arrival-photo[href],button.gallery-thumbnail:enabled):not([aria-disabled="true"]):active::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:rgba(0,0,0,.09);pointer-events:none
+}
+
+/* Preserve the upcoming-guest button's existing stretched card hit area. */
+.public-guest-jump:enabled:not([aria-disabled="true"]):active::after{
+  background:var(--press-shade)
+}

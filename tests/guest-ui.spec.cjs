@@ -245,7 +245,12 @@ test('required guest fields validate before saving; purpose is optional and succ
   await expect(page.locator('#guestDetailsForm [aria-invalid="true"]').first()).toBeVisible();
   expect(fixture.requests.filter(request=>request.action==='save')).toHaveLength(0);
   const guest=await fillGuest(page);
-  await expect(page.locator('#guestNights')).toContainText('3');
+  await expect(page.locator('#guestNights strong')).toHaveText('3 malam penginapan');
+  await expect(page.locator('#guestNights .guest-stay-range')).toHaveText(/Masuk: 25 .*2026 · Keluar: 28 .*2026/);
+  await page.locator('#guestCheckOut').fill('');
+  await expect(page.locator('#guestNights .guest-stay-range')).toHaveCount(0);
+  await expect(page.locator('#guestNights')).toContainText('Pilih tarikh keluar');
+  await page.locator('#guestCheckOut').fill(guest.check_out);
   await page.locator('#guestSave').click();
   await expect(page).toHaveURL(/\/kalendar\.html#kalendar$/);
   await expect(page.locator('#guestSaveNotice')).toBeVisible();
@@ -343,7 +348,13 @@ test('a failed save preserves the form and request identity; a pending retry can
 test('editing sends the original version and English saving returns to the English home',async({page,context})=>{
   const fixture=await mockGuests(context,[sampleGuest]);
   await login(page,'/guest-admin-en.html');
+  const record=page.locator('.guest-record').filter({hasText:sampleGuest.guest_name});
+  await expect(record.locator('.guest-record-dates time').first()).toHaveAttribute('datetime',sampleGuest.check_in);
+  await expect(record.locator('.guest-record-dates time').last()).toHaveAttribute('datetime',sampleGuest.check_out);
+  await expect(record.locator('.guest-record-nights')).toHaveText('3 nights');
   await page.locator(`[data-guest-edit="${sampleGuest.id}"]`).click();
+  await expect(page.locator('#guestNights strong')).toHaveText('3 nights');
+  await expect(page.locator('#guestNights .guest-stay-range')).toContainText('Check-out:');
   await expect(page.locator('#guestName')).toHaveValue(sampleGuest.guest_name);
   await expect(page.locator('#guestPurpose')).toHaveValue(sampleGuest.purpose);
   await page.locator('#guestName').fill('Updated fixture guest');
@@ -416,19 +427,29 @@ test('public calendar exposes occupied nights and upcoming guest summaries witho
 });
 
 test('public upcoming guests can expand and a failed list request has a retry instead of an empty-list claim',async({page,context})=>{
-  const records=Array.from({length:7},(_,index)=>({...sampleGuest,id:`fixture-${index}`,guest_name:`Tetamu ${index+1}`}));
+  const records=Array.from({length:4},(_,index)=>({...sampleGuest,id:`fixture-${index}`,guest_name:`Tetamu ${index+1}`}));
   const fixture=await mockGuests(context,records);
   fixture.next.upcoming=(route,{json})=>json(route,503,{error:'unavailable'});
   await openCalendar(page);
   await expect(page.locator('[data-guests-retry]')).toBeVisible();
   await expect(page.locator('#publicGuestStatus')).not.toContainText('Belum ada tetamu');
   await page.locator('[data-guests-retry]').click();
-  await expect(page.locator('.public-guest-card')).toHaveCount(6);
-  await page.locator('[data-guests-more]').click();
-  await expect(page.locator('.public-guest-card')).toHaveCount(7);
+  await expect(page.locator('.public-guest-card')).toHaveCount(3);
+  await expect(page.locator('[data-guests-more]')).toHaveAttribute('aria-expanded','false');
+  await expect(page.locator('#publicGuestStatus')).toContainText('3 daripada 4');
+  // Keyboard activation must retain focus; Safari intentionally does not
+  // focus a button merely because it was clicked with the mouse.
+  await page.locator('[data-guests-more]').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.public-guest-card')).toHaveCount(4);
+  await expect(page.locator('[data-guests-more]')).toHaveAttribute('aria-expanded','true');
+  await expect(page.locator('[data-guests-more]')).toHaveAttribute('aria-controls','publicGuestList');
+  await expect(page.locator('[data-guests-more]')).toBeFocused();
   await expect(page.locator('#publicGuestList')).not.toContainText(sampleGuest.purpose);
   await page.locator('[data-guests-more]').click();
-  await expect(page.locator('.public-guest-card')).toHaveCount(6);
+  await expect(page.locator('.public-guest-card')).toHaveCount(3);
+  await expect(page.locator('[data-guests-more]')).toHaveAttribute('aria-expanded','false');
+  await expect(page.locator('#publicGuestStatus')).toContainText('3 daripada 4');
 });
 
 test('calendar loading and failures stay unknown until a successful retry, never falsely free',async({page,context})=>{

@@ -1,7 +1,14 @@
 const {config,e,t,icon,policyText}=require('./shared.cjs');
 function renderStaySummary(lang) {
   const items=config.staySummary.filter(item=>item.key!=='privacy');
-  return `<aside class="stay-summary" aria-labelledby="staySummaryTitle"><h3 id="staySummaryTitle">${t(lang,'Sebelum menginap','Before your stay')}</h3><dl>${items.map(item=>{const [title,description]=policyText(item,lang);return `<div data-stay-info="${e(item.key)}"><dt>${e(title)}</dt><dd>${e(description)}</dd></div>`;}).join('')}</dl></aside>`;
+  const {timeText}=require('./shared.cjs');
+  const previews={
+    times:`Check-in ${timeText(config.business.checkInTime,lang)} · Check-out ${timeText(config.business.checkOutTime,lang)}`,
+    deposit:t(lang,'Syarat pemulangan & deposit hangus','Refund and forfeiture conditions'),
+    payment:t(lang,'Bank / DuitNow melalui WhatsApp','Bank / DuitNow details on WhatsApp'),
+    cancellation:t(lang,'Deposit booking & pertukaran tarikh','Booking deposit and date changes')
+  };
+  return `<aside class="stay-summary" aria-labelledby="staySummaryTitle"><h3 id="staySummaryTitle">${t(lang,'Sebelum menginap','Before your stay')}</h3><div class="stay-summary-grid">${items.map(item=>{const [title,description]=policyText(item,lang);return `<details data-stay-info="${e(item.key)}"><summary><span><strong>${e(title)}</strong><span>${e(previews[item.key]||title)}</span></span>${icon('arrow')}</summary><p>${e(description)}</p></details>`;}).join('')}</div></aside>`;
 }
 function renderPropertyLinks(lang) {
   const b=config.business, shareUrl=`${b.siteUrl.replace(/\/$/,'')}/${lang==='en'?'en.html':''}`;

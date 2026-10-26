@@ -1,4 +1,4 @@
-const {config,e,t,icon,timeText,pageHref,address}=require('./shared.cjs');
+const {config,e,t,icon,timeText,pageHref,address,picture}=require('./shared.cjs');
 
 const {renderNearby}=require('./stay-info.cjs');
 const {renderDestinationFinder}=require('./nearby.cjs');
@@ -26,6 +26,15 @@ function renderLocation(lang) {
       <div class="location-map-card">
         <iframe id="locationMapFrame" src="${e(b.mapEmbedUrl)}" title="${t(lang,'Google Maps: lokasi Jitra2Stay','Google Maps: Jitra2Stay location')}" width="600" height="430" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         <div class="map-caption"><span>${icon('pin')} <strong>Jitra2Stay</strong></span><p>${t(lang,'Zum dan gerakkan peta untuk lihat kawasan sekitar.','Zoom and move the map to explore the neighbourhood.')}</p></div>
+        <div class="arrival-preview" aria-labelledby="arrivalPreviewTitle">
+          <h3 id="arrivalPreviewTitle">${t(lang,'Kenali rumah sebelum tiba','Recognise the house before arrival')}</h3>
+          <p>${t(lang,`Kawasan rumah biasanya muat ${b.parkingCars.min} hingga ${b.parkingCars.max} kereta.`,`The house compound usually fits ${b.parkingCars.min} to ${b.parkingCars.max} cars.`)}</p>
+          <div class="arrival-photo-grid">${['halaman','parking'].map(image=>{
+            const photo=config.gallery.find(item=>item.image===image);
+            const label=photo[lang];
+            return `<a class="arrival-photo" href="${pageHref('gambar',lang)}?photo=${image}" aria-label="${e(t(lang,`Lihat foto: ${label}`,`View photo: ${label}`))}">${picture(image,photo.alt?.[lang]||label,{sizes:'(max-width: 600px) calc((100vw - 90px) / 2), (max-width: 900px) calc((100vw - 120px) / 2), (max-width: 1280px) calc((100vw - 240px) / 4), 240px'})}<span>${e(label)} ${icon('arrow')}</span></a>`;
+          }).join('')}</div>
+        </div>
       </div>
       <div class="location-guides">${renderDestinationFinder(lang)}<details class="nearby-original"><summary>${t(lang,'Panduan kawasan','Area guide')}</summary><p class="nearby-note">${t(lang,'Untuk jarak, masa pemanduan dan tarikh semakan destinasi tertentu, rujuk kad laluan di atas.','For a specific destination’s driving distance, time and check date, refer to the route cards above.')}</p>${renderNearby(lang)}</details><h3>${t(lang,'Panduan untuk perjalanan anda','Plan your visit')}</h3><div class="guide-links">${config.guides.map(g=>`<a href="${pageHref(g.slug,lang)}"><span>${e(g[lang][0])}</span>${icon('arrow')}</a>`).join('')}</div></div>
     </div>

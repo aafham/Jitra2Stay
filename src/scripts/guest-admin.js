@@ -308,9 +308,17 @@
     const start = parseStayDate(fields.check_in.value), end = parseStayDate(fields.check_out.value);
     fields.check_out.min = new Date((start === null ? parseStayDate(today) : start) + DAY).toISOString().slice(0, 10);
     fields.check_out.max = new Date((start === null ? parseStayDate(today) : start) + 366 * DAY).toISOString().slice(0, 10);
-    byId('guestNights').textContent = start !== null && end !== null && end > start
-      ? text(`${Math.round((end - start) / DAY)} malam penginapan`, `${Math.round((end - start) / DAY)} night${end - start === DAY ? '' : 's'} staying`)
-      : text('Pilih tarikh masuk dan keluar.', 'Choose check-in and check-out dates.');
+    const summary = byId('guestNights');
+    summary.replaceChildren();
+    if (start !== null && end !== null && end > start) {
+      const nights = Math.round((end - start) / DAY);
+      summary.append(node('strong', '', text(`${nights} malam penginapan`, `${nights} night${nights === 1 ? '' : 's'}`)));
+      summary.append(node('span', 'guest-stay-range', `${text('Masuk', 'Check-in')}: ${formatDate(fields.check_in.value)} · ${text('Keluar', 'Check-out')}: ${formatDate(fields.check_out.value)}`));
+    } else {
+      summary.textContent = start !== null && end === null
+        ? text('Pilih tarikh keluar untuk lihat jumlah malam.', 'Choose check-out to see the number of nights.')
+        : text('Pilih tarikh masuk dan keluar.', 'Choose check-in and check-out dates.');
+    }
   }
   fields.check_in.addEventListener('input', updateDateHints);
   fields.check_out.addEventListener('input', updateDateHints);
@@ -462,16 +470,27 @@
       const past = record.check_out <= today, cancelled = record.status === 'cancelled';
       const card = node('article', `guest-record${past || cancelled ? ' is-past' : ''}`);
       const heading = node('div', 'guest-record-heading');
-      heading.append(node('h3', '', record.guest_name), node('span', 'guest-record-tag', cancelled ? text('Dibatalkan', 'Cancelled') : past ? text('Selesai', 'Past stay') : record.check_in <= today ? text('Sedang menginap', 'Staying now') : text('Akan datang', 'Upcoming')));
-      card.append(heading, node('p', 'guest-record-dates', `${formatDate(record.check_in)} → ${formatDate(record.check_out)}`));
-      if (Number.isInteger(record.guest_count) && record.guest_count >= 1 && record.guest_count <= 20) card.append(node('p', 'guest-record-count', text(`${record.guest_count} orang`, `${record.guest_count} guest${record.guest_count === 1 ? '' : 's'}`)));
+      const state = cancelled ? 'cancelled' : past ? 'past' : record.check_in <= today ? 'current' : 'upcoming';
+      heading.append(node('h3', '', record.guest_name), node('span', `guest-record-tag is-${state}`, cancelled ? text('Dibatalkan', 'Cancelled') : past ? text('Selesai', 'Past stay') : record.check_in <= today ? text('Sedang menginap', 'Staying now') : text('Akan datang', 'Upcoming')));
+      const dates = node('div', 'guest-record-dates');
+      for (const [value, label] of [[record.check_in, text('Masuk', 'Check-in')], [record.check_out, text('Keluar', 'Check-out')]]) {
+        const part = node('div');
+        const date = node('time', '', formatDate(value));
+        date.dateTime = value;
+        part.append(node('span', 'guest-record-date-label', label), date);
+        dates.append(part);
+      }
+      const meta = node('div', 'guest-record-meta');
+      const nights = (parseStayDate(record.check_out) - parseStayDate(record.check_in)) / DAY;
+      if (Number.isInteger(nights) && nights > 0) meta.append(node('span', 'guest-record-nights', text(`${nights} malam`, `${nights} night${nights === 1 ? '' : 's'}`)));
+      if (Number.isInteger(record.guest_count) && record.guest_count >= 1 && record.guest_count <= 20) meta.append(node('span', 'guest-record-count', text(`${record.guest_count} orang`, `${record.guest_count} guest${record.guest_count === 1 ? '' : 's'}`)));
+      card.append(heading, dates, meta);
       if (record.purpose) card.append(node('p', 'guest-record-purpose', record.purpose));
       if (!cancelled) {
         const actions = node('div', 'guest-record-actions');
         const edit = node('button', 'guest-button guest-button-secondary', text('Ubah', 'Edit'));
-        const cancel = node('button', 'guest-button guest-button-secondary', text('Batalkan', 'Cancel stay'));
+        const cancel = node('button', 'guest-button guest-button-danger', text('Batalkan', 'Cancel stay'));
         edit.type = cancel.type = 'button';
-        edit.disabled = cancel.disabled = saving;
         edit.disabled = cancel.disabled = saving;
         edit.dataset.guestEdit = cancel.dataset.guestCancel = record.id;
         edit.setAttribute('aria-label', text(`Ubah rekod ${record.guest_name}`, `Edit record for ${record.guest_name}`));
