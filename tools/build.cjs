@@ -43,6 +43,7 @@ const copy=(sourceRelative,publicRelative)=>{
 for(const asset of ['mobile-pages.js','app.js','gallery.js','navigation.js','share.js','faq.js','location.js','nearby.js','guest-calendar.js','guest-admin.js']) copy(`src/scripts/${asset}`,asset);
 for(const asset of ['reviews.css','interaction.css','amenities.css','mobile-pages.css','style.css','gallery.css','navigation.css','faq.css','location.css','rates.css','planning.css','documents.css','nearby.css','mobile.css','guest-calendar.css','guest-admin.css']) copy(`src/styles/${asset}`,asset);
 copy('src/images/favicon.svg','images/favicon.svg');
+for(const asset of ['google-maps.webp','waze.webp']) copy(`src/images/brands/${asset}`,`images/brands/${asset}`);
 for(const asset of ['lora-latin-400.woff2','OFL-Lora.txt']) copy(`src/fonts/${asset}`,`fonts/${asset}`);
 const usedImages=new Set(['halaman','ruang-tamu',...config.gallery.map(p=>p.image)]);
 for(const name of usedImages){

@@ -94,7 +94,7 @@ const requestPath = (port, route) => new Promise((resolve, reject) => {
 
 async function inspectPublishedImages(files) {
   const usedNames = new Set(["halaman", "ruang-tamu", ...config.gallery.map(photo => photo.image)]);
-  const allowedImages = new Set();
+  const allowedImages = new Set(['images/brands/google-maps.webp', 'images/brands/waze.webp']);
   for (const name of usedNames) {
     const entries = imageManifest.images.filter(image => image.source === `images/${name}.jpg`);
     check(entries.length === 1, `${name}: one responsive image manifest entry`);
@@ -119,7 +119,7 @@ async function inspectPublishedImages(files) {
     check(failures.length === 0, `${name}: published images match manifest hashes, dimensions and uncropped source ratio without camera metadata`, failures.join(", "));
   }
   const unexpected = files.filter(file => /\.(avif|webp|jpe?g|png)$/i.test(file) && !allowedImages.has(file));
-  check(unexpected.length === 0, "published raster images are only the configured public photos and their responsive variants", unexpected.join(", "));
+  check(unexpected.length === 0, "published raster images are only configured public photos, responsive variants and navigation logos", unexpected.join(", "));
 }
 
 async function inspectServer() {

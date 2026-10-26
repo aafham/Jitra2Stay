@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-27 — Logo navigasi rasmi
+
+- Ganti ikon generik pada butang Google Maps dan Waze dengan aset daripada laman rasmi, disimpan setempat dengan warna dan nisbah asal.
+- Selaraskan saiz logo untuk desktop/mobile serta tema cerah/gelap; pautan navigasi dikekalkan.
+
 ## 2026-10-26 — Susunan halaman dan borang lebih jelas
 
 - Seragamkan bingkai galeri, padatkan kad kemudahan dan kurangkan ruang kosong antara bahagian. Foto potret kekal penuh dalam bingkai dan lightbox.
