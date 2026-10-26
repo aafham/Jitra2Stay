@@ -39,8 +39,12 @@ module.exports = {
     { image: 'bilik-dua-katil', ms: ['Bilik dengan dua katil', 'Dua katil berasingan, kipas siling dan rak pakaian di dalam bilik.'], en: ['Bedroom with two beds', 'Two separate beds, a ceiling fan and a clothes rack.'] },
     { image: 'bilik-kusyen-biru', ms: ['Bilik dengan kusyen biru', 'Katil bersebelahan dengan kusyen biru, penyaman udara dan kipas siling.'], en: ['Bedroom with blue cushions', 'Beds arranged side by side with blue cushions, air conditioning and a ceiling fan.'] }
   ],
-  // The original trust section contained property highlights, not guest reviews.
-  reviews: [],
+  // Summaries of public reviews on this property's Google Maps listing.
+  // These are paraphrases, not verbatim quotations or a live ratings feed.
+  reviews: [
+    { name: 'Fakhrurrazi Yusoff', summary: { ms: 'Tetamu menyatakan penginapan tujuh hari mereka selesa.', en: 'The guest described a comfortable seven-day stay.' }, sourceUrl: 'https://goo.gl/maps/pjnMbwm5Pk2QqPeP8', checkedOn: '2026-10-26' },
+    { name: 'Hamidi Hamid', summary: { ms: 'Tetamu memuji ruang rumah, kebersihan dan tekanan air.', en: 'The guest praised the space, cleanliness and water pressure.' }, sourceUrl: 'https://goo.gl/maps/pjnMbwm5Pk2QqPeP8', checkedOn: '2026-10-26' }
+  ],
   staySummary: [
     { key: 'privacy', ms: ['Privasi satu rumah', 'Privasi satu rumah dengan pilihan pakej 2 hingga 5 bilik dan kemudahan self check-in.'], en: ['Full-house privacy', 'Full-house privacy with a choice of 2 to 5-room packages and self check-in.'] },
     { key: 'times', ms: ['Waktu penginapan', 'Check-in {{checkInTime}}; check-out {{checkOutTime}}. Awal atau lewat: RM{{earlyLateFee}} sejam jika diluluskan.'], en: ['Arrival and departure', 'Check-in {{checkInTime}}; check-out {{checkOutTime}}. Early or late stays: RM{{earlyLateFee}} per hour if approved.'] },

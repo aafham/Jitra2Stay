@@ -25,6 +25,13 @@ test('desktop gallery features the house while filters retain a compact reading 
   await page.locator('[data-gallery-filter="all"]').click();
   await page.locator('#galleryMore').click();
   await expect(cards).toHaveCount(gallery.length);
+  const frames=await page.locator('.gallery-card:not(.gallery-card--feature) .gallery-trigger img').evaluateAll(images=>images.map(image=>{
+    const rect=image.getBoundingClientRect();
+    return {width:rect.width,height:rect.height};
+  }));
+  // Mixed landscape/equipment rows must not reserve a second portrait-sized gap.
+  expect(Math.max(...frames.map(frame=>frame.height))-Math.min(...frames.map(frame=>frame.height))).toBeLessThan(2);
+  for(const frame of frames) expect(frame.width/frame.height).toBeCloseTo(4/3,2);
   const opener=page.locator('.gallery-trigger[data-gallery-photo="halaman"]');
   await opener.focus();
   await page.keyboard.press('Enter');
@@ -47,6 +54,8 @@ test('mobile gallery retains normal image order and full portrait equipment fram
   if(await page.locator('#galleryMore').isVisible())await page.locator('#galleryMore').click();
   for(const image of await page.locator('.gallery-card--portrait:visible .gallery-trigger img').all()) {
     expect(await image.evaluate(element=>getComputedStyle(element).objectFit)).toBe('contain');
+    const frame=await image.boundingBox();
+    expect(frame.width/frame.height).toBeCloseTo(4/3,2);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
 });

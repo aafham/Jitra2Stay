@@ -69,7 +69,9 @@ test("collapsed gallery photos do not load while the gallery script is delayed",
   const gate = new Promise(resolve => { release = resolve; });
   await page.route("**/gallery.js", async route => { await gate; await route.continue(); });
   try {
-    await page.goto("/", { waitUntil: "commit" });
+    // Isolate gallery downloads: the homepage also uses the washing-machine
+    // photo in its visible amenities preview, which may load ahead of scrolling.
+    await page.goto("/gambar.html", { waitUntil: "commit" });
     await settleStyles(page);
     await expect(page.locator("html")).toHaveClass(/gallery-pending/);
     await page.locator("#galeri").scrollIntoViewIfNeeded();

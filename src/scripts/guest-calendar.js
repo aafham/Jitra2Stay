@@ -155,8 +155,9 @@
   let publicSequence = 0;
   let publicGuests = [];
   let expanded = false;
+  const upcomingPreviewLimit = 3;
   function renderUpcoming() {
-    const records = expanded ? publicGuests : publicGuests.slice(0,6);
+    const records = expanded ? publicGuests : publicGuests.slice(0,upcomingPreviewLimit);
     publicList.replaceChildren();
     records.forEach(guest=>{
       const card=document.createElement('article');card.className='public-guest-card';
@@ -180,8 +181,9 @@
       card.append(jump);
       publicList.append(card);
     });
-    publicStatus.textContent=publicGuests.length?`${publicGuests.length} ${say('penginapan direkodkan','recorded stays')}`:say('Belum ada tetamu akan datang direkodkan.','No upcoming guests have been recorded yet.');
-    more.hidden=publicGuests.length<=6;
+    const visibleCount = records.length < publicGuests.length ? `${records.length} ${say('daripada','of')} ${publicGuests.length}` : String(publicGuests.length);
+    publicStatus.textContent=publicGuests.length?`${visibleCount} ${say('penginapan direkodkan','recorded stays')}`:say('Belum ada tetamu akan datang direkodkan.','No upcoming guests have been recorded yet.');
+    more.hidden=publicGuests.length<=upcomingPreviewLimit;
     more.textContent=expanded?say('Ringkaskan senarai','Show fewer'):say('Lihat semua tetamu','Show all guests');
     more.setAttribute('aria-expanded',String(expanded));
   }

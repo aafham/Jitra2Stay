@@ -6,7 +6,7 @@ const http = require("node:http");
 const path = require("node:path");
 const publishDir = path.resolve(__dirname, "..", "dist");
 const types = {
-  ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
+  ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".woff2": "font/woff2",
   ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8",
   ".xml": "application/xml; charset=utf-8", ".txt": "text/plain; charset=utf-8",
   ".avif": "image/avif", ".webp": "image/webp", ".jpg": "image/jpeg",

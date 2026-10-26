@@ -19,6 +19,11 @@ test('amenity previews keep the real photo accessible and the complete facilitie
       await expect(page.locator('#kemudahan').getByRole('heading',{name:facility[lang][0],exact:true})).toBeVisible();
       await expect(page.locator('#kemudahan').getByText(facility[lang][1],{exact:true})).toBeVisible();
     }
+    // Short featured descriptions should not acquire the pantry card's empty height.
+    const bottomGaps=await page.locator('.amenity--featured').evaluateAll(cards=>cards.map(card=>
+      card.getBoundingClientRect().bottom-card.lastElementChild.getBoundingClientRect().bottom
+    ));
+    for(const gap of bottomGaps) expect(gap).toBeLessThanOrEqual(24);
     const washer=page.locator('.amenity-photo[data-gallery-photo="mesin-basuh"]');
     await washer.scrollIntoViewIfNeeded();
     await expect(washer.locator('img')).toBeVisible();

@@ -10,7 +10,8 @@ Website homestay keluarga di Jitra, Kedah, dalam Bahasa Melayu dan Inggeris. Pen
 - Pilihan pakej bilik, anggaran sewaan, deposit dan jumlah bayaran awal.
 - Kalendar dengan tarikh berpenghuni berwarna merah. Tekan kad tetamu akan datang untuk melihat tarikh penginapannya.
 - Borang pengurusan tetamu dengan akses PIN.
-- Google Maps, Waze dan carian tempat berdekatan.
+- Google Maps, Waze, foto panduan ketibaan dan carian tempat berdekatan.
+- Ringkasan ulasan Google dengan atribusi dan pautan sumber.
 - Paparan desktop dan mobile, navigasi bawah pada telefon serta tema cerah/gelap.
 
 Tempahan dan bayaran disahkan oleh owner melalui WhatsApp. Kalendar mengikut rekod yang dimasukkan oleh pengurusan; website tidak menerima bayaran online.

@@ -8,6 +8,7 @@ const {renderEnquiry}=require('./enquiry.cjs');
 const {renderLocation}=require('./location.cjs');
 const {renderFaq}=require('./faq.cjs');
 const {renderGuestCalendar}=require('./guest-calendar.cjs');
+const {renderReviews}=require('./reviews.cjs');
 
 function heading(body,id,title) {
   return body.replace(new RegExp(`<h2 id="${id}">[\\s\\S]*?</h2>`),`<h1 id="${id}">${title}</h1>`);
@@ -30,7 +31,7 @@ function renderMobilePage(key,lang) {
   const title=routes[key][lang];
   let body;
   switch(key){
-    case 'rumah':body=`<div class="wrap browse-heading"><p class="eyebrow">JITRA2STAY</p><h1>${t(lang,'Kenali rumah kami','Get to know the house')}</h1><p class="browse-lead">${t(lang,'Privasi satu rumah. Pilih bilik ikut keperluan.','Full-house privacy. Choose the rooms you need.')}</p></div>${renderFacts(lang)}<div class="wrap browse-next"><a class="button" href="${pageHref('gambar',lang)}">${t(lang,'Lihat gambar rumah','See house photos')} ${icon('arrow')}</a><a class="text-link" href="${pageHref('harga',lang)}">${t(lang,'Lihat pakej bilik','View room packages')} ${icon('arrow')}</a></div>`;break;
+    case 'rumah':body=`<div class="wrap browse-heading"><p class="eyebrow">JITRA2STAY</p><h1>${t(lang,'Kenali rumah kami','Get to know the house')}</h1><p class="browse-lead">${t(lang,'Privasi satu rumah. Pilih bilik ikut keperluan.','Full-house privacy. Choose the rooms you need.')}</p></div>${renderFacts(lang)}${renderReviews(lang)}<div class="wrap browse-next"><a class="button" href="${pageHref('gambar',lang)}">${t(lang,'Lihat gambar rumah','See house photos')} ${icon('arrow')}</a><a class="text-link" href="${pageHref('harga',lang)}">${t(lang,'Lihat pakej bilik','View room packages')} ${icon('arrow')}</a></div>`;break;
     case 'gambar':body=heading(renderGallery(lang),'galleryTitle',title);break;
     case 'harga':{
       body=heading(renderRates(lang),'ratesTitle',title);

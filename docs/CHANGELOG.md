@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-26 — Susunan halaman dan borang lebih jelas
+
+- Seragamkan bingkai galeri, padatkan kad kemudahan dan kurangkan ruang kosong antara bahagian. Foto potret kekal penuh dalam bingkai dan lightbox.
+- Susun harga, deposit dan jumlah awal dalam pecahan yang jelas; polisi sebelum menginap boleh dikembangkan.
+- Ringkaskan kalendar dengan tiga tetamu terawal dan pilihan lihat semua; kekalkan klik kad untuk melihat tarikh.
+- Luaskan carian destinasi, seimbangkan FAQ dua kolum desktop, kemaskan borang pertanyaan dan ringkaskan footer.
+- Tambah foto hadapan rumah/parking berhampiran peta, font tajuk Lora setempat dan maklum balas tekan tanpa pergerakan.
+- Paparkan dua ringkasan ulasan Google bersumber pada desktop dan halaman rumah, tanpa rating rekaan.
+- Jelaskan medan wajib/pilihan dan kad rekod dalam pengurusan tetamu. Akses PIN dan pengesahan pembatalan dikekalkan.
+
 ## 2026-10-26 — Foto utama dan pertanyaan lebih tersusun
 
 - Tambah pratonton foto rumah pada homepage mobile dengan pautan terus ke galeri; lima tab bawah dan halaman khusus dikekalkan.
