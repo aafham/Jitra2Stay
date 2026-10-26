@@ -22,6 +22,9 @@
 
   function renderGrid() {
     activeItems = items.filter(item => activeCategory === "all" || item.category === activeCategory);
+    // Only the complete collection uses the featured layout. Category grids
+    // stay compact even when the exterior photo happens to be included.
+    grid.dataset.galleryLayout = activeCategory === "all" ? "featured" : "uniform";
     const visible = new Set((expanded ? activeItems : activeItems.slice(0, initialCount)).map(item => item.card));
     items.forEach(item => { item.card.hidden = !visible.has(item.card); });
     filters.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.galleryFilter === activeCategory)));

@@ -4,6 +4,16 @@ html.gallery-pending #galleryGrid .gallery-card:nth-child(n+7){display:none}
 .amenity .amenity-photo+.amenity-photo{margin-top:2px}
 .amenity .amenity-photo .icon{flex-shrink:0;width:18px;height:18px}
 .gallery-grid{align-items:start}
+.gallery-card figcaption{padding:16px 18px 18px}
+/* A large exterior image leads the complete desktop collection. Keeping
+   DOM order and normal flow for the remaining cards preserves keyboard order. */
+@media(min-width:1100px){
+ .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature{grid-column:span 2;grid-row:span 2;align-self:stretch;display:grid;grid-template-rows:minmax(0,1fr) auto}
+ .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature .gallery-trigger{min-height:0}
+ .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature picture{display:block;height:100%}
+ .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature img{height:100%;aspect-ratio:auto;object-fit:cover}
+ .gallery-grid[data-gallery-layout="featured"]>.gallery-card--feature figcaption{padding:20px 22px;font-size:1.05rem}
+}
 /* Equipment photos keep their full portrait frame instead of a landscape crop. */
 .gallery-card--portrait .gallery-trigger img{aspect-ratio:3/4;object-fit:contain;background:var(--surface)}
 .gallery-card--portrait .gallery-trigger:hover img{transform:none}

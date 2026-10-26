@@ -1,0 +1,30 @@
+/* Actual house photographs introduce the amenities; the complete list remains
+   compact and every existing gallery shortcut stays available. */
+#kemudahan .amenities-grid{align-items:stretch;gap:20px}
+#kemudahan .amenity{min-width:0;border-radius:var(--radius);box-shadow:var(--shadow-card)}
+#kemudahan .amenity--featured{display:block;padding:20px}
+#kemudahan .amenity--featured>.icon{display:none}
+#kemudahan .amenity--featured h3,#kemudahan .amenity--featured h2{margin:16px 0 8px;font-size:1.1rem;line-height:1.45}
+#kemudahan .amenity--featured>p{margin:0;font-size:.9375rem;line-height:1.65}
+#kemudahan .amenity--featured>.amenity-photo{width:100%;justify-self:stretch;grid-column:1/-1}
+#kemudahan .amenity--featured>.amenity-photo[data-amenity-preview]{display:block;min-width:0;margin:0;text-decoration:none;border-radius:var(--radius-control)}
+#kemudahan [data-amenity-preview] picture{display:block;overflow:hidden;border-radius:var(--radius-control);background:var(--surface)}
+#kemudahan [data-amenity-preview] img{width:100%;aspect-ratio:4/3;object-fit:cover}
+#kemudahan [data-amenity-preview][data-portrait] img{object-fit:contain}
+#kemudahan .amenity-photo-caption{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding-top:10px;font-size:.8rem;line-height:1.45;text-decoration:underline;text-underline-offset:4px}
+#kemudahan .amenity-photo-caption>.icon{width:17px;height:17px}
+#kemudahan .amenity:not(.amenity--featured){display:grid;grid-template-columns:28px minmax(0,1fr);align-content:start;gap:6px 14px;padding:22px}
+#kemudahan .amenity:not(.amenity--featured)>.icon{grid-row:1/3;margin:0;width:26px;height:26px}
+#kemudahan .amenity:not(.amenity--featured)>h3,#kemudahan .amenity:not(.amenity--featured)>h2{margin:0;font-size:1rem;line-height:1.5}
+#kemudahan .amenity:not(.amenity--featured)>p,#kemudahan .amenity:not(.amenity--featured)>.amenity-photo{grid-column:2;min-width:0}
+#kemudahan .amenity:not(.amenity--featured)>.amenity-photo{margin-top:4px}
+@media(max-width:900px){
+  #kemudahan .amenities-grid{gap:14px}
+  #kemudahan .amenity--featured{padding:18px}
+  #kemudahan .amenity:not(.amenity--featured){padding:18px}
+}
+@media(max-width:600px){
+  #kemudahan .amenity--featured{padding:16px}
+  #kemudahan .amenity:not(.amenity--featured){padding:16px;grid-template-columns:24px minmax(0,1fr);gap:6px 12px}
+  #kemudahan .amenity:not(.amenity--featured)>.icon{width:24px;height:24px}
+}
