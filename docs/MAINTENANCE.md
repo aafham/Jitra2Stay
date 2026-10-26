@@ -12,7 +12,7 @@ Grid pakej menggunakan minimum `rem` dalam `src/styles/rates.css`; fakta, penapi
 
 `src/styles/mobile.css` dimuat selepas stylesheet komponen halaman awam. Halaman pengurusan memuat `guest-admin.css` selepasnya untuk borang dan empat kotak PIN. Breakpoint 900px mengurus gutter/safe area dan input 16px; 600px mengemas jarak/kad; 480px menyusun galeri, borang, indeks polisi dan footer satu kolum. CSS ini tidak memotong overflow dokumen untuk menutup masalah susunan. Apabila menukar kolum galeri, kemas kini `sizes` dalam `src/templates/gallery.cjs` supaya foto tidak kabur pada telefon.
 
-Kad kemudahan mobile menggunakan grid ikon dan kandungan: pastikan `.amenity-photo` kekal dalam kolum 2 bersama penerangan. Margin destinasi mesti menggunakan selector cukup khusus untuk mengatasi `.location-layout p:not(.eyebrow)`; jangan kembalikan margin 16px kepada setiap baris kad.
+Kad kemudahan biasa menggunakan grid ikon dan kandungan: pastikan `.amenity-photo` kekal dalam kolum 2 bersama penerangan. Tiga kad utama menggunakan foto lebar penuh; `amenities.css` dimuat selepas `mobile-pages.css`. Margin destinasi mesti menggunakan selector cukup khusus untuk mengatasi `.location-layout p:not(.eyebrow)`; jangan kembalikan margin 16px kepada setiap baris kad.
 
 Navigasi desktop dikekalkan. Mobile menggunakan `.mobile-bottom-nav` dengan lima pautan asli dan `.mobile-language`; menu lama disembunyikan pada breakpoint mobile. Bar bawah memberi ruang apabila input aktif atau akan menutupi kawalan yang sedang difokus. Kekalkan pengukuran tinggi sebenar bar untuk teks besar dan safe area; uji tap selepas input, Tab, skrin melintang dan pertukaran ke desktop.
 
@@ -48,7 +48,7 @@ Pautan foto kemudahan dalam `src/templates/home.cjs` dijana daripada `facilities
 
 FAQ mempunyai ID stabil `faq-{key}` daripada config. `src/scripts/faq.js` membuka jawapan untuk hash sah, menjadikannya terlihat walaupun topik berbeza, dan menyediakan pautan awam bersih tanpa query atau butiran borang. `src/scripts/navigation.js` mengekalkan jawapan sah apabila bertukar bahasa. Jangan ubah key FAQ tanpa menyediakan pengalihan pautan lama.
 
-`src/templates/gallery.cjs` menjana satu grid foto dan dialog; `src/scripts/gallery.js` serta `src/styles/gallery.css` mengurus penapis, lihat lagi/ringkaskan, keyboard dan leretan mendatar. Semua foto tersedia tanpa JavaScript. Dengan JavaScript, paparan Semua bermula dengan 6 foto, tetapi dialog boleh melayari kesemua foto kategori aktif.
+`src/templates/gallery.cjs` menjana satu grid foto dan dialog; `src/scripts/gallery.js` serta `src/styles/gallery.css` mengurus penapis, lihat lagi/ringkaskan, keyboard dan leretan mendatar. Semua foto tersedia tanpa JavaScript. Dengan JavaScript, paparan Semua bermula dengan 6 foto, tetapi dialog boleh melayari kesemua foto kategori aktif. Pada desktop, foto hadapan rumah ditonjolkan dalam paparan Semua; pilihan kategori kembali kepada grid biasa.
 
 Thumbnail dialog dijana hanya apabila dialog dibuka, menggunakan foto kecil sedia ada dan subset kategori aktif. Pilihan semasa dikemas apabila menggunakan thumbnail, anak panah atau leretan. Penerangan bilik bersumber daripada rekod `rooms` yang sama dengan galeri; kekalkan hubungan `image` apabila menukar rekod.
 

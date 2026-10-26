@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-26 — Foto utama dan pertanyaan lebih tersusun
+
+- Tambah pratonton foto rumah pada homepage mobile dengan pautan terus ke galeri; lima tab bawah dan halaman khusus dikekalkan.
+- Tonjolkan foto hadapan rumah dalam galeri desktop, dengan susunan biasa apabila kategori dipilih. Semua 21 foto kekal tersedia.
+- Paparkan foto sebenar ruang tamu, dapur dan mesin basuh pada tiga kad kemudahan utama; kekalkan sembilan kemudahan serta semua pautan foto.
+- Selaraskan bucu, jarak dan bayang kad dengan tema hijau/krim serta susun borang pertanyaan kepada tiga bahagian: tarikh, anggaran dan WhatsApp.
+- Betulkan kontras tajuk halaman pertanyaan dan pastikan medan yang sedang diisi kekal terlihat pada skrin pendek atau apabila keyboard dibuka.
+
 ## 2026-09-23 — Tekan tetamu untuk buka tarikh kalendar
 
 - Jadikan seluruh kad upcoming boleh ditekan dengan butang keyboard yang jelas dalam BM/EN. Pilihan membuka bulan check-in, menatal ke kalendar dan memfokuskan tajuk bulan pada desktop serta mobile.

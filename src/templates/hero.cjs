@@ -11,7 +11,7 @@ function renderHero(lang) {
       <p class="hero-description">${t(lang,'Rumah Semi-D dua tingkat untuk keluarga dan rombongan. Pakej 2–5 bilik, WiFi percuma dan parking di rumah.','A two-storey semi-detached home for families and groups. Choose 2–5 bedrooms, with free WiFi and on-site parking.')}</p>
       <p class="hero-note">${t(lang,'Tarikh dan harga akhir disahkan melalui WhatsApp.','Confirm dates and the final price on WhatsApp.')}</p>
     </div>
-    <figure class="hero-media">${picture('halaman',t(lang,'Hadapan rumah Jitra2Stay di Taman Jitra Indah','Jitra2Stay exterior in Taman Jitra Indah'),{hero:true,sizes:'(max-width: 900px) calc(100vw - 40px), (max-width: 1280px) 53vw, 660px'})}<figcaption><span>${icon('home')} Jitra2Stay</span><span>Taman Jitra Indah, Kedah</span></figcaption></figure>
+    <figure class="hero-media"><a class="hero-image-link" href="${pageHref('gambar',lang)}" aria-label="${t(lang,'Lihat semua gambar rumah','Explore all house photos')}">${picture('halaman',t(lang,'Hadapan rumah Jitra2Stay di Taman Jitra Indah','Jitra2Stay exterior in Taman Jitra Indah'),{hero:true,sizes:'(max-width: 900px) calc(100vw - 40px), (max-width: 1280px) 53vw, 660px'})}</a><figcaption><span>${icon('home')} Jitra2Stay</span><span>Taman Jitra Indah, Kedah</span></figcaption></figure>
   </section>`;
 }
 module.exports={renderHero};

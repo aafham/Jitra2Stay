@@ -41,7 +41,7 @@ const copy=(sourceRelative,publicRelative)=>{
   fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(source,target);
 };
 for(const asset of ['mobile-pages.js','app.js','gallery.js','navigation.js','share.js','faq.js','location.js','nearby.js','guest-calendar.js','guest-admin.js']) copy(`src/scripts/${asset}`,asset);
-for(const asset of ['mobile-pages.css','style.css','gallery.css','navigation.css','faq.css','location.css','rates.css','planning.css','documents.css','nearby.css','mobile.css','guest-calendar.css','guest-admin.css']) copy(`src/styles/${asset}`,asset);
+for(const asset of ['amenities.css','mobile-pages.css','style.css','gallery.css','navigation.css','faq.css','location.css','rates.css','planning.css','documents.css','nearby.css','mobile.css','guest-calendar.css','guest-admin.css']) copy(`src/styles/${asset}`,asset);
 copy('src/images/favicon.svg','images/favicon.svg');
 const usedImages=new Set(['halaman','ruang-tamu',...config.gallery.map(p=>p.image)]);
 for(const name of usedImages){

@@ -7,6 +7,17 @@
 .enquiry-package a{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:.8rem;font-weight:600;color:var(--ink)}
 .enquiry-package .icon{width:16px;height:16px}
 #enquiryFormTitle:focus-visible{outline-offset:6px}
+.enquiry-section #enquiryTitle{color:#fff}
+.enquiry-panel #enquiryFormTitle{color:var(--ink);margin-bottom:24px}
+/* Three readable sections keep every part of the enquiry on the same page. */
+.enquiry-step{min-inline-size:0;margin:0;padding:0 0 24px;border:0;border-bottom:1px solid var(--line)}
+.enquiry-step+.enquiry-step{margin-top:24px}
+.enquiry-step:last-of-type{padding-bottom:0;border-bottom:0}
+.enquiry-step legend{display:flex;align-items:center;gap:10px;max-width:100%;padding:0;margin-bottom:18px;color:var(--ink);font-size:1rem;font-weight:650;line-height:1.4}
+.enquiry-step-number{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--green);font-size:.875rem;font-weight:750;font-variant-numeric:tabular-nums}
+.enquiry-step>.price-estimate,.enquiry-step>.enquiry-preview{margin-top:0}
+.enquiry-step>.form-submit{margin-top:0}
+.enquiry-step>.enquiry-preview:not([hidden])+.form-submit{margin-top:18px}
 .stay-comparison{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 32px;padding:20px 24px;margin-bottom:20px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
 .stay-comparison fieldset{border:0;padding:0;margin:0;min-width:0}
 .stay-comparison legend{padding:0;margin-bottom:12px;color:var(--ink);font-size:.95rem;font-weight:650}
@@ -36,6 +47,9 @@
 #familyPlanFallback{margin-top:16px}
 #familyPlanCopyText{width:100%;margin-top:8px;resize:vertical;font-size:.875rem;line-height:1.65}
 @media(max-width:600px){
+ .enquiry-step{padding-bottom:20px}
+ .enquiry-step+.enquiry-step{margin-top:20px}
+ .enquiry-step legend{gap:9px;margin-bottom:16px;font-size:.95rem}
  .stay-comparison{padding:18px;gap:14px}
  .stay-comparison legend{font-size:.9rem}
  .comparison-nights{gap:6px}

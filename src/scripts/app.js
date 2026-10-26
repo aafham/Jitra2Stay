@@ -599,6 +599,28 @@
     saveDraft();
     if (feedback && submitted) feedback.textContent = "";
   });
+  let enquiryFocusFrame = 0;
+  function keepEnquiryFieldVisible() {
+    cancelAnimationFrame(enquiryFocusFrame);
+    enquiryFocusFrame = requestAnimationFrame(() => {
+      const field = document.activeElement;
+      if (!matchMedia("(max-width: 900px)").matches || !form.contains(field) || !field.matches("input,select,textarea")) return;
+      // Native focus can scroll before the mobile bar disappears or the
+      // keyboard resizes the viewport. Recheck its final visible bounds.
+      const viewport = window.visualViewport;
+      const headerBottom = Math.max(0, document.querySelector(".site-header")?.getBoundingClientRect().bottom || 0);
+      const visibleTop = Math.max(viewport?.offsetTop || 0, headerBottom) + 16;
+      const visibleBottom = (viewport?.offsetTop || 0) + (viewport?.height || innerHeight) - 16;
+      const rect = field.getBoundingClientRect();
+      if (rect.top < visibleTop || rect.bottom > visibleBottom) {
+        const targetTop = visibleTop + Math.max(0, visibleBottom - visibleTop - rect.height) / 2;
+        window.scrollBy({ top: rect.top - targetTop, behavior: "instant" });
+      }
+    });
+  }
+  form.addEventListener("focusin", keepEnquiryFieldVisible);
+  window.addEventListener("resize", keepEnquiryFieldVisible);
+  window.visualViewport?.addEventListener("resize", keepEnquiryFieldVisible);
   form.addEventListener("focusout", event => {
     if ([checkin, checkout, guests, rooms].includes(event.target)) {
       touched.add(event.target.name);
