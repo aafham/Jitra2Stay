@@ -25,8 +25,11 @@ test('desktop gallery features the house while filters retain a compact reading 
   await page.locator('[data-gallery-filter="all"]').click();
   await page.locator('#galleryMore').click();
   await expect(cards).toHaveCount(gallery.length);
-  const frames=await page.locator('.gallery-card:not(.gallery-card--feature) .gallery-trigger img').evaluateAll(images=>images.map(image=>{
-    const rect=image.getBoundingClientRect();
+  await page.locator('.gallery-trigger[data-gallery-photo="parking"]').hover();
+  // Measure the clipping frame, not the photograph's hover-scale transform.
+  // The image can zoom inside the frame without changing grid row geometry.
+  const frames=await page.locator('.gallery-card:not(.gallery-card--feature) .gallery-trigger').evaluateAll(elements=>elements.map(element=>{
+    const rect=element.getBoundingClientRect();
     return {width:rect.width,height:rect.height};
   }));
   // Mixed landscape/equipment rows must not reserve a second portrait-sized gap.
