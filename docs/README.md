@@ -26,6 +26,7 @@ Folder ini mengumpulkan semua panduan dan laporan supaya root repo ringkas. Path
 
 ## Audit, ujian dan sejarah
 
+- [Audit website, 19 November](AUDIT-2026-11-19.md) — pembaikan mengikut halaman, aset dan skop ujian.
 - [Laporan QA](QA-REPORT.md) — keputusan dan batas semakan.
 - [Audit seluruh website, 23 September](WEBSITE-AUDIT-2026-09-23.md) — desktop, mobile dan pembaikan bug.
 - [Semakan UI/UX, 12 September](UI-UX-REVIEW-2026-09-12.md) — semakan mengikut bahagian.

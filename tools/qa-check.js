@@ -55,6 +55,15 @@ function inspectPage(file) {
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
   check(ids.length === new Set(ids).size, `${file}: unique element ids`);
 
+  const scripts = new Set(tags(html, "script").map(tag => tag.src).filter(Boolean));
+  const features = {
+    galleryGrid: "gallery.js", shareStay: "share.js", faqList: "faq.js",
+    copyAddress: "location.js", destinationsList: "nearby.js",
+    calendarGrid: "guest-calendar.js", guestPinPanel: "guest-admin.js"
+  };
+  const mismatches = Object.entries(features).filter(([id, script]) => ids.includes(id) !== scripts.has(script));
+  check(!mismatches.length, `${file}: feature scripts match page content`, mismatches.map(([, script]) => script).join(", "));
+
   const missingLinks = [];
   const localLinks = [...tags(html, "a"), ...links, ...tags(html, "script"), ...tags(html, "img"), ...tags(html, "source")];
   for (const tag of localLinks) {

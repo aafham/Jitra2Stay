@@ -139,6 +139,22 @@ test('a restored session is checked on the server; logout and expiry hide all gu
   await assertNoGuestStorage(page,[sampleGuest.guest_name]);
 });
 
+test('switching off history clears obsolete record actions even if the network fails', async ({ page, context }) => {
+  const fixture = await mockGuests(context, [sampleGuest]);
+  await login(page);
+  await expect(page.locator('#guestList .guest-record')).toHaveCount(1);
+  const pastGuest = { ...sampleGuest, check_in: '2026-09-10', check_out: '2026-09-12', guest_name: 'Rekod lepas' };
+  fixture.next.guests = (route, { json }) => json(route, 200, { guests: [pastGuest] });
+  await page.locator('#guestShowHistory').check();
+  await expect(page.locator('#guestList')).toContainText('Rekod lepas');
+  fixture.next.guests = route => route.abort('failed');
+  await page.locator('#guestShowHistory').uncheck();
+  await expect(page.locator('#guestListStatus')).toContainText('Senarai tidak dapat dimuatkan');
+  await expect(page.locator('#guestList .guest-record')).toHaveCount(0);
+  await page.locator('#guestRefresh').click();
+  await expect(page.locator('#guestList')).toContainText(sampleGuest.guest_name);
+});
+
 for(const failure of ['network','server']) {
   test(`a ${failure} sign-out failure keeps the session and draft until a successful retry`,async({page,context})=>{
     const fixture=await mockGuests(context,[sampleGuest]);

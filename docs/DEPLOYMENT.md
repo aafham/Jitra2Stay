@@ -10,13 +10,13 @@ npm run build
 npm run qa
 ```
 
-Build membersihkan hanya folder dist yang dimiliki projek. Aset foto kamera asal dan sejarah Git kekal. Output mengandungi 18 HTML termasuk dua halaman pengurusan, CSS/JS browser, public `app.config.js` dan `guest.config.js`, robots, sitemap, favicon serta JPG/WebP yang digunakan. Raw, tools, tests, docs, `supabase/` dan manifest provenance tidak disalin. Halaman pengurusan menggunakan `noindex` dan tidak disenaraikan dalam sitemap; akses mengubah rekod tetap dilindungi server.
+Build membersihkan hanya folder dist yang dimiliki projek. Aset foto kamera asal dan sejarah Git kekal. Output mengandungi halaman BM dan Inggeris, termasuk halaman khusus mudah alih dan dua halaman pengurusan, CSS/JS browser, public `app.config.js` dan `guest.config.js`, robots, sitemap, favicon serta JPG/WebP yang digunakan. Raw, tools, tests, docs, `supabase/` dan manifest provenance tidak disalin. Halaman pengurusan menggunakan `noindex` dan tidak disenaraikan dalam sitemap; akses mengubah rekod tetap dilindungi server.
 
 `src/scripts/` dan `src/styles/` dipetakan terus ke root output; gambar daripada `src/images/` diterbitkan sebagai `dist/images/`. Oleh itu URL awam seperti `/app.js` dan `/images/…` kekal sama selepas susunan repo berubah. `artifacts/` hanya menyimpan laporan ujian tempatan dan tidak diterbitkan.
 
 ## Vercel
 
-Import repo sedia ada. vercel.json menetapkan install npm ci, build npm run build, framework null dan outputDirectory dist. Push branch menghasilkan preview melalui Git integration; production mengikuti main. Semak preview sebelum merge. Jangan cipta projek Vercel kedua jika integration sedia ada sudah berfungsi.
+Projek Vercel bersambung dengan repo ini. Selepas ujian lulus, push ke `main` untuk menerbitkan website. Vercel menjalankan `npm ci` dan `npm run build` mengikut `vercel.json`, kemudian menerbitkan `dist/`. Sahkan perubahan pada domain production selepas deploy.
 
 Header nosniff/referrer/permissions dan cache aset ditetapkan dalam config. `app.config.js` dan `guest.config.js` yang dipublish hanya data/endpoint yang memang public; jangan tambah secret.
 

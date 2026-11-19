@@ -35,8 +35,13 @@ for(const lang of ['ms','en']) test(`${lang} categories retain search terms, fil
   await expect(results).toContainText((await education.textContent()).trim());
   await expect(clear).toHaveText(lang==='en'?'Reset filters':'Set semula');
   await expect(clear).toBeVisible();
-  await more.click();
+  await more.focus();
+  await page.keyboard.press('Enter');
   await expect(visibleCards(page)).toHaveCount(18);
+  const firstNew = visibleCards(page).nth(6);
+  await expect(firstNew.getByRole('heading', {level:3})).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(firstNew.getByRole('link')).toBeFocused();
   await expect(more).toHaveAttribute('aria-expanded','true');
   for(const id of ['uum','polimas','ipg-darulaman']) await expect(page.locator('[data-destination-id="'+id+'"]')).toBeVisible();
   await expect(page.locator('[data-destination-id="edc-uum"]')).toBeHidden();

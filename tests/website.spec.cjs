@@ -350,6 +350,28 @@ test("blocked popups leave a working draft link and keep all entered values", as
   await expect(form.locator("[name=guests]")).toHaveValue("7");
   await expect(form.locator("[name=checkout]")).toHaveValue("2027-01-02");
   await expect(page.locator("#enquiryCopyMessage")).toBeVisible();
+  await page.locator('[data-nights="3"]').click();
+  await expect(link).toBeHidden();
+  await expect(page.locator("#formFeedback")).toBeEmpty();
+  await expect(form.locator("[name=checkout]")).toHaveValue("2027-01-03");
+});
+
+test("overseas visitors use the Jitra date before opening a stay enquiry", async ({ browser, baseURL }) => {
+  const page = await browser.newPage({ timezoneId: "Europe/London" });
+  try {
+    await page.clock.setFixedTime(new Date("2027-12-31T16:15:00Z"));
+    await page.goto(new URL("/hubungi-en.html", baseURL).href);
+    const checkin = page.locator("#checkin");
+    await expect(checkin).toHaveAttribute("min", "2028-01-01");
+    await checkin.fill("2027-12-31");
+    await page.locator("#checkout").fill("2028-01-02");
+    await expect(page.locator("#checkinError")).toBeVisible();
+    await expect(page.locator("#enquiryLink")).not.toHaveAttribute("href");
+    await checkin.fill("2028-01-01");
+    await expect(page.locator("#estimatePayable")).toHaveText("RM270");
+  } finally {
+    await page.close();
+  }
 });
 
 test("changing check-in across New Year requires checkout on the following calendar day or later", async ({ page }) => {

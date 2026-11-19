@@ -50,7 +50,20 @@
       else if(chip.right>strip.right-3) categoryList.scrollLeft+=chip.right-strip.right+3;
     });
   });
-  more.addEventListener('click',()=>{expanded=!expanded;render();});
+  more.addEventListener('click', () => {
+    const firstAdditional = expanded ? null : cards.find(({card, categories}) =>
+      card.hidden && (activeCategory === 'all' || categories.includes(activeCategory))
+    );
+    expanded = !expanded;
+    render();
+    // The additional cards appear before the toggle in keyboard order.
+    // Move to the first newly revealed heading within the selected category.
+    if (firstAdditional) {
+      const title = firstAdditional.card.querySelector('.destination-title');
+      title.focus({preventScroll:true});
+      firstAdditional.card.scrollIntoView({block:'start', behavior:'instant'});
+    }
+  });
   render();
   controls.hidden=false;
 })();

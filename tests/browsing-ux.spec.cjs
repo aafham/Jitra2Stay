@@ -91,6 +91,8 @@ test("gallery thumbnails select the filtered photo and its room description with
   await expect(page.locator("#galleryDescription")).toBeVisible();
   await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
   await page.keyboard.press("ArrowLeft");
+  await expect(thumbs.nth(3)).toBeFocused();
+  await page.keyboard.press("Enter");
   await expect(thumbs.nth(3)).toHaveAttribute("aria-current", "true");
   await expect(page.locator("#galleryCaption")).toHaveText(captions[3]);
   await expect(page.locator("#galleryDescription")).toHaveText(descriptions[3]);

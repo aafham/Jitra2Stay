@@ -529,7 +529,11 @@
     }
   }
   refresh.addEventListener('click', loadGuests);
-  showHistory.addEventListener('change', loadGuests);
+  showHistory.addEventListener('change', () => {
+    records = [];
+    list.replaceChildren();
+    loadGuests();
+  });
   logoutButton.addEventListener('click', async () => {
     if (saving) return;
     const generation = authGeneration;

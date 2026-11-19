@@ -61,4 +61,4 @@ npm test
 
 Branch **`main`** digunakan untuk production di Vercel. GitHub Pages menyediakan salinan website selepas semakan automatik lulus. Hanya kandungan **`dist/`** diterbitkan; backend Supabase dikemas kini berasingan.
 
-Panduan lanjut: [Deployment](docs/DEPLOYMENT.md) · [Rekod perubahan](docs/CHANGELOG.md) · [Semua dokumentasi](docs/README.md)
+[Panduan penerbitan](docs/DEPLOYMENT.md) · [Audit November 2026](docs/AUDIT-2026-11-19.md) · [Rekod perubahan](docs/CHANGELOG.md)

@@ -38,7 +38,7 @@ for(const lang of ['ms','en']) {
       await expect(page.locator('#galleryDialog')).toHaveAttribute('open','');
       await expect(page.locator('#galleryCaption')).toHaveText(photo[lang]);
       await expect(page.locator('#galleryImageStage')).toHaveAttribute('data-state','ready');
-      await expect(page.locator('#galleryImage')).toHaveAttribute('src',new URL(await card.getAttribute('href'),page.url()).href);
+      await expect(page.locator('#galleryImage')).toHaveJSProperty('src',await card.evaluate(link=>link.href));
       const categoryPhotos=config.gallery.filter(item=>item.category===photo.category);
       await expect(page.locator('#galleryThumbnails button')).toHaveCount(categoryPhotos.length);
       const nextPhoto=categoryPhotos[(categoryPhotos.findIndex(item=>item.image===image)+1)%categoryPhotos.length];

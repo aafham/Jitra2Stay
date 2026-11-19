@@ -96,7 +96,7 @@
   .destination-finder p.destination-results{margin-top:14px;margin-bottom:12px}
   .destinations-list{gap:12px}
   .destination-card{padding:16px 18px;border-radius:12px;background:var(--card)}
-  .destination-card h4{margin-bottom:8px;font-size:1rem}
+  .destination-card .destination-title{margin-bottom:8px;font-size:1rem}
   .destination-finder p.destination-distance{margin-top:0;font-size:.875rem}
   .destination-finder p.destination-route{margin-top:8px;font-size:.875rem;line-height:1.6}
   .destination-finder p.destination-source{margin-top:8px;font-size:.8125rem}

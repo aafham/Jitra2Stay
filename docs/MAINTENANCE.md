@@ -52,7 +52,7 @@ FAQ mempunyai ID stabil `faq-{key}` daripada config. `src/scripts/faq.js` membuk
 
 Thumbnail dialog dijana hanya apabila dialog dibuka, menggunakan foto kecil sedia ada dan subset kategori aktif. Pilihan semasa dikemas apabila menggunakan thumbnail, anak panah atau leretan. Penerangan bilik bersumber daripada rekod `rooms` yang sama dengan galeri; kekalkan hubungan `image` apabila menukar rekod.
 
-Setiap item `gallery` dalam `src/data/site.config.cjs` mesti mempunyai `category`: `bedrooms`, `shared`, `amenities`, `bathrooms` atau `outside`. Gunakan kategori berdasarkan ruang atau peralatan dalam foto. `portrait: true` menggunakan bingkai 3:4 dan `object-fit: contain` supaya foto peralatan menegak tidak terpotong. Kapsyen `ms`/`en` mengenal pasti subjek, manakala `alt.ms`/`alt.en` boleh memberi penerangan visual yang lebih khusus. Kekalkan pautan JPG web apabila menukar gambar; pautan ini menjadi pilihan alternatif jika versi dialog gagal dimuatkan. Semak butang cuba lagi, penutupan Escape, gambar menegak serta fokus kembali ke gambar asal selepas perubahan galeri.
+Setiap item `gallery` dalam `src/data/site.config.cjs` mesti mempunyai `category`: `bedrooms`, `shared`, `amenities`, `bathrooms` atau `outside`. Gunakan kategori berdasarkan ruang atau peralatan dalam foto. `portrait: true` mengekalkan keseluruhan foto dalam bingkai pratonton 4:3 dengan `object-fit: contain` supaya foto peralatan menegak tidak terpotong. Kapsyen `ms`/`en` mengenal pasti subjek, manakala `alt.ms`/`alt.en` boleh memberi penerangan visual yang lebih khusus. Kekalkan pautan JPG web apabila menukar gambar; pautan ini menjadi pilihan alternatif jika versi dialog gagal dimuatkan. Semak butang cuba lagi, penutupan Escape, gambar menegak serta fokus kembali ke gambar asal selepas perubahan galeri.
 
 `src/scripts/navigation.js` dan `src/styles/navigation.css` menandakan bahagian homepage aktif serta menambah bahagian semasa pada pautan bahasa. Bar mobile Harga/WhatsApp menyorok ketika input borang difokus atau kawalan pertanyaan sudah kelihatan. Kekalkan ID bahagian serta pautan HTML biasa supaya navigasi tanpa JavaScript terus berfungsi. Draf borang dipulihkan secara berasingan melalui `src/scripts/app.js`.
 
@@ -88,7 +88,7 @@ Apabila JavaScript aktif, validasi menggunakan constraint HTML serta ralat inlin
 
 ## Polisi, panduan dan footer
 
-`src/styles/documents.css` dimuat selepas CSS asas pada semua halaman. Indeks polisi dijana daripada `policies` serta privasi; kekalkan ID bahagian dan `tabindex="-1"` untuk pautan/fokus. `src/scripts/navigation.js` hanya membawa hash ke bahasa lain jika ia merujuk bahagian dokumen sebenar. Indeks berfungsi sebagai pautan HTML tanpa JavaScript.
+`src/templates/page-assets.cjs` memilih CSS dan JavaScript mengikut halaman. Kekalkan turutan aset yang dikongsi apabila menambah bahagian. `src/styles/documents.css` dimuat selepas CSS asas. Indeks polisi dijana daripada `policies` serta privasi; kekalkan ID bahagian dan `tabindex="-1"` untuk pautan/fokus. `src/scripts/navigation.js` hanya membawa hash ke bahasa lain jika ia merujuk bahagian dokumen sebenar. Indeks berfungsi sebagai pautan HTML tanpa JavaScript.
 
 Panduan menyusun kandungan, alamat/Google Maps/Waze, kemudian panduan berkaitan dalam DOM. Destinasi menggunakan config peta yang sama dengan homepage. Footer dalam `src/templates/shared.cjs` berkongsi layout untuk semua halaman; semak 320/390/768/1440px kerana CSS asas turut mempunyai aturan footer. Elakkan selector yang kurang khusus daripada aturan asas sehingga kolum intro gagal merentasi baris telefon.
 
@@ -134,7 +134,7 @@ Aktifkan domain/SSL di host dahulu. Tukar business.siteUrl dan build. QA menggun
 
 `npm test` membaca config `tests/playwright.config.cjs`. Laporan HTML berada dalam `artifacts/playwright-report/` dan hasil/debug dalam `artifacts/test-results/`. Folder `artifacts/`, `dist/` dan `node_modules/` ialah hasil tempatan yang diabaikan Git.
 
-Owner mengurus pertanyaan, kadar akhir, bayaran dan pengesahan booking melalui aliran manual sedia ada. Selepas booking disahkan, masukkan tarikh/nama/bilangan orang melalui **Urus tetamu**; kemas kini juga perubahan atau pembatalan daripada WhatsApp dan saluran lain. Kalendar memaparkan rekod Supabase, bukan inventori booking yang diselaraskan automatik dengan platform luar. Jangan masukkan rekod pelanggan ke public config atau Git.
+Owner mengurus pertanyaan, kadar akhir, bayaran dan pengesahan booking melalui aliran manual sedia ada. Selepas booking disahkan, masukkan tarikh masuk, tarikh keluar dan nama. Bilangan orang serta tujuan boleh diisi jika perlu. Urus rekod melalui **Urus tetamu**; kemas kini juga perubahan atau pembatalan daripada WhatsApp dan saluran lain. Kalendar memaparkan rekod Supabase, bukan inventori booking yang diselaraskan automatik dengan platform luar. Jangan masukkan rekod pelanggan ke public config atau Git.
 
 Selepas setiap perubahan harga/polisi, pastikan BM dan EN membawa maksud sama. Selepas perubahan CSS/JS, semak menu, keyboard, dialog dan no-JS pada mobile. Rekod semakan telefon sebenar dalam `PRE-LIVE-QA.md`; status bahan sumber berada dalam `OWNER-DATA-CHECKLIST.md`.
 

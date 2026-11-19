@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-19 — Galeri, tarikh dan prestasi halaman
+
+- Betulkan paparan foto, fokus papan kekunci, tarikh Jitra dan penyegaran rekod tetamu.
+- Muatkan aset mengikut halaman dan bersihkan fail gambar lama. [Perincian audit](AUDIT-2026-11-19.md).
+
 ## 2026-10-27 — Logo navigasi rasmi
 
 - Ganti ikon generik pada butang Google Maps dan Waze dengan aset daripada laman rasmi, disimpan setempat dengan warna dan nisbah asal.

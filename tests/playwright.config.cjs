@@ -1,6 +1,9 @@
 const { defineConfig } = require("@playwright/test");
 const path = require("node:path");
 const root = path.resolve(__dirname, "..");
+// Keep the test server separate from the developer's preview on port 4173.
+const testPort = 4187;
+const localURL = `http://127.0.0.1:${testPort}`;
 
 module.exports = defineConfig({
   testDir: __dirname,
@@ -14,7 +17,7 @@ module.exports = defineConfig({
   outputDir: path.join(root, "artifacts", "test-results"),
   reporter: [["list"], ["html", { open: "never", outputFolder: path.join(root, "artifacts", "playwright-report") }]],
   use: {
-    baseURL: process.env.TEST_BASE_URL || "http://127.0.0.1:4173",
+    baseURL: process.env.TEST_BASE_URL || localURL,
     browserName: "chromium",
     channel: process.env.TEST_BROWSER_CHANNEL || undefined,
     trace: "retain-on-failure",
@@ -24,9 +27,9 @@ module.exports = defineConfig({
   },
   webServer: process.env.TEST_BASE_URL ? undefined : {
     cwd: root,
-    command: "node tools/serve.cjs",
-    url: "http://127.0.0.1:4173",
-    reuseExistingServer: !process.env.CI,
+    command: `node tools/serve.cjs --port ${testPort}`,
+    url: localURL,
+    reuseExistingServer: false,
     timeout: 10000
   }
 });

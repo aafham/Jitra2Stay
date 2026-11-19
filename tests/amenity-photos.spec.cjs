@@ -59,6 +59,7 @@ for (const lang of ["ms", "en"]) {
       await expect(page.locator("#galleryThumbnails button")).toHaveCount(photos.length);
       for (const [index, photo] of photos.entries()) {
         await expect(page.locator("#galleryCaption")).toHaveText(photo[lang]);
+        await expect(page.locator("#galleryImage")).toHaveAttribute("alt", photo.alt[lang]);
         await expect(page.locator("#galleryCount")).toHaveText(`${index + 1} / ${photos.length}`);
         await expect(page.locator("#galleryImageStage")).toHaveAttribute("data-state", "ready");
         await expect(page.locator("#galleryOriginalLink")).toHaveAttribute("href", `images/${photo.image}.jpg`);

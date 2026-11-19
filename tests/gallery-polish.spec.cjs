@@ -23,8 +23,10 @@ test('desktop gallery features the house while filters retain a compact reading 
   expect(Math.abs(outsideA.y-outsideB.y)).toBeLessThan(2);
 
   await page.locator('[data-gallery-filter="all"]').click();
-  await page.locator('#galleryMore').click();
+  await page.locator('#galleryMore').focus();
+  await page.keyboard.press('Enter');
   await expect(cards).toHaveCount(gallery.length);
+  await expect(cards.nth(6).locator('.gallery-trigger')).toBeFocused();
   await page.locator('.gallery-trigger[data-gallery-photo="parking"]').hover();
   // Measure the clipping frame, not the photograph's hover-scale transform.
   // The image can zoom inside the frame without changing grid row geometry.

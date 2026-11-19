@@ -352,6 +352,10 @@
   guests.max = String(config.maxGuests || 20);
   guests.step = "1";
 
+  // Stay dates follow the property calendar even when the guest is overseas.
+  const propertyDate = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kuala_Lumpur", year: "numeric", month: "2-digit", day: "2-digit"
+  });
   const draftFields = { checkin, checkout, guests, rooms, notes };
   const draftDefaults = Object.fromEntries(Object.entries(draftFields).map(([name, field]) => [name, field?.value || ""]));
   const roomValues = Array.from(rooms.options).map(option => option.value);
@@ -532,8 +536,8 @@
   }
 
   function updateEnquiry() {
-    const now = new Date();
-    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const parts = Object.fromEntries(propertyDate.formatToParts(new Date()).map(part => [part.type, part.value]));
+    const today = `${parts.year}-${parts.month}-${parts.day}`;
     checkin.min = today;
     checkout.min = addDays(checkin.value, 1) || addDays(today, 1);
     checkout.setCustomValidity(checkin.value && checkout.value && nightsBetween(checkin.value, checkout.value) === null ? copy.checkout : "");
@@ -567,13 +571,15 @@
     const valid = estimate && Array.from(form.elements).every((field) => !field.willValidate || field.validity.valid);
     const nextMessage = valid ? buildEnquiryMessage({ language, checkin: checkin.value, checkout: checkout.value, guests: guests.value, rooms: rooms.value, notes: notes?.value || "", estimate, securityDeposit: selectedDeposit(), depositCategory: depositCategory?.value || "standard" }) : "";
     if (nextMessage !== preparedMessage) {
+      submitted = false;
+      if (feedback) feedback.textContent = "";
       enquiryCopyRevision++;
       if (enquiryCopyFeedback) enquiryCopyFeedback.textContent = "";
       if (enquiryCopyFallback) enquiryCopyFallback.hidden = true;
       if (enquiryCopyText) enquiryCopyText.value = "";
     }
     preparedMessage = nextMessage;
-    enquiryLink.hidden = !preparedMessage;
+    enquiryLink.hidden = !submitted || !preparedMessage;
     if (copyMessage) copyMessage.hidden = !preparedMessage;
     if (preparedMessage) enquiryLink.href = getEnquiryUrl(config.phone, preparedMessage);
     else enquiryLink.removeAttribute("href");
@@ -695,6 +701,7 @@
       }
       return;
     }
+    enquiryLink.hidden = false;
     if (feedback) feedback.textContent = copy.ready;
     // Keep the prepared link and form intact when the browser blocks a new tab.
     try { window.open(enquiryLink.href, "_blank", "noopener,noreferrer"); } catch { /* The real link remains available. */ }

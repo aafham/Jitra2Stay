@@ -39,21 +39,25 @@
   const previous = calendar.querySelector('[data-calendar-prev]');
   const next = calendar.querySelector('[data-calendar-next]');
   const retry = calendar.querySelector('[data-calendar-retry]');
-  const today = malaysiaToday();
-  const current = dateValue(today);
-  const initialMonth = current.getUTCFullYear() * 12 + current.getUTCMonth();
-  let selectedMonth = initialMonth;
+  const monthOf = date => {
+    const value = dateValue(date);
+    return value.getUTCFullYear() * 12 + value.getUTCMonth();
+  };
+  let currentMonth = monthOf(malaysiaToday());
+  let selectedMonth = currentMonth;
   let selectedStay = null;
   const selection = document.getElementById('calendarSelection');
-  const monthOf = date => {const value=dateValue(date);return value.getUTCFullYear()*12+value.getUTCMonth();};
-  const firstMonth = () => Math.min(initialMonth-12,selectedStay ? monthOf(selectedStay.check_in) : initialMonth);
-  const lastMonth = () => Math.max(initialMonth+12,selectedStay ? monthOf(iso(new Date(+dateValue(selectedStay.check_out)-dayMs))) : initialMonth);
+  const firstMonth = () => Math.min(currentMonth-12,selectedStay ? monthOf(selectedStay.check_in) : currentMonth);
+  const lastMonth = () => Math.max(currentMonth+12,selectedStay ? monthOf(iso(new Date(+dateValue(selectedStay.check_out)-dayMs))) : currentMonth);
+  let visibleGrid = null;
   let controller;
   let sequence = 0;
   let started = false;
   const format = (date, options) => new Intl.DateTimeFormat(locale, {...options, timeZone:'UTC'}).format(dateValue(date));
 
   function render(dates, occupied, known) {
+    const today = malaysiaToday();
+    visibleGrid = { dates, occupied, known };
     const table = document.createElement('table');
     table.setAttribute('aria-labelledby', 'calendarMonth');
     const thead = document.createElement('thead');
@@ -91,16 +95,20 @@
     }
     table.append(body); grid.replaceChildren(table);
   }
+  function updateMonthControls() {
+    previous.disabled = selectedMonth <= firstMonth();
+    next.disabled = selectedMonth >= lastMonth();
+  }
   async function load() {
     started = true;
+    currentMonth = monthOf(malaysiaToday());
     const thisRequest = ++sequence;
     controller?.abort(); controller = new AbortController();
     const thisController = controller;
     const dates = monthGrid(Math.floor(selectedMonth / 12), selectedMonth % 12);
     const monthDate = iso(new Date(Date.UTC(Math.floor(selectedMonth/12), selectedMonth%12,1)));
     heading.textContent = format(monthDate, {month:'long',year:'numeric'});
-    previous.disabled = selectedMonth <= firstMonth();
-    next.disabled = selectedMonth >= lastMonth();
+    updateMonthControls();
     grid.setAttribute('aria-busy','true');
     render(dates,new Set(),false); retry.hidden=true;
     status.textContent = say('Memuatkan rekod penginapan…','Loading stay records…');
@@ -142,7 +150,17 @@
   }
   previous.addEventListener('click',()=>{if(selectedMonth>firstMonth()){selectedMonth--;load();}});
   next.addEventListener('click',()=>{if(selectedMonth<lastMonth()){selectedMonth++;load();}});
-  calendar.querySelector('[data-calendar-today]').addEventListener('click',()=>{selectedStay=null;selection.hidden=true;selection.replaceChildren();selectedMonth=initialMonth;load();});
+  function clearSelection() {
+    selectedStay = null;
+    selection.hidden = true;
+    selection.replaceChildren();
+  }
+  calendar.querySelector('[data-calendar-today]').addEventListener('click', () => {
+    clearSelection();
+    selectedMonth = monthOf(malaysiaToday());
+    load();
+    loadUpcoming();
+  });
   calendar.querySelector('[data-calendar-refresh]').addEventListener('click',()=>{load();loadUpcoming();});
   retry.addEventListener('click',load);
   window.addEventListener('pageshow',event=>{if(event.persisted&&started){load();loadUpcoming();}});
@@ -157,6 +175,7 @@
   let expanded = false;
   const upcomingPreviewLimit = 3;
   function renderUpcoming() {
+    const today = malaysiaToday();
     const records = expanded ? publicGuests : publicGuests.slice(0,upcomingPreviewLimit);
     publicList.replaceChildren();
     records.forEach(guest=>{
@@ -202,7 +221,23 @@
       const payload=await response.json();
       if(!Array.isArray(payload.guests)||payload.guests.length>1000||payload.guests.some(guest=>!guest||typeof guest.guest_name!=='string'||!guest.guest_name.trim()||guest.guest_name.length>120||(guest.guest_count!=null&&(!Number.isInteger(guest.guest_count)||guest.guest_count<1||guest.guest_count>20))||!dateValue(guest.check_in)||!dateValue(guest.check_out)||guest.check_out<=guest.check_in))throw new Error('Invalid upcoming records');
       if(request!==publicSequence)return;
-      publicGuests=payload.guests.filter(guest=>guest.check_out>today).sort((a,b)=>a.check_in.localeCompare(b.check_in));renderUpcoming();
+      const today = malaysiaToday();
+      publicGuests = payload.guests.filter(guest => guest.check_out > today).sort((a, b) => a.check_in.localeCompare(b.check_in));
+      if (selectedStay && !publicGuests.some(guest =>
+        guest.check_in === selectedStay.check_in &&
+        guest.check_out === selectedStay.check_out &&
+        guest.guest_name === selectedStay.guest_name)) {
+        clearSelection();
+        const month = Math.min(lastMonth(), Math.max(selectedMonth, firstMonth()));
+        if (month !== selectedMonth) {
+          selectedMonth = month;
+          load();
+        } else if (visibleGrid) {
+          render(visibleGrid.dates, visibleGrid.occupied, visibleGrid.known);
+          updateMonthControls();
+        }
+      }
+      renderUpcoming();
     } catch {
       if(request!==publicSequence)return;
       publicStatus.textContent=say('Senarai belum dapat dimuatkan. Sila cuba lagi.','The guest list could not be loaded. Please try again.');publicRetry.hidden=false;

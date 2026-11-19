@@ -57,7 +57,7 @@ function renderMobilePage(key,lang) {
   }
   // Sections are standalone documents here: card headings sit directly below
   // the page's h1 instead of the homepage's section h2.
-  body=focusedLinks(body,key,lang).replace(/<h3\b/g,'<h2').replace(/<\/h3>/g,'</h2>');
+  body=focusedLinks(body,key,lang).replace(/<h3\b/g,'<h2').replace(/<\/h3>/g,'</h2>').replace(/<(\/?)h4\b/g,'<$1h3');
   const back=`<div class="wrap browse-back"><a href="${homeHref(lang)}">← ${t(lang,'Utama','Home')}</a>${key!=='maklumat'?`<a href="${pageHref('maklumat',lang)}">${t(lang,'Semua maklumat','All information')} ${icon('grid')}</a>`:''}</div>`;
   return layout({lang,title:`${title} | Jitra2Stay`,description:t(lang,`${title} Jitra2Stay di Jitra, Kedah. Lihat maklumat penginapan dan hubungi owner untuk mengesahkan tarikh serta tempahan.`,`${title} at Jitra2Stay in Jitra, Kedah. Explore the homestay and contact the owner to confirm your dates and booking.`),path:pageHref(key,lang),pairedPath:pageHref(key,lang==='en'?'ms':'en'),body:back+body,mobilePage:key});
 }

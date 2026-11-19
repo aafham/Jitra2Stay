@@ -120,6 +120,34 @@ test('selecting a different upcoming person replaces the highlighted stay',async
   await expect(day(page,'2026-12-05')).not.toHaveClass(/is-selected-stay/);
 });
 
+test('refresh removes an obsolete selection even when another guest books the same nights', async ({ context, page }) => {
+  const guests = [{ ...fixtureStay }, { ...nextStay }];
+  await mockCalendar(context, guests);
+  await openCalendar(page);
+  await guestCard(page, fixtureStay.guest_name).getByRole('button').click();
+  await assertSelectedStay(page);
+
+  guests[0].guest_name = 'Tetamu Ganti';
+  await page.locator('[data-calendar-refresh]').click();
+  await expect(guestCard(page, 'Tetamu Ganti')).toBeVisible();
+  await expect(page.locator('#calendarSelection')).toBeHidden();
+  await expect(page.locator('.is-selected-stay')).toHaveCount(0);
+  await expect(day(page, fixtureStay.check_in)).toHaveAttribute('data-state', 'occupied');
+  await expect(page.locator('#calendarMonth')).toContainText('November 2026');
+});
+
+test('This month follows Malaysian midnight when a calendar tab stays open', async ({ context, page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-30T15:59:00Z'));
+  await mockCalendar(context);
+  await openCalendar(page, '/kalendar-en.html');
+  await expect(day(page, '2026-11-30')).toHaveClass(/is-today/);
+  await page.clock.setFixedTime(new Date('2026-11-30T16:01:00Z'));
+  await page.getByRole('button', { name: 'This month' }).click();
+  await expect(page.locator('#calendarMonth')).toHaveText('December 2026');
+  await expect(day(page, '2026-12-01')).toHaveClass(/is-today/);
+  await expect(day(page, '2026-11-30')).not.toHaveClass(/is-today/);
+});
+
 test('a failed calendar request keeps selected dates unknown until retry confirms occupancy',async({context,page})=>{
   const fixture=await mockCalendar(context);
   await openCalendar(page);

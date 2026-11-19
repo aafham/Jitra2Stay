@@ -44,13 +44,18 @@
     expanded = false;
     renderGrid();
   }));
-  more.addEventListener("click", () => { expanded = !expanded; renderGrid(); });
+  more.addEventListener("click", () => {
+    expanded = !expanded;
+    renderGrid();
+    // The extra photos appear before this button in the document.
+    if (expanded) activeItems[initialCount].anchor.focus();
+  });
   renderGrid();
   controls.hidden = false;
   document.documentElement.classList.remove("gallery-pending");
 
   const dialog = document.getElementById("galleryDialog");
-  const image = document.getElementById("galleryImage");
+  const imageTemplate = document.getElementById("galleryImage");
   const stage = document.getElementById("galleryImageStage");
   const caption = document.getElementById("galleryCaption");
   const roomDescription = document.getElementById("galleryDescription");
@@ -62,8 +67,9 @@
   const status = document.getElementById("galleryImageStatus");
   const original = document.getElementById("galleryOriginalLink");
   const retry = document.getElementById("galleryRetry");
-  if (!dialog || typeof dialog.showModal !== "function" || !image || !stage || !caption || !close || !previous || !next || !count || !status || !original || !retry) return;
+  if (!dialog || typeof dialog.showModal !== "function" || !imageTemplate || !stage || !caption || !close || !previous || !next || !count || !status || !original || !retry) return;
 
+  let image = imageTemplate;
   let dialogItems = [];
   let selected = 0;
   let opener = null;
@@ -128,7 +134,7 @@
     else if (target.right > bounds.right - 6) thumbnails.scrollLeft += target.right - bounds.right + 6;
   }
 
-  function showImage(index) {
+  async function showImage(index) {
     selected = (index + dialogItems.length) % dialogItems.length;
     const anchor = dialogItems[selected].anchor;
     const description = anchor.dataset.caption || anchor.querySelector("img")?.alt || "";
@@ -141,7 +147,6 @@
     updateThumbnails();
     count.textContent = `${selected + 1} / ${dialogItems.length}`;
     image.hidden = true;
-    image.alt = description;
     original.href = anchor.dataset.original || anchor.href;
     previous.hidden = next.hidden = dialogItems.length < 2;
     retry.hidden = true;
@@ -149,25 +154,28 @@
     stage.setAttribute("aria-busy", "true");
     status.textContent = en ? "Loading photo…" : "Memuatkan gambar…";
 
-    // A separate loader prevents a late response replacing a newer selection.
-    const loader = new Image();
-    loader.decoding = "async";
-    loader.onload = () => {
-      if (currentRequest !== requestId) return;
-      image.src = loader.src;
-      image.hidden = false;
-      stage.dataset.state = "ready";
-      stage.setAttribute("aria-busy", "false");
-      status.textContent = "";
-    };
-    loader.onerror = () => {
+    // Decode a fresh element, then display that same element. A retry must
+    // also start a fresh request when WebKit remembers the last load error.
+    const incoming = imageTemplate.cloneNode(false);
+    incoming.alt = anchor.querySelector("img")?.alt || description;
+    incoming.src = anchor.dataset.full || anchor.href;
+    try {
+      await incoming.decode();
+    } catch {
       if (currentRequest !== requestId) return;
       stage.dataset.state = "error";
       stage.setAttribute("aria-busy", "false");
       status.textContent = en ? "This photo could not load. Try again or open the original photo below." : "Gambar ini tidak dapat dimuatkan. Cuba lagi atau buka gambar asal di bawah.";
       retry.hidden = false;
-    };
-    loader.src = anchor.dataset.full || anchor.href;
+      return;
+    }
+    if (currentRequest !== requestId) return;
+    incoming.hidden = false;
+    image.replaceWith(incoming);
+    image = incoming;
+    stage.dataset.state = "ready";
+    stage.setAttribute("aria-busy", "false");
+    status.textContent = "";
   }
 
   function openGallery(event, item, collection) {
@@ -217,8 +225,12 @@
       }
     }
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
       event.preventDefault();
       showImage(selected + (event.key === "ArrowLeft" ? -1 : 1));
+      if (thumbnails?.contains(event.target)) {
+        thumbnailButtons[selected].focus({ preventScroll: true });
+      }
     }
   });
   dialog.addEventListener("click", event => {
